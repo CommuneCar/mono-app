@@ -12,6 +12,7 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
         <RideCard
           communityName={ride.communityName}
           description={ride.description}
+          png={ride.png}
         />
       ))}
     </Box>
