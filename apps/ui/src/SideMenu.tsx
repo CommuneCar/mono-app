@@ -12,15 +12,23 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PeopleIcon from '@mui/icons-material/People';
 import RsvpIcon from '@mui/icons-material/Rsvp';
 import { ReactNode } from 'react';
-
-const menuOptions: Record<string, ReactNode> = {
-  Rides: <DirectionsCarIcon />,
-  Communities: <PeopleIcon />,
-  Invitations: <RsvpIcon />,
-};
+import { useNavigate } from 'react-router-dom';
 
 const SideMenu = () => {
   const [drawer, setDrawer] = React.useState(false);
+  const navigate = useNavigate();
+
+  const menuOptions: Record<string, ReactNode> = {
+    Rides: (
+      <DirectionsCarIcon
+        onClick={() => {
+          navigate('/rides');
+        }}
+      />
+    ),
+    Communities: <PeopleIcon />,
+    Invitations: <RsvpIcon />,
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>

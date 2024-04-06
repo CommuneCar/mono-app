@@ -7,11 +7,18 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
+
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from './themes/default';
 import loginImage from './assets/login.png';
 
-const SignIn = () => {
+interface SignInProps {
+  setMenuVisible: (value: boolean) => void;
+}
+
+const SignIn = ({ setMenuVisible }: SignInProps) => {
+  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -74,6 +81,10 @@ const SignIn = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => {
+                setMenuVisible(true);
+                navigate('/rides');
+              }}
             >
               Login
             </Button>
