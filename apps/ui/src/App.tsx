@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SignUp from './SignUp';
 import SideMenu from './SideMenu';
 import RidesFeed from './RidesFeed';
+import CommunitiesFeed from './Communities';
 import { useState } from 'react';
 import tlv from './assets/tlv.png';
 import apple from './assets/apple.png';
@@ -42,6 +43,26 @@ const rides = [
   },
 ];
 
+const communities = [
+  {
+    name: 'Travel friends Haifa - Tel Aviv',
+    description:
+      'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
+    png: getRandomOption(),
+  },
+  {
+    description:
+      'The biggest israeli community of Apple fans traveling to new stores and events together.',
+    name: 'Apple Friends - IL',
+    png: getRandomOption(),
+  },
+  {
+    name: 'Camera Buddies  - photo fun!',
+    description: 'A group of hobby photographers traveling together',
+    png: getRandomOption(),
+  },
+];
+
 function App() {
   const [menuVisible, setMenuVisible] = useState(false);
   return (
@@ -56,6 +77,10 @@ function App() {
           />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/rides" element={<RidesFeed rides={rides} />} />
+          <Route
+            path="/communities"
+            element={<CommunitiesFeed communities={communities} />}
+          />
         </Routes>
       </Router>
     </>

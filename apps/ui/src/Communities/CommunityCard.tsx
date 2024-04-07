@@ -10,13 +10,13 @@ import defaultTheme from '../themes/default';
 
 import { useState } from 'react';
 
-export interface RidesCardProps {
-  communityName: string;
+export interface CommunityCardProps {
+  name: string;
   description: string;
   png: string;
 }
 
-const RideCard = ({ communityName, description, png }: RidesCardProps) => {
+const CommunityCard = ({ name, description, png }: CommunityCardProps) => {
   const [joined, setJoined] = useState(false);
 
   return (
@@ -29,7 +29,7 @@ const RideCard = ({ communityName, description, png }: RidesCardProps) => {
             variant="body2"
             color={defaultTheme.palette.text.secondary}
           >
-            {communityName}
+            {name}
           </Typography>
           <Typography
             variant="subtitle1"
@@ -50,7 +50,7 @@ const RideCard = ({ communityName, description, png }: RidesCardProps) => {
                 : defaultTheme.palette.primary.light,
             }}
           >
-            {!joined ? 'Join Ride' : 'Joined'}
+            {!joined ? 'Ask to Join' : 'Joined'}
           </Button>
         </CardActions>
       </Card>
@@ -58,4 +58,4 @@ const RideCard = ({ communityName, description, png }: RidesCardProps) => {
   );
 };
 
-export default RideCard;
+export default CommunityCard;

@@ -34,17 +34,20 @@ const SignUp = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            minHeight: '100vh', // Ensure the container takes the full height of the viewport
+            justifyContent: 'center', // Center the content vertically
+            padding: '0 20px', // Add padding on the sides for mobile devices
           }}
         >
           <Box
             component="img"
             sx={{
-              height: 233,
-              width: 350,
+              width: '100%', // Make image width 100% for responsiveness
+              marginTop: -10,
             }}
             src={signUpImage}
           />
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" align="center">
             Sign up
           </Typography>
           <Box

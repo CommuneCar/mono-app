@@ -35,17 +35,21 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            minHeight: '100vh', // Ensure the container takes the full height of the viewport
+            justifyContent: 'center', // Center the content vertically
+            padding: '0 20px', // Add padding on the sides for mobile devices
           }}
         >
           <Box
             component="img"
             sx={{
-              height: 233,
-              width: 350,
+              width: '100%', // Make image width 100% for responsiveness
+              marginTop: -10,
             }}
             src={loginImage}
+            alt="Login Image"
           />
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" align="center">
             Login
           </Typography>
           <Box
@@ -53,6 +57,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
+            width="100%" // Ensure the form takes full width
           >
             <TextField
               margin="normal"
@@ -86,8 +91,8 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             >
               Login
             </Button>
-            <Grid container>
-              <Grid item xs>
+            <Grid container justifyContent="space-between">
+              <Grid item>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>

@@ -7,7 +7,9 @@ export interface RidesFeedProps {
 
 const RidesFeed = ({ rides }: RidesFeedProps) => {
   return (
-    <Box>
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
       {rides.map((ride) => (
         <RideCard
           communityName={ride.communityName}
