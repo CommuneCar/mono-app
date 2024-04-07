@@ -20,10 +20,10 @@ const CommunityCard = ({ name, description, png }: CommunityCardProps) => {
   const [joined, setJoined] = useState(false);
 
   return (
-    <Box style={{ margin: '5%' }}>
-      <Card>
+    <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
+      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardMedia component="img" height="140" image={png} alt="tlv" />
-        <CardContent>
+        <CardContent sx={{ flexGrow: 1 }}>
           <Typography
             gutterBottom
             variant="body2"

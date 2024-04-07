@@ -7,7 +7,9 @@ export interface CommunitiesFeedProps {
 
 const RidesFeed = ({ communities }: CommunitiesFeedProps) => {
   return (
-    <Box>
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
       {communities.map((community) => (
         <CommunityCard
           name={community.name}
