@@ -18,16 +18,10 @@ const SideMenu = () => {
   const [drawer, setDrawer] = React.useState(false);
   const navigate = useNavigate();
 
-  const menuOptions: Record<string, ReactNode> = {
-    Rides: (
-      <DirectionsCarIcon
-        onClick={() => {
-          navigate('/rides');
-        }}
-      />
-    ),
-    Communities: <PeopleIcon />,
-    Invitations: <RsvpIcon />,
+  const menuOptions: Record<string, [ReactNode, string]> = {
+    Rides: [<DirectionsCarIcon />, '/rides'],
+    Communities: [<PeopleIcon />, '/communities'],
+    Invitations: [<RsvpIcon />, ''],
   };
 
   return (
@@ -50,8 +44,8 @@ const SideMenu = () => {
           <List>
             {Object.keys(menuOptions).map((text) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>{menuOptions[text]}</ListItemIcon>
+                <ListItemButton onClick={() => navigate(menuOptions[text][1])}>
+                  <ListItemIcon>{menuOptions[text][0]}</ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
