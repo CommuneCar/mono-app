@@ -1,20 +1,23 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
-const SignIn = () => {
-  const defaultTheme = createTheme();
+import { ThemeProvider } from '@mui/material/styles';
+import defaultTheme from './themes/default';
+import loginImage from './assets/login.png';
+
+interface SignInProps {
+  setMenuVisible: (value: boolean) => void;
+}
+
+const SignIn = ({ setMenuVisible }: SignInProps) => {
+  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -27,18 +30,21 @@ const SignIn = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Box
+            component="img"
+            sx={{
+              height: 233,
+              width: 350,
+            }}
+            src={loginImage}
+          />
           <Typography component="h1" variant="h5">
             Login
           </Typography>
@@ -68,15 +74,15 @@ const SignIn = () => {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => {
+                setMenuVisible(true);
+                navigate('/rides');
+              }}
             >
               Login
             </Button>
