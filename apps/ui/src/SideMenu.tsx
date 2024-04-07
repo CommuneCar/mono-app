@@ -27,7 +27,7 @@ const SideMenu = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <Button onClick={() => setDrawer(true)}>
-        <MenuIcon />
+        <MenuIcon color="action" />
       </Button>
       <SwipeableDrawer
         anchor="left"
