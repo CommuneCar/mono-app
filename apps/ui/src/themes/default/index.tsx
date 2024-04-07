@@ -57,7 +57,7 @@ const defaultTheme = createTheme({
     common: { black: COLORS.BLACK, white: COLORS.WHITE },
     action: {
       active: hexToRgba(COLORS.PRIMARY, 0.56),
-      hover: hexToRgba(COLORS.SECONDARY, 0.04),
+      hover: hexToRgba(COLORS.SECONDARY, 0.08),
       selected: hexToRgba(COLORS.SECONDARY, 0.08),
       disabled: hexToRgba(COLORS.BLACK, 0.38),
       focus: hexToRgba(COLORS.SECONDARY, 0.12),
