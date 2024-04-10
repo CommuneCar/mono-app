@@ -10,7 +10,8 @@ import { useState } from 'react';
 import tlv from './assets/tlv.png';
 import apple from './assets/apple.png';
 import camera from './assets/camera.png';
-import MapComponent from './Map';
+import MapPage from './Pages/Map';
+import MapComponent2 from './Components/MapOption2/Map';
 
 const options = [tlv, apple, camera];
 
@@ -64,6 +65,7 @@ const communities = [
   },
 ];
 
+
 function App() {
   const [menuVisible, setMenuVisible] = useState(false);
   return (
@@ -82,7 +84,8 @@ function App() {
             path="/communities"
             element={<CommunitiesFeed communities={communities} />}
           />
-          <Route path="/map" element={<MapComponent />} />
+          <Route path="/map" element={<MapPage />} />
+          <Route path="/map2" element={<MapComponent2 />} />
         </Routes>
       </Router>
     </>

@@ -10,7 +10,7 @@ import 'leaflet-geosearch/assets/css/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { Icon, divIcon, point } from 'leaflet';
-import placeholderIcon from './assets/placeholder.png';
+import placeholderIcon from '../../assets/placeholder.png';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 type MarkerInfo = {
@@ -63,7 +63,7 @@ const SearchControl = () => {
     return null;
 };
 
-const MapComponent: React.FC = () => (
+const MapComponent2: React.FC = () => (
     <MapContainer center={[48.8566, 2.3522]} zoom={13}>
         <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -83,5 +83,5 @@ const MapComponent: React.FC = () => (
     </MapContainer>
 );
 
-export default MapComponent;
+export default MapComponent2;
 
