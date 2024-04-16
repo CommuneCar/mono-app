@@ -12,16 +12,17 @@ const destinations = [ // Example destinations
 const MapPage: React.FC = () => {
     // Explicitly typing the mapContainerStyle object using CSSProperties
     const mapContainerStyle: CSSProperties = {
-      height: '90vh',
-      width: '50vw',
-      position: 'relative', // This will now be correctly typed
-      margin: '0 auto',
-      minWidth: '800px',
-      minHeight: '800px'
+      height: '100vh',
+      width: '100vw',
+      position: 'absolute',
+      left: '0',
+      top: '0',
+      float: 'left',
+      marginLeft: 0,
     };
   
     return (
-      <div style={mapContainerStyle}>
+      <div style={mapContainerStyle} className='full-viewport'>
         <Map
           startPoint={startPoint}
           destinations={destinations}

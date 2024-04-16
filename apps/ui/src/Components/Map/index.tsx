@@ -5,6 +5,7 @@ import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import CarIcon from '../../assets/components/map/car.svg';
 import PersonIcon from '../../assets/components/map/person.svg';
+import './styles.css';
 
 const mapStyles = {
   light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
