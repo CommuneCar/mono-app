@@ -1,10 +1,11 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import './App.css';
-import SignIn from './SignIn';
+import SignIn from './Pages/SignIn';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignUp from './SignUp';
-import SideMenu from './SideMenu';
-import RidesFeed from './RidesFeed';
+import SignUp from './Pages/Signup';
+import SideMenu from './Components/Menu';
+import RidesFeed from './Pages/RidesFeed';
+import MapPage from './Pages/Map';
 import CommunitiesFeed from './Communities';
 import { useState } from 'react';
 import tlv from './assets/tlv.png';
@@ -81,6 +82,7 @@ function App() {
             path="/communities"
             element={<CommunitiesFeed communities={communities} />}
           />
+          <Route path="/map" element={<MapPage />} />
         </Routes>
       </Router>
     </>

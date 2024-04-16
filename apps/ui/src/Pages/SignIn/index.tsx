@@ -9,8 +9,8 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 
 import { ThemeProvider } from '@mui/material/styles';
-import defaultTheme from './themes/default';
-import loginImage from './assets/login.png';
+import defaultTheme from '../../themes/default';
+import loginImage from '../../assets/login.png';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;

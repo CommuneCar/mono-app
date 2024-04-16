@@ -13,7 +13,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import RsvpIcon from '@mui/icons-material/Rsvp';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import defaultTheme from './themes/default';
+import defaultTheme from '../../themes/default';
 
 const SideMenu = () => {
   const [drawer, setDrawer] = React.useState(false);

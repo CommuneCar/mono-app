@@ -10,8 +10,8 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 
 import { ThemeProvider } from '@mui/material/styles';
-import defaultTheme from './themes/default';
-import signUpImage from './assets/sign-up.png';
+import defaultTheme from '../../themes/default';
+import signUpImage from '../../assets/sign-up.png';
 
 const SignUp = () => {
   const navigate = useNavigate();
