@@ -46,7 +46,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               width: '100%', // Make image width 100% for responsiveness
               marginTop: -10,
             }}
-            src={loginImage}
+            src={logoWithTitle}
             alt="Login Image"
           />
           <Typography component="h1" variant="h5" align="center">
