@@ -35,7 +35,7 @@ const SideMenu = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <Button onClick={() => setDrawer(true)}>
         <MenuIcon color="action" />
       </Button>
