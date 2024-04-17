@@ -13,7 +13,10 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
       {rides.map((ride) => (
         <RideCard
           communityName={ride.communityName}
-          description={ride.description}
+          driver={ride.driver}
+          departureTime={ride.departureTime}
+          startLocation={ride.startLocation}
+          destination={ride.destination}
           png={ride.png}
         />
       ))}

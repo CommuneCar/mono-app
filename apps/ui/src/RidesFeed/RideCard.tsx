@@ -9,34 +9,40 @@ import Typography from '@mui/material/Typography';
 import defaultTheme from '../themes/default';
 
 import { useState } from 'react';
+import RideDescription from './RideDescription';
 
 export interface RidesCardProps {
   communityName: string;
-  description: string;
+  driver: string;
+  departureTime: Date;
+  startLocation: string;
+  destination: string;
   png: string;
 }
 
-const RideCard = ({ communityName, description, png }: RidesCardProps) => {
+const RideCard = ({
+  communityName,
+  driver,
+  departureTime,
+  startLocation,
+  destination,
+  png,
+}: RidesCardProps) => {
   const [joined, setJoined] = useState(false);
-
   return (
     <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardMedia component="img" height="140" image={png} alt="tlv" />
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography
-            gutterBottom
-            variant="body2"
-            color={defaultTheme.palette.text.secondary}
-          >
+        <CardContent sx={{ flexGrow: 1, width: '100%' }}>
+          <Typography gutterBottom variant="body2">
             {communityName}
           </Typography>
-          <Typography
-            variant="subtitle1"
-            color={defaultTheme.palette.text.primary}
-          >
-            {description}
-          </Typography>
+          <RideDescription
+            driver={driver}
+            departureTime={departureTime}
+            startLocation={startLocation}
+            destination={destination}
+          />
         </CardContent>
         <CardActions>
           <Button
