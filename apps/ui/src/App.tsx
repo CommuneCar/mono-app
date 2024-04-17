@@ -12,6 +12,7 @@ import tlv from './assets/tlv.png';
 import apple from './assets/apple.png';
 import camera from './assets/camera.png';
 import SearchBar from './Components/Map/SearchBar';
+import MapNavigationPage from './Pages/MapNavigation';
 
 const options = [tlv, apple, camera];
 
@@ -84,6 +85,7 @@ function App() {
             element={<CommunitiesFeed communities={communities} />}
           />
           <Route path="/map" element={<MapPage />} />
+          <Route path="/map/navigation" element={<MapNavigationPage />} />
           <Route path="/search" element={<SearchBar />} />
         </Routes>
       </Router>
