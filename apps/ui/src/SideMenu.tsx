@@ -21,15 +21,15 @@ const SideMenu = () => {
 
   const menuOptions: Record<string, [ReactNode, string]> = {
     Rides: [
-      <DirectionsCarIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      <DirectionsCarIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '/rides',
     ],
     Communities: [
-      <PeopleIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      <PeopleIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '/communities',
     ],
     Invitations: [
-      <RsvpIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      <RsvpIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '',
     ],
   };
@@ -46,7 +46,7 @@ const SideMenu = () => {
         onOpen={() => setDrawer(true)}
         PaperProps={{
           sx: {
-            backgroundColor: defaultTheme.palette.primary.light,
+            backgroundColor: defaultTheme.palette.common.white,
           },
         }}
       >
@@ -64,7 +64,7 @@ const SideMenu = () => {
                 key={text}
                 disablePadding
                 sx={{
-                  color: defaultTheme.palette.common.white,
+                  color: defaultTheme.palette.info.dark,
                   '&:hover': {
                     backgroundColor: defaultTheme.palette.action.hover,
                   },
