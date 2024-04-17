@@ -14,10 +14,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import { RidesCardProps } from './RideCard';
-import tlv from '../assets/tlv.png';
-import apple from '../assets/apple.png';
-import camera from '../assets/camera.png';
-import { getRandomOption } from '../utils';
+import tlv from '../../assets/tlv.png';
+import apple from '../../assets/apple.png';
+import camera from '../../assets/camera.png';
+import { getRandomOption } from '../../utils';
 
 const options = [tlv, apple, camera];
 

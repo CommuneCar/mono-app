@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
-import loginImage from '../../assets/login.png';
+import logoWithTitle from '../../assets/logo-with-title.png';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;

@@ -36,15 +36,15 @@ const SideMenu = () => {
       '',
     ],
     SearchBar: [
-      <SearchIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      <SearchIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '/search',
     ],
     Map: [
-      <MapIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      <MapIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '/map',
     ],
     MapNavigation: [
-      <NavigationIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      <NavigationIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '/map/navigation',
     ],
   };

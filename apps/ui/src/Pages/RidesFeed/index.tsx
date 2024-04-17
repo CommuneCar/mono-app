@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import RideCard, { RidesCardProps } from './RideCard';
 import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import defaultTheme from '../themes/default';
 import { useState } from 'react';
 import CreateRideDialog from './CreateRideDialog';
+import defaultTheme from '../../themes/default';
 
 export interface RidesFeedProps {
   rides: RidesCardProps[];
