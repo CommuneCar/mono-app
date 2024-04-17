@@ -13,36 +13,44 @@ import apple from './assets/apple.png';
 import camera from './assets/camera.png';
 import SearchBar from './Components/Map/SearchBar';
 import MapNavigationPage from './Pages/MapNavigation';
+import { getRandomOption } from './utils';
 
 const options = [tlv, apple, camera];
 
-const getRandomOption = () => {
-  const randomIndex = Math.floor(Math.random() * options.length);
-  return options[randomIndex];
-};
+const currentDate = new Date();
 
 const rides = [
   {
+    driver: 'Zoe Shwartz',
+    departureTime: new Date(currentDate.getTime() + 60 * 60000), // Adding 60 minutes to the current time
     communityName: 'Travel friends Haifa - Tel Aviv',
-    description: 'Zoe is leaving towards Tel Aviv in 50 Minutes. Join Zoe!',
-    png: getRandomOption(),
+    startLocation: 'Rotchild street, Tel Aviv',
+    png: getRandomOption(options),
+    destination: 'Pardesia',
   },
   {
-    description:
-      'Dar is leaving in 25 minutes to take some pictures of birds in the Golan Heights',
+    driver: 'Dar Nachmani',
+    departureTime: new Date(currentDate.getTime() + 120 * 60000),
     communityName: 'Apple Friends - IL',
-    png: getRandomOption(),
+    png: getRandomOption(options),
+    startLocation: 'Efraim Katzir street, Hod Hasharon',
+    destination: 'Modiin',
   },
   {
+    driver: 'Avi Ron',
+    departureTime: new Date(currentDate.getTime() + 50 * 60000),
     communityName: 'Travel friends Haifa - Tel Aviv',
-    description: 'Zoe is leaving towards Tel Aviv in 50 Minutes. Join Zoe!',
-    png: getRandomOption(),
+    startLocation: 'Weizman street, Petah Tikva',
+    destination: 'Holon',
+    png: getRandomOption(options),
   },
   {
-    description:
-      'Dar is leaving in 25 minutes to take some pictures of birds in the Golan Heights',
+    driver: 'Tal Kovler',
+    departureTime: new Date(currentDate.getTime() + 25 * 60000),
     communityName: 'Apple Friends - IL',
-    png: getRandomOption(),
+    startLocation: 'Bla street, Haifa',
+    destination: 'The Golan',
+    png: getRandomOption(options),
   },
 ];
 
@@ -51,18 +59,21 @@ const communities = [
     name: 'Travel friends Haifa - Tel Aviv',
     description:
       'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
-    png: getRandomOption(),
+    startLocation: 'Rotchild street, Tel Aviv',
+    png: getRandomOption(options),
   },
   {
     description:
       'The biggest israeli community of Apple fans traveling to new stores and events together.',
     name: 'Apple Friends - IL',
-    png: getRandomOption(),
+    startLocation: 'Rotchild street, Tel Aviv',
+    png: getRandomOption(options),
   },
   {
     name: 'Camera Buddies  - photo fun!',
     description: 'A group of hobby photographers traveling together',
-    png: getRandomOption(),
+    startLocation: 'Rotchild street, Tel Aviv',
+    png: getRandomOption(options),
   },
 ];
 

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
-import loginImage from '../../assets/login.png';
+import logoWithTitle from '../../assets/logo-with-title.png';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;
@@ -46,7 +46,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               width: '100%', // Make image width 100% for responsiveness
               marginTop: -10,
             }}
-            src={loginImage}
+            src={logoWithTitle}
             alt="Login Image"
           />
           <Typography component="h1" variant="h5" align="center">
