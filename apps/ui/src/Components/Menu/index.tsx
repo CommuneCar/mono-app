@@ -11,6 +11,9 @@ import ListItemText from '@mui/material/ListItemText';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PeopleIcon from '@mui/icons-material/People';
 import RsvpIcon from '@mui/icons-material/Rsvp';
+import SearchIcon from '@mui/icons-material/Search';
+import MapIcon from '@mui/icons-material/Map';
+import NavigationIcon from '@mui/icons-material/Navigation';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import defaultTheme from '../../themes/default';
@@ -31,6 +34,18 @@ const SideMenu = () => {
     Invitations: [
       <RsvpIcon sx={{ color: defaultTheme.palette.common.white }} />,
       '',
+    ],
+    SearchBar: [
+      <SearchIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      '/search',
+    ],
+    Map: [
+      <MapIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      '/map',
+    ],
+    MapNavigation: [
+      <NavigationIcon sx={{ color: defaultTheme.palette.common.white }} />,
+      '/map/navigation',
     ],
   };
 
