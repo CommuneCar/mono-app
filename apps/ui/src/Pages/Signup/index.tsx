@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { validateEmail, validateFullName, validatePassword, validatePhoneNumber } from '../../utils/signing/validation';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
+import { isUndefined } from 'lodash';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState<boolean>(false);
   const [phoneNumberError, setPhoneNumberError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [gander, setGander] = useState<Gander>();
 
   const [isSubmitClicked, setSubmitClicked] = useState<boolean>(false);
   const [user, setUser] = useState<SignUpUser>();
@@ -131,10 +133,11 @@ const SignUp = () => {
                 <RadioGroup
                   row
                   name="gander"
+                  onChange={e => setGander(e.target.value as Gander)}
                 >
                   <FormControlLabel value="Female" control={<Radio/>} label="Female" />
                   <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                  <FormControlLabel value="Other" control={<Radio value={true}/>} label="Other" />
+                  <FormControlLabel value="Other" control={<Radio checked={isUndefined(gander) || gander === 'Other'}/>} label="Other" />
                 </RadioGroup>
                 </Box>
               </Grid>
