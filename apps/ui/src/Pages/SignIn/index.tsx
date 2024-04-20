@@ -7,18 +7,21 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import { AlternateEmail, LockRounded , Visibility, VisibilityOff } from '@mui/icons-material';
+import { AlternateEmail} from '@mui/icons-material';
 import { useState } from 'react';
 import SigningHeader from '../../Components/Signing/SigningHeader';
+import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
+import { validatePassword } from '../../utils/signing/validation';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;
 }
 
 const SignIn = ({ setMenuVisible }: SignInProps) => {
-  const [showPassword, setShowPassword] = useState<boolean>(false); 
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+
+  const isPasswordError = (value: string) => {setPasswordError(validatePassword(value))}
+
 
   const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -67,39 +70,12 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
                 autoFocus
               />
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-              <LockRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-              <TextField
-                    margin="normal"
-                    variant="standard"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    id="password"
-                    autoComplete="current-password"
-                    type={showPassword ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setShowPassword(prev => !prev)}
-                          onMouseDown={(e) => e.preventDefault()}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-
-                      )
-                    }}
-                  />
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'end'}}>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Box>
+            <PasswordField passwordError={passwordError} isPasswordError={isPasswordError}></PasswordField>
+            <Box sx={{ display: 'flex', justifyContent: 'end'}}>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Box>
             <Button
               type="submit"
               fullWidth

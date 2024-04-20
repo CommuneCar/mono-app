@@ -11,15 +11,15 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
 import SigningHeader from '../../Components/Signing/SigningHeader';
-import { AlternateEmail, LockRounded, PersonRounded, PhoneAndroidRounded, Visibility, VisibilityOff } from '@mui/icons-material';
-import { RadioGroup, FormControlLabel, Radio, FormLabel, IconButton, InputAdornment } from '@mui/material';
+import { AlternateEmail, PersonRounded, PhoneAndroidRounded, } from '@mui/icons-material';
+import { RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material';
 import { Gander, SignUpUser } from '../../types/sign-up-user';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { validateEmail, validateFullName, validatePassword, validatePhoneNumber } from '../../utils/signing/validation';
+import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState<boolean>(false); 
 
   const [fullNameError, setFullNameError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<boolean>(false);
@@ -42,6 +42,8 @@ const SignUp = () => {
     }
     setUser(newUser);
     validateUser(newUser);
+    console.log({newUser});
+    
   };
 
   const validateUser = useCallback((user: SignUpUser) => { 
@@ -109,80 +111,52 @@ const SignUp = () => {
               </Box>
               </Grid>
               <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                <AlternateEmail sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  variant="standard"
-                  onChange={e => isEmailError(e.target.value as string)}
-                  error={emailError}
-                />
-              </Box>
-              </Grid>
-              <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                <PhoneAndroidRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  required
-                  fullWidth
-                  id="phoneNumber"
-                  label="Phone Number"
-                  name="phone"
-                  autoComplete="phone-number"
-                  variant="standard"
-                  onChange={e => isPhoneNumberError(e.target.value as string)}
-                  error={phoneNumberError}
-                />
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <AlternateEmail sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    variant="standard"
+                    onChange={e => isEmailError(e.target.value as string)}
+                    error={emailError}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                <LockRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  id="password"
-                  autoComplete="new-password"
-                  variant="standard"
-                  type={showPassword ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setShowPassword(prev => !prev)}
-                          onMouseDown={(e) => e.preventDefault()}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-
-                      )
-                    }}
-                  onChange={e => isPasswordError(e.target.value as string)}
-                  error={passwordError}
-                />
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <PhoneAndroidRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <TextField
+                    required
+                    fullWidth
+                    id="phoneNumber"
+                    label="Phone Number"
+                    name="phone"
+                    autoComplete="phone-number"
+                    variant="standard"
+                    onChange={e => isPhoneNumberError(e.target.value as string)}
+                    error={phoneNumberError}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', mt: '1rem' }}>
-              <FormLabel id="demo-controlled-radio-buttons-group" required>Gender</FormLabel>
-              <RadioGroup
-                row
-                name="gander"
-              >
-                <FormControlLabel value="Female" control={<Radio/>} label="Female" />
-                <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                <FormControlLabel value="Other" control={<Radio value={true}/>} label="Other" />
-              </RadioGroup>
-              </Box>
+                <PasswordField passwordError={passwordError} isPasswordError={isPasswordError}></PasswordField>
+              </Grid>
+              <Grid item xs={12}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', mt: '1rem' }}>
+                <FormLabel id="demo-controlled-radio-buttons-group" required>Gender</FormLabel>
+                <RadioGroup
+                  row
+                  name="gander"
+                >
+                  <FormControlLabel value="Female" control={<Radio/>} label="Female" />
+                  <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="Other" control={<Radio value={true}/>} label="Other" />
+                </RadioGroup>
+                </Box>
               </Grid>
             </Grid>
             <Button
