@@ -55,7 +55,15 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             src={logoWithTitle}
             alt="Login Image"
           />
-          <Typography component="h1" variant="h5" align="center">
+          <Typography 
+            component="h1" variant="h5" 
+            sx={{
+              color: "#263A6D",
+              fontSize: '3rem',
+              fontWeight: '700',
+              fontStyle: 'Heebo'
+            }}
+            >
             Login
           </Typography>
           <Box
@@ -107,6 +115,11 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
                     }}
                   />
               </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'end'}}>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Box>
             <Button
               type="submit"
               fullWidth
@@ -119,18 +132,11 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             >
               Login
             </Button>
-            <Grid container justifyContent="space-between">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
+            <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                 <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Don't have an account? Register Now"}
                 </Link>
-              </Grid>
-            </Grid>
+            </Box>
           </Box>
         </Box>
       </Container>
