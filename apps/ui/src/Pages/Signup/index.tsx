@@ -112,7 +112,6 @@ const SignUp = () => {
               <RadioGroup
                 row
                 name="row-radio-buttons-group"
-                defaultChecked
               >
                 <FormControlLabel value="female" control={<Radio/>} label="Female" />
                 <FormControlLabel value="male" control={<Radio />} label="Male" />
