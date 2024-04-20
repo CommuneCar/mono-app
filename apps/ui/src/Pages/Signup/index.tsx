@@ -13,6 +13,7 @@ import defaultTheme from '../../themes/default';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { AlternateEmail, LockRounded, PersonRounded, PhoneAndroidRounded } from '@mui/icons-material';
 import { RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material';
+import { Gander, SignUpUser } from '../../types/sign-up-user';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -20,11 +21,15 @@ const SignUp = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    navigate('/');
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const newUser: SignUpUser = {
+      fullName: data.get('fullName') as string,
+      email: data.get('email') as string,
+      password: data.get('password') as string,
+      phoneNumber: data.get('phone') as string,
+      gander: data.get('gander') as Gander
+    }
+    navigate('/rides');
+    console.log({newUser});
   };
 
   return (
@@ -108,14 +113,14 @@ const SignUp = () => {
               </Grid>
               <Grid item xs={12}>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', mt: '1rem' }}>
-              <FormLabel id="demo-controlled-radio-buttons-group">Gender</FormLabel>
+              <FormLabel id="demo-controlled-radio-buttons-group" required>Gender</FormLabel>
               <RadioGroup
                 row
-                name="row-radio-buttons-group"
+                name="gander"
               >
-                <FormControlLabel value="female" control={<Radio/>} label="Female" />
-                <FormControlLabel value="male" control={<Radio />} label="Male" />
-                <FormControlLabel value="other" control={<Radio value={true}/>} label="Other" />
+                <FormControlLabel value="Female" control={<Radio/>} label="Female" />
+                <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                <FormControlLabel value="Other" control={<Radio value={true}/>} label="Other" />
               </RadioGroup>
               </Box>
               </Grid>

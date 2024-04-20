@@ -3,13 +3,10 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
-import logoWithTitle from '../../assets/logo-with-title.png';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { AlternateEmail, LockRounded , Visibility, VisibilityOff } from '@mui/icons-material';
