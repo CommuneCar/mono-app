@@ -61,6 +61,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
           >
             <TextField
               margin="normal"
+              variant="standard"
               required
               fullWidth
               id="email"
@@ -71,6 +72,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             />
             <TextField
               margin="normal"
+              variant="standard"
               required
               fullWidth
               name="password"
@@ -78,6 +80,18 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               type="password"
               id="password"
               autoComplete="current-password"
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
             />
             <Button
               type="submit"
