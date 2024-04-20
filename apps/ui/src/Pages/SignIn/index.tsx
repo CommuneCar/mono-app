@@ -14,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { AlternateEmail, LockRounded , Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from 'react';
+import SigningHeader from '../../Components/Signing/SigningHeader';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;
@@ -45,26 +46,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             padding: '0 20px', // Add padding on the sides for mobile devices
           }}
         >
-          <Box
-            component="img"
-            sx={{
-              width: '100%', // Make image width 100% for responsiveness
-              marginTop: -10,
-            }}
-            src={logoWithTitle}
-            alt="Login Image"
-          />
-          <Typography 
-            component="h1" variant="h5" 
-            sx={{
-              color: "#263A6D",
-              fontSize: '3rem',
-              fontWeight: '700',
-              fontStyle: 'Heebo'
-            }}
-            >
-            Login
-          </Typography>
+          <SigningHeader titleText='Login'></SigningHeader>
           <Box
             component="form"
             onSubmit={handleSubmit}
