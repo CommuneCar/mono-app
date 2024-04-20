@@ -1,19 +1,22 @@
-import CssBaseline from '@mui/material/CssBaseline';
-import './App.css';
-import SignIn from './Pages/SignIn';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignUp from './Pages/Signup';
-import SideMenu from './Components/Menu';
-import RidesFeed from './Pages/RidesFeed';
-import MapPage from './Pages/Map';
-import CommunitiesFeed from './Communities';
 import { useState } from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import './App.css';
 import tlv from './assets/tlv.png';
 import apple from './assets/apple.png';
 import camera from './assets/camera.png';
+
+import MapPage from './Pages/Map';
+import SignIn from './Pages/SignIn';
+import SignUp from './Pages/Signup';
+import SideMenu from './Components/Menu';
+import RidesFeed from './Pages/RidesFeed';
+import { getRandomOption } from './utils';
+import CommunitiesFeed from './Communities';
 import SearchBar from './Components/Map/SearchBar';
 import MapNavigationPage from './Pages/MapNavigation';
-import { getRandomOption } from './utils';
+import { HomePage } from './Pages/home-page/home-page';
 
 const options = [tlv, apple, camera];
 
@@ -95,6 +98,7 @@ function App() {
             path="/communities"
             element={<CommunitiesFeed communities={communities} />}
           />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/map/navigation" element={<MapNavigationPage />} />
           <Route path="/search" element={<SearchBar />} />
