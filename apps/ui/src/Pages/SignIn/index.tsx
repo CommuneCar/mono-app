@@ -1,17 +1,16 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
-import { AlternateEmail} from '@mui/icons-material';
-import { useState } from 'react';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import { validatePassword } from '../../utils/signing/validation';
+import { validateEmail, validatePassword } from '../../utils/signing/validation';
+import { EmailField } from '../../Components/Signing/Fields/EmailField';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;
@@ -19,8 +18,10 @@ interface SignInProps {
 
 const SignIn = ({ setMenuVisible }: SignInProps) => {
   const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<boolean>(false);
 
   const isPasswordError = (value: string) => {setPasswordError(validatePassword(value))}
+  const isEmailError = (value: string) => {setEmailError(validateEmail(value))}
 
 
   const navigate = useNavigate();
@@ -56,26 +57,15 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             sx={{ mt: 1 }}
             width="100%" // Ensure the form takes full width
           >
-            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-              <AlternateEmail sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-              <TextField
-                margin="normal"
-                variant="standard"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-            </Box>
+            <EmailField emailError={emailError} isEmailError={isEmailError}></EmailField>
             <PasswordField passwordError={passwordError} isPasswordError={isPasswordError}></PasswordField>
+
             <Box sx={{ display: 'flex', justifyContent: 'end'}}>
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
             </Box>
+
             <Button
               type="submit"
               fullWidth
@@ -88,11 +78,13 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             >
               Login
             </Button>
+
             <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Register Now"}
                 </Link>
             </Box>
+
           </Box>
         </Box>
       </Container>

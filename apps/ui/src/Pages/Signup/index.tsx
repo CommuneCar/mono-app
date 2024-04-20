@@ -1,22 +1,15 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-
 import { useNavigate } from 'react-router-dom';
-
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
 import SigningHeader from '../../Components/Signing/SigningHeader';
-import { AlternateEmail, PersonRounded, PhoneAndroidRounded, } from '@mui/icons-material';
-import { RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material';
+import { PersonRounded, PhoneAndroidRounded, } from '@mui/icons-material';
+import { RadioGroup, FormControlLabel, Radio, FormLabel, Button, TextField, Link, Grid, Box, Container } from '@mui/material';
 import { Gander, SignUpUser } from '../../types/sign-up-user';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { validateEmail, validateFullName, validatePassword, validatePhoneNumber } from '../../utils/signing/validation';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
+import { EmailField } from '../../Components/Signing/Fields/EmailField';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -111,20 +104,7 @@ const SignUp = () => {
               </Box>
               </Grid>
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                  <AlternateEmail sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    variant="standard"
-                    onChange={e => isEmailError(e.target.value as string)}
-                    error={emailError}
-                  />
-                </Box>
+                <EmailField emailError={emailError} isEmailError={isEmailError}></EmailField>
               </Grid>
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>

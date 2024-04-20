@@ -13,7 +13,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({passwordError, isPasswordE
 
     return (
         <div>
-             <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+             <Box sx={{ display: 'flex', alignItems: 'flex-end', my: 0.5}}>
                 <LockRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                 <TextField
                   required
