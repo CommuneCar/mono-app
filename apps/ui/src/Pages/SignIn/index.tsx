@@ -24,10 +24,12 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userSignIn = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    }
+
+    console.log({userSignIn});
   };
 
   return (
