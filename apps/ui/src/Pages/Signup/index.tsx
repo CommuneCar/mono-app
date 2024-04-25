@@ -38,7 +38,7 @@ const SignUp = () => {
   const [gander, setGander] = useState<Gander>();
 
   const [isSubmitClicked, setSubmitClicked] = useState<boolean>(false);
-  const [user, setUser] = useState<SignUpUser>();
+  // const [user, setUser] = useState<SignUpUser>();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,7 +51,7 @@ const SignUp = () => {
       phoneNumber: data.get('phone') as string,
       gander: (data.get('gander') as Gander) ?? 'Other',
     };
-    setUser(newUser);
+    // setUser(newUser);
     validateUser(newUser);
     console.log({ newUser });
   };
