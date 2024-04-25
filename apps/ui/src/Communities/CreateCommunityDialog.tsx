@@ -1,5 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import React from "react";
+import defaultTheme from "../themes/default";
 
 interface CreateCommunityDialogProps {
     setIsOpen: (isOpen: boolean) => void;
@@ -76,7 +77,15 @@ const CreateCommunityDialog:React.FC<CreateCommunityDialogProps> = ({isOpen, set
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Create</Button>
+              <Button 
+                type="submit" 
+                sx={{backgroundColor: defaultTheme.palette.primary.main, 
+                    color: defaultTheme.palette.primary.contrastText, 
+                    '&:hover': {
+                        backgroundColor: defaultTheme.palette.action.hoverOpacity,
+                        color: defaultTheme.palette.primary.main,
+                      }}}
+            >Create</Button>
             </DialogActions>
           </Dialog>
         </React.Fragment>
