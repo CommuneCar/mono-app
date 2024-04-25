@@ -1,12 +1,13 @@
 import Box from '@mui/material/Box';
-import CommunityCard, { CommunityCardProps } from './CommunityCard';
+import CommunityCard from './CommunityCard/CommunityCard';
 import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
+import { ClientCommunity } from './CommunityType';
 
 export interface CommunitiesFeedProps {
-  communities: CommunityCardProps[];
+  communities: ClientCommunity[];
 }
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
@@ -31,11 +32,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         </Tooltip>
       </Box>
       {communities.map((community) => (
-        <CommunityCard
-          name={community.name}
-          description={community.description}
-          png={community.png}
-        />
+        <CommunityCard community={community}/>
       ))}
     </Box>
   );

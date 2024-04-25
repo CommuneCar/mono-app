@@ -72,7 +72,7 @@ const defaultTheme = createTheme({
       fontWeight: 400,
     },
     subtitle1: {
-      fontWeight: 500,
+      fontWeight: 700,
     },
     body1: {
       fontWeight: 500,

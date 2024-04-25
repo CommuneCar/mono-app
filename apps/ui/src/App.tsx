@@ -14,7 +14,7 @@ import camera from './assets/camera.png';
 import SearchBar from './Components/Map/SearchBar';
 import MapNavigationPage from './Pages/MapNavigation';
 import { getRandomOption } from './utils';
-import {Community} from '@communecar/types'
+import { ClientCommunity } from './Communities/CommunityType';
 
 const options = [tlv, apple, camera];
 
@@ -55,13 +55,17 @@ const rides = [
   },
 ];
 
-const communities: Community[] = [
+const picturesUrl = [getRandomOption(options),getRandomOption(options),getRandomOption(options),getRandomOption(options)]
+
+const communities: ClientCommunity[] = [
   {
     name: 'Travel friends Haifa - Tel Aviv',
     description:
       'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
     startLocation: 'Rotchild street, Tel Aviv',
     png: getRandomOption(options),
+    numberOfMembers: 20,
+    picturesUrl
   },
   {
     description:
@@ -69,12 +73,16 @@ const communities: Community[] = [
     name: 'Apple Friends - IL',
     startLocation: 'Rotchild street, Tel Aviv',
     png: getRandomOption(options),
+    numberOfMembers: 50,
+    picturesUrl
   },
   {
     name: 'Camera Buddies  - photo fun!',
     description: 'A group of hobby photographers traveling together',
     startLocation: 'Rotchild street, Tel Aviv',
     png: getRandomOption(options),
+    numberOfMembers: 5,
+    picturesUrl
   },
 ];
 
