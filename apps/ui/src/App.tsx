@@ -63,7 +63,6 @@ const communities: ClientCommunity[] = [
     description:
       'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
     startLocation: 'Rotchild street, Tel Aviv',
-    png: getRandomOption(options),
     numberOfMembers: 20,
     picturesUrl
   },
@@ -72,7 +71,6 @@ const communities: ClientCommunity[] = [
       'The biggest israeli community of Apple fans traveling to new stores and events together.',
     name: 'Apple Friends - IL',
     startLocation: 'Rotchild street, Tel Aviv',
-    png: getRandomOption(options),
     numberOfMembers: 50,
     picturesUrl
   },
@@ -80,7 +78,6 @@ const communities: ClientCommunity[] = [
     name: 'Camera Buddies  - photo fun!',
     description: 'A group of hobby photographers traveling together',
     startLocation: 'Rotchild street, Tel Aviv',
-    png: getRandomOption(options),
     numberOfMembers: 5,
     picturesUrl
   },
