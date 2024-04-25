@@ -14,6 +14,7 @@ import camera from './assets/camera.png';
 import SearchBar from './Components/Map/SearchBar';
 import MapNavigationPage from './Pages/MapNavigation';
 import { getRandomOption } from './utils';
+import {Community} from '@communecar/types'
 
 const options = [tlv, apple, camera];
 
@@ -54,7 +55,7 @@ const rides = [
   },
 ];
 
-const communities = [
+const communities: Community[] = [
   {
     name: 'Travel friends Haifa - Tel Aviv',
     description:
