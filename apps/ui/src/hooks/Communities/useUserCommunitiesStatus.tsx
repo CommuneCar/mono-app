@@ -16,3 +16,5 @@ const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
 
     return communitiesStatus;
 }
+
+export { useUserCommunitiesStatus }

@@ -5,19 +5,17 @@ import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
 import { ClientCommunity } from './CommunityType';
-import { getRandomOption } from '../utils';
-import { UserStatus } from '@communecar/types';
+import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
 export interface CommunitiesFeedProps {
   communities: ClientCommunity[];
 }
 
-const userStatusOptions: UserStatus[]  = ['Approved', 'Pending', 'Rejected']
-
-
-
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
+
+  const userCommunitiesStatus = useUserCommunitiesStatus("hi")
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -39,7 +37,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         </Tooltip>
       </Box>
       {communities.map((community) => (
-        <CommunityCard community={community} userStatus={getRandomOption(userStatusOptions) as UserStatus}/>
+        <CommunityCard community={community} userStatus={userCommunitiesStatus[community.name]}/>
       ))}
     </Box>
   );

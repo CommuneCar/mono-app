@@ -1,8 +1,8 @@
 import { ClientCommunity } from "../../Communities/CommunityType";
 import { getRandomOption } from "../../utils";
-import tlv from './assets/tlv.png';
-import apple from './assets/apple.png';
-import camera from './assets/camera.png';
+import tlv from '../../assets/tlv.png';
+import apple from '../../assets/apple.png';
+import camera from '../../assets/camera.png';
 
 const options = [tlv, apple, camera];
 
