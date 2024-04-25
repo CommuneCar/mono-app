@@ -14,6 +14,7 @@ import {
   validatePassword,
 } from '../../utils/signing/validation';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
+import { TEXT } from '../../themes/default/consts';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;
@@ -38,8 +39,6 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
       email: data.get('email'),
       password: data.get('password'),
     };
-
-    console.log({ userSignIn });
   };
 
   return (
@@ -74,7 +73,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
 
             <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Link href="#" variant="body2">
-                Forgot password?
+                {TEXT.FORGOT_PASSWORD}
               </Link>
             </Box>
 
@@ -93,7 +92,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Link href="/signup" variant="body2">
-                {"Don't have an account? Register Now"}
+                {TEXT.REGISTER}
               </Link>
             </Box>
           </Box>

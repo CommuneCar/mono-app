@@ -14,7 +14,6 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
-    <div>
       <Box sx={{ display: 'flex', alignItems: 'flex-end', my: 0.5 }}>
         <LockRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
         <TextField
@@ -43,7 +42,6 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
           error={passwordError}
         />
       </Box>
-    </div>
   );
 };
 

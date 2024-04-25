@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import logoWithTitle from '../../assets/logo-with-title.png';
+import defaultTheme from '../../themes/default';
 
 interface SigningHeaderProps {
   titleText: string;
@@ -8,7 +9,7 @@ interface SigningHeaderProps {
 
 const SigningHeader: React.FC<SigningHeaderProps> = ({ titleText }) => {
   return (
-    <div>
+    <Box>
       <Box
         component="img"
         sx={{
@@ -19,18 +20,12 @@ const SigningHeader: React.FC<SigningHeaderProps> = ({ titleText }) => {
         alt="Login Image"
       />
       <Typography
-        component="h1"
-        variant="h5"
-        sx={{
-          color: '#263A6D',
-          fontSize: '3rem',
-          fontWeight: '700',
-          fontStyle: 'Heebo',
-        }}
+        component="h2"
+        variant="h2"
       >
         {titleText}
       </Typography>
-    </div>
+    </Box>
   );
 };
 

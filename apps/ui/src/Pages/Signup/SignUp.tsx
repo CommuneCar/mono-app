@@ -27,6 +27,7 @@ import {
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { isUndefined } from 'lodash';
+import { TEXT } from '../../themes/default/consts';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -39,7 +40,6 @@ const SignUp = () => {
   const [gander, setGander] = useState<Gander>();
 
   const [isSubmitClicked, setSubmitClicked] = useState<boolean>(false);
-  // const [user, setUser] = useState<SignUpUser>();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -53,9 +53,7 @@ const SignUp = () => {
       phoneNumber: data.get('phone') as string,
       gander: (data.get('gander') as Gander) ?? 'Other',
     };
-    // setUser(newUser);
     validateUser(newUser);
-    console.log({ newUser });
   };
 
   const validateUser = useCallback((user: SignUpUser) => {
@@ -104,9 +102,9 @@ const SignUp = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            minHeight: '100vh', // Ensure the container takes the full height of the viewport
-            justifyContent: 'center', // Center the content vertically
-            padding: '0 20px', // Add padding on the sides for mobile devices
+            minHeight: '100vh', 
+            justifyContent: 'center',
+            padding: '0 20px', 
           }}
         >
           <SigningHeader titleText="Sign Up"></SigningHeader>
@@ -238,7 +236,7 @@ const SignUp = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/" variant="body2">
-                  Already have an account? Sign in
+                  {TEXT.SIGNIN}
                 </Link>
               </Grid>
             </Grid>
