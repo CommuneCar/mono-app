@@ -9,7 +9,10 @@ import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import { validateEmail, validatePassword } from '../../utils/signing/validation';
+import {
+  validateEmail,
+  validatePassword,
+} from '../../utils/signing/validation';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 
 interface SignInProps {
@@ -20,9 +23,12 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<boolean>(false);
 
-  const isPasswordError = (value: string) => {setPasswordError(validatePassword(value))}
-  const isEmailError = (value: string) => {setEmailError(validateEmail(value))}
-
+  const isPasswordError = (value: string) => {
+    setPasswordError(validatePassword(value));
+  };
+  const isEmailError = (value: string) => {
+    setEmailError(validateEmail(value));
+  };
 
   const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,9 +37,9 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
     const userSignIn = {
       email: data.get('email'),
       password: data.get('password'),
-    }
+    };
 
-    console.log({userSignIn});
+    console.log({ userSignIn });
   };
 
   return (
@@ -49,7 +55,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             padding: '0 20px', // Add padding on the sides for mobile devices
           }}
         >
-          <SigningHeader titleText='Login'></SigningHeader>
+          <SigningHeader titleText="Login"></SigningHeader>
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -57,10 +63,16 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             sx={{ mt: 1 }}
             width="100%" // Ensure the form takes full width
           >
-            <EmailField emailError={emailError} isEmailError={isEmailError}></EmailField>
-            <PasswordField passwordError={passwordError} isPasswordError={isPasswordError}></PasswordField>
+            <EmailField
+              emailError={emailError}
+              isEmailError={isEmailError}
+            ></EmailField>
+            <PasswordField
+              passwordError={passwordError}
+              isPasswordError={isPasswordError}
+            ></PasswordField>
 
-            <Box sx={{ display: 'flex', justifyContent: 'end'}}>
+            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
@@ -70,7 +82,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, width: '100%'}}
+              sx={{ mt: 3, mb: 2, width: '100%' }}
               onClick={() => {
                 setMenuVisible(true);
                 navigate('/rides');
@@ -79,12 +91,11 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               Login
             </Button>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center'}}>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Register Now"}
-                </Link>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Link href="/signup" variant="body2">
+                {"Don't have an account? Register Now"}
+              </Link>
             </Box>
-
           </Box>
         </Box>
       </Container>

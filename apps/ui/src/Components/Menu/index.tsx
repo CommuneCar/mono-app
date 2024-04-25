@@ -39,10 +39,7 @@ const SideMenu = () => {
       <SearchIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '/search',
     ],
-    Map: [
-      <MapIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-      '/map',
-    ],
+    Map: [<MapIcon sx={{ color: defaultTheme.palette.info.dark }} />, '/map'],
     MapNavigation: [
       <NavigationIcon sx={{ color: defaultTheme.palette.info.dark }} />,
       '/map/navigation',

@@ -3,11 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
 import SigningHeader from '../../Components/Signing/SigningHeader';
-import { PersonRounded, PhoneAndroidRounded, } from '@mui/icons-material';
-import { RadioGroup, FormControlLabel, Radio, FormLabel, Button, TextField, Link, Grid, Box, Container } from '@mui/material';
+import { PersonRounded, PhoneAndroidRounded } from '@mui/icons-material';
+import {
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormLabel,
+  Button,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Container,
+} from '@mui/material';
 import { Gander, SignUpUser } from '../../types/sign-up-user';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { validateEmail, validateFullName, validatePassword, validatePhoneNumber } from '../../utils/signing/validation';
+import {
+  validateEmail,
+  validateFullName,
+  validatePassword,
+  validatePhoneNumber,
+} from '../../utils/signing/validation';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { isUndefined } from 'lodash';
@@ -33,39 +49,46 @@ const SignUp = () => {
       email: data.get('email') as string,
       password: data.get('password') as string,
       phoneNumber: data.get('phone') as string,
-      gander: data.get('gander') as Gander ?? 'Other'
-    }
+      gander: (data.get('gander') as Gander) ?? 'Other',
+    };
     setUser(newUser);
     validateUser(newUser);
-    console.log({newUser});
-    
+    console.log({ newUser });
   };
 
-  const validateUser = useCallback((user: SignUpUser) => { 
+  const validateUser = useCallback((user: SignUpUser) => {
     isFullNameError(user.fullName);
     isEmailError(user.email);
     isPhoneNumberError(user.phoneNumber);
     isPasswordError(user.password);
   }, []);
 
-  const isFullNameError = (value: string) => {setFullNameError(validateFullName(value));}
-  const isEmailError = (value: string) => {setEmailError(validateEmail(value))}
-  const isPhoneNumberError = (value: string) => {setPhoneNumberError(validatePhoneNumber(value));}
-  const isPasswordError = (value: string) => {setPasswordError(validatePassword(value))}
+  const isFullNameError = (value: string) => {
+    setFullNameError(validateFullName(value));
+  };
+  const isEmailError = (value: string) => {
+    setEmailError(validateEmail(value));
+  };
+  const isPhoneNumberError = (value: string) => {
+    setPhoneNumberError(validatePhoneNumber(value));
+  };
+  const isPasswordError = (value: string) => {
+    setPasswordError(validatePassword(value));
+  };
 
-  const isValidUser = useMemo(() => !fullNameError && !passwordError && !phoneNumberError && !emailError, [fullNameError , passwordError , phoneNumberError , emailError])
+  const isValidUser = useMemo(
+    () => !fullNameError && !passwordError && !phoneNumberError && !emailError,
+    [fullNameError, passwordError, phoneNumberError, emailError],
+  );
 
   useEffect(() => {
     if (isValidUser && isSubmitClicked) {
       navigate('/rides');
-      console.log({user});
-      
     } else {
       setSubmitClicked(false);
-      console.log("Validation failed or user data incomplete.");
-    }    
-  }, [isValidUser, isSubmitClicked]);
-
+      console.log('Validation failed or user data incomplete.');
+    }
+  }, [isValidUser, isSubmitClicked, navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -80,7 +103,7 @@ const SignUp = () => {
             padding: '0 20px', // Add padding on the sides for mobile devices
           }}
         >
-          <SigningHeader titleText='Sign Up'></SigningHeader>
+          <SigningHeader titleText="Sign Up"></SigningHeader>
           <Box
             component="form"
             noValidate
@@ -89,28 +112,35 @@ const SignUp = () => {
           >
             <Grid container spacing={1}>
               <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                <PersonRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                <TextField
-                  autoComplete="given-name"
-                  name="fullName"
-                  required
-                  fullWidth
-                  id="fullName"
-                  label="Full Name"
-                  variant="standard"
-                  onChange={e => isFullNameError(e.target.value as string)}
-                  error={fullNameError}
-                  autoFocus
-                />
-              </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <PersonRounded
+                    sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    autoComplete="given-name"
+                    name="fullName"
+                    required
+                    fullWidth
+                    id="fullName"
+                    label="Full Name"
+                    variant="standard"
+                    onChange={(e) => isFullNameError(e.target.value as string)}
+                    error={fullNameError}
+                    autoFocus
+                  />
+                </Box>
               </Grid>
               <Grid item xs={12}>
-                <EmailField emailError={emailError} isEmailError={isEmailError}></EmailField>
+                <EmailField
+                  emailError={emailError}
+                  isEmailError={isEmailError}
+                ></EmailField>
               </Grid>
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                  <PhoneAndroidRounded sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                  <PhoneAndroidRounded
+                    sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                  />
                   <TextField
                     required
                     fullWidth
@@ -119,26 +149,56 @@ const SignUp = () => {
                     name="phone"
                     autoComplete="phone-number"
                     variant="standard"
-                    onChange={e => isPhoneNumberError(e.target.value as string)}
+                    onChange={(e) =>
+                      isPhoneNumberError(e.target.value as string)
+                    }
                     error={phoneNumberError}
                   />
                 </Box>
               </Grid>
               <Grid item xs={12}>
-                <PasswordField passwordError={passwordError} isPasswordError={isPasswordError}></PasswordField>
+                <PasswordField
+                  passwordError={passwordError}
+                  isPasswordError={isPasswordError}
+                ></PasswordField>
               </Grid>
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'baseline', mt: '1rem' }}>
-                <FormLabel id="demo-controlled-radio-buttons-group" required>Gender</FormLabel>
-                <RadioGroup
-                  row
-                  name="gander"
-                  onChange={e => setGander(e.target.value as Gander)}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'baseline',
+                    mt: '1rem',
+                  }}
                 >
-                  <FormControlLabel value="Female" control={<Radio/>} label="Female" />
-                  <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                  <FormControlLabel value="Other" control={<Radio checked={isUndefined(gander) || gander === 'Other'}/>} label="Other" />
-                </RadioGroup>
+                  <FormLabel id="demo-controlled-radio-buttons-group" required>
+                    Gender
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    name="gander"
+                    onChange={(e) => setGander(e.target.value as Gander)}
+                  >
+                    <FormControlLabel
+                      value="Female"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="Male"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                    <FormControlLabel
+                      value="Other"
+                      control={
+                        <Radio
+                          checked={isUndefined(gander) || gander === 'Other'}
+                        />
+                      }
+                      label="Other"
+                    />
+                  </RadioGroup>
                 </Box>
               </Grid>
             </Grid>
@@ -146,7 +206,7 @@ const SignUp = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, width: '100%'}}
+              sx={{ mt: 3, mb: 2, width: '100%' }}
             >
               Continue
             </Button>

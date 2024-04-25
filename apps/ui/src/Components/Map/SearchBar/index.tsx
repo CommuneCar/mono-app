@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography, Box, CircularProgress, Card, CardActionArea, CardContent } from '@mui/material';
+import {
+  Button,
+  TextField,
+  Typography,
+  Box,
+  CircularProgress,
+  Card,
+  CardActionArea,
+  CardContent,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { styled } from '@mui/material/styles';
@@ -26,7 +35,9 @@ const LocationSearch: React.FC = () => {
   const searchLocations = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(inputValue)}&format=json&limit=5`);
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(inputValue)}&format=json&limit=5`,
+      );
       const data: Location[] = await response.json();
       setLocations(data);
     } catch (error) {
@@ -38,7 +49,12 @@ const LocationSearch: React.FC = () => {
   };
 
   const handleLocationSelect = (location: Location) => {
-    console.log('Selected location:', location.display_name, location.lat, location.lon);
+    console.log(
+      'Selected location:',
+      location.display_name,
+      location.lat,
+      location.lon,
+    );
     setInputValue(location.display_name);
     setLocations([]);
   };
@@ -58,18 +74,22 @@ const LocationSearch: React.FC = () => {
                 onClick={searchLocations}
                 disabled={loading}
                 startIcon={loading ? <CircularProgress /> : <SearchIcon />}
-              >
-              </Button>
+              ></Button>
             ),
           }}
         />
       </Box>
-      <Box sx={{ maxHeight: 300, overflow: 'auto', width: '100%', maxWidth: 500 }}>
+      <Box
+        sx={{ maxHeight: 300, overflow: 'auto', width: '100%', maxWidth: 500 }}
+      >
         {locations.map((location, index) => (
           <Card key={index} sx={{ mb: 1 }}>
             <CardActionArea onClick={() => handleLocationSelect(location)}>
               <CardContent>
-                <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                >
                   <LocationOnIcon /> {location.display_name}
                 </Typography>
                 <Typography variant="body2">
