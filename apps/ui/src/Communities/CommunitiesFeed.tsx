@@ -15,6 +15,8 @@ export interface CommunitiesFeedProps {
 const userStatusOptions: UserStatus[]  = ['Approved', 'Pending', 'Rejected']
 
 
+
+
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   return (
     <Box
