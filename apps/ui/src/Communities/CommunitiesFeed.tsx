@@ -6,6 +6,8 @@ import AddIcon from '@mui/icons-material/Add';
 import defaultTheme from '../themes/default';
 import { ClientCommunity } from './CommunityType';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { CreateCommunityDialog } from './CreateCommunityDialog';
+import { useState } from 'react';
 
 export interface CommunitiesFeedProps {
   communities: ClientCommunity[];
@@ -13,14 +15,16 @@ export interface CommunitiesFeedProps {
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const userCommunitiesStatus = useUserCommunitiesStatus('hi');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
-        <Tooltip title="Create a new ride">
+        <Tooltip title="Create a new community">
           <IconButton
+           onClick={() => setIsOpen(true)}
             edge="end"
             color="inherit"
             aria-label="add"
@@ -34,6 +38,9 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           </IconButton>
         </Tooltip>
       </Box>
+      {isOpen && (
+        <CreateCommunityDialog setIsOpen={setIsOpen} isOpen={isOpen} />
+      )}
       {communities.map((community) => (
         <CommunityCard
           community={community}
