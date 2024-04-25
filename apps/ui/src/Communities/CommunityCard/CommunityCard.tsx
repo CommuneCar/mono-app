@@ -15,17 +15,15 @@ import { ClientCommunity } from '../CommunityType';
 import { getRandomOption } from '../../utils';
 
 export interface CommunityCardProps {
-  community: ClientCommunity
+  community: ClientCommunity, 
+  userStatus: UserStatus
 }
 
-const userStatusOptions: UserStatus[]  = ['Approved', 'Pending', 'Rejected']
-
-const CommunityCard: React.FC<CommunityCardProps> = ({ community }) => {
+const CommunityCard: React.FC<CommunityCardProps> = ({ community, userStatus }) => {
   const { name, description, numberOfMembers, picturesUrl} = community;
   const [joined, setJoined] = useState(false);
 
-  const [userStatus, setUserStatus] = useState<UserStatus>(getRandomOption(userStatusOptions) as UserStatus);
-
+  //TODO - handleChangeStatus
 
 
   return (

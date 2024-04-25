@@ -5,10 +5,15 @@ import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
 import { ClientCommunity } from './CommunityType';
+import { getRandomOption } from '../utils';
+import { UserStatus } from '@communecar/types';
 
 export interface CommunitiesFeedProps {
   communities: ClientCommunity[];
 }
+
+const userStatusOptions: UserStatus[]  = ['Approved', 'Pending', 'Rejected']
+
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   return (
@@ -32,7 +37,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         </Tooltip>
       </Box>
       {communities.map((community) => (
-        <CommunityCard community={community}/>
+        <CommunityCard community={community} userStatus={getRandomOption(userStatusOptions) as UserStatus}/>
       ))}
     </Box>
   );
