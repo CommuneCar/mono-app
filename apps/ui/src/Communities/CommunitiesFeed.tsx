@@ -9,7 +9,7 @@ export interface CommunitiesFeedProps {
   communities: CommunityCardProps[];
 }
 
-const RidesFeed = ({ communities }: CommunitiesFeedProps) => {
+const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -41,4 +41,4 @@ const RidesFeed = ({ communities }: CommunitiesFeedProps) => {
   );
 };
 
-export default RidesFeed;
+export default CommunitiesFeed;

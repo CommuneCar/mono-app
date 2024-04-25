@@ -6,7 +6,7 @@ import SignUp from './Pages/Signup';
 import SideMenu from './Components/Menu';
 import RidesFeed from './Pages/RidesFeed';
 import MapPage from './Pages/Map';
-import CommunitiesFeed from './Communities';
+import CommunitiesFeed from './Communities/CommunitiesFeed';
 import { useState } from 'react';
 import tlv from './assets/tlv.png';
 import apple from './assets/apple.png';
