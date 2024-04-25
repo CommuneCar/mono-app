@@ -12,17 +12,20 @@ import { StatusButton } from './StatusButton';
 import { Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { ClientCommunity } from '../CommunityType';
+import { getRandomOption } from '../../utils';
 
 export interface CommunityCardProps {
   community: ClientCommunity
 }
 
-
+const userStatusOptions: UserStatus[]  = ['Approved', 'Pending', 'Rejected']
 
 const CommunityCard: React.FC<CommunityCardProps> = ({ community }) => {
-  const { name, description, png, numberOfMembers, picturesUrl} = community;
+  const { name, description, numberOfMembers, picturesUrl} = community;
   const [joined, setJoined] = useState(false);
-  const [userStatus, setUserStatus] = useState<UserStatus>();
+
+  const [userStatus, setUserStatus] = useState<UserStatus>(getRandomOption(userStatusOptions) as UserStatus);
+
 
 
   return (
@@ -52,7 +55,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({ community }) => {
                   <CommunityMembersDisplay total={numberOfMembers} pictures={picturesUrl}></CommunityMembersDisplay>
                 </Grid>
                 <Grid item xs={6}>
-                  <StatusButton joined={joined} setJoined={setJoined}></StatusButton>
+                  <StatusButton joined={joined} setJoined={setJoined} status={userStatus}></StatusButton>
                 </Grid>
               </Grid>
             </CardActions>

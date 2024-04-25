@@ -1,31 +1,37 @@
-import { Button } from "@mui/material"
-import defaultTheme from "../../themes/default"
+import { IconButton, Tooltip } from "@mui/material"
+import { AddRounded, BlockRounded, CheckRounded, HourglassEmptyRounded } from "@mui/icons-material";
+import { UserStatus } from "@communecar/types";
+import { useCallback } from "react";
 
 export interface CommunityCardProps {
     joined: boolean;
-    setJoined: React.Dispatch<React.SetStateAction<boolean>>
+    setJoined: React.Dispatch<React.SetStateAction<boolean>>;
+    status?: UserStatus;
   }
 
-const StatusButton: React.FC<CommunityCardProps> = ({joined, setJoined}) => {
+const StatusButton: React.FC<CommunityCardProps> = ({joined, setJoined, status}) => {
+    const renderIcon = useCallback(() => {
+      if( status === 'Approved') {
+        return <CheckRounded />;
+      } else if (status === "Pending") {
+        return <HourglassEmptyRounded />;
+      } else if (status === "Rejected") {
+        return <BlockRounded /> 
+      } else {       
+          return <AddRounded />
+      }
+    }, [joined, status]);
+    
+    
     return (
-        <Button
-            type="submit"
-            variant="contained"
-            size="small"
-            onClick={() => setJoined((prev) => !prev)}
-            sx={{
-              backgroundColor: joined
-                ? defaultTheme.palette.success.contrastText
-                : defaultTheme.palette.primary.light,
-              color: joined 
-                ? defaultTheme.palette.info.dark
-                : defaultTheme.palette.info.main
-              
-            }}
-          >
-            {!joined ? 'Ask to Join' : 'Joined'}
-          </Button>
+      <Tooltip title={status ? status : "Ask To Join"}>
+        <IconButton 
+          onClick={() => setJoined(prev => !prev)}
+          disabled={status === "Rejected"}
+        > {renderIcon()}</IconButton>
+      </Tooltip>
     )
+
 }
 
 export { StatusButton }
