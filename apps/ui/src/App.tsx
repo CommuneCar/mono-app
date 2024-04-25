@@ -55,7 +55,7 @@ const rides = [
   },
 ];
 
-const picturesUrl = [getRandomOption(options),getRandomOption(options),getRandomOption(options),getRandomOption(options)]
+const picturesUrl = [getRandomOption(options),getRandomOption(options),getRandomOption(options) ,getRandomOption(options), getRandomOption(options),]
 
 const communities: ClientCommunity[] = [
   {

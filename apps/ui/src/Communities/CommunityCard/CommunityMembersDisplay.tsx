@@ -1,4 +1,5 @@
 import { Avatar, AvatarGroup } from "@mui/material";
+import defaultTheme from "../../themes/default";
 
 export interface CommunityMembersDisplayProps {
     pictures?: string[];
@@ -8,13 +9,12 @@ export interface CommunityMembersDisplayProps {
 
 const CommunityMembersDisplay: React.FC<CommunityMembersDisplayProps> = ({pictures, total}) => {
     return (
-        <AvatarGroup total={total}>
-
-        {pictures?.map((picture) => {
-            return (
-                <Avatar src={picture} />
-            )
-        })}
+        <AvatarGroup max={4}>
+            {pictures?.map((picture) => {
+                return (
+                    <Avatar src={picture} color="primary"/>
+                )
+            })}
         </AvatarGroup>    
     )
 }
