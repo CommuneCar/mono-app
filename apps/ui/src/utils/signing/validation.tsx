@@ -2,7 +2,7 @@ import parsePhoneNumberFromString from 'libphonenumber-js';
 import { isEmpty } from 'lodash';
 import validator from 'validator';
 
-const validateFullName = (value: string) => {
+const validateName = (value: string) => {
   return isEmpty(value);
 };
 
@@ -20,7 +20,7 @@ const validatePassword = (value: string) => {
 };
 
 export {
-  validateFullName,
+  validateName,
   validateEmail,
   validatePhoneNumber,
   validatePassword,

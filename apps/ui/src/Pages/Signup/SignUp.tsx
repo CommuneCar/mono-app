@@ -20,7 +20,7 @@ import { Gander, SignUpUser } from '../../types/sign-up-user';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   validateEmail,
-  validateFullName,
+  validateName,
   validatePassword,
   validatePhoneNumber,
 } from '../../utils/signing/validation';
@@ -31,7 +31,8 @@ import { isUndefined } from 'lodash';
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const [fullNameError, setFullNameError] = useState<boolean>(false);
+  const [firstNameError, setFirstNameError] = useState<boolean>(false);
+  const [lastNameError, setLastNameError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<boolean>(false);
   const [phoneNumberError, setPhoneNumberError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
@@ -45,7 +46,8 @@ const SignUp = () => {
     setSubmitClicked(true);
     const data = new FormData(event.currentTarget);
     const newUser: SignUpUser = {
-      fullName: data.get('fullName') as string,
+      firstName: data.get('firstName') as string,
+      LastName: data.get('LastName') as string,
       email: data.get('email') as string,
       password: data.get('password') as string,
       phoneNumber: data.get('phone') as string,
@@ -57,14 +59,18 @@ const SignUp = () => {
   };
 
   const validateUser = useCallback((user: SignUpUser) => {
-    isFullNameError(user.fullName);
+    isFirstNameError(user.firstName);
+    isLastNameError(user.LastName);
     isEmailError(user.email);
     isPhoneNumberError(user.phoneNumber);
     isPasswordError(user.password);
   }, []);
 
-  const isFullNameError = (value: string) => {
-    setFullNameError(validateFullName(value));
+  const isFirstNameError = (value: string) => {
+    setFirstNameError(validateName(value));
+  };
+  const isLastNameError = (value: string) => {
+    setLastNameError(validateName(value));
   };
   const isEmailError = (value: string) => {
     setEmailError(validateEmail(value));
@@ -77,8 +83,8 @@ const SignUp = () => {
   };
 
   const isValidUser = useMemo(
-    () => !fullNameError && !passwordError && !phoneNumberError && !emailError,
-    [fullNameError, passwordError, phoneNumberError, emailError],
+    () => !firstNameError && !lastNameError && !passwordError && !phoneNumberError && !emailError,
+    [firstNameError,lastNameError, passwordError, phoneNumberError, emailError],
   );
 
   useEffect(() => {
@@ -112,20 +118,39 @@ const SignUp = () => {
           >
             <Grid container spacing={1}>
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                   <PersonRounded
                     sx={{ color: 'action.active', mr: 1, my: 0.5 }}
                   />
                   <TextField
                     autoComplete="given-name"
-                    name="fullName"
+                    name="firstName"
                     required
                     fullWidth
-                    id="fullName"
-                    label="Full Name"
+                    id="firstName"
+                    label="First Name"
                     variant="standard"
-                    onChange={(e) => isFullNameError(e.target.value as string)}
-                    error={fullNameError}
+                    onChange={(e) => isFirstNameError(e.target.value as string)}
+                    error={firstNameError}
+                    autoFocus
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <PersonRounded
+                    sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    autoComplete="given-name"
+                    name="lastName"
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    variant="standard"
+                    onChange={(e) => isLastNameError(e.target.value as string)}
+                    error={lastNameError}
                     autoFocus
                   />
                 </Box>
