@@ -20,17 +20,15 @@ const CreateCommunityDialog:React.FC<CreateCommunityDialogProps> = ({isOpen, set
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries((formData as any).entries());    
-        // const startLocation = formJson.startLocation;
-        // const destination = formJson.destination;
-        // const communityName = formJson.communityName;
-        // rides.push({
-        //   communityName,
-        //   driver,
-        //   departureTime,
-        //   startLocation,
-        //   destination,
-        //   png,
-        // });
+        const communityName = formJson.communityName;
+        const description = formJson.description;
+        const newCommunity = {
+            name: communityName,
+            description
+        }
+        console.log({newCommunity});
+        
+        //TODO - submit newCommunity
         handleClose();
       }
     
