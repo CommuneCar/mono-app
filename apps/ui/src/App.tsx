@@ -55,7 +55,6 @@ const rides = [
   },
 ];
 
-
 function App() {
   const [menuVisible, setMenuVisible] = useState(false);
 

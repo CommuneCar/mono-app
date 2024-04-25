@@ -11,10 +11,8 @@ export interface CommunitiesFeedProps {
   communities: ClientCommunity[];
 }
 
-
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
-
-  const userCommunitiesStatus = useUserCommunitiesStatus("hi")
+  const userCommunitiesStatus = useUserCommunitiesStatus('hi');
 
   return (
     <Box
@@ -37,7 +35,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         </Tooltip>
       </Box>
       {communities.map((community) => (
-        <CommunityCard community={community} userStatus={userCommunitiesStatus[community.name]}/>
+        <CommunityCard
+          community={community}
+          userStatus={userCommunitiesStatus[community.name]}
+        />
       ))}
     </Box>
   );

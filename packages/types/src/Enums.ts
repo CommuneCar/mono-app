@@ -1,1 +1,1 @@
-export type UserStatus = 'Approved' | 'Pending' | 'Rejected'
+export type UserStatus = 'Approved' | 'Pending' | 'Rejected';

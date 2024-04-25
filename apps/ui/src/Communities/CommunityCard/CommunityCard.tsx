@@ -12,19 +12,20 @@ import { StatusButton } from './StatusButton';
 import { Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { ClientCommunity } from '../CommunityType';
-import { getRandomOption } from '../../utils';
 
 export interface CommunityCardProps {
-  community: ClientCommunity, 
-  userStatus: UserStatus
+  community: ClientCommunity;
+  userStatus: UserStatus;
 }
 
-const CommunityCard: React.FC<CommunityCardProps> = ({ community, userStatus }) => {
-  const { name, description, numberOfMembers, picturesUrl} = community;
+const CommunityCard: React.FC<CommunityCardProps> = ({
+  community,
+  userStatus,
+}) => {
+  const { name, description, numberOfMembers, picturesUrl } = community;
   const [joined, setJoined] = useState(false);
 
   //TODO - handleChangeStatus
-
 
   return (
     <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
@@ -34,29 +35,36 @@ const CommunityCard: React.FC<CommunityCardProps> = ({ community, userStatus }) 
             gutterBottom
             variant="subtitle1"
             color={defaultTheme.palette.text.primary}
-            align='left'
+            align="left"
           >
             {name}
           </Typography>
           <Typography
             variant="body2"
             color={defaultTheme.palette.text.secondary}
-            align='left'
+            align="left"
           >
             {description}
           </Typography>
         </CardContent>
-        
-            <CardActions>
-              <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-              <Grid item xs={6}>
-                  <CommunityMembersDisplay total={numberOfMembers} pictures={picturesUrl}></CommunityMembersDisplay>
-                </Grid>
-                <Grid item xs={6}>
-                  <StatusButton joined={joined} setJoined={setJoined} status={userStatus}></StatusButton>
-                </Grid>
-              </Grid>
-            </CardActions>
+
+        <CardActions>
+          <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid item xs={6}>
+              <CommunityMembersDisplay
+                total={numberOfMembers}
+                pictures={picturesUrl}
+              ></CommunityMembersDisplay>
+            </Grid>
+            <Grid item xs={6}>
+              <StatusButton
+                joined={joined}
+                setJoined={setJoined}
+                status={userStatus}
+              ></StatusButton>
+            </Grid>
+          </Grid>
+        </CardActions>
       </Card>
     </Box>
   );

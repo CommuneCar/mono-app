@@ -1,7 +1,5 @@
-
 export interface Community {
-    name: string;
-    description: string;
-    startLocation: string;
+  name: string;
+  description: string;
+  startLocation: string;
 }
-
