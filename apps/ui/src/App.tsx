@@ -1,8 +1,8 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import './App.css';
-import SignIn from './Pages/SignIn';
+import SignIn from './Pages/SignIn/SignIn';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignUp from './Pages/Signup';
+import SignUp from './Pages/Signup/SignUp';
 import SideMenu from './Components/Menu';
 import RidesFeed from './Pages/RidesFeed';
 import MapPage from './Pages/Map';
