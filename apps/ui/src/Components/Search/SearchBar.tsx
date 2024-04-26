@@ -12,22 +12,26 @@ const SearchBar: React.FC<SearchProps> = ({ options, onChange }) => {
   return (
     <Box mb={2} sx={{ width: '100%', maxWidth: '750px' }}>
       <Autocomplete
-        disablePortal
+        
+        freeSolo
         id="options-search"
         options={options}
         sx={{ width: 300 }}
         onChange={onChange}
         renderInput={
-          (params) => <TextField {...params} label="Search" 
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <Button
-                startIcon={<SearchIcon />}
-              ></Button>
-            ),
-          }} 
-          />
+          (params) => 
+            <TextField {...params} 
+            label="Search" 
+            InputProps={{
+              ...params.InputProps,
+              type: 'search',
+              endAdornment: (
+                <Button
+                  startIcon={<SearchIcon />}
+                ></Button>
+              ),
+            }} 
+            />
         }
       />
     </Box>

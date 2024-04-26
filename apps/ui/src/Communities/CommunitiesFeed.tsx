@@ -20,8 +20,11 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const options = useMemo(() => communities.map((community) => community.name), [communities]);
 
   const handleChange = (event: any) => {
-    const value = event.target.outerText;
-    const newFilteredCommuniuties = filteredCommuniuties.filter((community) => community.name === value);
+    const value = event.target.value.toLowerCase();
+    
+    const newFilteredCommuniuties = communities.filter((community) => community.name.toLowerCase().includes(value));
+    console.log({newFilteredCommuniuties});
+    
     setFilteredCommuniuties(newFilteredCommuniuties);
   }
 
