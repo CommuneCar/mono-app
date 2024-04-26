@@ -67,5 +67,7 @@ export const TEXT = {
   LOGIN: "Login",
   CONTINUE: "Continue",
   CREATE: 'Create',
-  CANCEL: 'Cancel'
+  CANCEL: 'Cancel',
+  CREATE_COMMUNITY: 'Create Community',
+  CREATE_COMMUNITY_DESCRIPTION: 'To add a Community, please fill all details here.'
 } as const;
