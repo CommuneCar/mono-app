@@ -1,17 +1,18 @@
 import { groupBy } from 'lodash';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, Drawer, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import Map from '../../Components/Map';
 import { MainMenuButton, Page } from './styles';
+import { SideMenu } from '../../Components/Menu/menu';
+import { BottomDrawer } from '../../Components/bottom-drawer/bottom-drawer';
 import { CommunityList } from '../../Components/community-list/community-list';
 
 import {
   useGetAllRides,
   useGetAllCommunities,
 } from '../../hooks/Communities/useGetAllCommunities';
-import { BottomDrawer } from '../../Components/bottom-drawer/bottom-drawer';
 
 const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
@@ -37,9 +38,7 @@ const HomePage: React.FC = () => {
 
   return (
     <Page>
-      <Drawer open={isProfileOpen} onClose={() => setIsProfileOpen(false)}>
-        this will be a profile
-      </Drawer>
+      <SideMenu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
 
       <Box style={{ height: '66%' }}>
         <Map

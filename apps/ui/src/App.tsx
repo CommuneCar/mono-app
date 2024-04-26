@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { Button } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import './App.css';
 
 import MapPage from './Pages/Map';
-import SideMenu from './Components/Menu';
 import RidesFeed from './Pages/RidesFeed';
 import SignIn from './Pages/SignIn/SignIn';
 import SignUp from './Pages/Signup/SignUp';
+import { SideMenu } from './Components/Menu/menu';
 import SearchBar from './Components/Map/SearchBar';
 import MapNavigationPage from './Pages/MapNavigation';
 import { HomePage } from './Pages/home-page/home-page';
@@ -19,6 +21,7 @@ import {
 } from './hooks/Communities/useGetAllCommunities';
 
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
 
   const communities = useGetAllCommunities();
@@ -29,7 +32,13 @@ function App() {
     <>
       <CssBaseline />
       <Router>
-        {menuVisible && <SideMenu />}
+        <SideMenu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
+
+        {menuVisible && (
+          <Button onClick={() => setIsMenuOpen(true)}>
+            <MenuIcon />
+          </Button>
+        )}
         <Routes>
           <Route
             path="/"
