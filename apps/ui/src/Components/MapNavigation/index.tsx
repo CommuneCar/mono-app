@@ -3,10 +3,6 @@ import {
   Map as MaplibreMap,
   NavigationControl,
   Marker,
-<<<<<<< HEAD
-  Popup,
-=======
->>>>>>> 304caced9d8bd1a773650a5c8e08eb487952b9bb
   useControl,
 } from 'react-map-gl/maplibre';
 import { ArcLayer } from 'deck.gl';
