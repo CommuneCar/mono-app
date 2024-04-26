@@ -9,13 +9,11 @@ import { UserStatus } from '@communecar/types';
 import { useCallback } from 'react';
 
 export interface CommunityCardProps {
-  joined: boolean;
   setJoined: React.Dispatch<React.SetStateAction<boolean>>;
   status?: UserStatus;
 }
 
 const StatusButton: React.FC<CommunityCardProps> = ({
-  joined,
   setJoined,
   status,
 }) => {

@@ -7,6 +7,8 @@ const userStatusOptions: UserStatus[] = ['Approved', 'Pending', 'Rejected'];
 
 const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
   const communities = useGetAllCommunities();
+  console.log({userId}); //TODO when the server ready
+  
 
   const communitiesStatus = communities.reduce((acc, community) => {
     acc[community.name] = getRandomOption(userStatusOptions) as UserStatus;

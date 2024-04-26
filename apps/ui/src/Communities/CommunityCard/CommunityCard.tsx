@@ -22,11 +22,12 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   community,
   userStatus,
 }) => {
-  const { name, description, numberOfMembers, picturesUrl } = community;
+  const { name, description, picturesUrl } = community;
   const [joined, setJoined] = useState(false);
 
   //TODO - handleChangeStatus
-
+  console.log({joined});//TODO when the server ready
+  
   return (
     <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -52,13 +53,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid item xs={6}>
               <CommunityMembersDisplay
-                total={numberOfMembers}
                 pictures={picturesUrl}
               ></CommunityMembersDisplay>
             </Grid>
             <Grid item xs={6}>
               <StatusButton
-                joined={joined}
                 setJoined={setJoined}
                 status={userStatus}
               ></StatusButton>
