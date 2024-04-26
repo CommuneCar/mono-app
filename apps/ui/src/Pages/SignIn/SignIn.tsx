@@ -37,9 +37,9 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
     const hasErrors = Object.values(formErrors).some(error => error !== null);
     const allFieldsFilled = Object.values(formData).every(field => !isEmpty(field));
     if(!allFieldsFilled) {
-      setIsSubmitEnabled(true);
+      setIsSubmitEnabled(false);
     } else {
-      setIsSubmitEnabled(hasErrors);
+      setIsSubmitEnabled(!hasErrors);
     }
   }, [formErrors]);
 
@@ -119,7 +119,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, width: '100%' }}
-              disabled={isSubmitEnabled}
+              disabled={!isSubmitEnabled}
             >
               {TEXT.LOGIN}
             </Button>
