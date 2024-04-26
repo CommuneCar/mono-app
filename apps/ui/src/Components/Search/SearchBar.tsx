@@ -11,10 +11,8 @@ export interface SearchProps {
 
 const SearchBar: React.FC<SearchProps> = ({ options, onChange }) => {
 
-  const handleChange = (event: React.SyntheticEvent, value: Value) => {
-    const searchValue = value ? value?.toString() : undefined;
-    console.log({value});
-    
+  const handleChange = (_event: React.SyntheticEvent, value: Value) => {
+    const searchValue = value ? value?.toString() : undefined;    
     onChange(searchValue);
   }
 
