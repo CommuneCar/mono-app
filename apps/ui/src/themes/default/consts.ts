@@ -29,6 +29,7 @@ export const COLORS = {
   WARNING_DARK: '#F57C00',
   WHITE: '#ffffff',
   BLACK: '#262626',
+  TITLE_TEXT: '#263A6D'
 } as const;
 
 export const FONTS = {
@@ -57,4 +58,12 @@ export const SPACING = {
   SP19: pxToRem(19 * SPACING_SCALING_FACTOR),
   SP20: pxToRem(20 * SPACING_SCALING_FACTOR),
   SP24: pxToRem(24 * SPACING_SCALING_FACTOR),
+} as const;
+
+export const TEXT = {
+  REGISTER: "Don't have an account? Register Now", 
+  FORGOT_PASSWORD: "Forgot password?",
+  SIGNIN: "Already have an account? Sign in",
+  LOGIN: "Login",
+  CONTINUE: "Continue",
 } as const;

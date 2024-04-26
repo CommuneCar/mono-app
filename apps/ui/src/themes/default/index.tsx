@@ -71,6 +71,11 @@ const defaultTheme = createTheme({
     h3: {
       fontWeight: 400,
     },
+    h2: {
+      fontWeight: 'bolder',
+      color: COLORS.TITLE_TEXT,
+      fontSize: pxToRem(50),
+    }, 
     subtitle1: {
       fontWeight: 700,
     },
