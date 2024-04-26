@@ -1,24 +1,21 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
-import defaultTheme from '../../themes/default';
-import SigningHeader from '../../Components/Signing/SigningHeader';
-import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import { validateField } from '../../utils/signing/validation';
-import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { TEXT } from '../../themes/default/consts';
 import { isEmpty } from 'lodash';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { Box, Button, Link, Container } from '@mui/material';
+
+import defaultTheme from '../../themes/default';
+import { TEXT } from '../../themes/default/consts';
+import { validateField } from '../../utils/signing/validation';
+import SigningHeader from '../../Components/Signing/SigningHeader';
+import { EmailField } from '../../Components/Signing/Fields/EmailField';
+import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 
 interface SignInProps {
-  setMenuVisible: (value: boolean) => void;
+  setMenuVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-const SignIn = ({ setMenuVisible }: SignInProps) => {
+const SignIn: React.FC<SignInProps> = ({ setMenuVisible }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -44,9 +41,9 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
   }, [formErrors]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = event.target;
 
     setFormData((prev) => ({ ...prev, [name]: value }));
 
