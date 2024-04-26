@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
@@ -15,20 +15,54 @@ import {
 } from '../../utils/signing/validation';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { TEXT } from '../../themes/default/consts';
+import { isEmpty } from 'lodash';
 
 interface SignInProps {
   setMenuVisible: (value: boolean) => void;
 }
 
 const SignIn = ({ setMenuVisible }: SignInProps) => {
-  const [passwordError, setPasswordError] = useState<boolean>(false);
-  const [emailError, setEmailError] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
-  const isPasswordError = (value: string) => {
-    setPasswordError(validatePassword(value));
+  const [formErrors, setFormErrors] = useState({
+    email: null,
+    password: null,
+  });
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
+  useEffect(() => {
+    const hasErrors = Object.values(formErrors).some(error => error !== null);
+    const allFieldsFilled = Object.values(formData).every(field => !isEmpty(field));
+    if(!allFieldsFilled) {
+      setIsSubmitEnabled(true);
+    } else {
+      setIsSubmitEnabled(hasErrors);
+    }
+  }, [formErrors]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const {name , value} = e.target;
+
+    setFormData(prev => ({ ...prev, [name]: value }));
+    validateField(name, value);
   };
-  const isEmailError = (value: string) => {
-    setEmailError(validateEmail(value));
+
+  const validateField = (name: string, value: string) => {
+    let error: boolean;
+
+    switch (name) {
+      case 'email':
+        error = validateEmail(value);
+        break;
+      case 'password':
+        error = validatePassword(value);
+        break;
+    }
+
+    setFormErrors(prev => ({ ...prev, [name]: error ? error : null }));
   };
 
   const navigate = useNavigate();
@@ -39,6 +73,10 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
       email: data.get('email'),
       password: data.get('password'),
     };
+    if(isSubmitEnabled) {
+      setMenuVisible(true);
+      navigate('/rides');
+    }
   };
 
   return (
@@ -63,14 +101,13 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             width="100%" // Ensure the form takes full width
           >
             <EmailField
-              emailError={emailError}
-              isEmailError={isEmailError}
+                  emailError={formErrors['email'] ?? false}
+                  handleChange={handleChange}
             ></EmailField>
             <PasswordField
-              passwordError={passwordError}
-              isPasswordError={isPasswordError}
+                  passwordError={formErrors['password'] ?? false}
+                  handleChange={handleChange}
             ></PasswordField>
-
             <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Link href="#" variant="body2">
                 {TEXT.FORGOT_PASSWORD}
@@ -82,10 +119,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, width: '100%' }}
-              onClick={() => {
-                setMenuVisible(true);
-                navigate('/rides');
-              }}
+              disabled={isSubmitEnabled}
             >
               Login
             </Button>

@@ -3,13 +3,13 @@ import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
 
 interface PasswordFieldProps {
-  isPasswordError: (value: string) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   passwordError: boolean;
 }
 
 const PasswordField: React.FC<PasswordFieldProps> = ({
   passwordError,
-  isPasswordError,
+  handleChange,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -38,7 +38,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
               </InputAdornment>
             ),
           }}
-          onChange={(e) => isPasswordError(e.target.value as string)}
+          onChange={handleChange}
           error={passwordError}
         />
       </Box>

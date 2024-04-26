@@ -17,7 +17,7 @@ import {
   Container,
 } from '@mui/material';
 import { Gander, SignUpUser } from '../../types/sign-up-user';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   validateEmail,
   validateName,
@@ -26,73 +26,91 @@ import {
 } from '../../utils/signing/validation';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { isUndefined } from 'lodash';
 import { TEXT } from '../../themes/default/consts';
+import { isEmpty } from 'lodash';
 
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const [firstNameError, setFirstNameError] = useState<boolean>(false);
-  const [lastNameError, setLastNameError] = useState<boolean>(false);
-  const [emailError, setEmailError] = useState<boolean>(false);
-  const [phoneNumberError, setPhoneNumberError] = useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<boolean>(false);
-  const [gander, setGander] = useState<Gander>();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    phone: '',
+    gander: 'Other',
+  });
 
-  const [isSubmitClicked, setSubmitClicked] = useState<boolean>(false);
+  const [formErrors, setFormErrors] = useState({
+    firstName: null,
+    lastName: null,
+    email: null,
+    password: null,
+    phone: null,
+    gander: null,
+  });
+
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
+
+  useEffect(() => {
+    const hasErrors = Object.values(formErrors).some(error => error !== null);
+    const allFieldsFilled = Object.values(formData).every(field => !isEmpty(field));
+    if(!allFieldsFilled) {
+      setIsSubmitEnabled(true);
+    } else {
+      setIsSubmitEnabled(hasErrors);
+    }
+  }, [formErrors]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const {name , value} = e.target;
+
+    setFormData(prev => ({ ...prev, [name]: value }));
+    validateField(name, value);
+  };
+
+  const validateField = (name: string, value: string) => {
+    let error: boolean;
+
+    switch (name) {
+      case 'firstName':
+        error = validateName(value);
+        break;
+      case 'LastName':
+        error = validateName(value);
+        break;
+      case 'email':
+        error = validateEmail(value);
+        break;
+      case 'password':
+        error = validatePassword(value);
+        break;
+      case 'phone':
+        error = validatePhoneNumber(value);
+        break;
+      default:
+        break;
+    }
+
+    setFormErrors(prev => ({ ...prev, [name]: error ? error : null }));
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitClicked(true);
     const data = new FormData(event.currentTarget);
     const newUser: SignUpUser = {
       firstName: data.get('firstName') as string,
-      LastName: data.get('LastName') as string,
+      lastName: data.get('lastName') as string,
       email: data.get('email') as string,
       password: data.get('password') as string,
       phoneNumber: data.get('phone') as string,
       gander: (data.get('gander') as Gander) ?? 'Other',
     };
-    validateUser(newUser);
-  };
-
-  const validateUser = useCallback((user: SignUpUser) => {
-    isFirstNameError(user.firstName);
-    isLastNameError(user.LastName);
-    isEmailError(user.email);
-    isPhoneNumberError(user.phoneNumber);
-    isPasswordError(user.password);
-  }, []);
-
-  const isFirstNameError = (value: string) => {
-    setFirstNameError(validateName(value));
-  };
-  const isLastNameError = (value: string) => {
-    setLastNameError(validateName(value));
-  };
-  const isEmailError = (value: string) => {
-    setEmailError(validateEmail(value));
-  };
-  const isPhoneNumberError = (value: string) => {
-    setPhoneNumberError(validatePhoneNumber(value));
-  };
-  const isPasswordError = (value: string) => {
-    setPasswordError(validatePassword(value));
-  };
-
-  const isValidUser = useMemo(
-    () => !firstNameError && !lastNameError && !passwordError && !phoneNumberError && !emailError,
-    [firstNameError,lastNameError, passwordError, phoneNumberError, emailError],
-  );
-
-  useEffect(() => {
-    if (isValidUser && isSubmitClicked) {
+    if(isSubmitEnabled) {
       navigate('/rides');
-    } else {
-      setSubmitClicked(false);
-      console.log('Validation failed or user data incomplete.');
     }
-  }, [isValidUser, isSubmitClicked, navigate]);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -128,8 +146,8 @@ const SignUp = () => {
                     id="firstName"
                     label="First Name"
                     variant="standard"
-                    onChange={(e) => isFirstNameError(e.target.value as string)}
-                    error={firstNameError}
+                    onChange={handleChange}
+                    error={formErrors['firstName'] ?? false}
                     autoFocus
                   />
                 </Box>
@@ -147,16 +165,16 @@ const SignUp = () => {
                     id="lastName"
                     label="Last Name"
                     variant="standard"
-                    onChange={(e) => isLastNameError(e.target.value as string)}
-                    error={lastNameError}
+                    onChange={handleChange}
+                    error={formErrors['lastName'] ?? false}
                     autoFocus
                   />
                 </Box>
               </Grid>
               <Grid item xs={12}>
                 <EmailField
-                  emailError={emailError}
-                  isEmailError={isEmailError}
+                  emailError={formErrors['email'] ?? false}
+                  handleChange={handleChange}
                 ></EmailField>
               </Grid>
               <Grid item xs={12}>
@@ -172,17 +190,15 @@ const SignUp = () => {
                     name="phone"
                     autoComplete="phone-number"
                     variant="standard"
-                    onChange={(e) =>
-                      isPhoneNumberError(e.target.value as string)
-                    }
-                    error={phoneNumberError}
+                    onChange={handleChange}
+                    error={formErrors['phone'] ?? false}
                   />
                 </Box>
               </Grid>
               <Grid item xs={12}>
                 <PasswordField
-                  passwordError={passwordError}
-                  isPasswordError={isPasswordError}
+                  passwordError={formErrors['password'] ?? false}
+                  handleChange={handleChange}
                 ></PasswordField>
               </Grid>
               <Grid item xs={12}>
@@ -200,7 +216,7 @@ const SignUp = () => {
                   <RadioGroup
                     row
                     name="gander"
-                    onChange={(e) => setGander(e.target.value as Gander)}
+                    onChange={(e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value as Gander}))}
                   >
                     <FormControlLabel
                       value="Female"
@@ -216,7 +232,7 @@ const SignUp = () => {
                       value="Other"
                       control={
                         <Radio
-                          checked={isUndefined(gander) || gander === 'Other'}
+                          checked={ !!formData['gander'] || formData['gander'] === 'Other'}
                         />
                       }
                       label="Other"
@@ -230,6 +246,7 @@ const SignUp = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, width: '100%' }}
+              disabled={isSubmitEnabled}
             >
               Continue
             </Button>

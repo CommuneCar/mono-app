@@ -3,12 +3,12 @@ import { Box, TextField } from '@mui/material';
 
 interface EmailFieldProps {
   emailError: boolean;
-  isEmailError: (value: string) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
 const EmailField: React.FC<EmailFieldProps> = ({
   emailError,
-  isEmailError,
+  handleChange,
 }) => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'flex-end', my: 0.5 }}>
@@ -21,7 +21,7 @@ const EmailField: React.FC<EmailFieldProps> = ({
         name="email"
         autoComplete="email"
         variant="standard"
-        onChange={(e) => isEmailError(e.target.value as string)}
+        onChange={handleChange}
         error={emailError}
       />
     </Box>
