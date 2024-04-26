@@ -19,10 +19,7 @@ import {
 import { Gander, SignUpUser } from '../../types/sign-up-user';
 import { useEffect, useState } from 'react';
 import {
-  validateEmail,
-  validateName,
-  validatePassword,
-  validatePhoneNumber,
+  validateField,
 } from '../../utils/signing/validation';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
@@ -67,32 +64,7 @@ const SignUp = () => {
     const {name , value} = e.target;
 
     setFormData(prev => ({ ...prev, [name]: value }));
-    validateField(name, value);
-  };
-
-  const validateField = (name: string, value: string) => {
-    let error: boolean;
-
-    switch (name) {
-      case 'firstName':
-        error = validateName(value);
-        break;
-      case 'LastName':
-        error = validateName(value);
-        break;
-      case 'email':
-        error = validateEmail(value);
-        break;
-      case 'password':
-        error = validatePassword(value);
-        break;
-      case 'phone':
-        error = validatePhoneNumber(value);
-        break;
-      default:
-        break;
-    }
-
+    const error = validateField(name, value);
     setFormErrors(prev => ({ ...prev, [name]: error ? error : null }));
   };
 

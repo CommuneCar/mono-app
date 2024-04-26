@@ -19,9 +19,22 @@ const validatePassword = (value: string) => {
   return isEmpty(value);
 };
 
-export {
-  validateName,
-  validateEmail,
-  validatePhoneNumber,
-  validatePassword,
-};
+const validateField = (name: string, value: string) => {
+  switch (name) {
+    case 'firstName':
+      return validateName(value);
+    case 'lastName':
+      return validateName(value);
+    case 'email':
+      return validateEmail(value);
+    case 'password':
+      return validatePassword(value);
+    case 'phone':
+      return validatePhoneNumber(value);
+    default:
+      return null;
+  }
+
+}; 
+
+export { validateField };

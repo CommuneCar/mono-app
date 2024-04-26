@@ -10,8 +10,7 @@ import defaultTheme from '../../themes/default';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import {
-  validateEmail,
-  validatePassword,
+  validateField,
 } from '../../utils/signing/validation';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { TEXT } from '../../themes/default/consts';
@@ -36,6 +35,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
   useEffect(() => {
     const hasErrors = Object.values(formErrors).some(error => error !== null);
     const allFieldsFilled = Object.values(formData).every(field => !isEmpty(field));
+
     if(!allFieldsFilled) {
       setIsSubmitEnabled(false);
     } else {
@@ -47,21 +47,8 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
     const {name , value} = e.target;
 
     setFormData(prev => ({ ...prev, [name]: value }));
-    validateField(name, value);
-  };
 
-  const validateField = (name: string, value: string) => {
-    let error: boolean;
-
-    switch (name) {
-      case 'email':
-        error = validateEmail(value);
-        break;
-      case 'password':
-        error = validatePassword(value);
-        break;
-    }
-
+    const error = validateField(name, value);
     setFormErrors(prev => ({ ...prev, [name]: error ? error : null }));
   };
 
