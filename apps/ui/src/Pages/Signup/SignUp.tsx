@@ -248,7 +248,7 @@ const SignUp = () => {
               sx={{ mt: 3, mb: 2, width: '100%' }}
               disabled={isSubmitEnabled}
             >
-              Continue
+              {TEXT.CONTINUE}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

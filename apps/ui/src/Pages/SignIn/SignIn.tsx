@@ -121,7 +121,7 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
               sx={{ mt: 3, mb: 2, width: '100%' }}
               disabled={isSubmitEnabled}
             >
-              Login
+              {TEXT.LOGIN}
             </Button>
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>

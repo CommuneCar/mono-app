@@ -63,5 +63,7 @@ export const SPACING = {
 export const TEXT = {
   REGISTER: "Don't have an account? Register Now", 
   FORGOT_PASSWORD: "Forgot password?",
-  SIGNIN: "Already have an account? Sign in"
+  SIGNIN: "Already have an account? Sign in",
+  LOGIN: "Login",
+  CONTINUE: "Continue",
 } as const;
