@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { StatusButton } from './StatusButton';
 import { Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
-import { ClientCommunity } from '../CommunityType';
+import { ClientCommunity } from '../../types/community-type';
 
 export interface CommunityCardProps {
   community: ClientCommunity;

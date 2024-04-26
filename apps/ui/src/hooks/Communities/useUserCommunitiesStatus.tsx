@@ -1,7 +1,7 @@
 import { UserStatus } from '@communecar/types';
 import { getRandomOption } from '../../utils';
 import { useGetAllCommunities } from './useGetAllCommunities';
-import { UserCommunitiesStatus } from '../../Communities/CommunityType';
+import { UserCommunitiesStatus } from '../../types/community-type';
 
 const userStatusOptions: UserStatus[] = ['Approved', 'Pending', 'Rejected'];
 

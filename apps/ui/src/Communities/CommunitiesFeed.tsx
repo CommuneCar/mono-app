@@ -4,7 +4,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
-import { ClientCommunity } from './CommunityType';
+import { ClientCommunity } from '../types/community-type';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
 export interface CommunitiesFeedProps {

@@ -1,4 +1,4 @@
-import { ClientCommunity } from '../../Communities/CommunityType';
+import { ClientCommunity } from '../../types/community-type';
 import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
