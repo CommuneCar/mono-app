@@ -60,6 +60,8 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
       email: data.get('email'),
       password: data.get('password'),
     };
+    console.log({userSignIn});
+    
     if(isSubmitEnabled) {
       setMenuVisible(true);
       navigate('/rides');

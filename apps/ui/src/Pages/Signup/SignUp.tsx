@@ -79,6 +79,8 @@ const SignUp = () => {
       phoneNumber: data.get('phone') as string,
       gander: (data.get('gander') as Gander) ?? 'Other',
     };
+    console.log({newUser}); //TODO when the server ready
+    
     if(isSubmitEnabled) {
       navigate('/rides');
     }
