@@ -14,7 +14,7 @@ const cars = [
   },
   {
     id: 'car2',
-    startPoint: [34.802000, 32.093500] as [number, number], // Explicitly type as tuple
+    startPoint: [34.802, 32.0935] as [number, number], // Explicitly type as tuple
     destinations: [
       { longitude: 34.793513, latitude: 32.085531 },
       { longitude: 34.811461, latitude: 32.123314 },
@@ -23,7 +23,7 @@ const cars = [
   },
   {
     id: 'car3',
-    startPoint: [34.771000, 32.069000] as [number, number], // Explicitly type as tuple
+    startPoint: [34.771, 32.069] as [number, number], // Explicitly type as tuple
     destinations: [
       { longitude: 34.783513, latitude: 32.085531 },
       { longitude: 34.791461, latitude: 32.103314 },
@@ -33,24 +33,21 @@ const cars = [
 ];
 
 const MapNavigationPage: React.FC = () => {
-    const mapContainerStyle: CSSProperties = {
-      height: '100vh',
-      width: '100vw',
-      position: 'absolute',
-      left: '0',
-      top: '0',
-      float: 'left',
-      marginLeft: 0,
-    };
+  const mapContainerStyle: CSSProperties = {
+    height: '100vh',
+    width: '100vw',
+    position: 'absolute',
+    left: '0',
+    top: '0',
+    float: 'left',
+    marginLeft: 0,
+  };
 
-    return (
-      <div style={mapContainerStyle} className="full-viewport">
-        <MultiCarMap
-          cars={cars}
-          mapStyle="regular"
-        />
-      </div>
-    );
+  return (
+    <div style={mapContainerStyle} className="full-viewport">
+      <MultiCarMap cars={cars} mapStyle="regular" />
+    </div>
+  );
 };
 
 export default MapNavigationPage;

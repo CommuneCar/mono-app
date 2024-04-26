@@ -8,8 +8,8 @@ import apple from './assets/apple.png';
 import camera from './assets/camera.png';
 
 import MapPage from './Pages/Map';
-import SignIn from './Pages/SignIn';
-import SignUp from './Pages/Signup';
+import SignIn from './Pages/SignIn/SignIn';
+import SignUp from './Pages/Signup/SignUp';
 import SideMenu from './Components/Menu';
 import RidesFeed from './Pages/RidesFeed';
 import { getRandomOption } from './utils';
