@@ -31,7 +31,6 @@ const SearchBar: React.FC<SearchProps> = ({ options, onChange }) => {
             label="Search" 
             InputProps={{
               ...params.InputProps,
-              type: 'search',
               startAdornment: (
                 <Button
                   // onClick={handleChange}

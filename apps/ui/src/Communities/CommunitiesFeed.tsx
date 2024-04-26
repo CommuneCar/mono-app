@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
