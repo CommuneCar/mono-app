@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import React from "react";
 import defaultTheme from "../themes/default";
+import { TEXT } from "../themes/default/consts";
 
 interface CreateCommunityDialogProps {
     setIsOpen: (isOpen: boolean) => void;
@@ -45,10 +46,10 @@ const CreateCommunityDialog:React.FC<CreateCommunityDialogProps> = ({isOpen, set
               onSubmit: handleSubmit
             }}
           >
-            <DialogTitle>Create Community</DialogTitle>
+            <DialogTitle>{TEXT.CREATE_COMMUNITY}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                To add a Community, please fill all details here.
+                {TEXT.CREATE_COMMUNITY_DESCRIPTION}
               </DialogContentText>
               <TextField
                 autoFocus
@@ -74,7 +75,7 @@ const CreateCommunityDialog:React.FC<CreateCommunityDialogProps> = ({isOpen, set
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
               <Button 
                 type="submit" 
                 sx={{backgroundColor: defaultTheme.palette.primary.main, 
@@ -83,7 +84,7 @@ const CreateCommunityDialog:React.FC<CreateCommunityDialogProps> = ({isOpen, set
                         backgroundColor: defaultTheme.palette.action.hoverOpacity,
                         color: defaultTheme.palette.primary.main,
                       }}}
-            >Create</Button>
+            >{TEXT.CREATE}</Button>
             </DialogActions>
           </Dialog>
         </React.Fragment>

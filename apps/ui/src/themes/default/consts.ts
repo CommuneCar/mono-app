@@ -66,4 +66,6 @@ export const TEXT = {
   SIGNIN: "Already have an account? Sign in",
   LOGIN: "Login",
   CONTINUE: "Continue",
+  CREATE: 'Create',
+  CANCEL: 'Cancel'
 } as const;
