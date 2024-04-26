@@ -28,7 +28,7 @@ const SearchBar: React.FC<SearchProps> = ({ options, onChange }) => {
         renderInput={
           (params) => 
             <TextField {...params} 
-            label="Search" 
+            placeholder='Search'
             InputProps={{
               ...params.InputProps,
               startAdornment: (
