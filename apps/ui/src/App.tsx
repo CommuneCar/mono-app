@@ -6,7 +6,7 @@ import SignUp from './Pages/Signup/SignUp';
 import SideMenu from './Components/Menu';
 import RidesFeed from './Pages/RidesFeed';
 import MapPage from './Pages/Map';
-import CommunitiesFeed from './Communities';
+import CommunitiesFeed from './Communities/CommunitiesFeed';
 import { useState } from 'react';
 import tlv from './assets/tlv.png';
 import apple from './assets/apple.png';
@@ -14,6 +14,7 @@ import camera from './assets/camera.png';
 import SearchBar from './Components/Map/SearchBar';
 import MapNavigationPage from './Pages/MapNavigation';
 import { getRandomOption } from './utils';
+import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 
 const options = [tlv, apple, camera];
 
@@ -54,31 +55,11 @@ const rides = [
   },
 ];
 
-const communities = [
-  {
-    name: 'Travel friends Haifa - Tel Aviv',
-    description:
-      'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
-    startLocation: 'Rotchild street, Tel Aviv',
-    png: getRandomOption(options),
-  },
-  {
-    description:
-      'The biggest israeli community of Apple fans traveling to new stores and events together.',
-    name: 'Apple Friends - IL',
-    startLocation: 'Rotchild street, Tel Aviv',
-    png: getRandomOption(options),
-  },
-  {
-    name: 'Camera Buddies  - photo fun!',
-    description: 'A group of hobby photographers traveling together',
-    startLocation: 'Rotchild street, Tel Aviv',
-    png: getRandomOption(options),
-  },
-];
-
 function App() {
   const [menuVisible, setMenuVisible] = useState(false);
+
+  const communities = useGetAllCommunities();
+
   return (
     <>
       <CssBaseline />
