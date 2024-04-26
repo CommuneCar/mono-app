@@ -4,11 +4,11 @@ import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
-import { ClientCommunity } from '../types/community-type';
+import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
 export interface CommunitiesFeedProps {
-  communities: ClientCommunity[];
+  communities: Community[];
 }
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {

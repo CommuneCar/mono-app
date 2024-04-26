@@ -3,17 +3,17 @@ import { getRandomOption } from '../../utils';
 import { useGetAllCommunities } from './useGetAllCommunities';
 import { UserCommunitiesStatus } from '../../types/community-type';
 
-const userStatusOptions: UserStatus[] = ['Approved', 'Pending', 'Rejected'];
+const userStatusOptions: UserStatus[] = Object.values(UserStatus) as UserStatus[];;
 
 const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
   const communities = useGetAllCommunities();
   console.log({userId}); //TODO when the server ready
   
+  const communitiesStatus: UserCommunitiesStatus = {};
 
-  const communitiesStatus = communities.reduce((acc, community) => {
-    acc[community.name] = getRandomOption(userStatusOptions) as UserStatus;
-    return acc;
-  }, {} as UserCommunitiesStatus);
+  communities.forEach(community => {
+    communitiesStatus[community.name] = getRandomOption(userStatusOptions) as UserStatus;
+  });
 
   return communitiesStatus;
 };

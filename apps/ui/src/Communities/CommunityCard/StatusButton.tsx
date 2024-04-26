@@ -17,12 +17,15 @@ const StatusButton: React.FC<CommunityCardProps> = ({
   setJoined,
   status,
 }) => {
+
+  const isBlocked = status === UserStatus.REJECTED;
+
   const renderIcon = useCallback(() => {
-    if (status === 'Approved') {
+    if (status === UserStatus.APPROVED) {
       return <CheckRounded />;
-    } else if (status === 'Pending') {
+    } else if (status === UserStatus.PENDING) {
       return <HourglassEmptyRounded />;
-    } else if (status === 'Rejected') {
+    } else if (isBlocked) {
       return <BlockRounded />;
     } else {
       return <AddRounded />;
@@ -33,9 +36,8 @@ const StatusButton: React.FC<CommunityCardProps> = ({
     <Tooltip title={status ? status : 'Ask To Join'}>
       <IconButton
         onClick={() => setJoined((prev) => !prev)}
-        disabled={status === 'Rejected'}
+        disabled={isBlocked}
       >
-        {' '}
         {renderIcon()}
       </IconButton>
     </Tooltip>

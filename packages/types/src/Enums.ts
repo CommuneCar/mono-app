@@ -1,1 +1,5 @@
-export type UserStatus = 'Approved' | 'Pending' | 'Rejected';
+export enum UserStatus {
+    APPROVED = 'Approved',
+    PENDING = 'Pending',
+    REJECTED = 'Rejected'
+}
