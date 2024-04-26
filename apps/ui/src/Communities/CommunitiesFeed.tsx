@@ -20,10 +20,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
 
   const options = useMemo(() => communities.map((community) => community.name), [communities]);
 
-  const handleChange = (event: any) => {
-    const value = event.target.value.toLowerCase();
-    setSearchValue(value);
-    filterDisplay(value);
+  const handleChange = (value: string) => {
+    const lowerCaseValue = value?.toLowerCase();    
+    setSearchValue(lowerCaseValue);
+    filterDisplay(lowerCaseValue);
   }
   
   const filterDisplay = useCallback((value: string | undefined) => {
