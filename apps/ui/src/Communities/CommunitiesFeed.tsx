@@ -7,7 +7,7 @@ import defaultTheme from '../themes/default';
 import { ClientCommunity } from '../types/community-type';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface CommunitiesFeedProps {
   communities: ClientCommunity[];
@@ -16,17 +16,24 @@ export interface CommunitiesFeedProps {
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const userCommunitiesStatus = useUserCommunitiesStatus('hi');
   const [filteredCommuniuties, setFilteredCommuniuties] = useState(communities);
+  const [searchValue, setSearchValue] = useState<string>();
 
   const options = useMemo(() => communities.map((community) => community.name), [communities]);
 
   const handleChange = (event: any) => {
     const value = event.target.value.toLowerCase();
-    
-    const newFilteredCommuniuties = communities.filter((community) => community.name.toLowerCase().includes(value));
-    console.log({newFilteredCommuniuties});
-    
-    setFilteredCommuniuties(newFilteredCommuniuties);
+    setSearchValue(value);
+    filterDisplay(value);
   }
+  
+  const filterDisplay = useCallback((value: string | undefined) => {
+    const newFilteredCommuniuties = value ? communities.filter((community) => community.name.toLowerCase().includes(value)) : communities;  
+    setFilteredCommuniuties(newFilteredCommuniuties);
+  }, [communities]);
+
+  useEffect(() => {
+    filterDisplay(searchValue);
+  }, [communities]);
 
   return (
     <Box
