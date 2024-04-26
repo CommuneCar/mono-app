@@ -9,9 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import {
-  validateField,
-} from '../../utils/signing/validation';
+import { validateField } from '../../utils/signing/validation';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { TEXT } from '../../themes/default/consts';
 import { isEmpty } from 'lodash';
@@ -33,23 +31,27 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
   useEffect(() => {
-    const hasErrors = Object.values(formErrors).some(error => error !== null);
-    const allFieldsFilled = Object.values(formData).every(field => !isEmpty(field));
+    const hasErrors = Object.values(formErrors).some((error) => error !== null);
+    const allFieldsFilled = Object.values(formData).every(
+      (field) => !isEmpty(field),
+    );
 
-    if(!allFieldsFilled) {
+    if (!allFieldsFilled) {
       setIsSubmitEnabled(false);
     } else {
       setIsSubmitEnabled(!hasErrors);
     }
   }, [formErrors]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {name , value} = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
 
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     const error = validateField(name, value);
-    setFormErrors(prev => ({ ...prev, [name]: error ? error : null }));
+    setFormErrors((prev) => ({ ...prev, [name]: error ? error : null }));
   };
 
   const navigate = useNavigate();
@@ -60,11 +62,11 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
       email: data.get('email'),
       password: data.get('password'),
     };
-    console.log({userSignIn});
-    
-    if(isSubmitEnabled) {
+    console.log({ userSignIn });
+
+    if (isSubmitEnabled) {
       setMenuVisible(true);
-      navigate('/rides');
+      navigate('/home');
     }
   };
 
@@ -90,12 +92,12 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             width="100%" // Ensure the form takes full width
           >
             <EmailField
-                  emailError={formErrors['email'] ?? false}
-                  handleChange={handleChange}
+              emailError={formErrors['email'] ?? false}
+              handleChange={handleChange}
             ></EmailField>
             <PasswordField
-                  passwordError={formErrors['password'] ?? false}
-                  handleChange={handleChange}
+              passwordError={formErrors['password'] ?? false}
+              handleChange={handleChange}
             ></PasswordField>
             <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Link href="#" variant="body2">
