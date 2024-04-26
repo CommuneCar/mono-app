@@ -19,14 +19,10 @@ const RideCard: React.FC<RideCardProps> = (props) => {
   return (
     <Card variant={'outlined'} sx={{ m: 2, borderRadius: 5 }}>
       <CardContent>
-        <Typography
-          align={'left'}
-          sx={{ fontSize: 14 }}
-          color={'text.secondary'}
-        >
+        <Typography variant={'h6'} align={'left'} color={'text.secondary'}>
           {driver}
         </Typography>
-        <Typography align={'left'} variant={'h6'}>
+        <Typography sx={{ fontSize: 14 }} align={'left'}>
           {text}
         </Typography>
       </CardContent>
