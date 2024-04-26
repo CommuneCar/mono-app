@@ -1,6 +1,11 @@
+import { Box } from '@mui/material';
 import React, { useState, useEffect, PropsWithChildren } from 'react';
 
-import './BottomSheet.css';
+import {
+  BottomSheetBase,
+  BottomSheetHandle,
+  BottomSheetContent,
+} from './styles';
 
 const BottomDrawer: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,12 +35,14 @@ const BottomDrawer: React.FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <div className={`bottom-sheet ${isOpen ? 'open' : ''}`}>
-      <div onClick={toggleBottomSheet}>
-        <div className="bottom-sheet-handle" />
-      </div>
-      <div className="bottom-sheet-content">{children}</div>
-    </div>
+    <BottomSheetBase open={isOpen}>
+      <Box onClick={toggleBottomSheet}>
+        <BottomSheetHandle />
+      </Box>
+      <BottomSheetContent className={'bottom-sheet-content'}>
+        {children}
+      </BottomSheetContent>
+    </BottomSheetBase>
   );
 };
 
