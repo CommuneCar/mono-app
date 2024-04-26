@@ -77,7 +77,7 @@ const defaultTheme = createTheme({
       fontSize: pxToRem(50),
     }, 
     subtitle1: {
-      fontWeight: 500,
+      fontWeight: 700,
     },
     body1: {
       fontWeight: 500,

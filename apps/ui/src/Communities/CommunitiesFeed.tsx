@@ -1,15 +1,19 @@
 import Box from '@mui/material/Box';
-import CommunityCard, { CommunityCardProps } from './CommunityCard';
+import CommunityCard from './CommunityCard/CommunityCard';
 import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
+import { Community } from '@communecar/types';
+import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
 export interface CommunitiesFeedProps {
-  communities: CommunityCardProps[];
+  communities: Community[];
 }
 
-const RidesFeed = ({ communities }: CommunitiesFeedProps) => {
+const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
+  const userCommunitiesStatus = useUserCommunitiesStatus('hi');
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -32,13 +36,12 @@ const RidesFeed = ({ communities }: CommunitiesFeedProps) => {
       </Box>
       {communities.map((community) => (
         <CommunityCard
-          name={community.name}
-          description={community.description}
-          png={community.png}
+          community={community}
+          userStatus={userCommunitiesStatus[community.name]}
         />
       ))}
     </Box>
   );
 };
 
-export default RidesFeed;
+export default CommunitiesFeed;

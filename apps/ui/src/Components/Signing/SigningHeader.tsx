@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import logoWithTitle from '../../assets/logo-with-title.png';
-import defaultTheme from '../../themes/default';
 
 interface SigningHeaderProps {
   titleText: string;
