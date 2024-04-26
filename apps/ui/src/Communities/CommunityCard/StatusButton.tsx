@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import {
   AddRounded,
   BlockRounded,
@@ -31,6 +31,7 @@ const StatusButton: React.FC<CommunityCardProps> = ({
 
   return (
     <Tooltip title={status ? status : 'Ask To Join'}>
+      <Box>
       <IconButton
         onClick={() => setJoined((prev) => !prev)}
         disabled={status === 'Rejected'}
@@ -38,6 +39,7 @@ const StatusButton: React.FC<CommunityCardProps> = ({
         {' '}
         {renderIcon()}
       </IconButton>
+      </Box>
     </Tooltip>
   );
 };

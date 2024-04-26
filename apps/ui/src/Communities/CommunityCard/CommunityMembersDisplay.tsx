@@ -9,8 +9,8 @@ const CommunityMembersDisplay: React.FC<CommunityMembersDisplayProps> = ({
 }) => {
   return (
     <AvatarGroup max={4}>
-      {pictures?.map((picture) => {
-        return <Avatar src={picture} color="primary" />;
+      {pictures?.map((picture, index) => {
+        return <Avatar key={index} src={picture} color="primary" />;
       })}
     </AvatarGroup>
   );
