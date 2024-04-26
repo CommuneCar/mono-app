@@ -20,7 +20,9 @@ const BottomDrawer: React.FC<PropsWithChildren> = ({ children }) => {
 
       if (scrollTop > triggerPoint) {
         setIsOpen(true);
-      } else {
+      }
+
+      if (scrollTop === 0 && isOpen) {
         setIsOpen(false);
       }
     };
