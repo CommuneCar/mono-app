@@ -49,7 +49,23 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          zIndex: 1100,
+          width: '100%',
+          maxWidth: 400,
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'column',
+          padding: '8px',
+        }}
+      >
+        <SearchBar
+          options={options}
+          handleChangeSearchValue={handleChangeSearchValue}
+        ></SearchBar>
         <IconButton
           edge="end"
           color="inherit"
@@ -62,18 +78,16 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         >
           <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
         </IconButton>
-        <SearchBar
-          options={options}
-          handleChangeSearchValue={handleChangeSearchValue}
-        ></SearchBar>
       </Box>
-      {filteredCommuniuties.map((community, index) => (
-        <CommunityCard
-          community={community}
-          userStatus={userCommunitiesStatus[community.name]}
-          key={index}
-        />
-      ))}
+      <Box sx={{}}>
+        {filteredCommuniuties.map((community, index) => (
+          <CommunityCard
+            community={community}
+            userStatus={userCommunitiesStatus[community.name]}
+            key={index}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };

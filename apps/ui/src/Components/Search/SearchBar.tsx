@@ -24,7 +24,7 @@ const SearchBar: React.FC<SearchProps> = ({
         freeSolo
         id="options-search"
         options={options}
-        sx={{ width: 300 }}
+        sx={{ width: '100%', backgroundColor: 'background.paper' }}
         onChange={handleChange}
         renderInput={(params) => (
           <TextField
