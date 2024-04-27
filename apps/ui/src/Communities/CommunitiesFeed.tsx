@@ -9,6 +9,7 @@ import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitie
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { HeaderFeed } from './HeaderFeed.styled';
+import { ItemsListFeed } from './ItemsListFeed.styled';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -68,7 +69,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
         </IconButton>
       </HeaderFeed>
-      <Box>
+      <ItemsListFeed>
         {filteredCommuniuties.map((community, index) => (
           <CommunityCard
             community={community}
@@ -76,7 +77,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
             key={index}
           />
         ))}
-      </Box>
+      </ItemsListFeed>
     </Box>
   );
 };
