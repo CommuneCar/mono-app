@@ -1,11 +1,18 @@
 import styled from 'styled-components';
 import { Box } from '@mui/material';
+import { pxToRem } from '../themes/default/utils';
 
 const ItemsListFeed = styled(Box)`
-  padding-top: 64px;
+  position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: ${pxToRem(400)};
+  box-sizing: border-box;
   margin-top: auto;
+  top: ${pxToRem(20)};
+  padding-top: ${pxToRem(60)};
+  margin: 5%;
+  padding-left: 2%;
+  padding-right: 2%;
 `;
 
 export { ItemsListFeed };
