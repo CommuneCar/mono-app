@@ -8,7 +8,6 @@ import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { HeaderFeed } from '../Components/styles/HeaderFeed.styled';
 import { ItemsListFeed } from '../Components/styles/ItemsListFeed.styled';
 import { CreateCommunityDialog } from './CreateCommunityDialog';
 
@@ -65,14 +64,22 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <AppBar position="static">
-        <Toolbar>
-          <HeaderFeed>
-            <SearchBar
-              options={options}
-              handleChangeSearchValue={handleChangeSearchValue}
-            ></SearchBar>
-          </HeaderFeed>
+      <AppBar
+        color="default"
+        sx={{
+          borderRadius: 2,
+          padding: 0,
+          marginX: 10,
+          right: 'auto',
+          left: 'auto',
+          paddingY: 2,
+        }}
+      >
+        <Toolbar variant={'regular'}>
+          <SearchBar
+            options={options}
+            handleChangeSearchValue={handleChangeSearchValue}
+          ></SearchBar>
         </Toolbar>
       </AppBar>
       {isOpen && (

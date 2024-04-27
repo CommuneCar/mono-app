@@ -31,15 +31,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: '750px' }}>
+    <Box
+      sx={{
+        width: '100%',
+        alignSelf: 'center',
+      }}
+    >
       <Autocomplete
         freeSolo
         id="options-search"
         options={options}
-        sx={{
-          width: '100%',
-          backgroundColor: 'background.paper',
-        }}
         onChange={handleChange}
         renderInput={(params) => (
           <TextField
