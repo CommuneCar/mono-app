@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Value } from 'maplibre-gl';
 
@@ -18,6 +18,12 @@ const SearchBar: React.FC<SearchProps> = ({
     handleChangeSearchValue(searchValue);
   };
 
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    console.log({ event });
+  };
+
   return (
     <Box mb={2} sx={{ width: '100%', maxWidth: '750px' }}>
       <Autocomplete
@@ -33,7 +39,7 @@ const SearchBar: React.FC<SearchProps> = ({
             InputProps={{
               ...params.InputProps,
               startAdornment: (
-                <IconButton>
+                <IconButton onClick={handleClick}>
                   <SearchIcon />
                 </IconButton>
               ),
