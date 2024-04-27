@@ -1,16 +1,16 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Fab, IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Value } from 'maplibre-gl';
 import { useRef } from 'react';
 
-export interface SearchProps {
+export interface SearchBarProps {
   options: string[];
   handleChangeSearchValue: (value: string | undefined) => void;
 }
 
-const SearchBar: React.FC<SearchProps> = ({
+const SearchBar: React.FC<SearchBarProps> = ({
   options,
   handleChangeSearchValue,
 }) => {
@@ -31,7 +31,7 @@ const SearchBar: React.FC<SearchProps> = ({
   };
 
   return (
-    <Fab sx={{ width: '100%', maxWidth: '750px' }}>
+    <Box sx={{ width: '100%', maxWidth: '750px' }}>
       <Autocomplete
         freeSolo
         id="options-search"
@@ -57,7 +57,7 @@ const SearchBar: React.FC<SearchProps> = ({
           />
         )}
       />
-    </Fab>
+    </Box>
   );
 };
 

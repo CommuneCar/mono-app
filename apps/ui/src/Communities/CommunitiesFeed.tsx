@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { Fab, Tooltip } from '@mui/material';
+import { AppBar, Fab, Toolbar, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
@@ -33,10 +33,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const handleChangeSearchValue = (value: string | undefined) => {
     const lowerCaseValue = value?.toLowerCase();
     setSearchValue(lowerCaseValue);
-    filterDisplay(lowerCaseValue);
+    filteredListDisplay(lowerCaseValue);
   };
 
-  const filterDisplay = useCallback(
+  const filteredListDisplay = useCallback(
     (value: string | undefined) => {
       const newFilteredCommuniuties = value
         ? allCommunitiesDisplay.filter((community) =>
@@ -49,7 +49,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   );
 
   useEffect(() => {
-    filterDisplay(searchValue);
+    filteredListDisplay(searchValue);
   }, [allCommunitiesDisplay]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -65,12 +65,16 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <HeaderFeed>
-        <SearchBar
-          options={options}
-          handleChangeSearchValue={handleChangeSearchValue}
-        ></SearchBar>
-      </HeaderFeed>
+      <AppBar position="static">
+        <Toolbar>
+          <HeaderFeed>
+            <SearchBar
+              options={options}
+              handleChangeSearchValue={handleChangeSearchValue}
+            ></SearchBar>
+          </HeaderFeed>
+        </Toolbar>
+      </AppBar>
       {isOpen && (
         <CreateCommunityDialog
           handleClose={handleClose}
