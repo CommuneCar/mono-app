@@ -14,7 +14,7 @@ const SearchBar: React.FC<SearchProps> = ({
   options,
   handleChangeSearchValue,
 }) => {
-  const textRef = useRef();
+  const textRef: React.Ref<any> = useRef();
 
   const handleChange = (_event: React.SyntheticEvent, value: Value) => {
     const searchValue = value ? value?.toString() : undefined;
@@ -22,9 +22,12 @@ const SearchBar: React.FC<SearchProps> = ({
   };
 
   const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    _event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
-    console.log({ event, textRef });
+    const searchValue = textRef?.current?.value
+      ? textRef.current.value.toString()
+      : undefined;
+    handleChangeSearchValue(searchValue);
   };
 
   return (
@@ -43,7 +46,7 @@ const SearchBar: React.FC<SearchProps> = ({
             InputProps={{
               ...params.InputProps,
               startAdornment: (
-                <IconButton type="submit" onClick={handleClick}>
+                <IconButton onClick={handleClick}>
                   <SearchIcon />
                 </IconButton>
               ),
