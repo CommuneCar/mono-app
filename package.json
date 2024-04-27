@@ -11,6 +11,9 @@
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
+  },
   "engines": {
     "node": ">=18"
   },
