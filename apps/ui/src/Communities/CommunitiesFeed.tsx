@@ -102,7 +102,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         <Fab
           color="default"
           onClick={() => setIsOpen(true)}
-          sx={{ position: 'fixed', bottom: 10, right: '35%' }}
+          sx={{ position: 'fixed', bottom: 0, right: '3rem', margin: '3rem' }}
         >
           <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
         </Fab>
