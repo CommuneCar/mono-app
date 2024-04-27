@@ -4,13 +4,13 @@ import { IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
-import { ClientCommunity } from '../types/community-type';
+import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface CommunitiesFeedProps {
-  communities: ClientCommunity[];
+  communities: Community[];
 }
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {

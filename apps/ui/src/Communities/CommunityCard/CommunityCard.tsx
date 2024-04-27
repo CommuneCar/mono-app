@@ -6,15 +6,14 @@ import Typography from '@mui/material/Typography';
 
 import defaultTheme from '../../themes/default';
 
-import { UserStatus } from '@communecar/types';
+import { UserStatus, Community } from '@communecar/types';
 import { useState } from 'react';
 import { StatusButton } from './StatusButton';
 import { Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
-import { ClientCommunity } from '../../types/community-type';
 
 export interface CommunityCardProps {
-  community: ClientCommunity;
+  community: Community;
   userStatus: UserStatus;
 }
 
