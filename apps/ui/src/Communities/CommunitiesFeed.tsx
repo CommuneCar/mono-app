@@ -18,18 +18,28 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const [filteredCommuniuties, setFilteredCommuniuties] = useState(communities);
   const [searchValue, setSearchValue] = useState<string>();
 
-  const options = useMemo(() => communities.map((community) => community.name), [communities]);
+  const options = useMemo(
+    () => communities.map((community) => community.name),
+    [communities],
+  );
 
-  const handleChange = (value: string) => {
-    const lowerCaseValue = value?.toLowerCase();    
+  const handleChangeSearchValue = (value: string | undefined) => {
+    const lowerCaseValue = value?.toLowerCase();
     setSearchValue(lowerCaseValue);
     filterDisplay(lowerCaseValue);
-  }
-  
-  const filterDisplay = useCallback((value: string | undefined) => {
-    const newFilteredCommuniuties = value ? communities.filter((community) => community.name.toLowerCase().includes(value)) : communities;  
-    setFilteredCommuniuties(newFilteredCommuniuties);
-  }, [communities]);
+  };
+
+  const filterDisplay = useCallback(
+    (value: string | undefined) => {
+      const newFilteredCommuniuties = value
+        ? communities.filter((community) =>
+            community.name.toLowerCase().includes(value),
+          )
+        : communities;
+      setFilteredCommuniuties(newFilteredCommuniuties);
+    },
+    [communities],
+  );
 
   useEffect(() => {
     filterDisplay(searchValue);
@@ -40,19 +50,22 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
-          <IconButton
-            edge="end"
-            color="inherit"
-            aria-label="add"
-            sx={{
-              '&:hover': {
-                backgroundColor: defaultTheme.palette.action.hover,
-              },
-            }}
-          >
-            <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
-          </IconButton>
-          <SearchBar options={options} onChange={handleChange}></SearchBar>
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="add"
+          sx={{
+            '&:hover': {
+              backgroundColor: defaultTheme.palette.action.hover,
+            },
+          }}
+        >
+          <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
+        </IconButton>
+        <SearchBar
+          options={options}
+          handleChangeSearchValue={handleChangeSearchValue}
+        ></SearchBar>
       </Box>
       {filteredCommuniuties.map((community, index) => (
         <CommunityCard
