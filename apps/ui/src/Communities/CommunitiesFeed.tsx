@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { IconButton } from '@mui/material';
+import { Fab, IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
@@ -10,6 +10,7 @@ import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { HeaderFeed } from './HeaderFeed.styled';
 import { ItemsListFeed } from './ItemsListFeed.styled';
+import { CreateCommunityDialog } from './CreateCommunityDialog';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -17,12 +18,16 @@ export interface CommunitiesFeedProps {
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const userCommunitiesStatus = useUserCommunitiesStatus('hi');
-  const [filteredCommuniuties, setFilteredCommuniuties] = useState(communities);
+  const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
+    useState<Community[]>(communities);
+  const [filteredCommuniuties, setFilteredCommuniuties] = useState(
+    allCommunitiesDisplay,
+  );
   const [searchValue, setSearchValue] = useState<string>();
 
   const options = useMemo(
-    () => communities.map((community) => community.name),
-    [communities],
+    () => allCommunitiesDisplay.map((community) => community.name),
+    [allCommunitiesDisplay],
   );
 
   const handleChangeSearchValue = (value: string | undefined) => {
@@ -34,18 +39,27 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const filterDisplay = useCallback(
     (value: string | undefined) => {
       const newFilteredCommuniuties = value
-        ? communities.filter((community) =>
+        ? allCommunitiesDisplay.filter((community) =>
             community.name.toLowerCase().includes(value),
           )
-        : communities;
+        : allCommunitiesDisplay;
       setFilteredCommuniuties(newFilteredCommuniuties);
     },
-    [communities],
+    [allCommunitiesDisplay],
   );
 
   useEffect(() => {
     filterDisplay(searchValue);
-  }, [communities]);
+  }, [allCommunitiesDisplay]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  const handleNewCommunity = (newCommunity: Community) => {
+    setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
+  };
 
   return (
     <Box
@@ -56,19 +70,14 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
         ></SearchBar>
-        <IconButton
-          edge="end"
-          color="inherit"
-          aria-label="add"
-          sx={{
-            '&:hover': {
-              backgroundColor: defaultTheme.palette.action.hover,
-            },
-          }}
-        >
-          <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
-        </IconButton>
       </HeaderFeed>
+      {isOpen && (
+        <CreateCommunityDialog
+          handleClose={handleClose}
+          isOpen={isOpen}
+          handleNewCommunity={handleNewCommunity}
+        />
+      )}
       <ItemsListFeed>
         {filteredCommuniuties.map((community, index) => (
           <CommunityCard
@@ -78,6 +87,11 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           />
         ))}
       </ItemsListFeed>
+      <Tooltip title="Create a new community">
+        <Fab color="default" onClick={() => setIsOpen(true)}>
+          <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
+        </Fab>
+      </Tooltip>
     </Box>
   );
 };
