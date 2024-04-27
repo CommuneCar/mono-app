@@ -8,8 +8,8 @@ import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { HeaderFeed } from './HeaderFeed.styled';
-import { ItemsListFeed } from './ItemsListFeed.styled';
+import { HeaderFeed } from '../Components/styles/HeaderFeed.styled';
+import { ItemsListFeed } from '../Components/styles/ItemsListFeed.styled';
 import { CreateCommunityDialog } from './CreateCommunityDialog';
 
 export interface CommunitiesFeedProps {

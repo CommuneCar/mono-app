@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import { Box } from '@mui/material';
-import { pxToRem } from '../themes/default/utils';
+import { Box, styled } from '@mui/material';
+import { pxToRem } from '../../themes/default/utils';
 
 const ItemsListFeed = styled(Box)`
   position: relative;
