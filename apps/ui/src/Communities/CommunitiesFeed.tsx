@@ -92,6 +92,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         sx={{
           width: '100%',
           top: '5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          minHeight: 'calc(100vh - 5rem)',
         }}
       >
         {filteredCommuniuties.map((community, index) => (
