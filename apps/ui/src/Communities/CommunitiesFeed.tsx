@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { AppBar, Fab, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Fab, List, Toolbar, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
@@ -8,7 +8,6 @@ import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ItemsListFeed } from '../Components/styles/ItemsListFeed.styled';
 import { CreateCommunityDialog } from './CreateCommunityDialog';
 
 export interface CommunitiesFeedProps {
@@ -89,7 +88,12 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           handleNewCommunity={handleNewCommunity}
         />
       )}
-      <ItemsListFeed>
+      <List
+        sx={{
+          width: '100%',
+          top: '5rem',
+        }}
+      >
         {filteredCommuniuties.map((community, index) => (
           <CommunityCard
             community={community}
@@ -97,7 +101,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
             key={index}
           />
         ))}
-      </ItemsListFeed>
+      </List>
       <Tooltip title="Create a new community">
         <Fab
           color="default"
