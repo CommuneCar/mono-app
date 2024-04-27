@@ -15,11 +15,13 @@ import { SubmitButton } from '../Components/styles/SubmitButton.styled';
 interface CreateCommunityDialogProps {
   handleClose: () => void;
   isOpen: boolean;
+  handleNewCommunity: (newCommunity: Community) => void;
 }
 
 const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
   isOpen,
   handleClose,
+  handleNewCommunity,
 }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,9 +33,7 @@ const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
       name: communityName,
       description,
     };
-    console.log({ newCommunity });
-
-    //TODO - submit newCommunity
+    handleNewCommunity(newCommunity);
     handleClose();
   };
 

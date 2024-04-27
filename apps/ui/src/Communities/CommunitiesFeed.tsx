@@ -17,8 +17,15 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const userCommunitiesStatus = useUserCommunitiesStatus('hi');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
+    useState<Community[]>(communities);
+
   const handleClose = () => {
     setIsOpen(false);
+  };
+
+  const handleNewCommunity = (newCommunity: Community) => {
+    setAllCommunitiesDisplay((prev) => [...prev, newCommunity]);
   };
 
   return (
@@ -43,9 +50,13 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         </Tooltip>
       </Box>
       {isOpen && (
-        <CreateCommunityDialog handleClose={handleClose} isOpen={isOpen} />
+        <CreateCommunityDialog
+          handleClose={handleClose}
+          isOpen={isOpen}
+          handleNewCommunity={handleNewCommunity}
+        />
       )}
-      {communities.map((community) => (
+      {allCommunitiesDisplay.map((community) => (
         <CommunityCard
           community={community}
           userStatus={userCommunitiesStatus[community.name]}
