@@ -8,7 +8,6 @@ import {
   TextField,
 } from '@mui/material';
 import React from 'react';
-import defaultTheme from '../themes/default';
 import { TEXT } from '../themes/default/consts';
 import { Community } from '@communecar/types';
 import { SubmitButton } from '../Components/styles/SubmitButton.styled';
@@ -82,19 +81,6 @@ const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
-          {/* <Button
-            type="submit"
-            sx={{
-              backgroundColor: defaultTheme.palette.primary.main,
-              color: defaultTheme.palette.primary.contrastText,
-              '&:hover': {
-                backgroundColor: defaultTheme.palette.action.hoverOpacity,
-                color: defaultTheme.palette.primary.main,
-              },
-            }}
-          >
-            {TEXT.CREATE}
-          </Button> */}
           <SubmitButton type="submit">{TEXT.CREATE}</SubmitButton>
         </DialogActions>
       </Dialog>

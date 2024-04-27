@@ -1,7 +1,7 @@
 export interface Community {
   name: string;
   description: string;
-  startLocation: string;
-  numberOfMembers: number;
+  startLocation?: string;
+  numberOfMembers?: number;
   picturesUrl?: string[];
 }
