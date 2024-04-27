@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Value } from 'maplibre-gl';
 
@@ -32,7 +32,11 @@ const SearchBar: React.FC<SearchProps> = ({
             placeholder="Search"
             InputProps={{
               ...params.InputProps,
-              startAdornment: <Button startIcon={<SearchIcon />}></Button>,
+              startAdornment: (
+                <IconButton>
+                  <SearchIcon />
+                </IconButton>
+              ),
             }}
           />
         )}
