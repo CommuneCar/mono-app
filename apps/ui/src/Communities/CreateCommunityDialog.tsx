@@ -40,49 +40,47 @@ const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
   };
 
   return (
-    <>
-      <Dialog
-        open={isOpen}
-        onClose={handleClose}
-        PaperProps={{
-          component: 'form',
-          onSubmit: handleSubmit,
-        }}
-      >
-        <DialogTitle>{TEXT.CREATE_COMMUNITY}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {TEXT.CREATE_COMMUNITY_DESCRIPTION}
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="communityName"
-            name="communityName"
-            label="Community Name"
-            type="communityName"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="description"
-            name="description"
-            label="Description"
-            type="description"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
-          <SubmitButton type="submit">{TEXT.CREATE}</SubmitButton>
-        </DialogActions>
-      </Dialog>
-    </>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      PaperProps={{
+        component: 'form',
+        onSubmit: handleSubmit,
+      }}
+    >
+      <DialogTitle>{TEXT.CREATE_COMMUNITY}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          {TEXT.CREATE_COMMUNITY_DESCRIPTION}
+        </DialogContentText>
+        <TextField
+          autoFocus
+          required
+          margin="dense"
+          id="communityName"
+          name="communityName"
+          label="Community Name"
+          type="communityName"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
+          autoFocus
+          required
+          margin="dense"
+          id="description"
+          name="description"
+          label="Description"
+          type="description"
+          fullWidth
+          variant="standard"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
+        <SubmitButton type="submit">{TEXT.CREATE}</SubmitButton>
+      </DialogActions>
+    </Dialog>
   );
 };
 

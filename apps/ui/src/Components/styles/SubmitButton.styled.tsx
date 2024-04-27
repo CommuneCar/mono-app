@@ -1,6 +1,5 @@
-import styled from 'styled-components';
 import defaultTheme from '../../themes/default';
-import { Button } from '@mui/material';
+import { Button, styled } from '@mui/material';
 
 const SubmitButton = styled(Button)`
   background-color: ${defaultTheme.palette.primary.main};
