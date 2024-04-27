@@ -32,6 +32,8 @@ const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
     const newCommunity: Community = {
       name: communityName,
       description,
+      numberOfMembers: 0,
+      picturesUrl: [],
     };
     handleNewCommunity(newCommunity);
     handleClose();
