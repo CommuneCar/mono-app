@@ -25,7 +25,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
-    setAllCommunitiesDisplay((prev) => [...prev, newCommunity]);
+    setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
   };
 
   return (
