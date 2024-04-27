@@ -1,5 +1,10 @@
 import { Box } from '@mui/material';
-import React, { useState, useEffect, PropsWithChildren } from 'react';
+import React, {
+  useState,
+  useEffect,
+  PropsWithChildren,
+  useCallback,
+} from 'react';
 
 import {
   BottomSheetBase,
@@ -10,27 +15,29 @@ import {
 const BottomDrawer: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleScroll = useCallback(() => {
+    const contentElement = document.querySelector('.bottom-sheet-content');
+    const scrollTop = contentElement?.scrollTop ?? 0;
+    const scrollHeight = contentElement?.scrollHeight ?? 0;
+    const clientHeight = contentElement?.clientHeight ?? 0;
+    const triggerPoint = scrollHeight - clientHeight * 2.5; // Change the percentage as needed
+
+    if (scrollTop === 0 && isOpen) {
+      setIsOpen(false);
+      return;
+    }
+
+    if (scrollTop > triggerPoint) {
+      setIsOpen(true);
+      return;
+    }
+  }, [isOpen]);
+
   useEffect(() => {
-    const handleScroll = () => {
-      const contentElement = document.querySelector('.bottom-sheet-content');
-      const scrollTop = contentElement?.scrollTop ?? 0;
-      const scrollHeight = contentElement?.scrollHeight ?? 0;
-      const clientHeight = contentElement?.clientHeight ?? 0;
-      const triggerPoint = scrollHeight - clientHeight * 2.5; // Change the percentage as needed
-
-      if (scrollTop > triggerPoint) {
-        setIsOpen(true);
-      }
-
-      if (scrollTop === 0 && isOpen) {
-        setIsOpen(false);
-      }
-    };
-
     const contentElement = document.querySelector('.bottom-sheet-content');
     contentElement?.addEventListener('scroll', handleScroll);
     return () => contentElement?.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isOpen]);
 
   const toggleBottomSheet = () => {
     setIsOpen(!isOpen);
