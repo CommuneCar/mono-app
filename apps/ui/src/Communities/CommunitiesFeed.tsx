@@ -8,6 +8,7 @@ import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { HeaderFeed } from './HeaderFeed.styled';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -49,19 +50,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          zIndex: 1100,
-          width: '100%',
-          maxWidth: 400,
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          padding: '8px',
-        }}
-      >
+      <HeaderFeed>
         <SearchBar
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
@@ -78,8 +67,8 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         >
           <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
         </IconButton>
-      </Box>
-      <Box sx={{}}>
+      </HeaderFeed>
+      <Box>
         {filteredCommuniuties.map((community, index) => (
           <CommunityCard
             community={community}
