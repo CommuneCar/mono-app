@@ -13,18 +13,14 @@ import { Community } from '@communecar/types';
 import { SubmitButton } from '../Components/styles/SubmitButton.styled';
 
 interface CreateCommunityDialogProps {
-  setIsOpen: (isOpen: boolean) => void;
+  handleClose: () => void;
   isOpen: boolean;
 }
 
 const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
   isOpen,
-  setIsOpen,
+  handleClose,
 }) => {
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

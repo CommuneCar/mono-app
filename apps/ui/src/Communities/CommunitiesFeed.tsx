@@ -17,6 +17,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const userCommunitiesStatus = useUserCommunitiesStatus('hi');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -24,7 +28,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
       <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
         <Tooltip title="Create a new community">
           <IconButton
-           onClick={() => setIsOpen(true)}
+            onClick={() => setIsOpen(true)}
             edge="end"
             color="inherit"
             aria-label="add"
@@ -39,7 +43,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         </Tooltip>
       </Box>
       {isOpen && (
-        <CreateCommunityDialog setIsOpen={setIsOpen} isOpen={isOpen} />
+        <CreateCommunityDialog handleClose={handleClose} isOpen={isOpen} />
       )}
       {communities.map((community) => (
         <CommunityCard
