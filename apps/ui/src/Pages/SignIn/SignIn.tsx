@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { Box, Button, Link, Container } from '@mui/material';
@@ -55,6 +55,7 @@ const SignIn: React.FC = () => {
     };
 
     if (isSubmitEnabled) {
+      console.log(userSignIn); // will be sent to server instead
       navigate('/home');
     }
   };
