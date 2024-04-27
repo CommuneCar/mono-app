@@ -31,10 +31,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const handleChangeSearchValue = (value: string | undefined) => {
     const lowerCaseValue = value?.toLowerCase();
     setSearchValue(lowerCaseValue);
-    filteredListDisplay(lowerCaseValue);
+    filteredCommunities(lowerCaseValue);
   };
 
-  const filteredListDisplay = useCallback(
+  const filteredCommunities = useCallback(
     (value: string | undefined) => {
       const newFilteredCommuniuties = value
         ? allCommunitiesDisplay.filter((community) =>
@@ -47,7 +47,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   );
 
   useEffect(() => {
-    filteredListDisplay(searchValue);
+    filteredCommunities(searchValue);
   }, [allCommunitiesDisplay]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
