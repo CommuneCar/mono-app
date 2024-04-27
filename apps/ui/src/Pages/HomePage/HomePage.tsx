@@ -5,9 +5,9 @@ import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import Map from '../../Components/Map';
 import { MainMenuButton, Page } from './styles';
-import { SideMenu } from '../../Components/Menu/menu';
-import { BottomDrawer } from '../../Components/bottom-drawer/bottom-drawer';
-import { CommunityList } from '../../Components/community-list/community-list';
+import { Menu } from '../../Components/Menu/Menu';
+import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
+import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
 import {
   useGetAllRides,
@@ -21,12 +21,15 @@ const HomePage: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const communities = useMemo(() => {
-    const base = useGetAllCommunities();
+    const baseCommunities = useGetAllCommunities();
     const baseRides = useGetAllRides();
 
     const groupedRides = groupBy(baseRides, 'communityName');
 
-    return base.map((com) => ({ ...com, rides: groupedRides[com.name] ?? [] }));
+    return baseCommunities.map((community) => ({
+      ...community,
+      rides: groupedRides[community.name] ?? [],
+    }));
   }, []);
 
   const ChangeSelectedTab = (
@@ -38,7 +41,7 @@ const HomePage: React.FC = () => {
 
   return (
     <Page>
-      <SideMenu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
+      <Menu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
 
       <Box style={{ height: '66%' }}>
         <Map

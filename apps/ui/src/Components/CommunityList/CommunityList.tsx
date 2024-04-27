@@ -2,15 +2,12 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { isEmpty } from 'lodash';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
-import { Community } from '@communecar/types';
-
-import { RideCard } from '../ride-card/ride-card';
+import { CommunityWithRides } from './types';
+import { RideCard } from '../RideCard/RideCard';
 
 dayjs.extend(relativeTime);
-
-type CommunityWithRides = Community & { rides: any[] };
 
 interface CommunityListProps {
   communities: CommunityWithRides[];
@@ -22,7 +19,7 @@ const CommunityList: React.FC<CommunityListProps> = (props) => {
   return (
     <>
       {communities.map((community, index) => (
-        <div key={index}>
+        <Box key={index}>
           <Typography variant="h5" align="left" px={1}>
             {community.name}
           </Typography>
@@ -44,7 +41,7 @@ const CommunityList: React.FC<CommunityListProps> = (props) => {
               />
             ))
           )}
-        </div>
+        </Box>
       ))}
     </>
   );

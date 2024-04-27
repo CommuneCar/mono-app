@@ -11,11 +11,7 @@ import SigningHeader from '../../Components/Signing/SigningHeader';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 
-interface SignInProps {
-  setMenuVisible: Dispatch<SetStateAction<boolean>>;
-}
-
-const SignIn: React.FC<SignInProps> = ({ setMenuVisible }) => {
+const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -27,7 +23,16 @@ const SignIn: React.FC<SignInProps> = ({ setMenuVisible }) => {
   });
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
-  useEffect(() => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    const error = validateField(name, value);
+    setFormErrors((prev) => ({ ...prev, [name]: error ? error : null }));
+
     const hasErrors = Object.values(formErrors).some((error) => error !== null);
     const allFieldsFilled = Object.values(formData).every(
       (field) => !isEmpty(field),
@@ -38,17 +43,6 @@ const SignIn: React.FC<SignInProps> = ({ setMenuVisible }) => {
     } else {
       setIsSubmitEnabled(!hasErrors);
     }
-  }, [formErrors]);
-
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = event.target;
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    const error = validateField(name, value);
-    setFormErrors((prev) => ({ ...prev, [name]: error ? error : null }));
   };
 
   const navigate = useNavigate();
@@ -59,10 +53,8 @@ const SignIn: React.FC<SignInProps> = ({ setMenuVisible }) => {
       email: data.get('email'),
       password: data.get('password'),
     };
-    console.log({ userSignIn });
 
     if (isSubmitEnabled) {
-      setMenuVisible(true);
       navigate('/home');
     }
   };

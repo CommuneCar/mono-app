@@ -10,10 +10,10 @@ import MapPage from './Pages/Map';
 import RidesFeed from './Pages/RidesFeed';
 import SignIn from './Pages/SignIn/SignIn';
 import SignUp from './Pages/Signup/SignUp';
-import { SideMenu } from './Components/Menu/menu';
+import { Menu } from './Components/Menu/Menu';
 import SearchBar from './Components/Map/SearchBar';
+import { HomePage } from './Pages/HomePage/HomePage';
 import MapNavigationPage from './Pages/MapNavigation';
-import { HomePage } from './Pages/home-page/home-page';
 import CommunitiesFeed from './Communities/CommunitiesFeed';
 import {
   useGetAllRides,
@@ -22,7 +22,6 @@ import {
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(false);
 
   const communities = useGetAllCommunities();
 
@@ -32,18 +31,14 @@ function App() {
     <>
       <CssBaseline />
       <Router>
-        <SideMenu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
+        <Menu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
 
-        {menuVisible && (
-          <Button onClick={() => setIsMenuOpen(true)}>
-            <MenuIcon />
-          </Button>
-        )}
+        <Button onClick={() => setIsMenuOpen(true)}>
+          <MenuIcon />
+        </Button>
+
         <Routes>
-          <Route
-            path="/"
-            element={<SignIn setMenuVisible={setMenuVisible} />}
-          />
+          <Route path="/" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/rides" element={<RidesFeed rides={rides} />} />
           <Route

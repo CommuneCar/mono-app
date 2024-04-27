@@ -21,12 +21,12 @@ import React, { Dispatch, ReactNode, SetStateAction, useMemo } from 'react';
 
 import defaultTheme from '../../themes/default';
 
-interface SideMenuProps {
+interface MenuProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const SideMenu: React.FC<SideMenuProps> = ({ isOpen, setIsOpen }) => {
+const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
 
   const menuOptions: Record<string, [ReactNode, string]> = useMemo(
@@ -105,4 +105,4 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export { SideMenu };
+export { Menu };
