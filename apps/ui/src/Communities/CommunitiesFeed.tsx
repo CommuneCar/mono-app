@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { Fab, IconButton, Tooltip } from '@mui/material';
+import { Fab, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import defaultTheme from '../themes/default';
@@ -88,7 +88,11 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         ))}
       </ItemsListFeed>
       <Tooltip title="Create a new community">
-        <Fab color="default" onClick={() => setIsOpen(true)}>
+        <Fab
+          color="default"
+          onClick={() => setIsOpen(true)}
+          sx={{ position: 'fixed', bottom: 10, right: '35%' }}
+        >
           <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
         </Fab>
       </Tooltip>

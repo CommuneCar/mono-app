@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Box, IconButton } from '@mui/material';
+import { Fab, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Value } from 'maplibre-gl';
 import { useRef } from 'react';
@@ -31,12 +31,15 @@ const SearchBar: React.FC<SearchProps> = ({
   };
 
   return (
-    <Box mb={2} sx={{ width: '100%', maxWidth: '750px' }}>
+    <Fab sx={{ width: '100%', maxWidth: '750px' }}>
       <Autocomplete
         freeSolo
         id="options-search"
         options={options}
-        sx={{ width: '100%', backgroundColor: 'background.paper' }}
+        sx={{
+          width: '100%',
+          backgroundColor: 'background.paper',
+        }}
         onChange={handleChange}
         renderInput={(params) => (
           <TextField
@@ -54,7 +57,7 @@ const SearchBar: React.FC<SearchProps> = ({
           />
         )}
       />
-    </Box>
+    </Fab>
   );
 };
 
