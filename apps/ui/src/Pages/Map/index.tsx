@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import Map from '../../Components/Map';
+import { Map } from '../../Components/Map/Map';
 
 // Define start point and destinations
 const startPoint: [number, number] = [34.781769, 32.079444]; // Example start point
@@ -24,11 +24,7 @@ const MapPage: React.FC = () => {
 
   return (
     <div style={mapContainerStyle} className="full-viewport">
-      <Map
-        startPoint={startPoint}
-        destinations={destinations}
-        mapStyle="regular"
-      />
+      <Map />
     </div>
   );
 };

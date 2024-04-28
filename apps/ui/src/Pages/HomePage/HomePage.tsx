@@ -3,7 +3,7 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
-import Map from '../../Components/Map';
+import { Map } from '../../Components/Map/Map';
 import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
@@ -42,17 +42,10 @@ const HomePage: React.FC = () => {
   return (
     <Page>
       <Menu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
-
-      <Box style={{ height: '66%' }}>
-        <Map
-          destinations={[]}
-          mapStyle={'regular'}
-          startPoint={[34.781769, 32.079444]}
-        />
-        <MainMenuButton color="primary" onClick={() => setIsProfileOpen(true)}>
-          <MenuIcon />
-        </MainMenuButton>
-      </Box>
+      <Map />
+      <MainMenuButton color="primary" onClick={() => setIsProfileOpen(true)}>
+        <MenuIcon />
+      </MainMenuButton>
       <BottomDrawer>
         <>
           <Box style={{ margin: '2%' }}>
