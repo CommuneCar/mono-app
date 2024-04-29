@@ -21,21 +21,21 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const [filteredCommunities, setFilteredCommunities] = useState(
     allCommunitiesDisplay,
   );
-  const [searchValue, setSearchValue] = useState<string>();
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const options = useMemo(
     () => allCommunitiesDisplay.map((community) => community.name),
     [allCommunitiesDisplay],
   );
 
-  const handleChangeSearchValue = (value: string | undefined) => {
+  const handleChangeSearchValue = (value: string) => {
     const lowerCaseValue = value?.toLowerCase();
     setSearchValue(lowerCaseValue);
     filterCommunities(lowerCaseValue);
   };
 
   const filterCommunities = useCallback(
-    (value: string | undefined) => {
+    (value: string) => {
       const newFilteredCommuniuties = value
         ? allCommunitiesDisplay.filter((community) =>
             community.name.toLowerCase().includes(value),

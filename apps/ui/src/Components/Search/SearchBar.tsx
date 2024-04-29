@@ -7,7 +7,7 @@ import { useRef } from 'react';
 
 export interface SearchBarProps {
   options: string[];
-  handleChangeSearchValue: (value: string | undefined) => void;
+  handleChangeSearchValue: (value: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const textRef: React.Ref<any> = useRef();
 
   const handleChange = (_event: React.SyntheticEvent, value: Value) => {
-    const searchValue = value ? value?.toString() : undefined;
+    const searchValue = value ? value?.toString() : '';
     handleChangeSearchValue(searchValue);
   };
 
