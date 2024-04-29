@@ -2,7 +2,6 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Value } from 'maplibre-gl';
 import { useRef } from 'react';
 
 export interface SearchBarProps {
@@ -16,7 +15,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const textRef: React.Ref<any> = useRef();
 
-  const handleChange = (_event: React.SyntheticEvent, value: Value) => {
+  const handleChange = (_event: React.SyntheticEvent, value: string | null) => {
     const searchValue = value ? value?.toString() : '';
     handleChangeSearchValue(searchValue);
   };
