@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { StatusButton } from './StatusButton';
 import { Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
+import { CardMenu } from '../../Components/CardMenu/CardMenu';
 
 export interface CommunityCardProps {
   community: Community;
@@ -25,8 +26,10 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const [joined, setJoined] = useState(false);
 
   //TODO - handleChangeStatus
-  console.log({joined});//TODO when the server ready
-  
+  console.log({ joined }); //TODO when the server ready
+
+  const isManager = userStatus === UserStatus.MANAGER;
+
   return (
     <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -39,6 +42,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           >
             {name}
           </Typography>
+          <CardMenu isManager={isManager}></CardMenu>
           <Typography
             variant="body2"
             color={defaultTheme.palette.text.secondary}
