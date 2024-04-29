@@ -1,15 +1,13 @@
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 
 import defaultTheme from '../../themes/default';
 
 import { UserStatus, Community } from '@communecar/types';
 import { useState } from 'react';
 import { StatusButton } from './StatusButton';
-import { Grid } from '@mui/material';
+import { CardHeader, Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
 
@@ -33,25 +31,21 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   return (
     <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography
-            gutterBottom
-            variant="subtitle1"
-            color={defaultTheme.palette.text.primary}
-            align="left"
-          >
-            {name}
-          </Typography>
-          <CardMenu isManager={isManager}></CardMenu>
-          <Typography
-            variant="body2"
-            color={defaultTheme.palette.text.secondary}
-            align="left"
-          >
-            {description}
-          </Typography>
-        </CardContent>
-
+        <CardHeader
+          action={<CardMenu isManager={isManager}></CardMenu>}
+          title={name}
+          titleTypographyProps={{
+            variant: 'subtitle1',
+            color: defaultTheme.palette.text.primary,
+            align: 'left',
+          }}
+          subheader={description}
+          subheaderTypographyProps={{
+            variant: 'body2',
+            color: defaultTheme.palette.text.secondary,
+            align: 'left',
+          }}
+        ></CardHeader>
         <CardActions>
           <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid item xs={6}>
