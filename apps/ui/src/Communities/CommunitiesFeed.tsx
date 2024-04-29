@@ -1,15 +1,14 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { AppBar, Fab, Toolbar, Tooltip } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { AppBar, Toolbar } from '@mui/material';
 
-import defaultTheme from '../themes/default';
 import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateCommunityDialog } from './CreateCommunityDialog';
 import { FeedList } from '../Components/styles/FeedList.styled';
+import { AddNewButton } from '../Components/AddNew/AddNewButton';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -98,20 +97,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           />
         ))}
       </FeedList>
-      <Tooltip title="Create a new community">
-        <Fab
-          color="default"
-          onClick={() => setIsOpen(true)}
-          sx={{
-            position: 'fixed',
-            bottom: '0%',
-            right: '1%',
-            margin: '1%',
-          }}
-        >
-          <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
-        </Fab>
-      </Tooltip>
+      <AddNewButton
+        setIsOpen={setIsOpen}
+        tooltipText="Create a new community"
+      />
     </Box>
   );
 };
