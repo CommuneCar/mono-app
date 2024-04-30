@@ -25,10 +25,10 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const [joined, setJoined] = useState(false);
 
   //TODO - handleChangeStatus
-  console.log({joined});//TODO when the server ready
-  
+  console.log({ joined }); //TODO when the server ready
+
   return (
-    <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
+    <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography
