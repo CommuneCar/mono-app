@@ -1,13 +1,14 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { Fab, Tooltip } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { AppBar, Toolbar } from '@mui/material';
 
-import defaultTheme from '../themes/default';
 import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { SearchBar } from '../Components/Search/SearchBar';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateCommunityDialog } from './CreateCommunityDialog';
-import { useState } from 'react';
+import { FeedList } from '../Components/styles/FeedList.styled';
+import { AddNewButton } from '../Components/AddNew/AddNewButton';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -15,10 +16,40 @@ export interface CommunitiesFeedProps {
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const userCommunitiesStatus = useUserCommunitiesStatus('hi');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
     useState<Community[]>(communities);
+  const [filteredCommunities, setFilteredCommunities] = useState(
+    allCommunitiesDisplay,
+  );
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const options = useMemo(
+    () => allCommunitiesDisplay.map((community) => community.name),
+    [allCommunitiesDisplay],
+  );
+
+  const handleChangeSearchValue = (value: string) => {
+    const lowerCaseValue = value?.toLowerCase();
+    setSearchValue(lowerCaseValue);
+    filterCommunities(lowerCaseValue);
+  };
+
+  const filterCommunities = useCallback(
+    (value: string) => {
+      const newFilteredCommuniuties = value
+        ? allCommunitiesDisplay.filter((community) =>
+            community.name.toLowerCase().includes(value),
+          )
+        : allCommunitiesDisplay;
+      setFilteredCommunities(newFilteredCommuniuties);
+    },
+    [allCommunitiesDisplay],
+  );
+
+  useEffect(() => {
+    filterCommunities(searchValue);
+  }, [allCommunitiesDisplay]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -32,13 +63,24 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
-        <Tooltip title="Create a new community">
-          <Fab color="default" onClick={() => setIsOpen(true)}>
-            <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
-          </Fab>
-        </Tooltip>
-      </Box>
+      <AppBar
+        color="default"
+        sx={{
+          borderRadius: 2,
+          padding: 0,
+          marginX: 10,
+          right: 'auto',
+          left: 'auto',
+          paddingY: 2,
+        }}
+      >
+        <Toolbar variant={'regular'}>
+          <SearchBar
+            options={options}
+            handleChangeSearchValue={handleChangeSearchValue}
+          ></SearchBar>
+        </Toolbar>
+      </AppBar>
       {isOpen && (
         <CreateCommunityDialog
           handleClose={handleClose}
@@ -46,12 +88,19 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           handleNewCommunity={handleNewCommunity}
         />
       )}
-      {allCommunitiesDisplay.map((community) => (
-        <CommunityCard
-          community={community}
-          userStatus={userCommunitiesStatus[community.name]}
-        />
-      ))}
+      <FeedList>
+        {filteredCommunities.map((community, index) => (
+          <CommunityCard
+            community={community}
+            userStatus={userCommunitiesStatus[community.name]}
+            key={index}
+          />
+        ))}
+      </FeedList>
+      <AddNewButton
+        setIsOpen={setIsOpen}
+        tooltipText="Create a new community"
+      />
     </Box>
   );
 };
