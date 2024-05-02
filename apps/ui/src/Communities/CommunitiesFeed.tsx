@@ -6,16 +6,18 @@ import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateCommunityDialog } from './CreateCommunityDialog';
+import { CreateCommunityDialog } from './CommunityCard/CommunityForms/CreateCommunityDialog';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
+import { useUser } from '../hooks/Users/useUser';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
 }
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
-  const userCommunitiesStatus = useUserCommunitiesStatus('hi');
+  const { user } = useUser();
+  const userCommunitiesStatus = useUserCommunitiesStatus(user?.id ?? 'admin');
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
     useState<Community[]>(communities);
   const [filteredCommunities, setFilteredCommunities] = useState(
