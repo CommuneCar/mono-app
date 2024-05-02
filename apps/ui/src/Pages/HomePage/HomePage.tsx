@@ -1,9 +1,9 @@
-import { groupBy } from 'lodash';
+import { flatten, groupBy } from 'lodash';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
-import { Map } from '../../Components/Map/Map';
+import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
@@ -42,7 +42,18 @@ const HomePage: React.FC = () => {
   return (
     <Page>
       <Menu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
-      <Map />
+      <Map
+        markers={
+          flatten(
+            communities.map((community) =>
+              community.rides.map((ride) => ({
+                geocode: ride.startLocation,
+                popUp: `${ride.driver} going to ${ride.destination}`,
+              })),
+            ),
+          ) as MarkerInfo[]
+        }
+      />
       <MainMenuButton color="primary" onClick={() => setIsProfileOpen(true)}>
         <MenuIcon />
       </MainMenuButton>

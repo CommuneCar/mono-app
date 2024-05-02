@@ -36,7 +36,7 @@ const CommunityList: React.FC<CommunityListProps> = (props) => {
             community.rides.map((ride, index) => (
               <RideCard
                 driver={ride.driver}
-                text={`going from ${ride.startLocation} to ${ride.destination} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+                text={`going from ${ride.startLocationName} to ${ride.destination} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
                 key={index}
               />
             ))
