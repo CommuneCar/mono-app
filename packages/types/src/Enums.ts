@@ -4,3 +4,9 @@ export enum UserStatus {
   REJECTED = 'Rejected',
   MANAGER = 'Manager',
 }
+
+export enum Gander {
+  FEMALE = 'Female',
+  MALE = 'Male',
+  OTHER = 'Other',
+}
