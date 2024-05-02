@@ -24,6 +24,10 @@ const CardMenu: React.FC<CardMenuProps> = ({ isManager = false }) => {
     setAnchorEl(null);
   };
 
+  const handleSelectOption = () => {
+    handleClose();
+  };
+
   const options = [...userOptions, ...managerOptions];
 
   return (
@@ -48,7 +52,7 @@ const CardMenu: React.FC<CardMenuProps> = ({ isManager = false }) => {
             <MenuItem
               key={option}
               selected={option === 'Pyxis'}
-              onClick={handleClose}
+              onClick={handleSelectOption}
             >
               {option}
             </MenuItem>

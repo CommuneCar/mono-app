@@ -19,6 +19,7 @@ import {
   useGetAllRides,
   useGetAllCommunities,
 } from './hooks/Communities/useGetAllCommunities';
+import { UserProvider } from './hooks/Users/useUser';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,19 +38,21 @@ function App() {
           <MenuIcon />
         </Button>
 
-        <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/rides" element={<RidesFeed rides={rides} />} />
-          <Route
-            path="/communities"
-            element={<CommunitiesFeed communities={communities} />}
-          />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/map/navigation" element={<MapNavigationPage />} />
-          <Route path="/search" element={<SearchBar />} />
-        </Routes>
+        <UserProvider>
+          <Routes>
+            <Route path="/" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/rides" element={<RidesFeed rides={rides} />} />
+            <Route
+              path="/communities"
+              element={<CommunitiesFeed communities={communities} />}
+            />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="/map/navigation" element={<MapNavigationPage />} />
+            <Route path="/search" element={<SearchBar />} />
+          </Routes>
+        </UserProvider>
       </Router>
     </>
   );

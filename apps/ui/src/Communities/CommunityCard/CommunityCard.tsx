@@ -32,7 +32,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
     <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardHeader
-          action={<CardMenu isManager={isManager}></CardMenu>}
           title={name}
           titleTypographyProps={{
             variant: 'subtitle1',
@@ -45,6 +44,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             color: defaultTheme.palette.text.secondary,
             align: 'left',
           }}
+          action={<CardMenu isManager={isManager}></CardMenu>}
         ></CardHeader>
         <CardActions>
           <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
