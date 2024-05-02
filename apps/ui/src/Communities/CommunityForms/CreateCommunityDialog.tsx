@@ -8,20 +8,23 @@ import {
   TextField,
 } from '@mui/material';
 import React from 'react';
-import { TEXT } from '../themes/default/consts';
+import { TEXT } from '../../themes/default/consts';
 import { Community } from '@communecar/types';
-import { SubmitButton } from '../Components/styles/SubmitButton.styled';
+import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
+import { CommunityForm } from './CommunityForm';
 
 interface CreateCommunityDialogProps {
   handleClose: () => void;
   isOpen: boolean;
-  handleNewCommunity: (newCommunity: Community) => void;
+  handleNewCommunity: (community: Community) => void;
+  communityToUpdate?: Community;
 }
 
 const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
   isOpen,
   handleClose,
   handleNewCommunity,
+  communityToUpdate,
 }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -53,7 +56,7 @@ const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
         <DialogContentText>
           {TEXT.CREATE_COMMUNITY_DESCRIPTION}
         </DialogContentText>
-        <TextField
+        {/* <TextField
           autoFocus
           required
           margin="dense"
@@ -74,7 +77,12 @@ const CreateCommunityDialog: React.FC<CreateCommunityDialogProps> = ({
           type="description"
           fullWidth
           variant="standard"
-        />
+        /> */}
+        <CommunityForm
+          communityToUpdate={communityToUpdate}
+          onCreate={handleNewCommunity}
+          onUpdate={handleNewCommunity}
+        ></CommunityForm>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{TEXT.CANCEL}</Button>

@@ -5,16 +5,24 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box } from '@mui/material';
 
-const managerOptions: string[] = ['Edit'];
+enum MANAGER_OPTIONS {
+  EDIT = 'Edit',
+}
+
+const managerOptions: string[] = [MANAGER_OPTIONS.EDIT];
 const userOptions: string[] = [];
 
 const ITEM_HEIGHT = 48;
 
 export interface CardMenuProps {
+  handleEditClick: () => void;
   isManager?: boolean;
 }
 
-const CardMenu: React.FC<CardMenuProps> = ({ isManager = false }) => {
+const CardMenu: React.FC<CardMenuProps> = ({
+  isManager = false,
+  handleEditClick,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -24,7 +32,10 @@ const CardMenu: React.FC<CardMenuProps> = ({ isManager = false }) => {
     setAnchorEl(null);
   };
 
-  const handleSelectOption = () => {
+  const handleSelectOption = (option: string) => {
+    if (option === MANAGER_OPTIONS.EDIT) {
+      handleEditClick();
+    }
     handleClose();
   };
 
@@ -52,7 +63,7 @@ const CardMenu: React.FC<CardMenuProps> = ({ isManager = false }) => {
             <MenuItem
               key={option}
               selected={option === 'Pyxis'}
-              onClick={handleSelectOption}
+              onClick={() => handleSelectOption(option)}
             >
               {option}
             </MenuItem>

@@ -6,7 +6,7 @@ import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateCommunityDialog } from './CommunityCard/CommunityForms/CreateCommunityDialog';
+import { CreateCommunityDialog } from './CommunityForms/CreateCommunityDialog';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { useUser } from '../hooks/Users/useUser';
@@ -51,6 +51,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   useEffect(() => {
     filterCommunities(searchValue);
   }, [allCommunitiesDisplay]);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleClose = () => {
@@ -59,6 +60,17 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
 
   const handleNewCommunity = (newCommunity: Community) => {
     setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
+  };
+
+  const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
+
+  const handleUpdateCommunity = (communityUpdated: Community) => {
+    setAllCommunitiesDisplay((prev) => {
+      const communities = prev.filter(
+        (community) => community.id !== communityUpdated.id,
+      );
+      return [...prev, communityUpdated];
+    });
   };
 
   return (
@@ -83,6 +95,15 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           ></SearchBar>
         </Toolbar>
       </AppBar>
+      {communityToUpdate && (
+        <CreateCommunityDialog
+          handleClose={() => setCommunityToUpdate(undefined)}
+          isOpen={!!communityToUpdate}
+          handleNewCommunity={handleNewCommunity}
+          communityToUpdate={communityToUpdate}
+        />
+      )}
+
       {isOpen && (
         <CreateCommunityDialog
           handleClose={handleClose}
@@ -93,9 +114,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
       <FeedList>
         {filteredCommunities.map((community, index) => (
           <CommunityCard
+            key={index}
             community={community}
             userStatus={userCommunitiesStatus[community.name]}
-            key={index}
+            setCommunityToUpdate={setCommunityToUpdate}
           />
         ))}
       </FeedList>
