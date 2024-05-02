@@ -1,26 +1,17 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
-import defaultTheme from '../../themes/default';
-import SigningHeader from '../../Components/Signing/SigningHeader';
-import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import {
-  validateField,
-} from '../../utils/signing/validation';
-import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { TEXT } from '../../themes/default/consts';
 import { isEmpty } from 'lodash';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { Box, Button, Link, Container } from '@mui/material';
 
-interface SignInProps {
-  setMenuVisible: (value: boolean) => void;
-}
+import defaultTheme from '../../themes/default';
+import { TEXT } from '../../themes/default/consts';
+import { validateField } from '../../utils/signing/validation';
+import SigningHeader from '../../Components/Signing/SigningHeader';
+import { EmailField } from '../../Components/Signing/Fields/EmailField';
+import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 
-const SignIn = ({ setMenuVisible }: SignInProps) => {
+const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -32,24 +23,26 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
   });
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
-  useEffect(() => {
-    const hasErrors = Object.values(formErrors).some(error => error !== null);
-    const allFieldsFilled = Object.values(formData).every(field => !isEmpty(field));
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
 
-    if(!allFieldsFilled) {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    const error = validateField(name, value);
+    setFormErrors((prev) => ({ ...prev, [name]: error ? error : null }));
+
+    const hasErrors = Object.values(formErrors).some((error) => error !== null);
+    const allFieldsFilled = Object.values(formData).every(
+      (field) => !isEmpty(field),
+    );
+
+    if (!allFieldsFilled) {
       setIsSubmitEnabled(false);
     } else {
       setIsSubmitEnabled(!hasErrors);
     }
-  }, [formErrors]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {name , value} = e.target;
-
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    const error = validateField(name, value);
-    setFormErrors(prev => ({ ...prev, [name]: error ? error : null }));
   };
 
   const navigate = useNavigate();
@@ -60,11 +53,10 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
       email: data.get('email'),
       password: data.get('password'),
     };
-    console.log({userSignIn});
-    
-    if(isSubmitEnabled) {
-      setMenuVisible(true);
-      navigate('/rides');
+
+    if (isSubmitEnabled) {
+      console.log(userSignIn); // will be sent to server instead
+      navigate('/home');
     }
   };
 
@@ -90,12 +82,12 @@ const SignIn = ({ setMenuVisible }: SignInProps) => {
             width="100%" // Ensure the form takes full width
           >
             <EmailField
-                  emailError={formErrors['email'] ?? false}
-                  handleChange={handleChange}
+              emailError={formErrors['email'] ?? false}
+              handleChange={handleChange}
             ></EmailField>
             <PasswordField
-                  passwordError={formErrors['password'] ?? false}
-                  handleChange={handleChange}
+              passwordError={formErrors['password'] ?? false}
+              handleChange={handleChange}
             ></PasswordField>
             <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Link href="#" variant="body2">

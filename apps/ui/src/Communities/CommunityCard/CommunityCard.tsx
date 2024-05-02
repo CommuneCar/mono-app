@@ -29,7 +29,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const isManager = userStatus === UserStatus.MANAGER;
 
   return (
-    <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
+    <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardHeader
           action={<CardMenu isManager={isManager}></CardMenu>}
