@@ -3,18 +3,12 @@ import { Gander, User } from '@communecar/types';
 
 type UserContextType = {
   user: User | null;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => void;
+  error: string | null;
 };
 
-const UserContext = createContext<
-  | {
-      user: User | null;
-      signIn: (email: string, password: string) => Promise<void>;
-      signOut: () => void;
-    }
-  | undefined
->(undefined);
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const useUser = (): UserContextType => {
   const context = useContext(UserContext);
@@ -29,15 +23,18 @@ interface UserProviderProps {
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const signIn = async (email: string, password: string) => {
     try {
-      // Simulate API call to authenticate user
       const userData: User = await authenticateUser(email, password);
       setUser(userData);
+      setError(null);
+      return true;
     } catch (error) {
       console.error('Failed to sign in:', error);
-      // Handle errors (e.g., show error message)
+      setError('Authentication failed, please check your credentials.');
+      return false;
     }
   };
 
@@ -46,7 +43,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, signIn, signOut }}>
+    <UserContext.Provider value={{ user, signIn, signOut, error }}>
       {children}
     </UserContext.Provider>
   );
@@ -66,6 +63,8 @@ async function authenticateUser(
     phoneNumber: '000',
     age: 20,
   };
+
+  // throw new Error('User not found.'); //TODO
 }
 
 export { useUser, UserProvider };

@@ -20,6 +20,7 @@ import {
   useGetAllCommunities,
 } from './hooks/Communities/useGetAllCommunities';
 import { UserProvider } from './hooks/Users/useUser';
+import { ProtectedRoute } from './ProtectedRoute';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,15 +43,17 @@ function App() {
           <Routes>
             <Route path="/" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/rides" element={<RidesFeed rides={rides} />} />
-            <Route
-              path="/communities"
-              element={<CommunitiesFeed communities={communities} />}
-            />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/map" element={<MapPage />} />
-            <Route path="/map/navigation" element={<MapNavigationPage />} />
-            <Route path="/search" element={<SearchBar />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/rides" element={<RidesFeed rides={rides} />} />
+              <Route
+                path="/communities"
+                element={<CommunitiesFeed communities={communities} />}
+              />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/map" element={<MapPage />} />
+              <Route path="/map/navigation" element={<MapNavigationPage />} />
+              <Route path="/search" element={<SearchBar />} />
+            </Route>
           </Routes>
         </UserProvider>
       </Router>

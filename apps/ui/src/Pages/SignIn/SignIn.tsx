@@ -50,7 +50,7 @@ const SignIn: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userSignIn = {
@@ -59,8 +59,10 @@ const SignIn: React.FC = () => {
     };
 
     if (isSubmitEnabled) {
+      const success = await signIn(userSignIn.email, userSignIn.password);
+
       signIn(userSignIn.email, userSignIn.password);
-      navigate('/home');
+      if (success) navigate('/home');
     }
   };
 
