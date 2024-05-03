@@ -41,7 +41,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       <Button variant="outlined" onClick={handleClickOpen}>
         Open form dialog
       </Button>
@@ -139,7 +139,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
           <Button type="submit">Create</Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </>
   );
 };
 

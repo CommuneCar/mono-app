@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import defaultTheme from '../../../../themes/default';
-import SigningHeader from '../../../../Components/Signing/SigningHeader';
-import { PersonRounded, PhoneAndroidRounded } from '@mui/icons-material';
 import {
+  Box,
+  Grid,
+  Link,
+  Radio,
+  Button,
+  FormLabel,
+  TextField,
+  Container,
   RadioGroup,
   FormControlLabel,
-  Radio,
-  FormLabel,
-  Button,
-  TextField,
-  Link,
-  Grid,
-  Box,
-  Container,
 } from '@mui/material';
-import { Gander, SignUpUser } from '../../../../types/sign-up-user';
-import { useEffect, useState } from 'react';
-import { validateField } from '../../../../utils/signing/validation';
-import { PasswordField } from '../../../../Components/Signing/Fields/PasswordField';
-import { EmailField } from '../../../../Components/Signing/Fields/EmailField';
-import { TEXT } from '../../../../themes/default/consts';
 import { isEmpty } from 'lodash';
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import { PersonRounded, PhoneAndroidRounded } from '@mui/icons-material';
+
+import defaultTheme from '../../../../themes/default';
+import { TEXT } from '../../../../themes/default/consts';
+import { Gander, SignUpUser } from '../../../../types/sign-up-user';
+import { validateField } from '../../../../utils/signing/validation';
+import SigningHeader from '../../../../Components/Signing/SigningHeader';
+import { EmailField } from '../../../../Components/Signing/Fields/EmailField';
+import { PasswordField } from '../../../../Components/Signing/Fields/PasswordField';
 
 const SignUp = () => {
   const navigate = useNavigate();
