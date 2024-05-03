@@ -13,17 +13,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 
+import { Ride } from '@communecar/types';
+
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
 
-import { RidesCardProps } from './RideCard';
 import { getRandomOption } from '../../utils';
 
 const options = [tlv, apple, camera];
 
 interface ICreateRideDialog {
-  rides: RidesCardProps[];
+  rides: Ride[];
   setOpen: (isOpen: boolean) => void;
   isOpen: boolean;
 }
@@ -70,6 +71,8 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
               startLocationName: startLocation,
               destination,
               png,
+              destinationName: destination,
+              startLocation,
             });
             handleClose();
           },

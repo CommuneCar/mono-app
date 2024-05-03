@@ -67,16 +67,20 @@ const Focus = (props: { focusLocation: [number, number] }) => {
   const { focusLocation } = props;
 
   useEffect(() => {
-    if (focusLocation) map.flyTo(focusLocation);
+    if (focusLocation) map.flyTo(focusLocation, 18);
   }, [focusLocation]);
 
   return null;
 };
 
 const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
-  const [focusedLocation] = useState<[number, number] | undefined>(
-    focusLocation,
-  );
+  const [focusedLocation, setFocusedLocation] = useState<
+    [number, number] | undefined
+  >(focusLocation);
+
+  useEffect(() => {
+    setFocusedLocation(focusLocation);
+  }, [focusLocation]);
 
   return (
     <MapContainer center={[32.079444, 34.781769]} zoom={13}>
