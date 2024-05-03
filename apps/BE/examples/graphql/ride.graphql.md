@@ -174,3 +174,26 @@ query {
   }
 }
 ```
+
+
+#### Get all rides by owner id
+```gql
+query MyQuery {
+  allRides(condition: {ownerId: 1}) {
+    edges {
+      node {
+        id
+        ownerId
+        fromLat
+        fromLong
+        toLat
+        toLong
+        gasMoney
+        pronouns
+        startTime
+        seats
+      }
+    }
+  }
+}
+```

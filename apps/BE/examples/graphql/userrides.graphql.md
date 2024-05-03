@@ -120,19 +120,62 @@ mutation {
 #### Get all user rides with details
 ```gql
 query {
-  allUserCommunities {
+  allUserRides {
     nodes {
       userId
-      communityId
+      rideId
       status
       userByUserId {
         firstName
         lastName
         email
       }
-      communityByCommunityId {
-        title
-        description
+      rideByRideId {
+        fromLat
+        fromLong
+        communityId
+        gasMoney
+        id
+        modificationTs
+        ownerId
+        seats
+        pronouns
+        startTime
+        toLat
+        toLong
+      }
+    }
+  }
+}
+```
+
+
+#### Get all user rides based on user id:
+```gql
+{
+  allUserRides(condition: {userId: 1}) {
+    nodes {
+      userId
+      rideId
+      status
+      userByUserId {
+        firstName
+        lastName
+        email
+      }
+      rideByRideId {
+        fromLat
+        fromLong
+        communityId
+        gasMoney
+        id
+        modificationTs
+        ownerId
+        seats
+        pronouns
+        startTime
+        toLat
+        toLong
       }
     }
   }
