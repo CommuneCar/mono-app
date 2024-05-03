@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, divIcon, point } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
@@ -74,6 +74,10 @@ const Focus = (props: { focusLocation: [number, number] }) => {
 };
 
 const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
+  const [focusedLocation] = useState<[number, number] | undefined>(
+    focusLocation,
+  );
+
   return (
     <MapContainer center={[32.079444, 34.781769]} zoom={13}>
       <TileLayer
@@ -85,13 +89,18 @@ const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
         iconCreateFunction={createClusterCustomIcon}
       >
         {markers.map((marker, index) => (
-          <Marker key={index} position={marker.geocode} icon={customIcon}>
+          <Marker
+            key={index}
+            position={marker.geocode}
+            icon={customIcon}
+            interactive
+          >
             <Popup>{marker.popUp}</Popup>
           </Marker>
         ))}
       </MarkerClusterGroup>
       <SearchControl />
-      {focusLocation && <Focus focusLocation={focusLocation} />}
+      {focusedLocation && <Focus focusLocation={focusedLocation} />}
     </MapContainer>
   );
 };
