@@ -137,3 +137,35 @@ query {
   }
 }
 ```
+
+
+#### Get all user communities by user id
+```gql
+query MyQuery {
+  allUserCommunities(condition: {userId: 1}) {
+    nodes {
+      communityId
+      status
+      userId
+      communityByCommunityId {
+        id
+        lat
+        long
+        ownerId
+        description
+        title
+      }
+      userByUserId {
+        age
+        email
+        firstName
+        gender
+        id
+        lastName
+        phoneNumber
+        profileImage
+      }
+    }
+  }
+}
+```
