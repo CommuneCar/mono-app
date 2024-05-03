@@ -1,15 +1,17 @@
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-
-import defaultTheme from '../../themes/default';
+import {
+  Box,
+  Card,
+  Grid,
+  Typography,
+  CardActions,
+  CardContent,
+} from '@mui/material';
+import { useState } from 'react';
 
 import { UserStatus, Community } from '@communecar/types';
-import { useState } from 'react';
+
 import { StatusButton } from './StatusButton';
-import { Grid } from '@mui/material';
+import defaultTheme from '../../../themes/default';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 
 export interface CommunityCardProps {

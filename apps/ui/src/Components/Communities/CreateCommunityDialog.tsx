@@ -1,16 +1,18 @@
 import {
   Button,
   Dialog,
+  TextField,
+  DialogTitle,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  TextField,
 } from '@mui/material';
 import React from 'react';
-import { TEXT } from '../themes/default/consts';
+
 import { Community } from '@communecar/types';
-import { SubmitButton } from '../Components/styles/SubmitButton.styled';
+
+import { TEXT } from '../../themes/default/consts';
+import { SubmitButton } from '../styles/SubmitButton.styled';
 
 interface CreateCommunityDialogProps {
   handleClose: () => void;

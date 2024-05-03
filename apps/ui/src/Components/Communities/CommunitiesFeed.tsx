@@ -1,14 +1,14 @@
-import Box from '@mui/material/Box';
+import { AppBar, Toolbar, Box } from '@mui/material';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { AppBar, Toolbar } from '@mui/material';
 
 import { Community } from '@communecar/types';
-import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
-import { SearchBar } from '../Components/Search/SearchBar';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { SearchBar } from '../Search/SearchBar';
+import { FeedList } from '../styles/FeedList.styled';
+import { AddNewButton } from '../AddNew/AddNewButton';
 import { CreateCommunityDialog } from './CreateCommunityDialog';
-import { FeedList } from '../Components/styles/FeedList.styled';
-import { AddNewButton } from '../Components/AddNew/AddNewButton';
+import { useUserCommunitiesStatus } from '../../hooks/Communities/useUserCommunitiesStatus';
 
 export interface CommunitiesFeedProps {
   communities: Community[];

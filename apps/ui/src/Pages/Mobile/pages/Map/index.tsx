@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React, { CSSProperties } from 'react';
 
-import { Map } from '../../Components/Map/Map';
+import { Map } from '../../../../Components/Map/Map';
 
 const MapPage: React.FC = () => {
   const mapContainerStyle: CSSProperties = {

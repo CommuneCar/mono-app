@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import defaultTheme from '../../themes/default';
-import SigningHeader from '../../Components/Signing/SigningHeader';
+import defaultTheme from '../../../../themes/default';
+import SigningHeader from '../../../../Components/Signing/SigningHeader';
 import { PersonRounded, PhoneAndroidRounded } from '@mui/icons-material';
 import {
   RadioGroup,
@@ -16,14 +16,12 @@ import {
   Box,
   Container,
 } from '@mui/material';
-import { Gander, SignUpUser } from '../../types/sign-up-user';
+import { Gander, SignUpUser } from '../../../../types/sign-up-user';
 import { useEffect, useState } from 'react';
-import {
-  validateField,
-} from '../../utils/signing/validation';
-import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { TEXT } from '../../themes/default/consts';
+import { validateField } from '../../../../utils/signing/validation';
+import { PasswordField } from '../../../../Components/Signing/Fields/PasswordField';
+import { EmailField } from '../../../../Components/Signing/Fields/EmailField';
+import { TEXT } from '../../../../themes/default/consts';
 import { isEmpty } from 'lodash';
 
 const SignUp = () => {
@@ -49,23 +47,26 @@ const SignUp = () => {
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
-
   useEffect(() => {
-    const hasErrors = Object.values(formErrors).some(error => error !== null);
-    const allFieldsFilled = Object.values(formData).every(field => !isEmpty(field));
-    if(!allFieldsFilled) {
+    const hasErrors = Object.values(formErrors).some((error) => error !== null);
+    const allFieldsFilled = Object.values(formData).every(
+      (field) => !isEmpty(field),
+    );
+    if (!allFieldsFilled) {
       setIsSubmitEnabled(false);
     } else {
       setIsSubmitEnabled(!hasErrors);
     }
   }, [formErrors]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {name , value} = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
 
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     const error = validateField(name, value);
-    setFormErrors(prev => ({ ...prev, [name]: error ? error : null }));
+    setFormErrors((prev) => ({ ...prev, [name]: error ? error : null }));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -79,9 +80,9 @@ const SignUp = () => {
       phoneNumber: data.get('phone') as string,
       gander: (data.get('gander') as Gander) ?? 'Other',
     };
-    console.log({newUser}); //TODO when the server ready
-    
-    if(isSubmitEnabled) {
+    console.log({ newUser }); //TODO when the server ready
+
+    if (isSubmitEnabled) {
       navigate('/rides');
     }
   };
@@ -94,9 +95,9 @@ const SignUp = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            minHeight: '100vh', 
+            minHeight: '100vh',
             justifyContent: 'center',
-            padding: '0 20px', 
+            padding: '0 20px',
           }}
         >
           <SigningHeader titleText="Sign Up"></SigningHeader>
@@ -108,7 +109,7 @@ const SignUp = () => {
           >
             <Grid container spacing={1}>
               <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                   <PersonRounded
                     sx={{ color: 'action.active', mr: 1, my: 0.5 }}
                   />
@@ -127,7 +128,7 @@ const SignUp = () => {
                 </Box>
               </Grid>
               <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                   <PersonRounded
                     sx={{ color: 'action.active', mr: 1, my: 0.5 }}
                   />
@@ -190,7 +191,12 @@ const SignUp = () => {
                   <RadioGroup
                     row
                     name="gander"
-                    onChange={(e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value as Gander}))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.name]: e.target.value as Gander,
+                      }))
+                    }
                   >
                     <FormControlLabel
                       value="Female"
@@ -206,7 +212,10 @@ const SignUp = () => {
                       value="Other"
                       control={
                         <Radio
-                          checked={ !!formData['gander'] || formData['gander'] === 'Other'}
+                          checked={
+                            !!formData['gander'] ||
+                            formData['gander'] === 'Other'
+                          }
                         />
                       }
                       label="Other"

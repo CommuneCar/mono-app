@@ -4,7 +4,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
 import CreateRideDialog from './CreateRideDialog';
-import defaultTheme from '../../themes/default';
+import defaultTheme from '../../../../themes/default';
 
 export interface RidesFeedProps {
   rides: RidesCardProps[];

@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import MultiCarMap from '../../Components/MapNavigation';
+import MultiCarMap from '../../../../Components/MapNavigation';
 
 // Define multiple cars each with a start point and a list of destinations
 const cars = [

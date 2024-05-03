@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import defaultTheme from '../../themes/default';
+import defaultTheme from '../../../../themes/default';
 
 export interface RideDescriptionProps {
   driver: string;

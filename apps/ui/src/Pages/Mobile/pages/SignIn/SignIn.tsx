@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { Box, Button, Link, Container } from '@mui/material';
 
-import defaultTheme from '../../themes/default';
-import { TEXT } from '../../themes/default/consts';
-import { validateField } from '../../utils/signing/validation';
-import SigningHeader from '../../Components/Signing/SigningHeader';
-import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
+import defaultTheme from '../../../../themes/default';
+import { TEXT } from '../../../../themes/default/consts';
+import { validateField } from '../../../../utils/signing/validation';
+import SigningHeader from '../../../../Components/Signing/SigningHeader';
+import { EmailField } from '../../../../Components/Signing/Fields/EmailField';
+import { PasswordField } from '../../../../Components/Signing/Fields/PasswordField';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
