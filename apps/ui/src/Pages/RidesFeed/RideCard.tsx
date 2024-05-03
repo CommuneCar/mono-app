@@ -14,7 +14,7 @@ export interface RidesCardProps {
   communityName: string;
   driver: string;
   departureTime: Date;
-  startLocation: string;
+  startLocationName: string;
   destination: string;
   png: string;
 }
@@ -23,7 +23,7 @@ const RideCard = ({
   communityName,
   driver,
   departureTime,
-  startLocation,
+  startLocationName,
   destination,
   png,
 }: RidesCardProps) => {
@@ -39,7 +39,7 @@ const RideCard = ({
           <RideDescription
             driver={driver}
             departureTime={departureTime}
-            startLocation={startLocation}
+            startLocation={startLocationName}
             destination={destination}
           />
         </CardContent>

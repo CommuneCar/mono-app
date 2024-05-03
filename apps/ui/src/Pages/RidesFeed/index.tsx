@@ -42,7 +42,7 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
           communityName={ride.communityName}
           driver={ride.driver}
           departureTime={ride.departureTime}
-          startLocation={ride.startLocation}
+          startLocationName={ride.startLocationName}
           destination={ride.destination}
           png={ride.png}
         />
