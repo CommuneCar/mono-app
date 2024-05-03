@@ -1,5 +1,6 @@
 import { groupBy } from 'lodash';
 import { Menu as MenuIcon } from '@mui/icons-material';
+import { useSession } from '@supabase/auth-helpers-react';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
@@ -19,6 +20,13 @@ const HomePage: React.FC = () => {
     'communities',
   );
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const session = useSession();
+
+  const userName = useMemo(
+    () => session?.user?.email?.split('@')[0],
+    [session],
+  );
 
   const communities = useMemo(() => {
     const baseCommunities = useGetAllCommunities();
@@ -48,6 +56,7 @@ const HomePage: React.FC = () => {
       </MainMenuButton>
       <BottomDrawer>
         <>
+          Hi there {userName}
           <Box style={{ margin: '2%' }}>
             <ToggleButtonGroup
               color="primary"
