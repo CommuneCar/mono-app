@@ -3,8 +3,9 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
+import { MainMenuButton } from './styles';
 import { Map } from '../../../../Components/Map/Map';
-import { MainMenuButton, Page } from './styles';
+import { Page } from '../../../../common/styles/page';
 import { Menu } from '../../../../Components/Menu/Menu';
 import { BottomDrawer } from '../../../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../../../Components/CommunityList/CommunityList';
@@ -42,7 +43,7 @@ const HomePage: React.FC = () => {
   return (
     <Page>
       <Menu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
-      <Map />
+      <Map shouldShowSearch />
       <MainMenuButton color="primary" onClick={() => setIsProfileOpen(true)}>
         <MenuIcon />
       </MainMenuButton>

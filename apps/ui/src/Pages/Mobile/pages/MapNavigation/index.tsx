@@ -1,4 +1,6 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
+
+import { Page } from '../../../../common/styles/page';
 import MultiCarMap from '../../../../Components/MapNavigation';
 
 // Define multiple cars each with a start point and a list of destinations
@@ -33,20 +35,10 @@ const cars = [
 ];
 
 const MapNavigationPage: React.FC = () => {
-  const mapContainerStyle: CSSProperties = {
-    height: '100vh',
-    width: '100vw',
-    position: 'absolute',
-    left: '0',
-    top: '0',
-    float: 'left',
-    marginLeft: 0,
-  };
-
   return (
-    <div style={mapContainerStyle} className="full-viewport">
+    <Page className="full-viewport">
       <MultiCarMap cars={cars} mapStyle="regular" />
-    </div>
+    </Page>
   );
 };
 
