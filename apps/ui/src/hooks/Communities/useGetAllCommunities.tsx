@@ -1,4 +1,4 @@
-import { Community } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
@@ -39,7 +39,7 @@ const communities: Community[] = [
   },
 ];
 
-const rides = [
+const rides: Ride[] = [
   {
     driver: 'Zoe Shwartz',
     departureTime: new Date(Date.now() + 60 * 60000), // Adding 60 minutes to the current time
@@ -47,7 +47,8 @@ const rides = [
     startLocationName: 'Rotchild street, Tel Aviv',
     startLocation: [32.063898, 34.773855],
     png: getRandomOption(options),
-    destination: 'Pardesia',
+    destinationName: 'Pardesia',
+    destination: [1, 2],
   },
   {
     driver: 'Dar Nachmani',
@@ -56,7 +57,8 @@ const rides = [
     png: getRandomOption(options),
     startLocationName: 'Efraim Katzir street, Hod Hasharon',
     startLocation: [32.166401, 34.900587],
-    destination: 'Modiin',
+    destinationName: 'Modiin',
+    destination: [1, 2],
   },
   {
     driver: 'Avi Ron',
@@ -64,7 +66,8 @@ const rides = [
     communityName: 'Travel friends Haifa - Tel Aviv',
     startLocationName: 'Weizman street, Petah Tikva',
     startLocation: [32.078195, 34.87304],
-    destination: 'Holon',
+    destinationName: 'Holon',
+    destination: [1, 2],
     png: getRandomOption(options),
   },
   {
@@ -73,7 +76,8 @@ const rides = [
     communityName: 'Apple Friends - IL',
     startLocationName: "Pe'er street, Haifa",
     startLocation: [32.799783, 35.009874],
-    destination: 'The Golan',
+    destinationName: 'The Golan',
+    destination: [1, 2],
     png: getRandomOption(options),
   },
 ];

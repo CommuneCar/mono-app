@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Icon, divIcon, point } from 'leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+
 import './Map.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/assets/css/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import MarkerClusterGroup from 'react-leaflet-cluster';
-import { Icon, divIcon, point } from 'leaflet';
+
 import placeholderIcon from '../../assets/components/map/car.svg';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 type MarkerInfo = {
   geocode: [number, number];
@@ -14,6 +16,7 @@ type MarkerInfo = {
 };
 
 interface MapProps {
+  focusLocation?: [number, number];
   markers: MarkerInfo[];
 }
 
@@ -31,7 +34,7 @@ const createClusterCustomIcon = (cluster: any) =>
 
 const SearchControl = () => {
   const map = useMap();
-  React.useEffect(() => {
+  useEffect(() => {
     const provider = new OpenStreetMapProvider();
 
     const searchControl = new (GeoSearchControl as any)({
@@ -59,25 +62,39 @@ const SearchControl = () => {
   return null;
 };
 
-const Map: React.FC<MapProps> = ({ markers }) => (
-  <MapContainer center={[32.079444, 34.781769]} zoom={13}>
-    <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-    <MarkerClusterGroup
-      chunkedLoading
-      iconCreateFunction={createClusterCustomIcon}
-    >
-      {markers.map((marker, index) => (
-        <Marker key={index} position={marker.geocode} icon={customIcon}>
-          <Popup>{marker.popUp}</Popup>
-        </Marker>
-      ))}
-    </MarkerClusterGroup>
-    <SearchControl />
-  </MapContainer>
-);
+const Focus = (props: { focusLocation: [number, number] }) => {
+  const map = useMap();
+  const { focusLocation } = props;
+
+  useEffect(() => {
+    if (focusLocation) map.flyTo(focusLocation);
+  }, [focusLocation]);
+
+  return null;
+};
+
+const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
+  return (
+    <MapContainer center={[32.079444, 34.781769]} zoom={13}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <MarkerClusterGroup
+        chunkedLoading
+        iconCreateFunction={createClusterCustomIcon}
+      >
+        {markers.map((marker, index) => (
+          <Marker key={index} position={marker.geocode} icon={customIcon}>
+            <Popup>{marker.popUp}</Popup>
+          </Marker>
+        ))}
+      </MarkerClusterGroup>
+      <SearchControl />
+      {focusLocation && <Focus focusLocation={focusLocation} />}
+    </MapContainer>
+  );
+};
 
 export { Map };
 export type { MarkerInfo };
