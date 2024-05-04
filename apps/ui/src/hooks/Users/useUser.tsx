@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Gander, User } from '@communecar/types';
+import { User } from '@communecar/types';
+import { authenticateUser } from '../../apis/user/signIn';
+import { singUpNewUser } from '../../apis/user/signUp';
 
 type UserContextType = {
   user: User | null;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => void;
   error: string | null;
+  signUp: (newUser: User) => Promise<boolean>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -28,8 +31,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const signIn = async (email: string, password: string) => {
     try {
       const userData: User = await authenticateUser(email, password);
-      setUser(userData);
-      setError(null);
+      logInUser(userData);
       return true;
     } catch (error) {
       console.error('Failed to sign in:', error);
@@ -42,29 +44,28 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setUser(null);
   };
 
+  const signUp = async (newUser: User) => {
+    try {
+      const userData: User = await singUpNewUser(newUser);
+      logInUser(userData);
+      return true;
+    } catch (error) {
+      console.error('Failed to sign up:', error);
+      setError('Sign Up Failed');
+      return false;
+    }
+  };
+
+  const logInUser = (userData: User) => {
+    setUser(userData);
+    setError(null);
+  };
+
   return (
-    <UserContext.Provider value={{ user, signIn, signOut, error }}>
+    <UserContext.Provider value={{ user, signIn, signOut, signUp, error }}>
       {children}
     </UserContext.Provider>
   );
 };
-
-async function authenticateUser(
-  email: string,
-  password: string,
-): Promise<User> {
-  return {
-    id: '123',
-    firstName: 'John',
-    lastName: 'Doe',
-    email,
-    password,
-    gander: Gander.MALE,
-    phoneNumber: '000',
-    age: 20,
-  };
-
-  // throw new Error('User not found.'); //TODO
-}
 
 export { useUser, UserProvider };
