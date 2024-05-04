@@ -1,4 +1,4 @@
-import { Badge, Box, Fab, IconButton } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import { Menu } from './Menu/Menu';
 import { Menu as MenuIcon, Mail as MailIcon } from '@mui/icons-material';
 import { useState } from 'react';
@@ -36,13 +36,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <MenuIcon />
           </Fab>
           <Menu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
-          <Fab color="primary">
+          {/* <Fab color="primary">
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
             </IconButton>
-          </Fab>
+          </Fab> */}
         </Box>
       )}
 
