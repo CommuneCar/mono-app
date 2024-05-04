@@ -65,37 +65,6 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   };
 
   return (
-    // <Box
-    //   component="form"
-    //   noValidate
-    //   autoComplete="off"
-    //   onSubmit={handleSubmit}
-    //   sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-    // >
-    //   <TextField
-    //     label="Name"
-    //     variant="outlined"
-    //     name="name"
-    //     value={community.name}
-    //     onChange={handleChange}
-    //     required
-    //     fullWidth
-    //   />
-    //   <TextField
-    //     label="Description"
-    //     variant="outlined"
-    //     name="description"
-    //     value={community.description}
-    //     onChange={handleChange}
-    //     required
-    //     fullWidth
-    //     multiline
-    //     rows={4}
-    //   />
-    //   <Button type="submit" variant="contained" color="primary">
-    //     {communityToUpdate ? 'Update Community' : 'Create Community'}
-    //   </Button>
-    // </Box>
     <Dialog
       open={isOpen || !!communityToUpdate}
       onClose={handleClose}
@@ -108,24 +77,31 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
       <DialogContent>
         <DialogContentText>{formText.description}</DialogContentText>
         <TextField
-          label="Name"
-          variant="outlined"
+          id="communityName"
           name="name"
+          label="Community Name"
+          type="communityName"
+          variant="standard"
+          margin="dense"
+          autoFocus
+          required
+          fullWidth
           value={community.name}
           onChange={handleChange}
-          required
-          fullWidth
         />
         <TextField
-          label="Description"
-          variant="outlined"
+          id="description"
           name="description"
-          value={community.description}
-          onChange={handleChange}
+          label="Description"
+          type="description"
+          variant="standard"
+          margin="dense"
+          autoFocus
           required
           fullWidth
+          value={community.description}
+          onChange={handleChange}
           multiline
-          rows={4}
         />
       </DialogContent>
       <DialogActions>
