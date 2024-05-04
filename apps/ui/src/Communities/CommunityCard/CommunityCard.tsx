@@ -25,7 +25,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const { name, description, picturesUrl } = community;
   const [joined, setJoined] = useState(false);
 
-  //TODO - handleChangeStatus
   console.log({ joined }); //TODO when the server ready
 
   const isManager = userStatus === UserStatus.MANAGER;

@@ -18,8 +18,6 @@ const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
       userStatusOptions,
     ) as UserStatus;
   });
-  //TODO: delete
-  communitiesStatus[communities[0].id] = UserStatus.MANAGER;
 
   return communitiesStatus;
 };

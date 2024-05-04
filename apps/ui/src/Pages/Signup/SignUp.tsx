@@ -83,7 +83,7 @@ const SignUp = () => {
       phone: data.get('phone') as string,
       gander: (data.get('gander') as Gander) ?? Gander.OTHER,
     };
-    signUp(newUser); //TODO when the server ready
+    signUp(newUser);
 
     if (isSubmitEnabled) {
       navigate(DEFAULT_HOME_PAGE);

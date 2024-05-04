@@ -8,5 +8,4 @@ export type SignUpUser = {
   password: string;
   gander: Gander;
   age?: number;
-  //TODO: profileImage
 };

@@ -9,5 +9,4 @@ export interface User {
   password: string;
   gander: Gander;
   age?: number;
-  //TODO: profileImage
 }
