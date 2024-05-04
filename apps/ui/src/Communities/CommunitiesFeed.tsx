@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
 import { AppBar, Toolbar } from '@mui/material';
 
-import { Community } from '@communecar/types';
+import { Community, UserStatus } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -66,6 +66,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
+    userCommunitiesStatus[newCommunity.id] = UserStatus.MANAGER;
     setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
   };
 
@@ -117,7 +118,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           <CommunityCard
             key={index}
             community={community}
-            userStatus={userCommunitiesStatus[community.name]}
+            userStatus={userCommunitiesStatus[community.id]}
             handleClickOnEdit={handleClickOnEdit}
           />
         ))}

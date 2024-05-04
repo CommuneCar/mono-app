@@ -1,5 +1,5 @@
 export interface Community {
-  id?: string;
+  id: string;
   name: string;
   description: string;
   numberOfMembers: number;
