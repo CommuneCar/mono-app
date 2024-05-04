@@ -1,11 +1,9 @@
 import { groupBy } from 'lodash';
-import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { Map } from '../../Components/Map/Map';
-import { MainMenuButton, Page } from './styles';
-import { Menu } from '../../Components/Layout/Menu/Menu';
+
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
@@ -18,7 +16,6 @@ const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
     'communities',
   );
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const communities = useMemo(() => {
     const baseCommunities = useGetAllCommunities();
