@@ -89,3 +89,5 @@ export const FORMS_TEXT = {
     submitText: TEXT.SAVE,
   },
 } as const;
+
+export const DEFAULT_HOME_PAGE = '/home';

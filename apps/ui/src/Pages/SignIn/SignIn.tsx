@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Box, Button, Link, Container } from '@mui/material';
 
 import defaultTheme from '../../themes/default';
-import { TEXT } from '../../themes/default/consts';
+import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { validateField } from '../../utils/signing/validation';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
@@ -62,7 +62,7 @@ const SignIn: React.FC = () => {
       const success = await signIn(userSignIn.email, userSignIn.password);
 
       signIn(userSignIn.email, userSignIn.password);
-      if (success) navigate('/home');
+      if (success) navigate(DEFAULT_HOME_PAGE);
     }
   };
 

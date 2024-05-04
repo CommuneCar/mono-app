@@ -2,13 +2,14 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { User } from '@communecar/types';
 import { authenticateUser } from '../../apis/user/signIn';
 import { singUpNewUser } from '../../apis/user/signUp';
+import { SignUpUser } from '../../types/sign-up-user';
 
 type UserContextType = {
   user: User | null;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => void;
   error: string | null;
-  signUp: (newUser: User) => Promise<boolean>;
+  signUp: (newUser: SignUpUser) => Promise<boolean>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -44,7 +45,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setUser(null);
   };
 
-  const signUp = async (newUser: User) => {
+  const signUp = async (newUser: SignUpUser) => {
     try {
       const userData: User = await singUpNewUser(newUser);
       logInUser(userData);

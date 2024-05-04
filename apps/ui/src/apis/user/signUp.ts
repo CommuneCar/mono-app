@@ -1,7 +1,9 @@
 import { User } from '@communecar/types';
+import { SignUpUser } from '../../types/sign-up-user';
 
-const singUpNewUser = async (newUser: User): Promise<User> => {
-  return newUser; //TODO
+const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
+  const user: User = { ...newUser, ['id']: '2' };
+  return user; //TODO
 };
 
 export { singUpNewUser };
