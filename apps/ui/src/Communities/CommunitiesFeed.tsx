@@ -54,16 +54,21 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   }, [allCommunitiesDisplay]);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
+
+  const handleClickOnEdit = (communityToUpdate: Community) => {
+    setCommunityToUpdate(communityToUpdate);
+    setIsOpen(true);
+  };
 
   const handleClose = () => {
     setIsOpen(false);
+    setCommunityToUpdate(undefined);
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
     setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
   };
-
-  const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
 
   const handleUpdateCommunity = (communityUpdated: Community) => {
     setAllCommunitiesDisplay((prev) =>
@@ -75,11 +80,6 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         }
       }),
     );
-  };
-
-  const handleClickOnEdit = (communityToUpdate: Community) => {
-    setCommunityToUpdate(communityToUpdate);
-    setIsOpen(true);
   };
 
   return (
@@ -104,13 +104,6 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           ></SearchBar>
         </Toolbar>
       </AppBar>
-      {/* {isOpen && (
-        <CreateCommunityDialog
-          handleClose={handleClose}
-          isOpen={isOpen}
-          handleNewCommunity={handleNewCommunity}
-        />
-      )} */}
       {isOpen && (
         <CommunityForm
           communityToUpdate={communityToUpdate}
