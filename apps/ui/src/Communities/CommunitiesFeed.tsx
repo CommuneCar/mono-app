@@ -17,7 +17,12 @@ export interface CommunitiesFeedProps {
 
 const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const { user } = useUser();
-  const userCommunitiesStatus = useUserCommunitiesStatus(user?.id ?? 'admin');
+  const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
+    user?.id ?? 'admin',
+  );
+  const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
+    userCommunitiesStatusOriginal,
+  );
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
     useState<Community[]>(communities);
   const [filteredCommunities, setFilteredCommunities] = useState(
@@ -66,7 +71,10 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
-    userCommunitiesStatus[newCommunity.id] = UserStatus.MANAGER;
+    setUserCommunitiesStatus((prev) => ({
+      ...prev,
+      [newCommunity.id]: UserStatus.MANAGER,
+    }));
     setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
   };
 
