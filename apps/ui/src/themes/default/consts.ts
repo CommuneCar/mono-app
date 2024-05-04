@@ -1,4 +1,3 @@
-import { Description } from '@mui/icons-material';
 import { pxToRem } from './utils';
 
 export const DEFAULT_FONT_SIZE = 14;
