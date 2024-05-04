@@ -1,5 +1,5 @@
-import { Badge, Box, Button, Fab, IconButton } from '@mui/material';
-import { Menu } from '../Menu/Menu';
+import { Badge, Box, Fab, IconButton } from '@mui/material';
+import { Menu } from './Menu/Menu';
 import { Menu as MenuIcon, Mail as MailIcon } from '@mui/icons-material';
 import { useState } from 'react';
 

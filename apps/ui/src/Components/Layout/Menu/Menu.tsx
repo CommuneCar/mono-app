@@ -19,7 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import React, { Dispatch, ReactNode, SetStateAction, useMemo } from 'react';
 
-import defaultTheme from '../../themes/default';
+import defaultTheme from '../../../themes/default';
 
 interface MenuProps {
   isOpen: boolean;

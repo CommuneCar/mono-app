@@ -5,7 +5,7 @@ import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { Map } from '../../Components/Map/Map';
 import { MainMenuButton, Page } from './styles';
-import { Menu } from '../../Components/Menu/Menu';
+import { Menu } from '../../Components/Layout/Menu/Menu';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
