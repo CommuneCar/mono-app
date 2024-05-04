@@ -11,7 +11,7 @@ const authenticateUser = async (
     email,
     password,
     gander: Gander.MALE,
-    phoneNumber: '000',
+    phone: '000',
     age: 20,
   };
 
