@@ -63,7 +63,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <AppBar
+      {/* <AppBar
         color="default"
         sx={{
           borderRadius: 2,
@@ -74,13 +74,13 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           paddingY: 2,
         }}
       >
-        <Toolbar variant={'regular'}>
-          <SearchBar
-            options={options}
-            handleChangeSearchValue={handleChangeSearchValue}
-          ></SearchBar>
-        </Toolbar>
-      </AppBar>
+        <Toolbar variant={'regular'}> */}
+      <SearchBar
+        options={options}
+        handleChangeSearchValue={handleChangeSearchValue}
+      ></SearchBar>
+      {/* </Toolbar>
+      </AppBar> */}
       {isOpen && (
         <CreateCommunityDialog
           handleClose={handleClose}
