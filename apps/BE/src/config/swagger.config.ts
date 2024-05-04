@@ -4,9 +4,9 @@ const options: swaggerJsdoc.Options = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'Your API Documentation',
+            title: 'Communecar Swagger API Documentation',
             version: '1.0.0',
-            description: 'API documentation generated with Swagger',
+            description: "CommuneCar's API Documentation.",
         },
         servers: [
             {
