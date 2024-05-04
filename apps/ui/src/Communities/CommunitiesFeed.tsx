@@ -10,6 +10,7 @@ import { CreateCommunityDialog } from './CommunityForms/CreateCommunityDialog';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { useUser } from '../hooks/Users/useUser';
+import { CommunityForm } from './CommunityForms/CommunityForm';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -65,12 +66,20 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
 
   const handleUpdateCommunity = (communityUpdated: Community) => {
-    setAllCommunitiesDisplay((prev) => {
-      const communities = prev.filter(
-        (community) => community.id !== communityUpdated.id,
-      );
-      return [...prev, communityUpdated];
-    });
+    setAllCommunitiesDisplay((prev) =>
+      prev.map((community) => {
+        if (community.id === communityUpdated.id) {
+          return communityUpdated;
+        } else {
+          return community;
+        }
+      }),
+    );
+  };
+
+  const handleClickOnEdit = (communityToUpdate: Community) => {
+    setCommunityToUpdate(communityToUpdate);
+    setIsOpen(true);
   };
 
   return (
@@ -95,20 +104,20 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           ></SearchBar>
         </Toolbar>
       </AppBar>
-      {communityToUpdate && (
-        <CreateCommunityDialog
-          handleClose={() => setCommunityToUpdate(undefined)}
-          isOpen={!!communityToUpdate}
-          handleNewCommunity={handleNewCommunity}
-          communityToUpdate={communityToUpdate}
-        />
-      )}
-
-      {isOpen && (
+      {/* {isOpen && (
         <CreateCommunityDialog
           handleClose={handleClose}
           isOpen={isOpen}
           handleNewCommunity={handleNewCommunity}
+        />
+      )} */}
+      {isOpen && (
+        <CommunityForm
+          communityToUpdate={communityToUpdate}
+          onCreate={handleNewCommunity}
+          onUpdate={handleUpdateCommunity}
+          isOpen={isOpen}
+          handleClose={handleClose}
         />
       )}
       <FeedList>
@@ -117,7 +126,7 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
             key={index}
             community={community}
             userStatus={userCommunitiesStatus[community.name]}
-            setCommunityToUpdate={setCommunityToUpdate}
+            handleClickOnEdit={handleClickOnEdit}
           />
         ))}
       </FeedList>

@@ -14,15 +14,13 @@ import { CardMenu } from '../../Components/CardMenu/CardMenu';
 export interface CommunityCardProps {
   community: Community;
   userStatus: UserStatus;
-  setCommunityToUpdate: React.Dispatch<
-    React.SetStateAction<Community | undefined>
-  >;
+  handleClickOnEdit: (communityToUpdate: Community) => void;
 }
 
 const CommunityCard: React.FC<CommunityCardProps> = ({
   community,
   userStatus,
-  setCommunityToUpdate,
+  handleClickOnEdit,
 }) => {
   const { name, description, picturesUrl } = community;
   const [joined, setJoined] = useState(false);
@@ -33,7 +31,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const isManager = userStatus === UserStatus.MANAGER;
 
   const handleEditClick = () => {
-    setCommunityToUpdate(community);
+    handleClickOnEdit(community);
   };
 
   return (

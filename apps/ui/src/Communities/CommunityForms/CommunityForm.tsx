@@ -1,30 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Box } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Box,
+  DialogTitle,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from '@mui/material';
 import { Community } from '@communecar/types';
+import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
+import { FORMS_TEXT, TEXT } from '../../themes/default/consts';
 
 interface CommunityFormProps {
   communityToUpdate?: Community;
   onCreate: (community: Community) => void;
   onUpdate: (community: Community) => void;
+  isOpen: boolean;
+  handleClose: () => void;
 }
+
+const emptyCommunity: Community = {
+  name: '',
+  description: '',
+  numberOfMembers: 0,
+  picturesUrl: [],
+};
 
 const CommunityForm: React.FC<CommunityFormProps> = ({
   communityToUpdate,
   onCreate,
   onUpdate,
+  isOpen,
+  handleClose,
 }) => {
-  const [community, setCommunity] = useState<Community>({
-    name: '',
-    description: '',
-    numberOfMembers: 0,
-    picturesUrl: [],
-  });
+  const isUpdateState = !!communityToUpdate;
+  const [community, setCommunity] = useState<Community>(
+    isUpdateState ? communityToUpdate : emptyCommunity,
+  );
+  const formText = isUpdateState
+    ? FORMS_TEXT.UPDATE_COMMUNITY
+    : FORMS_TEXT.CREATE_COMMUNITY;
 
   useEffect(() => {
-    if (communityToUpdate) {
+    if (isUpdateState) {
       setCommunity(communityToUpdate);
     }
-  }, [communityToUpdate]);
+  }, [communityToUpdate, isUpdateState]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -38,40 +61,78 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
     } else {
       onCreate(community);
     }
+    handleClose();
   };
 
   return (
-    <Box
-      component="form"
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+    // <Box
+    //   component="form"
+    //   noValidate
+    //   autoComplete="off"
+    //   onSubmit={handleSubmit}
+    //   sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+    // >
+    //   <TextField
+    //     label="Name"
+    //     variant="outlined"
+    //     name="name"
+    //     value={community.name}
+    //     onChange={handleChange}
+    //     required
+    //     fullWidth
+    //   />
+    //   <TextField
+    //     label="Description"
+    //     variant="outlined"
+    //     name="description"
+    //     value={community.description}
+    //     onChange={handleChange}
+    //     required
+    //     fullWidth
+    //     multiline
+    //     rows={4}
+    //   />
+    //   <Button type="submit" variant="contained" color="primary">
+    //     {communityToUpdate ? 'Update Community' : 'Create Community'}
+    //   </Button>
+    // </Box>
+    <Dialog
+      open={isOpen || !!communityToUpdate}
+      onClose={handleClose}
+      PaperProps={{
+        component: 'form',
+        onSubmit: handleSubmit,
+      }}
     >
-      <TextField
-        label="Name"
-        variant="outlined"
-        name="name"
-        value={community.name}
-        onChange={handleChange}
-        required
-        fullWidth
-      />
-      <TextField
-        label="Description"
-        variant="outlined"
-        name="description"
-        value={community.description}
-        onChange={handleChange}
-        required
-        fullWidth
-        multiline
-        rows={4}
-      />
-      <Button type="submit" variant="contained" color="primary">
-        {communityToUpdate ? 'Update Community' : 'Create Community'}
-      </Button>
-    </Box>
+      <DialogTitle>{formText.title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{formText.description}</DialogContentText>
+        <TextField
+          label="Name"
+          variant="outlined"
+          name="name"
+          value={community.name}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+        <TextField
+          label="Description"
+          variant="outlined"
+          name="description"
+          value={community.description}
+          onChange={handleChange}
+          required
+          fullWidth
+          multiline
+          rows={4}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
+        <SubmitButton type="submit">{formText.submitText}</SubmitButton>
+      </DialogActions>
+    </Dialog>
   );
 };
 
