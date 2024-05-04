@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
-import { AppBar, Toolbar } from '@mui/material';
 
 import { Community } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
@@ -61,7 +60,12 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
 
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+      }}
     >
       <SearchBar
         options={options}

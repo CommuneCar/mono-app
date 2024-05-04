@@ -40,12 +40,8 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <Page>
-      <Menu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
+    <Box>
       <Map />
-      <MainMenuButton color="primary" onClick={() => setIsProfileOpen(true)}>
-        <MenuIcon />
-      </MainMenuButton>
       <BottomDrawer>
         <>
           <Box style={{ margin: '2%' }}>
@@ -65,7 +61,7 @@ const HomePage: React.FC = () => {
           {selectedTab === 'rides' && <>something will be here :)</>}
         </>
       </BottomDrawer>
-    </Page>
+    </Box>
   );
 };
 

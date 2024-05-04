@@ -3,6 +3,7 @@ import { Menu } from './Menu/Menu';
 import { Menu as MenuIcon, Mail as MailIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Page } from '../../Pages/HomePage/styles';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     location.pathname === '/' || location.pathname === '/signup';
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <Page>
       {!hideButtons && (
         <Box
           sx={{
@@ -45,8 +46,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </Box>
       )}
 
-      <Box sx={{ flexGrow: 1, padding: 3 }}>{children}</Box>
-    </Box>
+      <Box sx={{ flexGrow: 1, padding: 3, pt: { xs: 12, sm: 14, md: 16 } }}>
+        {children}
+      </Box>
+    </Page>
   );
 };
 
