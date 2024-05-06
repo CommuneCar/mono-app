@@ -41,7 +41,7 @@ const communities: Community[] = [
 
 const rides: Ride[] = [
   {
-    driver: 'Zoe Shwartz',
+    driver: { name: 'Zoe Shwartz', id: '7' },
     departureTime: new Date(Date.now() + 60 * 60000), // Adding 60 minutes to the current time
     communityName: 'Travel friends Haifa - Tel Aviv',
     startLocationName: 'Rotchild street, Tel Aviv',
@@ -51,7 +51,7 @@ const rides: Ride[] = [
     destination: [1, 2],
   },
   {
-    driver: 'Dar Nachmani',
+    driver: { name: 'Dar Nachmani', id: '2' },
     departureTime: new Date(Date.now() + 120 * 60000),
     communityName: 'Apple Friends - IL',
     png: getRandomOption(options),
@@ -61,7 +61,7 @@ const rides: Ride[] = [
     destination: [1, 2],
   },
   {
-    driver: 'Avi Ron',
+    driver: { name: 'Avi Ron', id: '4' },
     departureTime: new Date(Date.now() + 50 * 60000),
     communityName: 'Travel friends Haifa - Tel Aviv',
     startLocationName: 'Weizman street, Petah Tikva',
@@ -71,7 +71,7 @@ const rides: Ride[] = [
     png: getRandomOption(options),
   },
   {
-    driver: 'Tal Kovler',
+    driver: { name: 'Tal Kovler', id: '6' },
     departureTime: new Date(Date.now() + 25 * 60000),
     communityName: 'Apple Friends - IL',
     startLocationName: "Pe'er street, Haifa",

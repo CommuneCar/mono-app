@@ -1,5 +1,7 @@
+import { Driver } from './Driver';
+
 export interface Ride {
-  driver: string;
+  driver: Driver;
   departureTime: Date;
   communityName: string;
   startLocationName: string;

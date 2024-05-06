@@ -1,8 +1,11 @@
 import Typography from '@mui/material/Typography';
+
+import { Driver } from '@communecar/types/src/Driver';
+
 import defaultTheme from '../../themes/default';
 
 export interface RideDescriptionProps {
-  driver: string;
+  driver: Driver;
   departureTime: Date;
   startLocation: string;
   destination: string;
@@ -21,7 +24,7 @@ const RideDescription = ({
   );
   return (
     <Typography variant="subtitle1">
-      {driver} is leaving in{' '}
+      {driver.name} is leaving in{' '}
       <Typography
         variant="subtitle1"
         component="span" // Use span instead of the default block element

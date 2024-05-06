@@ -66,7 +66,10 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             const png = getRandomOption(options);
             rides.push({
               communityName,
-              driver,
+              driver: {
+                name: driver,
+                id: '5',
+              },
               departureTime,
               startLocationName: startLocation,
               destination,

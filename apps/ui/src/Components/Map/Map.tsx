@@ -20,10 +20,12 @@ interface MapProps {
   markers: MarkerInfo[];
 }
 
-const customIcon = new (Icon as any)({
+const customIcon = new Icon({
   iconUrl: placeholderIcon,
   iconSize: [38, 38],
 });
+
+const mapUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 const createClusterCustomIcon = (cluster: any) =>
   new (divIcon as any)({
@@ -84,10 +86,7 @@ const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
 
   return (
     <MapContainer center={[32.079444, 34.781769]} zoom={13}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <TileLayer url={mapUrl} />
       <MarkerClusterGroup
         chunkedLoading
         iconCreateFunction={createClusterCustomIcon}

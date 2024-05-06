@@ -15,9 +15,10 @@ interface CommunityListProps {
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
-const CommunityList: React.FC<CommunityListProps> = (props) => {
-  const { communities, setSelectedRide } = props;
-
+const CommunityList: React.FC<CommunityListProps> = ({
+  communities,
+  setSelectedRide,
+}) => {
   return (
     <>
       {communities.map((community, index) => (
