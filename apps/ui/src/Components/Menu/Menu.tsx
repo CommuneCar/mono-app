@@ -36,9 +36,9 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
         <HomeIcon sx={{ color: defaultTheme.palette.info.dark }} />,
         '/home',
       ],
-      Notifications: [
+      Messages: [
         <MailIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '/notifications',
+        '/messages',
       ],
       Rides: [
         <DirectionsCarIcon sx={{ color: defaultTheme.palette.info.dark }} />,
