@@ -1,3 +1,3 @@
-import { Community } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 
-export type CommunityWithRides = Community & { rides: any[] };
+export type CommunityWithRides = Community & { rides: Ride[] };
