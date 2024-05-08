@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
-import React from 'react';
 import { isEmpty } from 'lodash';
+import { Ride } from '@communecar/types';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import { CommunityWithRides } from './types';
@@ -11,11 +12,13 @@ dayjs.extend(relativeTime);
 
 interface CommunityListProps {
   communities: CommunityWithRides[];
+  setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
-const CommunityList: React.FC<CommunityListProps> = (props) => {
-  const { communities } = props;
-
+const CommunityList: React.FC<CommunityListProps> = ({
+  communities,
+  setSelectedRide,
+}) => {
   return (
     <>
       {communities.map((community, index) => (
@@ -34,11 +37,12 @@ const CommunityList: React.FC<CommunityListProps> = (props) => {
             </Card>
           ) : (
             community.rides.map((ride, index) => (
-              <RideCard
-                driver={ride.driver}
-                text={`going from ${ride.startLocation} to ${ride.destination} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
-                key={index}
-              />
+              <Box key={index} onClick={() => setSelectedRide(ride)}>
+                <RideCard
+                  driver={ride.driver}
+                  text={`going from ${ride.startLocationName} to ${ride.destination} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+                />
+              </Box>
             ))
           )}
         </Box>

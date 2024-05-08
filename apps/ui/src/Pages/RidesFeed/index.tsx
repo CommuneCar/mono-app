@@ -1,13 +1,16 @@
-import Box from '@mui/material/Box';
-import RideCard, { RidesCardProps } from './RideCard';
-import { IconButton, Tooltip } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
-import CreateRideDialog from './CreateRideDialog';
+import Box from '@mui/material/Box';
+import AddIcon from '@mui/icons-material/Add';
+import { IconButton, Tooltip } from '@mui/material';
+
+import { Ride } from '@communecar/types';
+
+import RideCard from './RideCard';
 import defaultTheme from '../../themes/default';
+import CreateRideDialog from './CreateRideDialog';
 
 export interface RidesFeedProps {
-  rides: RidesCardProps[];
+  rides: Ride[];
 }
 
 const RidesFeed = ({ rides }: RidesFeedProps) => {
@@ -38,14 +41,7 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
         <CreateRideDialog rides={rides} setOpen={setOpen} isOpen={open} />
       )}
       {rides.map((ride) => (
-        <RideCard
-          communityName={ride.communityName}
-          driver={ride.driver}
-          departureTime={ride.departureTime}
-          startLocation={ride.startLocation}
-          destination={ride.destination}
-          png={ride.png}
-        />
+        <RideCard {...ride} />
       ))}
     </Box>
   );
