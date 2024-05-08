@@ -9,8 +9,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { useUser } from '../hooks/Users/useUser';
-import { CommunityForm } from './CommunityForms/CommunityForm';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
+import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -60,17 +60,14 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
 
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
 
   const handleClickOnEdit = (communityToUpdate: Community) => {
     setCommunityToUpdate(communityToUpdate);
-    setIsOpen(true);
     setIsEditOpen(true);
   };
 
   const handleClose = () => {
-    setIsOpen(false);
     setCommunityToUpdate(undefined);
     setIsCreateOpen(false);
     setIsEditOpen(false);
@@ -118,20 +115,19 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
           ></SearchBar>
         </Toolbar>
       </AppBar>
-      {/* {isOpen && (
-        <CommunityForm
-          communityToUpdate={communityToUpdate}
-          onCreate={handleNewCommunity}
-          onUpdate={handleUpdateCommunity}
-          isOpen={isOpen}
-          handleClose={handleClose}
-        />
-      )} */}
       {isCreateOpen && (
         <CreateCommunity
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
+        />
+      )}
+      {isEditOpen && communityToUpdate && (
+        <UpdateCommunity
+          isOpen={isEditOpen}
+          handleClose={handleClose}
+          onUpdate={handleUpdateCommunity}
+          communityToUpdate={communityToUpdate}
         />
       )}
       <FeedList>

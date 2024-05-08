@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { Community } from '@communecar/types';
-import { postNewCommunity } from '../../apis/communities/create-community';
+import { postUpdateCommunity } from '../../apis/communities/update-community';
 
-const useCreateCommunity = () => {
+const useUpdateCommunity = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const addCommunity = async (community: Community) => {
+  const updateCommunity = async (community: Community) => {
     setIsLoading(true);
     setError(null);
     try {
-      const createdCommunity = await postNewCommunity(community);
+      const updatedCommunity = await postUpdateCommunity(community);
       setIsLoading(false);
-      return createdCommunity;
+      return updatedCommunity;
     } catch (err: any) {
       setError(err);
       setIsLoading(false);
@@ -20,7 +20,7 @@ const useCreateCommunity = () => {
     }
   };
 
-  return { addCommunity, isLoading, error };
+  return { updateCommunity, isLoading, error };
 };
 
-export { useCreateCommunity };
+export { useUpdateCommunity };
