@@ -19,6 +19,7 @@ import {
   useGetAllRides,
   useGetAllCommunities,
 } from './hooks/Communities/useGetAllCommunities';
+import { Notifications } from './Pages/Notifications/Notifications';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,6 +41,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/rides" element={<RidesFeed rides={rides} />} />
           <Route
             path="/communities"

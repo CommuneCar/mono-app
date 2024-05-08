@@ -15,6 +15,7 @@ import {
   People as PeopleIcon,
   Navigation as NavigationIcon,
   DirectionsCar as DirectionsCarIcon,
+  Mail as MailIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import React, { Dispatch, ReactNode, SetStateAction, useMemo } from 'react';
@@ -35,7 +36,10 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
         <HomeIcon sx={{ color: defaultTheme.palette.info.dark }} />,
         '/home',
       ],
-
+      Notifications: [
+        <MailIcon sx={{ color: defaultTheme.palette.info.dark }} />,
+        '/notifications',
+      ],
       Rides: [
         <DirectionsCarIcon sx={{ color: defaultTheme.palette.info.dark }} />,
         '/rides',
