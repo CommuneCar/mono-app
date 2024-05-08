@@ -11,6 +11,7 @@ import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { useUser } from '../hooks/Users/useUser';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
+import _ from 'lodash';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -82,15 +83,18 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   };
 
   const handleUpdateCommunity = (communityUpdated: Community) => {
-    setAllCommunitiesDisplay((prev) =>
-      prev.map((community) => {
-        if (community.id === communityUpdated.id) {
-          return communityUpdated;
-        } else {
-          return community;
-        }
-      }),
-    );
+    setAllCommunitiesDisplay((prev) => {
+      const communitiesObject = _.groupBy(prev, 'id');
+      const communitiesDictionary: Record<string, Community> = _.mapValues(
+        communitiesObject,
+        (value) => value[0],
+      );
+      const newDisplay = {
+        ...communitiesDictionary,
+        [communityUpdated.id]: communityUpdated,
+      };
+      return Object.values(newDisplay);
+    });
   };
 
   return (
