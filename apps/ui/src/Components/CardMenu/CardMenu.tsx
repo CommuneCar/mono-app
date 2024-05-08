@@ -1,18 +1,14 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react';
+
+import { IconButton, Menu, MenuItem, Box } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Box } from '@mui/material';
-
-enum MANAGER_OPTIONS {
-  EDIT = 'Edit',
-}
-
-const managerOptions: string[] = [MANAGER_OPTIONS.EDIT];
-const userOptions: string[] = [];
-
-const ITEM_HEIGHT = 48;
+import { MANAGER_OPTIONS } from '../../types/community-actions-enum';
+import {
+  ITEM_HEIGHT,
+  managerOptions,
+  userOptions,
+} from '../../utils/communities/cardMenuConsts';
 
 export interface CardMenuProps {
   handleEditClick: () => void;
@@ -23,7 +19,7 @@ const CardMenu: React.FC<CardMenuProps> = ({
   isManager = false,
   handleEditClick,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -48,7 +44,7 @@ const CardMenu: React.FC<CardMenuProps> = ({
           <MoreVertIcon />
         </IconButton>
         <Menu
-          id="long-menu"
+          id="card-menu"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
@@ -60,11 +56,7 @@ const CardMenu: React.FC<CardMenuProps> = ({
           }}
         >
           {options.map((option) => (
-            <MenuItem
-              key={option}
-              selected={option === 'Pyxis'}
-              onClick={() => handleSelectOption(option)}
-            >
+            <MenuItem key={option} onClick={() => handleSelectOption(option)}>
               {option}
             </MenuItem>
           ))}

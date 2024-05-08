@@ -1,11 +1,3 @@
-import { Gander } from '@communecar/types';
+import { User } from '@communecar/types';
 
-export type SignUpUser = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-  gander: Gander;
-  age?: number;
-};
+export type SignUpUser = Omit<User, 'id'>;

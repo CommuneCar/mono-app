@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { User } from '@communecar/types';
-import { authenticateUser } from '../../apis/user/signIn';
-import { singUpNewUser } from '../../apis/user/signUp';
+import { authenticateUser, singUpNewUser } from '../../apis/user/index';
 import { SignUpUser } from '../../types/sign-up-user';
 
 type UserContextType = {

@@ -4,11 +4,7 @@ import { useUser } from './hooks/Users/useUser';
 const ProtectedRoute = () => {
   const { user } = useUser();
 
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <Outlet />;
+  return !user ? <Navigate to="/" replace /> : <Outlet />;
 };
 
 export { ProtectedRoute };

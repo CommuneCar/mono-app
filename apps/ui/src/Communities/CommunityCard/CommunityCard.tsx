@@ -27,8 +27,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
 
   console.log({ joined }); //TODO when the server ready
 
-  const isManager = userStatus === UserStatus.MANAGER;
-
   const handleEditClick = () => {
     handleClickOnEdit(community);
   };
@@ -51,11 +49,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           }}
           action={
             <CardMenu
-              isManager={isManager}
+              isManager={userStatus === UserStatus.MANAGER}
               handleEditClick={handleEditClick}
-            ></CardMenu>
+            />
           }
-        ></CardHeader>
+        />
         <CardActions>
           <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid item xs={6}>

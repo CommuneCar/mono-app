@@ -60,8 +60,6 @@ const SignIn: React.FC = () => {
 
     if (isSubmitEnabled) {
       const success = await signIn(userSignIn.email, userSignIn.password);
-
-      signIn(userSignIn.email, userSignIn.password);
       if (success) navigate(DEFAULT_HOME_PAGE);
     }
   };
