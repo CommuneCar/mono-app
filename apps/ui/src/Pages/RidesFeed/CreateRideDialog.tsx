@@ -1,28 +1,30 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
+import {
+  Button,
+  Dialog,
+  TextField,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from '@mui/material';
+import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 
-import { RidesCardProps } from './RideCard';
+import { Ride } from '@communecar/types';
+
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
+
 import { getRandomOption } from '../../utils';
 
 const options = [tlv, apple, camera];
 
 interface ICreateRideDialog {
-  rides: RidesCardProps[];
+  rides: Ride[];
   setOpen: (isOpen: boolean) => void;
   isOpen: boolean;
 }
@@ -64,11 +66,16 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             const png = getRandomOption(options);
             rides.push({
               communityName,
-              driver,
+              driver: {
+                name: driver,
+                id: '5',
+              },
               departureTime,
-              startLocation,
+              startLocationName: startLocation,
               destination,
               png,
+              destinationName: destination,
+              startLocation,
             });
             handleClose();
           },
