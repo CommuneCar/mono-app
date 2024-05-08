@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Community } from '@communecar/types';
-import { postNewCommunity } from '../../apis/communities/create-community';
+import { postNewCommunity } from '../../apis/communities/createCommnuity';
 
 const useCreateCommunity = () => {
   const [isLoading, setIsLoading] = useState(false);
