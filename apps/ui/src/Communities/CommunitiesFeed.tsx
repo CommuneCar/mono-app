@@ -148,4 +148,4 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   );
 };
 
-export { CommunitiesFeed };
+export default CommunitiesFeed;
