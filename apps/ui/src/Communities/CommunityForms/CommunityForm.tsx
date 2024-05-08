@@ -13,9 +13,6 @@ import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
 import { TEXT } from '../../themes/default/consts';
 
 interface CommunityFormProps {
-  // communityToUpdate?: Community;
-  // onCreate: (community: Community) => void;
-  // onUpdate: (community: Community) => void;
   isOpen: boolean;
   handleClose: () => void;
   communityToUpdate?: Community;
