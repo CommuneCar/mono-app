@@ -5,11 +5,12 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Box, Button, Link, Container } from '@mui/material';
 
 import defaultTheme from '../../themes/default';
-import { TEXT } from '../../themes/default/consts';
+import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { validateField } from '../../utils/signing/validation';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
+import { useUser } from '../../hooks/Users/useUser';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,8 @@ const SignIn: React.FC = () => {
     password: null,
   });
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
+  const { signIn } = useUser();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -46,17 +49,18 @@ const SignIn: React.FC = () => {
   };
 
   const navigate = useNavigate();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userSignIn = {
-      email: data.get('email'),
-      password: data.get('password'),
+      email: data.get('email') as string,
+      password: data.get('password') as string,
     };
 
     if (isSubmitEnabled) {
-      console.log(userSignIn); // will be sent to server instead
-      navigate('/home');
+      const success = await signIn(userSignIn.email, userSignIn.password);
+      if (success) navigate(DEFAULT_HOME_PAGE);
     }
   };
 

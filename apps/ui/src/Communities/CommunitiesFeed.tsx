@@ -2,20 +2,29 @@ import Box from '@mui/material/Box';
 import CommunityCard from './CommunityCard/CommunityCard';
 import { AppBar, Toolbar } from '@mui/material';
 
-import { Community } from '@communecar/types';
+import { Community, UserStatus } from '@communecar/types';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { SearchBar } from '../Components/Search/SearchBar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateCommunityDialog } from './CreateCommunityDialog';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
+import { useUser } from '../hooks/Users/useUser';
+import { CreateCommunity } from './CommunityForms/CreateCommunity';
+import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
+import _ from 'lodash';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
 }
 
-const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
-  const userCommunitiesStatus = useUserCommunitiesStatus('hi');
+const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
+  const { user } = useUser();
+  const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
+    user?.id ?? 'admin',
+  );
+  const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
+    userCommunitiesStatusOriginal,
+  );
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
     useState<Community[]>(communities);
   const [filteredCommunities, setFilteredCommunities] = useState(
@@ -49,14 +58,43 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   useEffect(() => {
     filterCommunities(searchValue);
   }, [allCommunitiesDisplay]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
+
+  const handleClickOnEdit = (communityToUpdate: Community) => {
+    setCommunityToUpdate(communityToUpdate);
+    setIsEditOpen(true);
+  };
 
   const handleClose = () => {
-    setIsOpen(false);
+    setCommunityToUpdate(undefined);
+    setIsCreateOpen(false);
+    setIsEditOpen(false);
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
+    setUserCommunitiesStatus((prev) => ({
+      ...prev,
+      [newCommunity.id]: UserStatus.MANAGER,
+    }));
     setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
+  };
+
+  const handleUpdateCommunity = (communityUpdated: Community) => {
+    setAllCommunitiesDisplay((prev) => {
+      const communitiesObject = _.groupBy(prev, 'id');
+      const communitiesDictionary: Record<string, Community> = _.mapValues(
+        communitiesObject,
+        (value) => value[0],
+      );
+      const newDisplay = {
+        ...communitiesDictionary,
+        [communityUpdated.id]: communityUpdated,
+      };
+      return Object.values(newDisplay);
+    });
   };
 
   return (
@@ -81,24 +119,33 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           ></SearchBar>
         </Toolbar>
       </AppBar>
-      {isOpen && (
-        <CreateCommunityDialog
+      {isCreateOpen && (
+        <CreateCommunity
+          isOpen={isCreateOpen}
           handleClose={handleClose}
-          isOpen={isOpen}
-          handleNewCommunity={handleNewCommunity}
+          onCreate={handleNewCommunity}
+        />
+      )}
+      {isEditOpen && communityToUpdate && (
+        <UpdateCommunity
+          isOpen={isEditOpen}
+          handleClose={handleClose}
+          onUpdate={handleUpdateCommunity}
+          communityToUpdate={communityToUpdate}
         />
       )}
       <FeedList>
         {filteredCommunities.map((community, index) => (
           <CommunityCard
-            community={community}
-            userStatus={userCommunitiesStatus[community.name]}
             key={index}
+            community={community}
+            userStatus={userCommunitiesStatus[community.id]}
+            handleClickOnEdit={handleClickOnEdit}
           />
         ))}
       </FeedList>
       <AddNewButton
-        setIsOpen={setIsOpen}
+        setIsOpen={setIsCreateOpen}
         tooltipText="Create a new community"
       />
     </Box>
