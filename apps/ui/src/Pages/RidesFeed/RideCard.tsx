@@ -1,32 +1,27 @@
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import defaultTheme from '../../themes/default';
-
+import {
+  Box,
+  Card,
+  Button,
+  CardMedia,
+  Typography,
+  CardActions,
+  CardContent,
+} from '@mui/material';
 import { useState } from 'react';
+
+import { Ride } from '@communecar/types';
+
+import defaultTheme from '../../themes/default';
 import RideDescription from './RideDescription';
 
-export interface RidesCardProps {
-  communityName: string;
-  driver: string;
-  departureTime: Date;
-  startLocation: string;
-  destination: string;
-  png: string;
-}
-
 const RideCard = ({
-  communityName,
-  driver,
-  departureTime,
-  startLocation,
-  destination,
   png,
-}: RidesCardProps) => {
+  driver,
+  communityName,
+  departureTime,
+  destinationName,
+  startLocationName,
+}: Ride) => {
   const [joined, setJoined] = useState(false);
   return (
     <Box sx={{ margin: '5%', width: '100%', maxWidth: 400 }}>
@@ -39,8 +34,8 @@ const RideCard = ({
           <RideDescription
             driver={driver}
             departureTime={departureTime}
-            startLocation={startLocation}
-            destination={destination}
+            startLocation={startLocationName}
+            destination={destinationName}
           />
         </CardContent>
         <CardActions>
