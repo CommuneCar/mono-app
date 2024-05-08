@@ -10,12 +10,13 @@ import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { useUser } from '../hooks/Users/useUser';
 import { CommunityForm } from './CommunityForms/CommunityForm';
+import { CreateCommunity } from './CommunityForms/CreateCommunity';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
 }
 
-const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
+const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   const { user } = useUser();
   const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
     user?.id ?? 'admin',
@@ -57,17 +58,22 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
     filterCommunities(searchValue);
   }, [allCommunitiesDisplay]);
 
+  const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
 
   const handleClickOnEdit = (communityToUpdate: Community) => {
     setCommunityToUpdate(communityToUpdate);
     setIsOpen(true);
+    setIsEditOpen(true);
   };
 
   const handleClose = () => {
     setIsOpen(false);
     setCommunityToUpdate(undefined);
+    setIsCreateOpen(false);
+    setIsEditOpen(false);
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
@@ -112,13 +118,20 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
           ></SearchBar>
         </Toolbar>
       </AppBar>
-      {isOpen && (
+      {/* {isOpen && (
         <CommunityForm
           communityToUpdate={communityToUpdate}
           onCreate={handleNewCommunity}
           onUpdate={handleUpdateCommunity}
           isOpen={isOpen}
           handleClose={handleClose}
+        />
+      )} */}
+      {isCreateOpen && (
+        <CreateCommunity
+          isOpen={isCreateOpen}
+          handleClose={handleClose}
+          onCreate={handleNewCommunity}
         />
       )}
       <FeedList>
@@ -132,11 +145,11 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
         ))}
       </FeedList>
       <AddNewButton
-        setIsOpen={setIsOpen}
+        setIsOpen={setIsCreateOpen}
         tooltipText="Create a new community"
       />
     </Box>
   );
 };
 
-export default CommunitiesFeed;
+export { CommunitiesFeed };

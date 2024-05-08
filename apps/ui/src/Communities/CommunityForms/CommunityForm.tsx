@@ -10,14 +10,17 @@ import {
 } from '@mui/material';
 import { Community } from '@communecar/types';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
-import { FORMS_TEXT, TEXT } from '../../themes/default/consts';
+import { TEXT } from '../../themes/default/consts';
 
 interface CommunityFormProps {
-  communityToUpdate?: Community;
-  onCreate: (community: Community) => void;
-  onUpdate: (community: Community) => void;
+  // communityToUpdate?: Community;
+  // onCreate: (community: Community) => void;
+  // onUpdate: (community: Community) => void;
   isOpen: boolean;
   handleClose: () => void;
+  communityToUpdate?: Community;
+  formTexts: any;
+  onSubmit: (community: Community) => void;
 }
 
 const emptyCommunity: Community = {
@@ -29,25 +32,15 @@ const emptyCommunity: Community = {
 };
 
 const CommunityForm: React.FC<CommunityFormProps> = ({
-  communityToUpdate,
-  onCreate,
-  onUpdate,
+  formTexts,
   isOpen,
+  onSubmit,
+  communityToUpdate,
   handleClose,
 }) => {
-  const isUpdateState = !!communityToUpdate;
   const [community, setCommunity] = useState<Community>(
-    isUpdateState ? communityToUpdate : emptyCommunity,
+    communityToUpdate ?? emptyCommunity,
   );
-  const formText = isUpdateState
-    ? FORMS_TEXT.UPDATE_COMMUNITY
-    : FORMS_TEXT.CREATE_COMMUNITY;
-
-  useEffect(() => {
-    if (isUpdateState) {
-      setCommunity(communityToUpdate);
-    }
-  }, [communityToUpdate, isUpdateState]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -56,26 +49,21 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (communityToUpdate) {
-      onUpdate(community);
-    } else {
-      onCreate(community);
-    }
-    handleClose();
+    onSubmit(community);
   };
 
   return (
     <Dialog
-      open={isOpen || !!communityToUpdate}
+      open={isOpen}
       onClose={handleClose}
       PaperProps={{
         component: 'form',
         onSubmit: handleSubmit,
       }}
     >
-      <DialogTitle>{formText.title}</DialogTitle>
+      <DialogTitle>{formTexts.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{formText.description}</DialogContentText>
+        <DialogContentText>{formTexts.description}</DialogContentText>
         <TextField
           id="communityName"
           name="name"
@@ -106,7 +94,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
-        <SubmitButton type="submit">{formText.submitText}</SubmitButton>
+        <SubmitButton type="submit">{formTexts.submitText}</SubmitButton>
       </DialogActions>
     </Dialog>
   );
