@@ -29,7 +29,7 @@ export const COLORS = {
   WARNING_DARK: '#F57C00',
   WHITE: '#ffffff',
   BLACK: '#262626',
-  TITLE_TEXT: '#263A6D'
+  TITLE_TEXT: '#263A6D',
 } as const;
 
 export const FONTS = {
@@ -61,13 +61,33 @@ export const SPACING = {
 } as const;
 
 export const TEXT = {
-  REGISTER: "Don't have an account? Register Now", 
-  FORGOT_PASSWORD: "Forgot password?",
-  SIGNIN: "Already have an account? Sign in",
-  LOGIN: "Login",
-  CONTINUE: "Continue",
+  REGISTER: "Don't have an account? Register Now",
+  FORGOT_PASSWORD: 'Forgot password?',
+  SIGNIN: 'Already have an account? Sign in',
+  LOGIN: 'Login',
+  CONTINUE: 'Continue',
   CREATE: 'Create',
   CANCEL: 'Cancel',
-  CREATE_COMMUNITY: 'Create Community',
-  CREATE_COMMUNITY_DESCRIPTION: 'To add a Community, please fill all details here.'
+  SAVE: 'Save',
+  CREATE_COMMUNITY_TITLE: 'Create Community',
+  CREATE_COMMUNITY_DESCRIPTION:
+    'To add a Community, please fill all details here.',
+  UPDATE_COMMUNITY_TITLE: 'Update Community',
+  UPDATE_COMMUNITY_DESCRIPTION:
+    'To Update a Community, please change all details here.',
 } as const;
+
+export const FORMS_TEXT = {
+  CREATE_COMMUNITY: {
+    title: TEXT.CREATE_COMMUNITY_TITLE,
+    description: TEXT.CREATE_COMMUNITY_DESCRIPTION,
+    submitText: TEXT.CREATE,
+  },
+  UPDATE_COMMUNITY: {
+    title: TEXT.UPDATE_COMMUNITY_TITLE,
+    description: TEXT.UPDATE_COMMUNITY_DESCRIPTION,
+    submitText: TEXT.SAVE,
+  },
+} as const;
+
+export const DEFAULT_HOME_PAGE = '/home';

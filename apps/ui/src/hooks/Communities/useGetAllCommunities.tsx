@@ -18,6 +18,7 @@ const picturesUrl = [
 
 const communities: Community[] = [
   {
+    id: '1',
     name: 'Travel friends Haifa - Tel Aviv',
     description:
       'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
@@ -25,6 +26,7 @@ const communities: Community[] = [
     picturesUrl,
   },
   {
+    id: '2',
     description:
       'The biggest israeli community of Apple fans traveling to new stores and events together.',
     name: 'Apple Friends - IL',
@@ -32,6 +34,7 @@ const communities: Community[] = [
     picturesUrl,
   },
   {
+    id: '3',
     name: 'Camera Buddies  - photo fun!',
     description: 'A group of hobby photographers traveling together',
     numberOfMembers: 5,

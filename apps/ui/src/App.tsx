@@ -20,6 +20,8 @@ import {
   useGetAllCommunities,
 } from './hooks/Communities/useGetAllCommunities';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
+import { ProtectedRoute } from './ProtectedRoute';
+import { UserProvider } from './hooks/Users/useUser';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,20 +40,24 @@ function App() {
           <MenuIcon />
         </Button>
 
-        <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/messages" element={<MessagesFeed />} />
-          <Route path="/rides" element={<RidesFeed rides={rides} />} />
-          <Route
-            path="/communities"
-            element={<CommunitiesFeed communities={communities} />}
-          />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/map/navigation" element={<MapNavigationPage />} />
-          <Route path="/search" element={<SearchBar />} />
-        </Routes>
+        <UserProvider>
+          <Routes>
+            <Route path="/" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/messages" element={<MessagesFeed />} />
+              <Route path="/rides" element={<RidesFeed rides={rides} />} />
+              <Route
+                path="/communities"
+                element={<CommunitiesFeed communities={communities} />}
+              />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/map" element={<MapPage />} />
+              <Route path="/map/navigation" element={<MapNavigationPage />} />
+              <Route path="/search" element={<SearchBar />} />
+            </Route>
+          </Routes>
+        </UserProvider>
       </Router>
     </>
   );

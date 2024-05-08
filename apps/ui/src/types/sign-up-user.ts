@@ -1,12 +1,3 @@
-export type SignUpUser = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
-  gander: Gander;
-  age?: number;
-  //TODO: profileImage
-};
+import { User } from '@communecar/types';
 
-export type Gander = 'Female' | 'Male' | 'Other';
+export type SignUpUser = Omit<User, 'id'>;
