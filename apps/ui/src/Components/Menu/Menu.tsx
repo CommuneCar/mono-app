@@ -17,8 +17,9 @@ import {
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import React, { useMemo, useState, Dispatch, SetStateAction } from 'react';
+import React, { useMemo, Dispatch, SetStateAction } from 'react';
 
+import { Role, useRole } from '../../contexts/role';
 import defaultTheme from '../../themes/default';
 import { useUser } from '../../hooks/Users/useUser';
 
@@ -32,15 +33,15 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
 
   const { user, signOut } = useUser();
 
-  const [selectedRole, setSelectedRole] = useState<'driver' | 'rider'>('rider');
+  const { role, setRole } = useRole();
 
   const handleChangeRole = (
     event: React.MouseEvent<HTMLElement>,
-    newRole: 'driver' | 'rider',
+    newRole: Role,
   ) => {
     event.stopPropagation();
     event.stopPropagation();
-    setSelectedRole(newRole);
+    setRole(newRole);
   };
 
   const menuOptions: Record<string, string> = useMemo(
@@ -108,9 +109,9 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
           >
             <ToggleButtonGroup
               exclusive
+              value={role}
               size={'small'}
               color={'primary'}
-              value={selectedRole}
               onChange={handleChangeRole}
             >
               <ToggleButton value={'driver'}>Driver</ToggleButton>
@@ -119,9 +120,8 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
           </Box>
           <List>
             {Object.keys(menuOptions).map((text) => (
-              <>
+              <Box key={text}>
                 <ListItem
-                  key={text}
                   sx={{
                     paddingRight: '0',
                     color: defaultTheme.palette.info.dark,
@@ -136,7 +136,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
                   </ListItemButton>
                 </ListItem>
                 <Divider />
-              </>
+              </Box>
             ))}
           </List>
           <Box sx={{ marginTop: '80px' }}>

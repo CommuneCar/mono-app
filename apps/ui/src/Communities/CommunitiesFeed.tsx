@@ -1,17 +1,19 @@
-import Box from '@mui/material/Box';
-import CommunityCard from './CommunityCard/CommunityCard';
-import { AppBar, Toolbar } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { groupBy, mapValues } from 'lodash';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
-import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+
+import { Menu } from '../Components/Menu/Menu';
+import { useUser } from '../hooks/Users/useUser';
+import CommunityCard from './CommunityCard/CommunityCard';
 import { SearchBar } from '../Components/Search/SearchBar';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
-import { useUser } from '../hooks/Users/useUser';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
-import _ from 'lodash';
+import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -22,6 +24,8 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
     user?.id ?? 'admin',
   );
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
     userCommunitiesStatusOriginal,
   );
@@ -84,8 +88,8 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
 
   const handleUpdateCommunity = (communityUpdated: Community) => {
     setAllCommunitiesDisplay((prev) => {
-      const communitiesObject = _.groupBy(prev, 'id');
-      const communitiesDictionary: Record<string, Community> = _.mapValues(
+      const communitiesObject = groupBy(prev, 'id');
+      const communitiesDictionary: Record<string, Community> = mapValues(
         communitiesObject,
         (value) => value[0],
       );
@@ -101,24 +105,18 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <AppBar
-        color="default"
-        sx={{
-          borderRadius: 2,
-          padding: 0,
-          marginX: 10,
-          right: 'auto',
-          left: 'auto',
-          paddingY: 2,
-        }}
+      <Menu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row-reverse', width: '100%' }}
       >
-        <Toolbar variant={'regular'}>
-          <SearchBar
-            options={options}
-            handleChangeSearchValue={handleChangeSearchValue}
-          ></SearchBar>
-        </Toolbar>
-      </AppBar>
+        <Button color="primary" onClick={() => setIsMenuOpen(true)}>
+          <MenuIcon />
+        </Button>
+        <SearchBar
+          options={options}
+          handleChangeSearchValue={handleChangeSearchValue}
+        />
+      </Box>
       {isCreateOpen && (
         <CreateCommunity
           isOpen={isCreateOpen}
@@ -152,4 +150,4 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   );
 };
 
-export default CommunitiesFeed;
+export { CommunitiesFeed };
