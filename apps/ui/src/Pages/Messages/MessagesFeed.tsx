@@ -20,6 +20,9 @@ const MessagesFeed = () => {
 
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <Typography textTransform="uppercase" sx={{ letterSpacing: '0.15rem' }}>
+        Inbox
+      </Typography>
       <List>
         {messages.map((message: Message) => (
           <MessageCard

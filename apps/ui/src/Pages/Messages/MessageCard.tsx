@@ -7,6 +7,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import { formatDateRelative } from '../../utils/format/formatDateRelative';
 
@@ -45,35 +46,74 @@ const MessageCard: React.FC<MessageCardProps> = ({
         .trim()} for "${message.entityName}"`;
 
   return (
-    <ListItem divider>
-      <ListItemAvatar>
-        <Avatar
-          src="/path/to/avatar.jpg"
-          alt={`${message.userNameRequest} avatar`}
+    //   <ListItem divider>
+    //     <ListItemAvatar>
+    //       <Avatar
+    //         src="/path/to/avatar.jpg"
+    //         alt={`${message.userNameRequest} avatar`}
+    //       >
+    //         {/* Display initials if no image */}
+    //       </Avatar>
+    //     </ListItemAvatar>
+    //     <ListItemText
+    //       primary={messageText}
+    //       secondary={`${formatDateRelative(message.time)}`}
+    //     />
+    //     <ListItemSecondaryAction>
+    //       {isRequestType && (
+    //         <Box>
+    //           <Button
+    //             color="primary"
+    //             onClick={handleAccept}
+    //             sx={{ marginRight: 1 }}
+    //           >
+    //             Accept
+    //           </Button>
+    //           <Button color="secondary" onClick={handleDecline}>
+    //             Decline
+    //           </Button>
+    //         </Box>
+    //       )}
+    //     </ListItemSecondaryAction>
+    //   </ListItem>
+    // );
+    <ListItem
+      divider
+      sx={{ alignItems: 'flex-start', flexDirection: 'column' }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <ListItemAvatar>
+          <Avatar
+            src="/path/to/avatar.jpg" // Replace with actual source if available
+            alt={`${message.userNameRequest}'s avatar`}
+          />
+        </ListItemAvatar>
+        <ListItemText
+          primary={messageText}
+          secondary={
+            <Typography variant="body2" color="textSecondary">
+              {formatDateRelative(message.time)}
+            </Typography>
+          }
+          primaryTypographyProps={{ component: 'div' }}
+        />
+      </Box>
+      {isRequestType && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            bottom: 0,
+          }}
         >
-          {/* Display initials if no image */}
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={messageText}
-        secondary={`Time: ${formatDateRelative(message.time)}`}
-      />
-      <ListItemSecondaryAction>
-        {isRequestType && (
-          <Box>
-            <Button
-              color="primary"
-              onClick={handleAccept}
-              sx={{ marginRight: 1 }}
-            >
-              Accept
-            </Button>
-            <Button color="secondary" onClick={handleDecline}>
-              Decline
-            </Button>
-          </Box>
-        )}
-      </ListItemSecondaryAction>
+          <Button color="primary" onClick={handleAccept}>
+            Accept
+          </Button>
+          <Button color="secondary" onClick={handleDecline}>
+            Decline
+          </Button>
+        </Box>
+      )}
     </ListItem>
   );
 };
