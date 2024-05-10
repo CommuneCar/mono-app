@@ -31,15 +31,15 @@ function App() {
 
   return (
     <>
-      <CssBaseline />
-      <Router>
-        <Menu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
+      <UserProvider>
+        <CssBaseline />
+        <Router>
+          <Menu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
 
-        <Button onClick={() => setIsMenuOpen(true)}>
-          <MenuIcon />
-        </Button>
+          <Button onClick={() => setIsMenuOpen(true)}>
+            <MenuIcon />
+          </Button>
 
-        <UserProvider>
           <Routes>
             <Route path="/" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -55,8 +55,8 @@ function App() {
               <Route path="/search" element={<SearchBar />} />
             </Route>
           </Routes>
-        </UserProvider>
-      </Router>
+        </Router>
+      </UserProvider>
     </>
   );
 }
