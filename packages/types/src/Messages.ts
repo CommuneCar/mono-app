@@ -4,6 +4,7 @@ export type Message = {
   time: Date;
   entityName: string;
   type: MessageType;
+  addresseeUserId: string[];
 };
 
 export type MessageType =
