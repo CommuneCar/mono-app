@@ -3,5 +3,10 @@ export type Message = {
   userNameRequest: string;
   time: Date;
   entityName: string;
-  type: 'joiningRequest' | 'editRide';
+  type: MessageType;
 };
+
+export type MessageType =
+  | 'joiningRideRequest'
+  | 'joiningCommunityRequest'
+  | 'editRide';
