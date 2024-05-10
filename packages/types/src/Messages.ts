@@ -10,4 +10,6 @@ export type Message = {
 export type MessageType =
   | 'joiningRideRequest'
   | 'joiningCommunityRequest'
+  | 'approvedCommunityRequest'
+  | 'approvedRideRequest'
   | 'editRide';
