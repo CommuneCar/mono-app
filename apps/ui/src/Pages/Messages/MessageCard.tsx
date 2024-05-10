@@ -1,12 +1,14 @@
 import { Message } from '@communecar/types';
 import {
   Avatar,
+  Box,
   Button,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
 } from '@mui/material';
+import { formatDateRelative } from '../../utils/format/formatDateRelative';
 
 export interface MessageCardProps {
   message: Message;
@@ -26,6 +28,22 @@ const MessageCard: React.FC<MessageCardProps> = ({
     alert('Action Declined!');
     onActionComplete(message.id);
   };
+
+  const isRequestType =
+    message.type === 'joiningRideRequest' ||
+    message.type === 'joiningCommunityRequest' ||
+    message.type === 'editRide';
+
+  const messageText = isRequestType
+    ? `${message.userNameRequest} is requesting to ${message.type
+        .replace(/([A-Z])/g, ' $1')
+        .toLowerCase()
+        .trim()} for "${message.entityName}"`
+    : `${message.userNameRequest} ${message.type
+        .replace(/([A-Z])/g, ' $1')
+        .toLowerCase()
+        .trim()} for "${message.entityName}"`;
+
   return (
     <ListItem divider>
       <ListItemAvatar>
@@ -37,19 +55,24 @@ const MessageCard: React.FC<MessageCardProps> = ({
         </Avatar>
       </ListItemAvatar>
       <ListItemText
-        primary={`${message.userNameRequest} is requesting to ${message.type
-          .replace(/([A-Z])/g, ' $1')
-          .toLowerCase()
-          .trim()} for ${message.entityName}`}
-        secondary={`Time: ${new Date(message.time).toLocaleString()}`}
+        primary={messageText}
+        secondary={`Time: ${formatDateRelative(message.time)}`}
       />
       <ListItemSecondaryAction>
-        <Button color="primary" onClick={handleAccept} sx={{ marginRight: 1 }}>
-          Accept
-        </Button>
-        <Button color="secondary" onClick={handleDecline}>
-          Decline
-        </Button>
+        {isRequestType && (
+          <Box>
+            <Button
+              color="primary"
+              onClick={handleAccept}
+              sx={{ marginRight: 1 }}
+            >
+              Accept
+            </Button>
+            <Button color="secondary" onClick={handleDecline}>
+              Decline
+            </Button>
+          </Box>
+        )}
       </ListItemSecondaryAction>
     </ListItem>
   );
