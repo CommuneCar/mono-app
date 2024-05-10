@@ -18,14 +18,12 @@ const MessageCard: React.FC<MessageCardProps> = ({
   onActionComplete,
 }) => {
   const handleAccept = () => {
-    console.log('Accepting', message.id);
-    alert('Action Accepted!'); // Replace with a proper toast notification
+    alert('Action Accepted!');
     onActionComplete(message.id);
   };
 
   const handleDecline = () => {
-    console.log('Declining', message.id);
-    alert('Action Declined!'); // Replace with a proper toast notification
+    alert('Action Declined!');
     onActionComplete(message.id);
   };
   return (
@@ -46,15 +44,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
         secondary={`Time: ${new Date(message.time).toLocaleString()}`}
       />
       <ListItemSecondaryAction>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAccept}
-          sx={{ marginRight: 1 }}
-        >
+        <Button color="primary" onClick={handleAccept} sx={{ marginRight: 1 }}>
           Accept
         </Button>
-        <Button variant="outlined" color="secondary" onClick={handleDecline}>
+        <Button color="secondary" onClick={handleDecline}>
           Decline
         </Button>
       </ListItemSecondaryAction>
