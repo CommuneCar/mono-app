@@ -5,7 +5,6 @@ import {
   Button,
   ListItem,
   ListItemAvatar,
-  ListItemSecondaryAction,
   ListItemText,
   Typography,
 } from '@mui/material';
@@ -46,37 +45,6 @@ const MessageCard: React.FC<MessageCardProps> = ({
         .trim()} for "${message.entityName}"`;
 
   return (
-    //   <ListItem divider>
-    //     <ListItemAvatar>
-    //       <Avatar
-    //         src="/path/to/avatar.jpg"
-    //         alt={`${message.userNameRequest} avatar`}
-    //       >
-    //         {/* Display initials if no image */}
-    //       </Avatar>
-    //     </ListItemAvatar>
-    //     <ListItemText
-    //       primary={messageText}
-    //       secondary={`${formatDateRelative(message.time)}`}
-    //     />
-    //     <ListItemSecondaryAction>
-    //       {isRequestType && (
-    //         <Box>
-    //           <Button
-    //             color="primary"
-    //             onClick={handleAccept}
-    //             sx={{ marginRight: 1 }}
-    //           >
-    //             Accept
-    //           </Button>
-    //           <Button color="secondary" onClick={handleDecline}>
-    //             Decline
-    //           </Button>
-    //         </Box>
-    //       )}
-    //     </ListItemSecondaryAction>
-    //   </ListItem>
-    // );
     <ListItem
       divider
       sx={{ alignItems: 'flex-start', flexDirection: 'column' }}
