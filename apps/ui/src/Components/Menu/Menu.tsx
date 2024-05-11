@@ -47,6 +47,7 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
   const menuOptions: Record<string, string> = useMemo(
     () => ({
       Home: '/home',
+      Messages: '/messages',
       Rides: '/rides',
       Communities: '/communities',
       Invitations: '',
