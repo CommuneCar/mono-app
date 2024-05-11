@@ -18,7 +18,7 @@ const MyEntitiesFilterButton: React.FC<MyEntitiesFilterButtonProps> = ({
     filter(!showMyEntities);
   };
   return (
-    <Box>
+    <Box sx={{ alignSelf: 'start' }}>
       <FormControlLabel
         control={
           <Switch
@@ -27,7 +27,7 @@ const MyEntitiesFilterButton: React.FC<MyEntitiesFilterButtonProps> = ({
           />
         }
         label={lable}
-        labelPlacement="start"
+        labelPlacement="end"
       />
     </Box>
   );
