@@ -1,8 +1,13 @@
 import { Ride } from '@communecar/types';
 import { flatten, groupBy } from 'lodash';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { FilterAltOffRounded, Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
 
 import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
@@ -81,6 +86,13 @@ const HomePage: React.FC = () => {
               <ToggleButton value={'rides'}>My Rides</ToggleButton>
             </ToggleButtonGroup>
           </Box>
+          {communityId && selectedTab === 'communities' && (
+            <Box>
+              <IconButton sx={{ alignSelf: 'start' }}>
+                <FilterAltOffRounded />
+              </IconButton>
+            </Box>
+          )}
           {selectedTab === 'communities' && (
             <CommunityList
               communities={communities}
