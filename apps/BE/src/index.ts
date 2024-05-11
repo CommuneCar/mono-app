@@ -1,24 +1,20 @@
-import dotenv from 'dotenv';
-import { postgraphile } from 'postgraphile';
-import express, { Request, Response } from 'express';
+import express from 'express';
+require('dotenv').config(); // Load environment variables
+import { postgraphileMiddleware } from './middleware/postgraphile.middleware';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.config';
+import router from './routes';
 
-dotenv.config();
 const app = express();
 
-app.use(
-  postgraphile(
-    process.env.DATABASE_URL || 'postgres://user:pass@host:5432/dbname',
-    'public',
-    {
-      watchPg: true,
-      graphiql: true,
-      enhanceGraphiql: true,
-    },
-  ),
-);
+// Middleware
+app.use(postgraphileMiddleware);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Application works!');
+// Routes
+app.use('/api/v1', router);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+const PORT = process.env.PORT || 8001;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
-
-app.listen(process.env.PORT || 8001);

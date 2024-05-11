@@ -15,19 +15,21 @@ import { Menu } from './Components/Menu/Menu';
 import SearchBar from './Components/Map/SearchBar';
 import { HomePage } from './Pages/HomePage/HomePage';
 import MapNavigationPage from './Pages/MapNavigation';
-import CommunitiesFeed from './Communities/CommunitiesFeed';
+import { CommunitiesFeed } from './Communities/CommunitiesFeed';
 import {
   useGetAllRides,
   useGetAllCommunities,
 } from './hooks/Communities/useGetAllCommunities';
+import { ProtectedRoute } from './ProtectedRoute';
+import { UserProvider } from './hooks/Users/useUser';
+import { RoleProvider } from './contexts/role';
 
 const supabase = createClient(
   'https://guzwjncnbuiiazedbuis.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1endqbmNuYnVpaWF6ZWRidWlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQxMTkyNjgsImV4cCI6MjAyOTY5NTI2OH0.24aX1cMX4ilkkUoZs-GE-MxWCoqfaE6rmnwRpJMxs-g',
 );
 
-function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const App: React.FC = () => {  
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
@@ -73,7 +75,32 @@ function App() {
     </SessionContextProvider>
   ) : (
     <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+  return (
+    <>
+      <UserProvider>
+        <RoleProvider>
+          <CssBaseline />
+          <Router>
+            <Routes>
+              <Route path="/" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/rides" element={<RidesFeed rides={rides} />} />
+                <Route
+                  path="/communities"
+                  element={<CommunitiesFeed communities={communities} />}
+                />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/map" element={<MapPage />} />
+                <Route path="/map/navigation" element={<MapNavigationPage />} />
+                <Route path="/search" element={<SearchBar />} />
+              </Route>
+            </Routes>
+          </Router>
+        </RoleProvider>
+      </UserProvider>
+    </>
   );
-}
+};
 
-export default App;
+export { App };

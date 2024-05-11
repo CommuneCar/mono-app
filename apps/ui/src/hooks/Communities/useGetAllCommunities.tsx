@@ -1,4 +1,4 @@
-import { Community } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
@@ -18,6 +18,7 @@ const picturesUrl = [
 
 const communities: Community[] = [
   {
+    id: '1',
     name: 'Travel friends Haifa - Tel Aviv',
     description:
       'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
@@ -25,6 +26,7 @@ const communities: Community[] = [
     picturesUrl,
   },
   {
+    id: '2',
     description:
       'The biggest israeli community of Apple fans traveling to new stores and events together.',
     name: 'Apple Friends - IL',
@@ -32,6 +34,7 @@ const communities: Community[] = [
     picturesUrl,
   },
   {
+    id: '3',
     name: 'Camera Buddies  - photo fun!',
     description: 'A group of hobby photographers traveling together',
     numberOfMembers: 5,
@@ -39,37 +42,45 @@ const communities: Community[] = [
   },
 ];
 
-const rides = [
+const rides: Ride[] = [
   {
-    driver: 'Zoe Shwartz',
+    driver: { name: 'Zoe Shwartz', id: '7' },
     departureTime: new Date(Date.now() + 60 * 60000), // Adding 60 minutes to the current time
     communityName: 'Travel friends Haifa - Tel Aviv',
-    startLocation: 'Rotchild street, Tel Aviv',
+    startLocationName: 'Rotchild street, Tel Aviv',
+    startLocation: [32.063898, 34.773855],
     png: getRandomOption(options),
-    destination: 'Pardesia',
+    destinationName: 'Pardesia',
+    destination: [1, 2],
   },
   {
-    driver: 'Dar Nachmani',
+    driver: { name: 'Dar Nachmani', id: '2' },
     departureTime: new Date(Date.now() + 120 * 60000),
     communityName: 'Apple Friends - IL',
     png: getRandomOption(options),
-    startLocation: 'Efraim Katzir street, Hod Hasharon',
-    destination: 'Modiin',
+    startLocationName: 'Efraim Katzir street, Hod Hasharon',
+    startLocation: [32.166401, 34.900587],
+    destinationName: 'Modiin',
+    destination: [1, 2],
   },
   {
-    driver: 'Avi Ron',
+    driver: { name: 'Avi Ron', id: '4' },
     departureTime: new Date(Date.now() + 50 * 60000),
     communityName: 'Travel friends Haifa - Tel Aviv',
-    startLocation: 'Weizman street, Petah Tikva',
-    destination: 'Holon',
+    startLocationName: 'Weizman street, Petah Tikva',
+    startLocation: [32.078195, 34.87304],
+    destinationName: 'Holon',
+    destination: [1, 2],
     png: getRandomOption(options),
   },
   {
-    driver: 'Tal Kovler',
+    driver: { name: 'Tal Kovler', id: '6' },
     departureTime: new Date(Date.now() + 25 * 60000),
     communityName: 'Apple Friends - IL',
-    startLocation: 'Bla street, Haifa',
-    destination: 'The Golan',
+    startLocationName: "Pe'er street, Haifa",
+    startLocation: [32.799783, 35.009874],
+    destinationName: 'The Golan',
+    destination: [1, 2],
     png: getRandomOption(options),
   },
 ];

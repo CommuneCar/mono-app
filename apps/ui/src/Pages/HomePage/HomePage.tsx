@@ -1,12 +1,13 @@
-import { groupBy } from 'lodash';
+import { Ride } from '@communecar/types';
+import { flatten, groupBy } from 'lodash';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { useSession } from '@supabase/auth-helpers-react';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
-import { Map } from '../../Components/Map/Map';
 import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
+import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
@@ -19,7 +20,8 @@ const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
     'communities',
   );
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const [selectedRide, setSelectedRide] = useState<Ride>();
 
   const session = useSession();
 
@@ -49,11 +51,26 @@ const HomePage: React.FC = () => {
 
   return (
     <Page>
-      <Menu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
-      <Map />
-      <MainMenuButton color="primary" onClick={() => setIsProfileOpen(true)}>
-        <MenuIcon />
-      </MainMenuButton>
+      <Menu
+        MenuButton={
+          <MainMenuButton color="primary">
+            <MenuIcon />
+          </MainMenuButton>
+        }
+      />
+      <Map
+        focusLocation={selectedRide?.startLocation}
+        markers={
+          flatten(
+            communities.map((community) =>
+              community.rides.map((ride) => ({
+                geocode: ride.startLocation,
+                popUp: `${ride.driver.name} going to ${ride.destinationName}`,
+              })),
+            ),
+          ) as MarkerInfo[]
+        }
+      />
       <BottomDrawer>
         <>
           Hi there {userName}
@@ -69,7 +86,10 @@ const HomePage: React.FC = () => {
             </ToggleButtonGroup>
           </Box>
           {selectedTab === 'communities' && (
-            <CommunityList communities={communities} />
+            <CommunityList
+              communities={communities}
+              setSelectedRide={setSelectedRide}
+            />
           )}
           {selectedTab === 'rides' && <>something will be here :)</>}
         </>

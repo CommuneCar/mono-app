@@ -16,7 +16,7 @@ const MapPage: React.FC = () => {
 
   return (
     <Box style={mapContainerStyle} className="full-viewport">
-      <Map />
+      <Map markers={[]} />
     </Box>
   );
 };

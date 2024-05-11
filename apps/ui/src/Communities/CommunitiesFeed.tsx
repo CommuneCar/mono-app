@@ -1,21 +1,33 @@
-import Box from '@mui/material/Box';
-import CommunityCard from './CommunityCard/CommunityCard';
-import { AppBar, Toolbar } from '@mui/material';
-
-import { Community } from '@communecar/types';
-import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
-import { SearchBar } from '../Components/Search/SearchBar';
+import { Box, Button } from '@mui/material';
+import { groupBy, mapValues } from 'lodash';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CreateCommunityDialog } from './CreateCommunityDialog';
+
+import { Community, UserStatus } from '@communecar/types';
+
+import { Menu } from '../Components/Menu/Menu';
+import { useUser } from '../hooks/Users/useUser';
+import CommunityCard from './CommunityCard/CommunityCard';
+import { SearchBar } from '../Components/Search/SearchBar';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
+import { CreateCommunity } from './CommunityForms/CreateCommunity';
+import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
+import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
 }
 
-const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
-  const userCommunitiesStatus = useUserCommunitiesStatus('hi');
+const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
+  const { user } = useUser();
+  const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
+    user?.id ?? 'admin',
+  );
+
+  const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
+    userCommunitiesStatusOriginal,
+  );
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
     useState<Community[]>(communities);
   const [filteredCommunities, setFilteredCommunities] = useState(
@@ -49,60 +61,93 @@ const CommunitiesFeed = ({ communities }: CommunitiesFeedProps) => {
   useEffect(() => {
     filterCommunities(searchValue);
   }, [allCommunitiesDisplay]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [communityToUpdate, setCommunityToUpdate] = useState<Community>();
+
+  const handleClickOnEdit = (communityToUpdate: Community) => {
+    setCommunityToUpdate(communityToUpdate);
+    setIsEditOpen(true);
+  };
 
   const handleClose = () => {
-    setIsOpen(false);
+    setCommunityToUpdate(undefined);
+    setIsCreateOpen(false);
+    setIsEditOpen(false);
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
+    setUserCommunitiesStatus((prev) => ({
+      ...prev,
+      [newCommunity.id]: UserStatus.MANAGER,
+    }));
     setAllCommunitiesDisplay((prev) => [newCommunity, ...prev]);
+  };
+
+  const handleUpdateCommunity = (communityUpdated: Community) => {
+    setAllCommunitiesDisplay((prev) => {
+      const communitiesObject = groupBy(prev, 'id');
+      const communitiesDictionary: Record<string, Community> = mapValues(
+        communitiesObject,
+        (value) => value[0],
+      );
+      const newDisplay = {
+        ...communitiesDictionary,
+        [communityUpdated.id]: communityUpdated,
+      };
+      return Object.values(newDisplay);
+    });
   };
 
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <AppBar
-        color="default"
-        sx={{
-          borderRadius: 2,
-          padding: 0,
-          marginX: 10,
-          right: 'auto',
-          left: 'auto',
-          paddingY: 2,
-        }}
-      >
-        <Toolbar variant={'regular'}>
-          <SearchBar
-            options={options}
-            handleChangeSearchValue={handleChangeSearchValue}
-          ></SearchBar>
-        </Toolbar>
-      </AppBar>
-      {isOpen && (
-        <CreateCommunityDialog
+      <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
+        <SearchBar
+          options={options}
+          handleChangeSearchValue={handleChangeSearchValue}
+        />
+        <Menu
+          MenuButton={
+            <Button sx={{ height: '100%' }} color="primary">
+              <MenuIcon />
+            </Button>
+          }
+        />
+      </Box>
+      {isCreateOpen && (
+        <CreateCommunity
+          isOpen={isCreateOpen}
           handleClose={handleClose}
-          isOpen={isOpen}
-          handleNewCommunity={handleNewCommunity}
+          onCreate={handleNewCommunity}
+        />
+      )}
+      {isEditOpen && communityToUpdate && (
+        <UpdateCommunity
+          isOpen={isEditOpen}
+          handleClose={handleClose}
+          onUpdate={handleUpdateCommunity}
+          communityToUpdate={communityToUpdate}
         />
       )}
       <FeedList>
         {filteredCommunities.map((community, index) => (
           <CommunityCard
-            community={community}
-            userStatus={userCommunitiesStatus[community.name]}
             key={index}
+            community={community}
+            userStatus={userCommunitiesStatus[community.id]}
+            handleClickOnEdit={handleClickOnEdit}
           />
         ))}
       </FeedList>
       <AddNewButton
-        setIsOpen={setIsOpen}
+        setIsOpen={setIsCreateOpen}
         tooltipText="Create a new community"
       />
     </Box>
   );
 };
 
-export default CommunitiesFeed;
+export { CommunitiesFeed };
