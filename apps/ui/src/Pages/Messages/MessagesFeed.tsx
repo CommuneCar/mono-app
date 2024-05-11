@@ -10,8 +10,8 @@ const MessagesFeed = () => {
     user?.id || 'admin',
   );
 
-  const handleActionComplete = (messageId: string) => {
-    setMessages(messages.filter((msg) => msg.id !== messageId));
+  const handleActionComplete = (messageId: string, success: boolean) => {
+    if (success) setMessages(messages.filter((msg) => msg.id !== messageId));
   };
 
   if (loading) return <CircularProgress />;

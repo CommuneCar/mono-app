@@ -10,9 +10,11 @@ export type Message = {
 };
 
 export enum MessageType {
+  EDIT_RIDE = 'editRide',
   JOINING_RIDE_REQUEST = 'joiningRideRequest',
   JOINING_COMMUNITY_REQUEST = 'joiningCommunityRequest',
   APPROVED_COMMUNITY_REQUEST = 'approvedCommunityRequest',
   APPROVED_RIDE_REQUEST = 'approvedRideRequest',
-  EDIT_RIDE = 'editRide',
+  DECLINE_COMMUNITY_REQUEST = 'declinedCommunityRequest',
+  DECLINE_RIDE_REQUEST = 'declinedRideRequest',
 }

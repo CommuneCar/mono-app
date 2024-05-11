@@ -9,24 +9,28 @@ import {
   Typography,
 } from '@mui/material';
 import { formatDateRelative } from '../../utils/format/formatDateRelative';
+import { RequsetActions } from '../../types/actions';
+import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
 
 export interface MessageCardProps {
   message: Message;
-  onActionComplete: (messageId: string) => void;
+  onActionComplete: (messageId: string, success: boolean) => void;
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({
   message,
   onActionComplete,
 }) => {
-  const handleAccept = () => {
-    alert('Action Accepted!');
-    onActionComplete(message.id);
-  };
+  const { submitRespondToMessage, isLoading, error } = useRespondToMessage();
 
-  const handleDecline = () => {
-    alert('Action Declined!');
-    onActionComplete(message.id);
+  const handleAction = async (action: RequsetActions) => {
+    const success = await submitRespondToMessage(message.id, action);
+    if (success && !isLoading) {
+      alert(`Action ${action} was successful!`);
+      onActionComplete(message.id, true);
+    } else {
+      alert(`Failed to ${action} the request: ${error?.message}`);
+    }
   };
 
   const isRequestType =
@@ -104,11 +108,17 @@ const MessageCard: React.FC<MessageCardProps> = ({
             bottom: 0,
           }}
         >
-          <Button color="primary" onClick={handleAccept}>
-            Accept
+          <Button
+            color="primary"
+            onClick={() => handleAction(RequsetActions.ACCEPT)}
+          >
+            {RequsetActions.ACCEPT}
           </Button>
-          <Button color="secondary" onClick={handleDecline}>
-            Decline
+          <Button
+            color="secondary"
+            onClick={() => handleAction(RequsetActions.DECLINE)}
+          >
+            {RequsetActions.DECLINE}
           </Button>
         </Box>
       )}
