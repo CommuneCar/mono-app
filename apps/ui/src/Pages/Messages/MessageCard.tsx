@@ -39,7 +39,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 
   const entityNameTextStyle = <strong>{` "${message.entityName}" `}</strong>;
 
-  const actionText = {
+  const actionText: Record<MessageType, JSX.Element> = {
     approvedCommunityRequest: (
       <>
         {`has approved your request to join the `}
@@ -69,6 +69,19 @@ const MessageCard: React.FC<MessageCardProps> = ({
     joiningRideRequest: (
       <>
         asks to join the trip to
+        {entityNameTextStyle}
+      </>
+    ),
+    declinedCommunityRequest: (
+      <>
+        has declined your request to join the
+        {entityNameTextStyle}
+        community
+      </>
+    ),
+    declinedRideRequest: (
+      <>
+        declined your request to join the ride to
         {entityNameTextStyle}
       </>
     ),

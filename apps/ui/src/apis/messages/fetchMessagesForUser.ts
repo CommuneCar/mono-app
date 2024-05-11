@@ -82,6 +82,22 @@ const messages: Message[] = [
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
   },
+  {
+    id: '6',
+    time: new Date(Date.now() - 86400000), // Current time
+    type: MessageType.DECLINE_RIDE_REQUEST,
+    entityName: 'work',
+    addresseeUsers: [users[0], users[2]],
+    creatorUser: users[1],
+  },
+  {
+    id: '7',
+    time: new Date(Date.now() - 86400000), // Current time
+    type: MessageType.DECLINE_COMMUNITY_REQUEST,
+    entityName: 'Tel-Aviv',
+    addresseeUsers: [users[0], users[2]],
+    creatorUser: users[1],
+  },
 ];
 
 const fetchMessagesForUser = async (userId: string) => {
