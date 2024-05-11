@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.15",
     "@mui/x-date-pickers": "^7.2.0",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "deck.gl": "^9.0.8",
     "hex-rgb": "^5.0.0",

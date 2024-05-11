@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Menu as MenuIcon } from '@mui/icons-material';
@@ -24,7 +24,6 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const communities = useGetAllCommunities();
 
   const rides = useGetAllRides();

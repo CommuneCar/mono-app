@@ -1,4 +1,4 @@
-
+import cors from 'cors';
 import express from 'express';
 require('dotenv').config();  // Load environment variables
 import { postgraphileMiddleware } from './middleware/postgraphile.middleware';
@@ -7,6 +7,11 @@ import swaggerSpec from './config/swagger.config';
 import router from './routes';
 
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200
+}));
 
 // Middleware
 app.use(postgraphileMiddleware);

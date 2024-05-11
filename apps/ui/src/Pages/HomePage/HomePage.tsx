@@ -1,7 +1,6 @@
-import { Ride } from '@communecar/types';
+import React, { useEffect, useState } from 'react';
 import { flatten, groupBy } from 'lodash';
 import { Menu as MenuIcon } from '@mui/icons-material';
-import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { MainMenuButton, Page } from './styles';
@@ -16,23 +15,26 @@ import {
 } from '../../hooks/Communities/useGetAllCommunities';
 
 const HomePage: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
-    'communities',
-  );
+  const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>('communities');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [selectedRide, setSelectedRide] = useState<Ride | undefined>();
+  const [communities, setCommunities] = useState([]);
 
-  const [selectedRide, setSelectedRide] = useState<Ride>();
+  useEffect(() => {
+    async function fetchData() {
+      const baseCommunities = await useGetAllCommunities();
+      const baseRides = await useGetAllRides();
 
-  const communities = useMemo(() => {
-    const baseCommunities = useGetAllCommunities();
-    const baseRides = useGetAllRides();
+      const groupedRides = groupBy(baseRides, 'communityName');
+      const communitiesWithRides = baseCommunities.map((community) => ({
+        ...community,
+        rides: groupedRides[community.name] ?? [],
+      }));
 
-    const groupedRides = groupBy(baseRides, 'communityName');
+      setCommunities(communitiesWithRides);
+    }
 
-    return baseCommunities.map((community) => ({
-      ...community,
-      rides: groupedRides[community.name] ?? [],
-    }));
+    fetchData();
   }, []);
 
   const ChangeSelectedTab = (
