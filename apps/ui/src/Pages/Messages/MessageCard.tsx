@@ -3,13 +3,14 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Typography,
 } from '@mui/material';
 import { formatDateRelative } from '../../utils/format/formatDateRelative';
-import { RequsetActions } from '../../types/actions';
+import { RequestActions } from '../../types/actions';
 import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
 
 export interface MessageCardProps {
@@ -23,7 +24,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 }) => {
   const { submitRespondToMessage, isLoading, error } = useRespondToMessage();
 
-  const handleAction = async (action: RequsetActions) => {
+  const handleAction = async (action: RequestActions) => {
     const success = await submitRespondToMessage(message.id, action);
     if (success && !isLoading) {
       alert(`Action ${action} was successful!`);
@@ -33,9 +34,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
     }
   };
 
-  const isRequestType =
-    message.type === MessageType.JOINING_COMMUNITY_REQUEST ||
-    message.type === MessageType.JOINING_RIDE_REQUEST;
+  const isRequestType = [
+    MessageType.JOINING_COMMUNITY_REQUEST,
+    MessageType.JOINING_RIDE_REQUEST,
+  ].includes(message.type);
 
   const entityNameTextStyle = <strong>{` "${message.entityName}" `}</strong>;
 
@@ -101,7 +103,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
     >
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <ListItemAvatar>
-          <Avatar alt={`${message.creatorUser.firstName}'s avatar`} />
+          <Avatar
+            src={message.creatorUser.avatarUrl || undefined}
+            alt={`${message.creatorUser.firstName}'s avatar`}
+          />
         </ListItemAvatar>
         <ListItemText
           primary={<Typography variant="body1">{messageText}</Typography>}
@@ -123,16 +128,19 @@ const MessageCard: React.FC<MessageCardProps> = ({
         >
           <Button
             color="primary"
-            onClick={() => handleAction(RequsetActions.ACCEPT)}
+            onClick={() => handleAction(RequestActions.ACCEPT)}
+            disabled={isLoading}
           >
-            {RequsetActions.ACCEPT}
+            {RequestActions.ACCEPT}
           </Button>
           <Button
             color="secondary"
-            onClick={() => handleAction(RequsetActions.DECLINE)}
+            onClick={() => handleAction(RequestActions.DECLINE)}
+            disabled={isLoading}
           >
-            {RequsetActions.DECLINE}
+            {RequestActions.DECLINE}
           </Button>
+          {isLoading && <CircularProgress size={24} />}
         </Box>
       )}
     </ListItem>

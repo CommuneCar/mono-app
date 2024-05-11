@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RequsetActions } from '../../types/actions';
+import { RequestActions } from '../../types/actions';
 import { respondToMessage } from '../../apis/messages/respondToMessage';
 
 const useRespondToMessage = () => {
@@ -8,7 +8,7 @@ const useRespondToMessage = () => {
 
   const submitRespondToMessage = async (
     messageId: string,
-    action: RequsetActions,
+    action: RequestActions,
   ) => {
     setLoading(true);
     setError(null);

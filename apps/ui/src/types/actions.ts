@@ -1,4 +1,4 @@
-export enum RequsetActions {
+export enum RequestActions {
   ACCEPT = 'Accept',
   DECLINE = 'Decline',
 }
