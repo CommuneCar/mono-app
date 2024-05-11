@@ -12,7 +12,7 @@ import {
 import { formatDateRelative } from '../../utils/format/formatDateRelative';
 import { RequestActions } from '../../types/actions';
 import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
-import { actionTextDisplay } from '../../utils/messages/actionTextDisplay';
+import { actionTextDisplay } from './ActionTextDisplay';
 import { BoldText } from '../../Components/styles/BoldText.styled';
 
 export interface MessageCardProps {
@@ -76,12 +76,14 @@ const MessageCard: React.FC<MessageCardProps> = ({
             display: 'flex',
             flexDirection: 'row',
             bottom: 0,
+            textTransform: 'none',
           }}
         >
           <Button
             color="primary"
             onClick={() => handleAction(RequestActions.ACCEPT)}
             disabled={isLoading}
+            sx={{ textTransform: 'none' }}
           >
             {RequestActions.ACCEPT}
           </Button>
@@ -89,6 +91,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
             color="secondary"
             onClick={() => handleAction(RequestActions.DECLINE)}
             disabled={isLoading}
+            sx={{ textTransform: 'none' }}
           >
             {RequestActions.DECLINE}
           </Button>
