@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
 import { ThemeProvider } from '@mui/material';
-import defaultTheme from './themes/default/index.tsx';
 import { registerSW } from 'virtual:pwa-register';
+
+import './index.css';
+
+import { App } from './App.tsx';
+import defaultTheme from './themes/default/index.tsx';
 
 const updateServiceWorkers = registerSW({
   onNeedRefresh() {

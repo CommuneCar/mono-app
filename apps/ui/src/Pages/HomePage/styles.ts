@@ -16,6 +16,7 @@ const MainMenuButton = styled(IconButton)(() => ({
   right: 10,
   borderRadius: 5,
   backgroundColor: 'white',
+  zIndex: 10,
 }));
 
 export { Page, MainMenuButton };
