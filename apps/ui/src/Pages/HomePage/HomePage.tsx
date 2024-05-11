@@ -14,8 +14,11 @@ import {
   useGetAllRides,
   useGetAllCommunities,
 } from '../../hooks/Communities/useGetAllCommunities';
+import { useLocation } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
+  const location = useLocation();
+  const communityId = location.state?.communityId;
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
     'communities',
   );
@@ -40,6 +43,8 @@ const HomePage: React.FC = () => {
   ) => {
     if (newTab !== null) setSelectedTab(newTab);
   };
+
+  console.log({ communityId });
 
   return (
     <Page>

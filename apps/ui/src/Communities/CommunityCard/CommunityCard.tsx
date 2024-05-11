@@ -10,6 +10,7 @@ import { StatusButton } from './StatusButton';
 import { CardHeader, Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
+import { useNavigate } from 'react-router-dom';
 
 export interface CommunityCardProps {
   community: Community;
@@ -22,6 +23,8 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   userStatus,
   handleClickOnEdit,
 }) => {
+  const navigate = useNavigate();
+
   const { name, description, picturesUrl } = community;
   const [joined, setJoined] = useState(false);
 
@@ -31,7 +34,9 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
     handleClickOnEdit(community);
   };
 
-  const handleJumpToRides = () => {};
+  const handleJumpToRides = () => {
+    navigate('/home', { state: { communityId: community.id } });
+  };
 
   return (
     <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
