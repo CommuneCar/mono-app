@@ -5,7 +5,6 @@ import { User } from './User';
 export type Message = {
   id: string;
   creatorUser: User;
-  userNameRequest: string;
   time: Date;
   entityName: string;
   type: MessageType;

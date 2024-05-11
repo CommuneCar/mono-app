@@ -39,7 +39,6 @@ const messages: Message[] = [
     time: new Date(Date.now()), // Current time
     type: 'editRide',
     entityName: 'Tel-Aviv',
-    userNameRequest: 'Zoe',
     addresseeUsers: [users[0]],
     creatorUser: users[1],
   },
@@ -48,7 +47,6 @@ const messages: Message[] = [
     time: new Date(Date.now() - 86400000), // Yesterday
     type: 'joiningCommunityRequest',
     entityName: 'Tel-Aviv',
-    userNameRequest: 'Zoe',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
   },
@@ -57,7 +55,6 @@ const messages: Message[] = [
     time: new Date(Date.now() - 2 * 86400000), // 2 days ago
     type: 'joiningRideRequest',
     entityName: 'to work',
-    userNameRequest: 'Zoe',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
   },
@@ -66,7 +63,6 @@ const messages: Message[] = [
     time: new Date(Date.now() - 7 * 86400000), // Exactly one week ago
     type: 'approvedCommunityRequest',
     entityName: 'Tel-aviv',
-    userNameRequest: 'Dar',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
   },
@@ -75,7 +71,6 @@ const messages: Message[] = [
     time: new Date(Date.now() - 15 * 86400000), // More than a week ago
     type: 'approvedRideRequest',
     entityName: 'to work',
-    userNameRequest: 'Dar',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
   },
