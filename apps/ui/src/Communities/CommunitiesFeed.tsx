@@ -104,17 +104,19 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
-        <SearchBar
-          options={options}
-          handleChangeSearchValue={handleChangeSearchValue}
-        />
+      <Box sx={{ display: 'flex', alignItems: 'end', width: '100%' }}>
         <Menu
           MenuButton={
             <Button sx={{ height: '100%' }} color="primary">
               <MenuIcon />
             </Button>
           }
+        />
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
+        <SearchBar
+          options={options}
+          handleChangeSearchValue={handleChangeSearchValue}
         />
       </Box>
       {isCreateOpen && (
