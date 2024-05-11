@@ -1,11 +1,9 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { groupBy, mapValues } from 'lodash';
-import { Menu as MenuIcon } from '@mui/icons-material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
 
-import { Menu } from '../Components/Menu/Menu';
 import { useUser } from '../hooks/Users/useUser';
 import CommunityCard from './CommunityCard/CommunityCard';
 import { SearchBar } from '../Components/Search/SearchBar';
@@ -14,6 +12,7 @@ import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { PageHeader } from '../Components/PageHeader/PageHeader';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -104,15 +103,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'end', width: '100%' }}>
-        <Menu
-          MenuButton={
-            <Button sx={{ height: '100%' }} color="primary">
-              <MenuIcon />
-            </Button>
-          }
-        />
-      </Box>
+      <PageHeader title={'Communities'} />
       <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
         <SearchBar
           options={options}
