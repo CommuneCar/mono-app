@@ -2,6 +2,7 @@ import {
   Box,
   List,
   Avatar,
+  Divider,
   ListItem,
   IconButton,
   Typography,
@@ -10,29 +11,28 @@ import {
   ListItemButton,
   SwipeableDrawer,
   ToggleButtonGroup,
-  Divider,
 } from '@mui/material';
 import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import React, { useMemo, Dispatch, SetStateAction } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { Role, useRole } from '../../contexts/role';
 import defaultTheme from '../../themes/default';
+import { Role, useRole } from '../../contexts/role';
 import { useUser } from '../../hooks/Users/useUser';
 
 interface MenuProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  MenuButton?: React.ReactElement;
 }
 
-const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
+const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
   const navigate = useNavigate();
 
-  const { user, signOut } = useUser();
+  const [isOpen, setIsOpen] = useState(false);
 
+  const { user, signOut } = useUser();
   const { role, setRole } = useRole();
 
   const handleChangeRole = (
@@ -58,7 +58,8 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
   );
 
   return (
-    <Box sx={{ display: 'flex', width: '100%' }}>
+    <>
+      {MenuButton && <Box onClick={() => setIsOpen(true)}>{MenuButton}</Box>}
       <SwipeableDrawer
         anchor="right"
         open={isOpen}
@@ -158,7 +159,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
           </Box>
         </Box>
       </SwipeableDrawer>
-    </Box>
+    </>
   );
 };
 

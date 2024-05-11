@@ -19,7 +19,6 @@ const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
     'communities',
   );
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const [selectedRide, setSelectedRide] = useState<Ride>();
 
@@ -44,7 +43,13 @@ const HomePage: React.FC = () => {
 
   return (
     <Page>
-      <Menu isOpen={isProfileOpen} setIsOpen={setIsProfileOpen} />
+      <Menu
+        MenuButton={
+          <MainMenuButton color="primary">
+            <MenuIcon />
+          </MainMenuButton>
+        }
+      />
       <Map
         focusLocation={selectedRide?.startLocation}
         markers={
@@ -58,9 +63,6 @@ const HomePage: React.FC = () => {
           ) as MarkerInfo[]
         }
       />
-      <MainMenuButton color="primary" onClick={() => setIsProfileOpen(true)}>
-        <MenuIcon />
-      </MainMenuButton>
       <BottomDrawer>
         <>
           <Box style={{ margin: '2%' }}>

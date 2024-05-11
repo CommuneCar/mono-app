@@ -25,7 +25,6 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     user?.id ?? 'admin',
   );
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
     userCommunitiesStatusOriginal,
   );
@@ -105,16 +104,17 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <Menu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
-      <Box
-        sx={{ display: 'flex', flexDirection: 'row-reverse', width: '100%' }}
-      >
-        <Button color="primary" onClick={() => setIsMenuOpen(true)}>
-          <MenuIcon />
-        </Button>
+      <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
         <SearchBar
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
+        />
+        <Menu
+          MenuButton={
+            <Button sx={{ height: '100%' }} color="primary">
+              <MenuIcon />
+            </Button>
+          }
         />
       </Box>
       {isCreateOpen && (
