@@ -1,10 +1,15 @@
+import { Community } from './Community';
+import { Ride } from './Ride';
+import { User } from './User';
+
 export type Message = {
   id: string;
+  creatorUser: User;
   userNameRequest: string;
   time: Date;
   entityName: string;
   type: MessageType;
-  addresseeUserId: string[];
+  addresseeUsers: User[];
 };
 
 export type MessageType =

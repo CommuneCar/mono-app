@@ -1,4 +1,37 @@
-import { Message } from '@communecar/types';
+import { Gander, Message, User } from '@communecar/types';
+
+const users: User[] = [
+  {
+    id: '123',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@doe.il',
+    password: '123',
+    gander: Gander.MALE,
+    phone: '0500000000',
+    age: 20,
+  },
+  {
+    id: '1234',
+    firstName: 'Jin',
+    lastName: 'Doe',
+    email: 'jin@doe.il',
+    password: '1234',
+    gander: Gander.FEMALE,
+    phone: '0500000001',
+    age: 20,
+  },
+  {
+    id: 'admin',
+    firstName: 'admin',
+    lastName: 'admin',
+    email: 'admin@admin.il',
+    password: 'admin',
+    gander: Gander.OTHER,
+    phone: '0500000001',
+    age: 20,
+  },
+];
 
 const messages: Message[] = [
   {
@@ -7,7 +40,8 @@ const messages: Message[] = [
     type: 'editRide',
     entityName: 'Tel-Aviv',
     userNameRequest: 'Zoe',
-    addresseeUserId: ['123'],
+    addresseeUsers: [users[0]],
+    creatorUser: users[1],
   },
   {
     id: '2',
@@ -15,7 +49,8 @@ const messages: Message[] = [
     type: 'joiningCommunityRequest',
     entityName: 'Tel-Aviv',
     userNameRequest: 'Zoe',
-    addresseeUserId: ['123', 'admin'],
+    addresseeUsers: [users[0], users[2]],
+    creatorUser: users[1],
   },
   {
     id: '3',
@@ -23,7 +58,8 @@ const messages: Message[] = [
     type: 'joiningRideRequest',
     entityName: 'to work',
     userNameRequest: 'Zoe',
-    addresseeUserId: ['123', 'admin'],
+    addresseeUsers: [users[0], users[2]],
+    creatorUser: users[1],
   },
   {
     id: '4',
@@ -31,7 +67,8 @@ const messages: Message[] = [
     type: 'approvedCommunityRequest',
     entityName: 'Tel-aviv',
     userNameRequest: 'Dar',
-    addresseeUserId: ['123', 'admin'],
+    addresseeUsers: [users[0], users[2]],
+    creatorUser: users[1],
   },
   {
     id: '5',
@@ -39,14 +76,16 @@ const messages: Message[] = [
     type: 'approvedRideRequest',
     entityName: 'to work',
     userNameRequest: 'Dar',
-    addresseeUserId: ['123', 'admin'],
+    addresseeUsers: [users[0], users[2]],
+    creatorUser: users[1],
   },
 ];
 
 const fetchMessagesForUser = async (userId: string) => {
-  const messagesForUser = messages.filter((message) =>
-    message.addresseeUserId.includes(userId),
-  );
+  const messagesForUser = messages.filter((message) => {
+    const usersIds = message.addresseeUsers.map((user) => user.id);
+    return usersIds.includes(userId);
+  });
 
   return messagesForUser;
 };
