@@ -15,13 +15,11 @@ import SearchBar from './Components/Map/SearchBar';
 import { HomePage } from './Pages/HomePage/HomePage';
 import MapNavigationPage from './Pages/MapNavigation';
 import CommunitiesFeed from './Communities/CommunitiesFeed';
-import {
-  useGetAllRides,
-  useGetAllCommunities,
-} from './hooks/Communities/useGetAllCommunities';
+import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
 import { ProtectedRoute } from './ProtectedRoute';
 import { UserProvider } from './hooks/Users/useUser';
+import { useGetAllRides } from './hooks/Rides/useGetAllRides';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

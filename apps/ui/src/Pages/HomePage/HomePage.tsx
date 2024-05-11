@@ -10,10 +10,8 @@ import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
-import {
-  useGetAllRides,
-  useGetAllCommunities,
-} from '../../hooks/Communities/useGetAllCommunities';
+import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
+import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 
 const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
