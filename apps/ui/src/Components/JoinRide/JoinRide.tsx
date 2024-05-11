@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import TextField from '@mui/material/TextField';
-import { Grid } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Grid,
+} from '@mui/material';
 
-interface IJoinRideDialog {
+interface JoinRideProps {
   setOpen: (isOpen: boolean) => void;
   isOpen: boolean;
 }
 
-function JoinRideDialog({ isOpen, setOpen }: IJoinRideDialog) {
+const JoinRideDialog: React.FC<JoinRideProps> = ({ isOpen, setOpen }) => {
   const [isChecked, setChecked] = useState(false);
-  const [number, setNumber] = useState(1);
+  const [numberOfRiders, setNumberOfRiders] = useState(1);
   const [location, setLocation] = useState('');
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +27,7 @@ function JoinRideDialog({ isOpen, setOpen }: IJoinRideDialog) {
 
   const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(1, Math.min(5, Number(event.target.value)));
-    setNumber(value);
+    setNumberOfRiders(value);
   };
 
   const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +36,7 @@ function JoinRideDialog({ isOpen, setOpen }: IJoinRideDialog) {
 
   const onCancel = () => {
     setChecked(false);
-    setNumber(1);
+    setNumberOfRiders(1);
     setLocation('');
     setOpen(false);
   };
@@ -68,7 +70,7 @@ function JoinRideDialog({ isOpen, setOpen }: IJoinRideDialog) {
             <TextField
               label="Number of passengers"
               type="number"
-              value={number}
+              value={numberOfRiders}
               onChange={handleNumberChange}
               inputProps={{ min: 1, max: 5 }}
               margin="normal"
@@ -88,6 +90,6 @@ function JoinRideDialog({ isOpen, setOpen }: IJoinRideDialog) {
       </DialogActions>
     </Dialog>
   );
-}
+};
 
-export default JoinRideDialog;
+export { JoinRideDialog };

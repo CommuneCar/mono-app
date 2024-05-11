@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Send } from '@mui/icons-material';
-import JoinRideDialog from '../JoinRide/JoinRide';
+import { JoinRideDialog } from '../JoinRide/JoinRide';
 
 interface RideCardProps {
   text: string;
