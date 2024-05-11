@@ -39,12 +39,6 @@ const HomePage: React.FC = () => {
   const location = useLocation();
   const communityId = location.state?.communityId;
 
-  const filteredCommunities = useMemo(() => {
-    return communityId
-      ? communities.filter((community) => community.id === communityId)
-      : communities;
-  }, [communityId, communities]);
-
   const ChangeSelectedTab = (
     _: MouseEvent<HTMLElement>,
     newTab: 'communities' | 'rides',
@@ -65,7 +59,7 @@ const HomePage: React.FC = () => {
         focusLocation={selectedRide?.startLocation}
         markers={
           flatten(
-            filteredCommunities.map((community) =>
+            communities.map((community) =>
               community.rides.map((ride) => ({
                 geocode: ride.startLocation,
                 popUp: `${ride.driver.name} going to ${ride.destinationName}`,
@@ -89,8 +83,9 @@ const HomePage: React.FC = () => {
           </Box>
           {selectedTab === 'communities' && (
             <CommunityList
-              communities={filteredCommunities}
+              communities={communities}
               setSelectedRide={setSelectedRide}
+              communityId={communityId}
             />
           )}
           {selectedTab === 'rides' && <>something will be here :)</>}
