@@ -12,6 +12,7 @@ import {
 import { formatDateRelative } from '../../utils/format/formatDateRelative';
 import { RequestActions } from '../../types/actions';
 import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
+import { actionTextDisplay } from '../../utils/messages/actionTextDisplay';
 
 export interface MessageCardProps {
   message: Message;
@@ -39,60 +40,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
     MessageType.JOINING_RIDE_REQUEST,
   ].includes(message.type);
 
-  const entityNameTextStyle = <strong>{` "${message.entityName}" `}</strong>;
-
-  const actionText: Record<MessageType, JSX.Element> = {
-    approvedCommunityRequest: (
-      <>
-        {`has approved your request to join the `}
-        {entityNameTextStyle}
-        community
-      </>
-    ),
-    approvedRideRequest: (
-      <>
-        approved your request to join the trip to
-        {entityNameTextStyle}
-      </>
-    ),
-    editRide: (
-      <>
-        edited the trip to
-        {entityNameTextStyle}
-      </>
-    ),
-    joiningCommunityRequest: (
-      <>
-        {`wants to join the `}
-        {entityNameTextStyle}
-        community
-      </>
-    ),
-    joiningRideRequest: (
-      <>
-        asks to join the trip to
-        {entityNameTextStyle}
-      </>
-    ),
-    declinedCommunityRequest: (
-      <>
-        has declined your request to join the
-        {entityNameTextStyle}
-        community
-      </>
-    ),
-    declinedRideRequest: (
-      <>
-        declined your request to join the ride to
-        {entityNameTextStyle}
-      </>
-    ),
-  };
-
   const messageText = (
     <>
       <strong>{`${message.creatorUser.firstName} `}</strong>
-      {actionText[message.type]}
+      {actionTextDisplay(message)}
     </>
   );
 
