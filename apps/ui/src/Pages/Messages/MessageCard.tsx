@@ -13,6 +13,7 @@ import { formatDateRelative } from '../../utils/format/formatDateRelative';
 import { RequestActions } from '../../types/actions';
 import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
 import { actionTextDisplay } from '../../utils/messages/actionTextDisplay';
+import { BoldText } from '../../Components/styles/BoldText.styled';
 
 export interface MessageCardProps {
   message: Message;
@@ -42,7 +43,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 
   const messageText = (
     <>
-      <strong>{`${message.creatorUser.firstName} `}</strong>
+      <BoldText>{`${message.creatorUser.firstName} `}</BoldText>
       {actionTextDisplay(message)}
     </>
   );
@@ -56,7 +57,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
         <ListItemAvatar>
           <Avatar
             src={message.creatorUser.avatarUrl || undefined}
-            alt={`${message.creatorUser.firstName}'s avatar`}
+            alt={`${message.creatorUser?.firstName}'s avatar`}
           />
         </ListItemAvatar>
         <ListItemText

@@ -1,6 +1,6 @@
 import { User } from './User';
 
-export type Message = {
+type Message = {
   id: string;
   creatorUser: User;
   time: Date;
@@ -9,7 +9,7 @@ export type Message = {
   addresseeUsers: User[];
 };
 
-export enum MessageType {
+enum MessageType {
   EDIT_RIDE = 'editRide',
   JOINING_RIDE_REQUEST = 'joiningRideRequest',
   JOINING_COMMUNITY_REQUEST = 'joiningCommunityRequest',
@@ -18,3 +18,6 @@ export enum MessageType {
   DECLINE_COMMUNITY_REQUEST = 'declinedCommunityRequest',
   DECLINE_RIDE_REQUEST = 'declinedRideRequest',
 }
+
+export type { Message };
+export { MessageType };

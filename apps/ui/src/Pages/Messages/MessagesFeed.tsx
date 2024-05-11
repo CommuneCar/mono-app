@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, List, Typography } from '@mui/material';
-import { useMessagesForUser } from '../../hooks/Messages/useMessagesForUser';
+import { useUserMessages } from '../../hooks/Messages/useMessagesForUser';
 import { useUser } from '../../hooks/Users/useUser';
 import { Message } from '@communecar/types';
 import { MessageCard } from './MessageCard';
@@ -8,7 +8,7 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 
 const MessagesFeed = () => {
   const { user } = useUser();
-  const { messages, loading, error, setMessages } = useMessagesForUser(
+  const { messages, loading, error, setMessages } = useUserMessages(
     user?.id || 'admin',
   );
 

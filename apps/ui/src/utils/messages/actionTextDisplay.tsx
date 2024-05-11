@@ -1,11 +1,14 @@
 import { Message, MessageType } from '@communecar/types';
+import { BoldText } from '../../Components/styles/BoldText.styled';
 
 const actionTextDisplay = (message: Message) => {
-  const entityNameTextStyle = <strong>{` "${message.entityName}" `}</strong>;
+  const entityNameTextStyle = (
+    <BoldText>{` "${message.entityName}" `}</BoldText>
+  );
   const actionsDisplay: Record<MessageType, JSX.Element> = {
     approvedCommunityRequest: (
       <>
-        {`has approved your request to join the `}
+        has approved your request to join the
         {entityNameTextStyle}
         community
       </>
