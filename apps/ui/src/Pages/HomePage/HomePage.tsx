@@ -15,17 +15,16 @@ import {
   useGetAllCommunities,
 } from '../../hooks/Communities/useGetAllCommunities';
 import { useLocation } from 'react-router-dom';
+import { CommunityWithRides } from '../../Components/CommunityList/types';
 
 const HomePage: React.FC = () => {
-  const location = useLocation();
-  const communityId = location.state?.communityId;
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
     'communities',
   );
 
   const [selectedRide, setSelectedRide] = useState<Ride>();
 
-  const communities = useMemo(() => {
+  const communities: CommunityWithRides[] = useMemo(() => {
     const baseCommunities = useGetAllCommunities();
     const baseRides = useGetAllRides();
 
@@ -37,14 +36,21 @@ const HomePage: React.FC = () => {
     }));
   }, []);
 
+  const location = useLocation();
+  const communityId = location.state?.communityId;
+
+  const filteredCommunities = useMemo(() => {
+    return communityId
+      ? communities.filter((community) => community.id === communityId)
+      : communities;
+  }, [communityId, communities]);
+
   const ChangeSelectedTab = (
     _: MouseEvent<HTMLElement>,
     newTab: 'communities' | 'rides',
   ) => {
     if (newTab !== null) setSelectedTab(newTab);
   };
-
-  console.log({ communityId });
 
   return (
     <Page>
@@ -59,7 +65,7 @@ const HomePage: React.FC = () => {
         focusLocation={selectedRide?.startLocation}
         markers={
           flatten(
-            communities.map((community) =>
+            filteredCommunities.map((community) =>
               community.rides.map((ride) => ({
                 geocode: ride.startLocation,
                 popUp: `${ride.driver.name} going to ${ride.destinationName}`,
@@ -83,7 +89,7 @@ const HomePage: React.FC = () => {
           </Box>
           {selectedTab === 'communities' && (
             <CommunityList
-              communities={communities}
+              communities={filteredCommunities}
               setSelectedRide={setSelectedRide}
             />
           )}
