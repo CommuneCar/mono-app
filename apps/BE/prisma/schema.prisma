@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  email         String          @unique
+  profileImage  String?
+  age           Int
+  gender        String
+  phoneNumber   String          @unique
+  userCommunity UserCommunity[]
+  userRide      UserRide[]
+}
+
+model UserCommunity {
+  userId      Int
+  communityId Int
+  status      String
+  community   Community @relation(fields: [communityId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+  @@id([userId, communityId])
+}
+
+model Community {
+  id             Int             @id @default(autoincrement())
+  ownerId        Int
+  title          String
+  description    String
+  lat            Float?
+  long           Float?
+  userCommunity  UserCommunity[]
+  ride           Ride[]
+}
+
+model Ride {
+  id              Int         @id @default(autoincrement())
+  ownerId         Int
+  modificationTs  DateTime    @updatedAt
+  fromLat         Float
+  fromLong        Float
+  toLat           Float
+  toLong          Float
+  gasMoney        Int
+  pronouns        Boolean
+  startTime       DateTime
+  communityId     Int?
+  seats           Int
+  userRide        UserRide[]
+  community       Community?  @relation(fields: [communityId], references: [id])
+}
+
+model UserRide {
+  userId    Int
+  rideId    Int
+  status    String
+  fromLat   Float
+  fromLong  Float
+  toLat     Float
+  toLong    Float
+  user      User   @relation(fields: [userId], references: [id])
+  ride      Ride   @relation(fields: [rideId], references: [id])
+  @@id([userId, rideId])
+}
+

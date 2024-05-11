@@ -39,7 +39,7 @@ const CommunityList: React.FC<CommunityListProps> = ({
             community.rides.map((ride, index) => (
               <Box key={index} onClick={() => setSelectedRide(ride)}>
                 <RideCard
-                  driver={ride.driver}
+                  driver={ride.driver.name}
                   text={`going from ${ride.startLocationName} to ${ride.destination} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
                 />
               </Box>
