@@ -1,5 +1,3 @@
-import { Community } from './Community';
-import { Ride } from './Ride';
 import { User } from './User';
 
 export type Message = {
