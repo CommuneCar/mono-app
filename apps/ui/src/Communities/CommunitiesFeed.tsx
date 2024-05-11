@@ -13,6 +13,7 @@ import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { PageHeader } from '../Components/PageHeader/PageHeader';
+import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -99,6 +100,25 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     });
   };
 
+  const [showMyCommunities, setShowMyCommunities] = useState(false);
+
+  const myCommunities = useMemo(() => {
+    const memberStatus = [UserStatus.APPROVED, UserStatus.MANAGER];
+    return allCommunitiesDisplay.filter(
+      (community) =>
+        userCommunitiesStatus[community.id] &&
+        memberStatus.includes(userCommunitiesStatus[community.id]),
+    );
+  }, [allCommunitiesDisplay, userCommunitiesStatus]);
+
+  const handleMyCommunitiesFilter = (showMyCommunities: boolean) => {
+    if (showMyCommunities) {
+      setFilteredCommunities(myCommunities);
+    } else {
+      setFilteredCommunities(allCommunitiesDisplay);
+    }
+  };
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -109,6 +129,12 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
         />
+        <MyEntitiesFilterButton
+          lable={'My Communities'}
+          setShowMyEntities={setShowMyCommunities}
+          showMyEntities={showMyCommunities}
+          filter={handleMyCommunitiesFilter}
+        ></MyEntitiesFilterButton>
       </Box>
       {isCreateOpen && (
         <CreateCommunity
