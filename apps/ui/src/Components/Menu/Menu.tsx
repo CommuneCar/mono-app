@@ -1,72 +1,66 @@
 import {
   Box,
   List,
+  Avatar,
+  Divider,
   ListItem,
+  IconButton,
+  Typography,
+  ToggleButton,
   ListItemText,
   ListItemButton,
   SwipeableDrawer,
-  ListItemIcon,
+  ToggleButtonGroup,
 } from '@mui/material';
 import {
-  Map as MapIcon,
-  Rsvp as RsvpIcon,
-  Home as HomeIcon,
-  Search as SearchIcon,
-  People as PeopleIcon,
-  Navigation as NavigationIcon,
-  DirectionsCar as DirectionsCarIcon,
-  Mail as MailIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import React, { Dispatch, ReactNode, SetStateAction, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import defaultTheme from '../../themes/default';
+import { Role, useRole } from '../../contexts/role';
+import { useUser } from '../../hooks/Users/useUser';
 
 interface MenuProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  MenuButton?: React.ReactElement;
 }
 
-const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
+const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
   const navigate = useNavigate();
 
-  const menuOptions: Record<string, [ReactNode, string]> = useMemo(
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { user, signOut } = useUser();
+  const { role, setRole } = useRole();
+
+  const handleChangeRole = (
+    event: React.MouseEvent<HTMLElement>,
+    newRole: Role,
+  ) => {
+    event.stopPropagation();
+    event.stopPropagation();
+    setRole(newRole);
+  };
+
+  const menuOptions: Record<string, string> = useMemo(
     () => ({
-      Home: [
-        <HomeIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '/home',
-      ],
-      Messages: [
-        <MailIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '/messages',
-      ],
-      Rides: [
-        <DirectionsCarIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '/rides',
-      ],
-      Communities: [
-        <PeopleIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '/communities',
-      ],
-      Invitations: [
-        <RsvpIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '',
-      ],
-      SearchBar: [
-        <SearchIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '/search',
-      ],
-      Map: [<MapIcon sx={{ color: defaultTheme.palette.info.dark }} />, '/map'],
-      MapNavigation: [
-        <NavigationIcon sx={{ color: defaultTheme.palette.info.dark }} />,
-        '/map/navigation',
-      ],
+      Home: '/home',
+      messages: '/messages',
+      Rides: '/rides',
+      Communities: '/communities',
+      Invitations: '',
+      'Search bar': '/search',
+      Map: '/map',
+      'Map navigation': '/map/navigation',
     }),
     [],
   );
 
   return (
-    <Box sx={{ display: 'flex', width: '100%' }}>
+    <>
+      {MenuButton && <Box onClick={() => setIsOpen(true)}>{MenuButton}</Box>}
       <SwipeableDrawer
         anchor="right"
         open={isOpen}
@@ -84,28 +78,89 @@ const Menu: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
           onClick={() => setIsOpen(false)}
           onKeyDown={() => setIsOpen(false)}
         >
+          <IconButton
+            sx={{
+              marginTop: '5%',
+              marginLeft: '5%',
+              borderRadius: '8px',
+              border: `solid ${defaultTheme.palette.info.dark} 1px`,
+            }}
+            onClick={() => setIsOpen(false)}
+          >
+            <ChevronLeftIcon />
+          </IconButton>
+
+          <Box
+            sx={{
+              width: '100%',
+              height: '40%',
+              display: 'flex',
+              marginTop: '5%',
+              alignItems: 'center',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <Avatar sx={{ height: '100px', width: '100px' }} />
+            <Typography sx={{ marginTop: '5%' }}>
+              Hi {user?.firstName} {user?.lastName[0]}. 👋
+            </Typography>
+          </Box>
+          <Box
+            sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}
+          >
+            <ToggleButtonGroup
+              exclusive
+              value={role}
+              size={'small'}
+              color={'primary'}
+              onChange={handleChangeRole}
+            >
+              <ToggleButton value={'driver'}>Driver</ToggleButton>
+              <ToggleButton value={'rider'}>rider</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
           <List>
             {Object.keys(menuOptions).map((text) => (
-              <ListItem
-                key={text}
-                disablePadding
-                sx={{
-                  color: defaultTheme.palette.info.dark,
-                  '&:hover': {
-                    backgroundColor: defaultTheme.palette.action.hover,
-                  },
-                }}
-              >
-                <ListItemButton onClick={() => navigate(menuOptions[text][1])}>
-                  <ListItemIcon>{menuOptions[text][0]}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
+              <Box key={text}>
+                <ListItem
+                  sx={{
+                    paddingRight: '0',
+                    color: defaultTheme.palette.info.dark,
+                    '&:hover': {
+                      backgroundColor: defaultTheme.palette.action.hover,
+                    },
+                  }}
+                >
+                  <ListItemButton onClick={() => navigate(menuOptions[text])}>
+                    <ListItemText primary={text} />
+                    <ChevronRightIcon color={'action'} />
+                  </ListItemButton>
+                </ListItem>
+                <Divider />
+              </Box>
             ))}
           </List>
+          <Box sx={{ marginTop: '80px' }}>
+            <Divider />
+            <ListItem
+              sx={{
+                paddingRight: '0',
+                color: defaultTheme.palette.info.dark,
+                '&:hover': {
+                  backgroundColor: defaultTheme.palette.action.hover,
+                },
+              }}
+            >
+              <ListItemButton onClick={() => signOut()}>
+                <ListItemText primary={'Log out'} />
+                <ChevronRightIcon color={'action'} />
+              </ListItemButton>
+            </ListItem>
+          </Box>
         </Box>
       </SwipeableDrawer>
-    </Box>
+    </>
   );
 };
 
