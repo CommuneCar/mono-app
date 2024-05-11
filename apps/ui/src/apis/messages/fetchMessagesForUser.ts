@@ -1,4 +1,4 @@
-import { Gander, Message, User } from '@communecar/types';
+import { Gander, Message, MessageType, User } from '@communecar/types';
 
 const users: User[] = [
   {
@@ -35,9 +35,17 @@ const users: User[] = [
 
 const messages: Message[] = [
   {
+    id: '0',
+    time: new Date(Date.now() - 86400000), // Current time
+    type: MessageType.EDIT_RIDE,
+    entityName: 'Tel-Aviv',
+    addresseeUsers: [users[0], users[2]],
+    creatorUser: users[1],
+  },
+  {
     id: '1',
     time: new Date(Date.now()), // Current time
-    type: 'editRide',
+    type: MessageType.EDIT_RIDE,
     entityName: 'Tel-Aviv',
     addresseeUsers: [users[0]],
     creatorUser: users[1],
@@ -45,7 +53,7 @@ const messages: Message[] = [
   {
     id: '2',
     time: new Date(Date.now() - 86400000), // Yesterday
-    type: 'joiningCommunityRequest',
+    type: MessageType.JOINING_COMMUNITY_REQUEST,
     entityName: 'Tel-Aviv',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
@@ -53,7 +61,7 @@ const messages: Message[] = [
   {
     id: '3',
     time: new Date(Date.now() - 2 * 86400000), // 2 days ago
-    type: 'joiningRideRequest',
+    type: MessageType.JOINING_RIDE_REQUEST,
     entityName: 'to work',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
@@ -61,7 +69,7 @@ const messages: Message[] = [
   {
     id: '4',
     time: new Date(Date.now() - 7 * 86400000), // Exactly one week ago
-    type: 'approvedCommunityRequest',
+    type: MessageType.APPROVED_COMMUNITY_REQUEST,
     entityName: 'Tel-aviv',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],
@@ -69,7 +77,7 @@ const messages: Message[] = [
   {
     id: '5',
     time: new Date(Date.now() - 15 * 86400000), // More than a week ago
-    type: 'approvedRideRequest',
+    type: MessageType.APPROVED_RIDE_REQUEST,
     entityName: 'to work',
     addresseeUsers: [users[0], users[2]],
     creatorUser: users[1],

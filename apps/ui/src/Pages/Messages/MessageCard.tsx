@@ -1,4 +1,4 @@
-import { Message } from '@communecar/types';
+import { Message, MessageType } from '@communecar/types';
 import {
   Avatar,
   Box,
@@ -30,22 +30,50 @@ const MessageCard: React.FC<MessageCardProps> = ({
   };
 
   const isRequestType =
-    message.type === 'joiningRideRequest' ||
-    message.type === 'joiningCommunityRequest' ||
-    message.type === 'editRide';
+    message.type === MessageType.JOINING_COMMUNITY_REQUEST ||
+    message.type === MessageType.JOINING_RIDE_REQUEST;
 
-  const actionText = message.type
-    .replace(/([A-Z])/g, ' $1')
-    .toLowerCase()
-    .trim();
+  const entityNameTextStyle = <strong>{` "${message.entityName}" `}</strong>;
+
+  const actionText = {
+    approvedCommunityRequest: (
+      <>
+        {`has approved your request to join the `}
+        {entityNameTextStyle}
+        community
+      </>
+    ),
+    approvedRideRequest: (
+      <>
+        approved your request to join the trip to
+        {entityNameTextStyle}
+      </>
+    ),
+    editRide: (
+      <>
+        edited the trip to
+        {entityNameTextStyle}
+      </>
+    ),
+    joiningCommunityRequest: (
+      <>
+        {`wants to join the `}
+        {entityNameTextStyle}
+        community
+      </>
+    ),
+    joiningRideRequest: (
+      <>
+        asks to join the trip to
+        {entityNameTextStyle}
+      </>
+    ),
+  };
 
   const messageText = (
     <>
-      <strong>{message.creatorUser.firstName}</strong>
-      {isRequestType
-        ? ` is requesting to ${actionText} for `
-        : ` ${actionText} to join `}
-      <strong>"{message.entityName}"</strong>
+      <strong>{`${message.creatorUser.firstName} `}</strong>
+      {actionText[message.type]}
     </>
   );
 
