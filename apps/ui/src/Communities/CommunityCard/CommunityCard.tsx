@@ -25,11 +25,13 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const { name, description, picturesUrl } = community;
   const [joined, setJoined] = useState(false);
 
-  console.log({ joined }); //TODO when the server ready
+  console.log({ joined }); //TODO when the server read
 
   const handleEditClick = () => {
     handleClickOnEdit(community);
   };
+
+  const handleJumpToRides = () => {};
 
   return (
     <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
@@ -51,6 +53,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             <CardMenu
               isManager={userStatus === UserStatus.MANAGER}
               handleEditClick={handleEditClick}
+              handleJumpToRides={handleJumpToRides}
+              isMember={
+                userStatus === UserStatus.MANAGER ||
+                userStatus === UserStatus.APPROVED
+              }
             />
           }
         />
