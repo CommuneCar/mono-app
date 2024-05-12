@@ -1,57 +1,119 @@
+import { graphqlRequest } from '../graphql';
+import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
+import axiosClient from '../client';
+import axios from 'axios';
+import { LocationResult } from '@communetypes/Geocoding';
 
-import { getRandomOption } from '../../utils';
-import { Ride } from '@communecar/types';
+interface GraphQLRideNode {
+  id: string;
+  ownerId: string;
+  fromLat: number;
+  fromLong: number;
+  toLat: number;
+  toLong: number;
+  startTime: string;
+  communityByCommunityId: {
+    title: string;
+  };
+  userRidesByRideId: {
+    nodes: Array<{
+      userByUserId?: {
+        id: string;
+        firstName: string;
+        lastName: string;
+      };
+    }>;
+  };
+}
 
-const options = [tlv, apple, camera];
+interface Ride {
+  driver: {
+    id: string;
+    name: string;
+  };
+  departureTime: Date;
+  communityName: string;
+  startLocationName: string;
+  startLocation: [number, number];
+  destinationName: string;
+  destination: [number, number];
+  png: string;
+}
 
-const rides: Ride[] = [
-  {
-    driver: { name: 'Zoe Shwartz', id: '7' },
-    departureTime: new Date(Date.now() + 60 * 60000), // Adding 60 minutes to the current time
-    communityName: 'Travel friends Haifa - Tel Aviv',
-    startLocationName: 'Rotchild street, Tel Aviv',
-    startLocation: [32.063898, 34.773855],
-    png: getRandomOption(options),
-    destinationName: 'Pardesia',
-    destination: [1, 2],
-  },
-  {
-    driver: { name: 'Dar Nachmani', id: '2' },
-    departureTime: new Date(Date.now() + 120 * 60000),
-    communityName: 'Apple Friends - IL',
-    png: getRandomOption(options),
-    startLocationName: 'Efraim Katzir street, Hod Hasharon',
-    startLocation: [32.166401, 34.900587],
-    destinationName: 'Modiin',
-    destination: [1, 2],
-  },
-  {
-    driver: { name: 'Avi Ron', id: '4' },
-    departureTime: new Date(Date.now() + 50 * 60000),
-    communityName: 'Travel friends Haifa - Tel Aviv',
-    startLocationName: 'Weizman street, Petah Tikva',
-    startLocation: [32.078195, 34.87304],
-    destinationName: 'Holon',
-    destination: [1, 2],
-    png: getRandomOption(options),
-  },
-  {
-    driver: { name: 'Tal Kovler', id: '6' },
-    departureTime: new Date(Date.now() + 25 * 60000),
-    communityName: 'Apple Friends - IL',
-    startLocationName: "Pe'er street, Haifa",
-    startLocation: [32.799783, 35.009874],
-    destinationName: 'The Golan',
-    destination: [1, 2],
-    png: getRandomOption(options),
-  },
-];
+export const fetchAllRides = async (): Promise<Ride[]> => {
+  const query = `{
+    allRides {
+      nodes {
+        id
+        ownerId
+        fromLat
+        fromLong
+        toLat
+        toLong
+        startTime
+        communityByCommunityId {
+          title
+        }
+        userRidesByRideId {
+          nodes {
+            userByUserId {
+              id
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }`;
 
-const fetchAllRides = () => {
+  const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(query);
+  const options = [tlv, apple, camera];
+  const rides: Ride[] = await Promise.all(data.allRides.nodes.map(async node => {
+    const userNode = node.userRidesByRideId.nodes.find(n => n.userByUserId !== undefined);
+    const driver = userNode?.userByUserId || { id: 'default', firstName: 'Unknown', lastName: 'Driver' };
+    const startLocationName = await geocode({ lat: node.fromLat, lon: node.fromLong });
+    const destinationName = await geocode({ lat: node.toLat, lon: node.toLong });
+    
+    return {
+      driver: {
+        id: driver.id,
+        name: `${driver.firstName} ${driver.lastName}`,
+      },
+      departureTime: new Date(node.startTime),
+      communityName: node.communityByCommunityId?.title,
+      startLocationName,
+      startLocation: [node.fromLat, node.fromLong],
+      destinationName,
+      destination: [node.toLat, node.toLong],
+      png: getRandomOption(options),
+    };
+  }));
   return rides;
 };
 
-export { fetchAllRides };
+async function geocode(coords: { lat: number, lon: number }): Promise<string> {
+  try {
+    const response = await axiosClient.get<LocationResult[]>('/api/v1/external/reverse-geocode', {
+      params: { lat: coords.lat, lon: coords.lon }
+    });
+
+    // Check if the array of results is not empty and return the display name of the first result
+    if (response.data.length > 0 && response.data[0] !== undefined) {
+      return response.data[0].name || response.data[0].displayName;
+    } else {
+      return "מיקום לא ידוע 😵‍💫";
+    }
+  } catch (error) {
+    console.error('Geocoding error:', error);  // Log any errors that occur during the request
+    if (axios.isAxiosError(error) && error.response && error.response.status === 404) {
+      return "מיקום לא ידוע 😵‍💫";
+    }
+    console.log(error);
+    return "מיקום ממש לא ידוע 😵‍💫😵‍💫";
+  }
+}
+

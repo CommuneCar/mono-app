@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import axios from "axios";
+import { LocationResult } from '@communetypes/Geocoding';
 
 // Create a shared Axios instance
 const client = axios.create({
@@ -9,13 +10,6 @@ const client = axios.create({
         limit: 5
     }
 });
-
-interface LocationResult {
-    name: string;
-    displayName: string;
-    lat: string;
-    lon: string;
-}
 
 /**
  * @swagger
