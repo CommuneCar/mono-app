@@ -5,11 +5,14 @@ import CardActions from '@mui/material/CardActions';
 import defaultTheme from '../../themes/default';
 
 import { UserStatus, Community } from '@communecar/types';
-import { useState } from 'react';
 import { StatusButton } from './StatusButton';
 import { CardHeader, Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
+import { useSnackbar } from '../../contexts/SnackbarContext';
+import { TEXT } from '../../themes/default/consts';
+import { membersStatus } from '../../utils/communities/membershipConsts';
+import { useState } from 'react';
 
 export interface CommunityCardProps {
   community: Community;
@@ -22,10 +25,22 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   userStatus,
   handleClickOnEdit,
 }) => {
+  const { showMessage } = useSnackbar();
   const { name, description, picturesUrl } = community;
-  const [joined, setJoined] = useState(false);
+  const [status, setStatus] = useState<UserStatus | undefined>(userStatus);
 
-  console.log({ joined }); //TODO when the server ready
+  const isMember = status ? membersStatus.includes(status) : false;
+
+  const onJoinRequest = () => {
+    if (isMember) {
+      //TODO: Request to cancel community membership
+      setStatus(undefined);
+    } else {
+      //TODO: Request to join the community
+      setStatus(UserStatus.PENDING);
+    }
+    showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
+  };
 
   const handleEditClick = () => {
     handleClickOnEdit(community);
@@ -49,7 +64,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           }}
           action={
             <CardMenu
-              isManager={userStatus === UserStatus.MANAGER}
+              isManager={status === UserStatus.MANAGER}
               handleEditClick={handleEditClick}
             />
           }
@@ -63,8 +78,8 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             </Grid>
             <Grid item xs={6}>
               <StatusButton
-                setJoined={setJoined}
-                status={userStatus}
+                onJoinRequest={onJoinRequest}
+                status={status}
               ></StatusButton>
             </Grid>
           </Grid>
