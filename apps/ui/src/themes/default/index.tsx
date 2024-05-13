@@ -75,7 +75,7 @@ const defaultTheme = createTheme({
       fontWeight: 'bolder',
       color: COLORS.TITLE_TEXT,
       fontSize: pxToRem(50),
-    }, 
+    },
     subtitle1: {
       fontWeight: 700,
     },

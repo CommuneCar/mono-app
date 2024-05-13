@@ -9,4 +9,5 @@ export interface User {
   password: string;
   gander: Gander;
   age?: number;
+  avatarUrl?: string;
 }

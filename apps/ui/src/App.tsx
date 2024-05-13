@@ -12,14 +12,13 @@ import SearchBar from './Components/Map/SearchBar';
 import { HomePage } from './Pages/HomePage/HomePage';
 import MapNavigationPage from './Pages/MapNavigation';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
-import {
-  useGetAllRides,
-  useGetAllCommunities,
-} from './hooks/Communities/useGetAllCommunities';
+import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 import { ProtectedRoute } from './ProtectedRoute';
 import { UserProvider } from './hooks/Users/useUser';
 import { RoleProvider } from './contexts/role';
 import { SnackbarProvider } from './contexts/SnackbarContext';
+import { MessagesFeed } from './Pages/Messages/MessagesFeed';
+import { useGetAllRides } from './hooks/Rides/useGetAllRides';
 
 const App: React.FC = () => {
   const communities = useGetAllCommunities();
@@ -37,6 +36,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route element={<ProtectedRoute />}>
+                  <Route path="/messages" element={<MessagesFeed />} />
                   <Route path="/rides" element={<RidesFeed rides={rides} />} />
                   <Route
                     path="/communities"
