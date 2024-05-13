@@ -121,10 +121,22 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
 
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minWidth: 370,
+      }}
     >
       <PageHeader title={'Communities'} />
-      <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'cetner',
+          width: '100%',
+        }}
+      >
         <SearchBar
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
