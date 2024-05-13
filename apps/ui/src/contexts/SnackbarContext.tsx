@@ -4,8 +4,9 @@ import React, {
   useState,
   ReactNode,
   useCallback,
+  SyntheticEvent,
 } from 'react';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, SnackbarCloseReason } from '@mui/material';
 
 interface SnackbarContextType {
   showMessage: (
@@ -41,7 +42,10 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({ children }) => {
     [],
   );
 
-  const handleClose = (_event?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (
+    _event?: Event | SyntheticEvent<any, Event>,
+    reason?: SnackbarCloseReason,
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -51,8 +55,13 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({ children }) => {
   return (
     <SnackbarContext.Provider value={{ showMessage }}>
       {children}
-      <Snackbar open={open} autoHideDuration={6000}>
-        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
           {message}
         </Alert>
       </Snackbar>

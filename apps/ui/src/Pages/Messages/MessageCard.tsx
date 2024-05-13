@@ -31,7 +31,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
   const handleAction = async (action: RequestActions) => {
     const success = await submitRespondToMessage(message.id, action);
     if (success && !isLoading) {
-      showMessage(`Action ${action} was successful!`, 'success');
+      showMessage('Your reply has been successfully received', 'success');
       onActionComplete(message.id, true);
     } else {
       showMessage(
