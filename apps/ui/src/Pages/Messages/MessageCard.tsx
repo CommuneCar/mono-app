@@ -14,6 +14,7 @@ import { RequestActions } from '../../types/actions';
 import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
 import { actionTextDisplay } from './ActionTextDisplay';
 import { BoldText } from '../../Components/styles/BoldText.styled';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 
 export interface MessageCardProps {
   message: Message;
@@ -24,15 +25,19 @@ const MessageCard: React.FC<MessageCardProps> = ({
   message,
   onActionComplete,
 }) => {
+  const { showMessage } = useSnackbar();
   const { submitRespondToMessage, isLoading, error } = useRespondToMessage();
 
   const handleAction = async (action: RequestActions) => {
     const success = await submitRespondToMessage(message.id, action);
     if (success && !isLoading) {
-      alert(`Action ${action} was successful!`);
+      showMessage(`Action ${action} was successful!`, 'success');
       onActionComplete(message.id, true);
     } else {
-      alert(`Failed to ${action} the request: ${error?.message}`);
+      showMessage(
+        `Failed to ${action} the request: ${error?.message}`,
+        'error',
+      );
     }
   };
 
