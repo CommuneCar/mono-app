@@ -6,12 +6,16 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  Divider,
 } from '@mui/material';
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  MobileDateTimePicker,
+} from '@mui/x-date-pickers';
 
 import { Ride } from '@communecar/types';
 
@@ -20,6 +24,7 @@ import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
 
 import { getRandomOption } from '../../utils';
+import { useUser } from '../../hooks/Users/useUser';
 
 const options = [tlv, apple, camera];
 
@@ -38,9 +43,9 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
     setOpen(false);
   };
 
-  const [value, setValue] = React.useState<Dayjs | null>(
-    dayjs('2022-04-17T15:30'),
-  );
+  const [value, setValue] = React.useState<Dayjs | null>(dayjs(new Date()));
+
+  const { user } = useUser();
 
   return (
     <React.Fragment>
@@ -56,9 +61,8 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
-            const driver = 'Dar Nachmani';
+            const driver = `${user?.firstName} ${user?.lastName}`;
             const departureTime = value!.toDate();
-            console.log(departureTime);
 
             const startLocation = formJson.startLocation;
             const destination = formJson.destination;
@@ -68,7 +72,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
               communityName,
               driver: {
                 name: driver,
-                id: '5',
+                id: user!.id,
               },
               departureTime,
               startLocationName: startLocation,
@@ -82,6 +86,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
         }}
       >
         <DialogTitle>Create ride</DialogTitle>
+        <Divider />
         <DialogContent>
           <DialogContentText>
             To add a ride, please fill all details here. We will post your ride
@@ -98,20 +103,9 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             fullWidth
             variant="standard"
           />
-          {/* <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="departureTime"
-            name="departureTime"
-            label="Departure Time"
-            type="date"
-            fullWidth
-            variant="standard"
-          /> */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker']}>
-              <DateTimePicker
+              <MobileDateTimePicker
                 label="Departure time"
                 value={value}
                 onChange={(newValue) => setValue(newValue)}
