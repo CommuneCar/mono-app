@@ -8,6 +8,7 @@ import {
   Button,
   Typography,
   Box,
+  Divider,
 } from '@mui/material';
 import { Ride } from '@communecar/types';
 
@@ -34,6 +35,7 @@ const RideDetails: React.FC<JoinRideProps> = ({
   return (
     <Dialog open={isOpen} onClose={() => setSelectedRide(undefined)} fullWidth>
       <DialogTitle>Ride Details</DialogTitle>
+      <Divider />
       <DialogContent>
         <DialogContentText display="flex" alignItems="center">
           <Box component="span" sx={{ mr: 1 }}>

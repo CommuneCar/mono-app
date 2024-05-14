@@ -20,7 +20,7 @@ const RidesList: React.FC<RideListProps> = ({ rides, setSelectedRide }) => {
         <Box key={index} onClick={() => setSelectedRide(ride)}>
           <RideCard
             driver={ride.driver.name}
-            text={`going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+            text={`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
           />
         </Box>
       ))}
