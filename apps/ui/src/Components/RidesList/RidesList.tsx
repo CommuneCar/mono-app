@@ -8,22 +8,19 @@ import { RideCard } from '../RideCard/RideCard';
 
 dayjs.extend(relativeTime);
 
-interface CommunityListProps {
+interface RideListProps {
   rides: Ride[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
-const RidesList: React.FC<CommunityListProps> = ({
-  rides,
-  setSelectedRide,
-}) => {
+const RidesList: React.FC<RideListProps> = ({ rides, setSelectedRide }) => {
   return (
     <>
       {rides.map((ride, index) => (
         <Box key={index} onClick={() => setSelectedRide(ride)}>
           <RideCard
             driver={ride.driver.name}
-            text={`going from ${ride.startLocationName} to ${ride.destination} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+            text={`going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
           />
         </Box>
       ))}

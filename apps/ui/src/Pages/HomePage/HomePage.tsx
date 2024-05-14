@@ -13,6 +13,7 @@ import { CommunityList } from '../../Components/CommunityList/CommunityList';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { RidesList } from '../../Components/RidesList/RidesList';
+import { RideDetails } from '../../Components/RideDetails/RideDetails';
 
 const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
@@ -93,6 +94,13 @@ const HomePage: React.FC = () => {
           )}
           {selectedTab === 'rides' && (
             <RidesList rides={rides} setSelectedRide={setSelectedRide} />
+          )}
+          {!!selectedRide && (
+            <RideDetails
+              ride={selectedRide}
+              isOpen={!!selectedRide}
+              setSelectedRide={setSelectedRide}
+            />
           )}
         </>
       </BottomDrawer>
