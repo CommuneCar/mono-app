@@ -5,10 +5,11 @@ import {
   CardContent,
   CardActions,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { Send } from '@mui/icons-material';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { TEXT } from '../../themes/default/consts';
+import { JoinRideDialog } from '../JoinRide/JoinRide';
 
 interface RideCardProps {
   text: string;
@@ -18,8 +19,10 @@ interface RideCardProps {
 const RideCard: React.FC<RideCardProps> = (props) => {
   const { showMessage } = useSnackbar();
   const { text, driver } = props;
+  const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
 
   const handleJoinRequest = () => {
+    setJoinRideDialogOpened(true);
     showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
   };
 
@@ -44,6 +47,10 @@ const RideCard: React.FC<RideCardProps> = (props) => {
           Join Ride
         </Button>
       </CardActions>
+      <JoinRideDialog
+        isOpen={joinRideDialogOpened}
+        setOpen={setJoinRideDialogOpened}
+      />
     </Card>
   );
 };
