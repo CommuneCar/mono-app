@@ -4,7 +4,7 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
-import { MainMenuButton, Page } from './styles';
+import { MainMenuButton, Page } from '../../Components/styles/Page.styled';
 import { Menu } from '../../Components/Menu/Menu';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';

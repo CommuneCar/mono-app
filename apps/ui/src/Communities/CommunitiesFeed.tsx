@@ -14,6 +14,8 @@ import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { Page } from '../Components/styles/Page.styled';
+import { Header } from '../Components/styles/Header.styled';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -101,52 +103,56 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   };
 
   return (
-    <Box
-      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
-        <SearchBar
-          options={options}
-          handleChangeSearchValue={handleChangeSearchValue}
-        />
-        <Menu
-          MenuButton={
-            <Button sx={{ height: '100%' }} color="primary">
-              <MenuIcon />
-            </Button>
-          }
+    <Page>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      >
+        <Header>
+          <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
+            <SearchBar
+              options={options}
+              handleChangeSearchValue={handleChangeSearchValue}
+            />
+            <Menu
+              MenuButton={
+                <Button sx={{ height: '100%' }} color="primary">
+                  <MenuIcon />
+                </Button>
+              }
+            />
+          </Box>
+        </Header>
+        {isCreateOpen && (
+          <CreateCommunity
+            isOpen={isCreateOpen}
+            handleClose={handleClose}
+            onCreate={handleNewCommunity}
+          />
+        )}
+        {isEditOpen && communityToUpdate && (
+          <UpdateCommunity
+            isOpen={isEditOpen}
+            handleClose={handleClose}
+            onUpdate={handleUpdateCommunity}
+            communityToUpdate={communityToUpdate}
+          />
+        )}
+        <FeedList>
+          {filteredCommunities.map((community, index) => (
+            <CommunityCard
+              key={index}
+              community={community}
+              userStatus={userCommunitiesStatus[community.id]}
+              handleClickOnEdit={handleClickOnEdit}
+            />
+          ))}
+        </FeedList>
+        <AddNewButton
+          setIsOpen={setIsCreateOpen}
+          tooltipText="Create a new community"
         />
       </Box>
-      {isCreateOpen && (
-        <CreateCommunity
-          isOpen={isCreateOpen}
-          handleClose={handleClose}
-          onCreate={handleNewCommunity}
-        />
-      )}
-      {isEditOpen && communityToUpdate && (
-        <UpdateCommunity
-          isOpen={isEditOpen}
-          handleClose={handleClose}
-          onUpdate={handleUpdateCommunity}
-          communityToUpdate={communityToUpdate}
-        />
-      )}
-      <FeedList>
-        {filteredCommunities.map((community, index) => (
-          <CommunityCard
-            key={index}
-            community={community}
-            userStatus={userCommunitiesStatus[community.id]}
-            handleClickOnEdit={handleClickOnEdit}
-          />
-        ))}
-      </FeedList>
-      <AddNewButton
-        setIsOpen={setIsCreateOpen}
-        tooltipText="Create a new community"
-      />
-    </Box>
+    </Page>
   );
 };
 

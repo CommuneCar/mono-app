@@ -5,6 +5,8 @@ import { Message } from '@communecar/types';
 import { MessageCard } from './MessageCard';
 import { Menu } from '../../Components/Menu/Menu';
 import { Menu as MenuIcon } from '@mui/icons-material';
+import { Header } from '../../Components/styles/Header.styled';
+import { Page } from '../../Components/styles/Page.styled';
 
 const MessagesFeed = () => {
   const { user } = useUser();
@@ -21,36 +23,34 @@ const MessagesFeed = () => {
     return <Typography color="error">Error: {error.message}</Typography>;
 
   return (
-    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-        }}
-      >
-        <Typography textTransform="uppercase" sx={{ letterSpacing: '0.15rem' }}>
-          Inbox
-        </Typography>
-        <Menu
-          MenuButton={
-            <Button sx={{ height: '100%' }} color="primary">
-              <MenuIcon />
-            </Button>
-          }
-        />
-      </Box>
-      <List>
-        {messages.map((message: Message) => (
-          <MessageCard
-            message={message}
-            key={message.id}
-            onActionComplete={handleActionComplete}
+    <Page>
+      <Box sx={{ paddingLeft: '1%', paddingRight: '1%' }}>
+        <Header>
+          <Typography
+            textTransform="uppercase"
+            sx={{ letterSpacing: '0.15rem' }}
+          >
+            Inbox
+          </Typography>
+          <Menu
+            MenuButton={
+              <Button sx={{ height: '100%' }} color="primary">
+                <MenuIcon />
+              </Button>
+            }
           />
-        ))}
-      </List>
-    </Box>
+        </Header>
+        <List>
+          {messages.map((message: Message) => (
+            <MessageCard
+              message={message}
+              key={message.id}
+              onActionComplete={handleActionComplete}
+            />
+          ))}
+        </List>
+      </Box>
+    </Page>
   );
 };
 
