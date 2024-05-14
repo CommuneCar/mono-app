@@ -4,10 +4,6 @@ import { useState } from 'react';
 import { IconButton, Menu, MenuItem, Box } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
-  MANAGER_OPTIONS,
-  MEMBER_OPTIONS,
-} from '../../types/community-actions-enum';
-import {
   ITEM_HEIGHT,
   managerOptions,
   userOptions,
@@ -15,17 +11,15 @@ import {
 import { isEmpty } from 'lodash';
 
 export interface CardMenuProps {
-  handleEditClick: () => void;
   isManager?: boolean;
   isMember?: boolean;
-  handleJumpToRides: () => void;
+  optionActions: Record<string, () => void>;
 }
 
 const CardMenu: React.FC<CardMenuProps> = ({
   isManager = false,
   isMember = false,
-  handleEditClick,
-  handleJumpToRides,
+  optionActions,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -37,10 +31,11 @@ const CardMenu: React.FC<CardMenuProps> = ({
   };
 
   const handleSelectOption = (option: string) => {
-    if (option === MANAGER_OPTIONS.EDIT) {
-      handleEditClick();
-    } else if (option === MEMBER_OPTIONS.SEE_RIDES) {
-      handleJumpToRides();
+    console.log({ option, optionActions });
+
+    const action = optionActions[option];
+    if (action) {
+      action();
     }
     handleClose();
   };
