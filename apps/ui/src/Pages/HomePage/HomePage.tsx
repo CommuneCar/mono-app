@@ -12,6 +12,7 @@ import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
+import { RidesList } from '../../Components/RidesList/RidesList';
 
 const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
@@ -19,6 +20,16 @@ const HomePage: React.FC = () => {
   );
 
   const [selectedRide, setSelectedRide] = useState<Ride>();
+
+  const rides = useMemo(() => {
+    const baseRides = useGetAllRides();
+    const activeRides = baseRides.filter(
+      (ride) => ride.departureTime.getTime() > new Date().getTime(),
+    );
+    return activeRides.sort(
+      (a, b) => a.departureTime.getTime() - b.departureTime.getTime(),
+    );
+  }, []);
 
   const communities = useMemo(() => {
     const baseCommunities = useGetAllCommunities();
@@ -80,7 +91,9 @@ const HomePage: React.FC = () => {
               setSelectedRide={setSelectedRide}
             />
           )}
-          {selectedTab === 'rides' && <>something will be here :)</>}
+          {selectedTab === 'rides' && (
+            <RidesList rides={rides} setSelectedRide={setSelectedRide} />
+          )}
         </>
       </BottomDrawer>
     </Page>
