@@ -31,8 +31,6 @@ const CardMenu: React.FC<CardMenuProps> = ({
   };
 
   const handleSelectOption = (option: string) => {
-    console.log({ option, optionActions });
-
     const action = optionActions[option];
     if (action) {
       action();
