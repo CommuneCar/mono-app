@@ -59,7 +59,7 @@ const client = axios.create({
  *       400:
  *         description: Missing location parameter
  */
-export const geocodeLocation = async (req: Request, res: Response) => {
+const geocodeLocation = async (req: Request, res: Response) => {
     const { location, limit = 5 } = req.query;
 
     if (!location) {
@@ -120,7 +120,7 @@ export const geocodeLocation = async (req: Request, res: Response) => {
  *       500:
  *         description: Failed to fetch reverse geocoding data
  */
-export const reverseGeocodeLocation = async (req: Request, res: Response) => {
+const reverseGeocodeLocation = async (req: Request, res: Response) => {
     const { lat, lon } = req.query;
 
     if (!lat || !lon) {
@@ -142,3 +142,5 @@ export const reverseGeocodeLocation = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Failed to fetch reverse geocoding data" });
     }
 };
+
+export { geocodeLocation, reverseGeocodeLocation };

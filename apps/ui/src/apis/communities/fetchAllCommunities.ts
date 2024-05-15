@@ -47,7 +47,7 @@ export const fetchAllCommunities = async (): Promise<Community[]> => {
 
   console.log("communities: ", data);
   return data.allCommunities.nodes.map((node): Community => {
-    const pictures = node.userCommunitiesByCommunityId.nodes.map(uc => uc.userByUserId.profileImage).filter((url): url is string => url != null);
+    const pictures = node.userCommunitiesByCommunityId.nodes.map(userCommunity => userCommunity.userByUserId.profileImage).filter((url): url is string => url != null);
     return {
       id: node.id,
       name: node.title,
