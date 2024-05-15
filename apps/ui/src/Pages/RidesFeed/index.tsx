@@ -8,6 +8,7 @@ import RideCard from './RideCard';
 import defaultTheme from '../../themes/default';
 import CreateRideDialog from './CreateRideDialog';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
+import React from 'react';
 
 export interface RidesFeedProps {
   rides: Ride[];
