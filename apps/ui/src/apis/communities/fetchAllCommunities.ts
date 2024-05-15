@@ -24,7 +24,7 @@ interface CommunitiesData {
   };
 }
 
-export const fetchAllCommunities = async (): Promise<Community[]> => {
+const fetchAllCommunities = async (): Promise<Community[]> => {
   const query = `
     query {
       allCommunities {
@@ -45,7 +45,6 @@ export const fetchAllCommunities = async (): Promise<Community[]> => {
   
   const data = await graphqlRequest<CommunitiesData>(query);
 
-  console.log("communities: ", data);
   return data.allCommunities.nodes.map((node): Community => {
     const pictures = node.userCommunitiesByCommunityId.nodes.map(userCommunity => userCommunity.userByUserId.profileImage).filter((url): url is string => url != null);
     return {
@@ -57,3 +56,5 @@ export const fetchAllCommunities = async (): Promise<Community[]> => {
     };
   });
 };
+
+export { fetchAllCommunities };

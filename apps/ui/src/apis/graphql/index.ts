@@ -1,4 +1,4 @@
-import axiosClient from '../client';
+import { axiosClient } from '../client';
 
 interface GraphQLResponse<T> {
   data: T;
