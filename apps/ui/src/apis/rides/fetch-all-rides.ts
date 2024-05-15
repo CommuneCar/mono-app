@@ -105,15 +105,15 @@ async function geocode(coords: { lat: number, lon: number }): Promise<string> {
     if (response.data.length > 0 && response.data[0] !== undefined) {
       return response.data[0].name || response.data[0].displayName;
     } else {
-      return "מיקום לא ידוע 😵‍💫";
+      return "Unknown location 😵‍💫";
     }
   } catch (error) {
     console.error('Geocoding error:', error);  // Log any errors that occur during the request
     if (axios.isAxiosError(error) && error.response && error.response.status === 404) {
-      return "מיקום לא ידוע 😵‍💫";
+      return "Unknown location 😵‍💫";
     }
     console.log(error);
-    return "מיקום ממש לא ידוע 😵‍💫😵‍💫";
+    return "An extremely unknown location 😵‍💫😵‍💫";
   }
 }
 

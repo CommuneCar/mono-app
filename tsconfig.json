@@ -16,8 +16,10 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
+    "baseUrl": ".",
     "paths": {
-      "@communetypes/*": ["packages/types/src/*"]
+      "@communetypes/*": ["packages/types/src/*"],
+      "@betypes/*": ["apps/BE/src/types/*"]
     }
   }
 }

@@ -7,9 +7,16 @@ import swaggerSpec from './config/swagger.config';
 import router from './routes';
 
 const app = express();
+const whitelistedDomains = process.env.WHITELISTED_DOMAINS?.split(';');
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: function (origin, callback) {
+        if (!origin || whitelistedDomains?.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     optionsSuccessStatus: 200
 }));
 

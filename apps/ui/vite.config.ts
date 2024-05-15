@@ -1,6 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
+
+// Access environment variables
+const appName = process.env.APP_NAME || 'CommuneCar';
+const appShortName = process.env.APP_SHORT_NAME || 'CommuneCar';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,8 +20,8 @@ export default defineConfig({
       },
       includeAssets: ['**/*'],
       manifest: {
-        name: 'CommuneCar',
-        short_name: 'CommuneCar',
+        name: appName,
+        short_name: appShortName,
         display: 'standalone',
         orientation: 'portrait',
         icons: [

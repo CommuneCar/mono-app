@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { LocationResult } from '@communetypes/Geocoding';
+import { LocationResult } from "@communetypes/Geocoding";
+import { OSMLocationResult } from "@betypes/osm"
 
 // Create a shared Axios instance
 const client = axios.create({
@@ -66,11 +67,11 @@ export const geocodeLocation = async (req: Request, res: Response) => {
     }
 
     try {
-        const response = await client.get(`/search`, {
+        const response = await client.get<OSMLocationResult[]>(`/search`, {
             params: { q: location as string, limit }
         });
 
-        const results: LocationResult[] = response.data.map((item: any) => ({
+        const results: LocationResult[] = response.data.map((item: OSMLocationResult) => ({
             name: item.name,
             displayName: item.display_name,
             lat: item.lat,
@@ -93,7 +94,7 @@ export const geocodeLocation = async (req: Request, res: Response) => {
  * /api/v1/external/reverse-geocode:
  *   get:
  *     summary: Resolve location name from latitude and longitude
- *     description: Returns reverse geocoding results for the input coordinates.
+ *     description: Returns reverse geocoding result for the input coordinates.
  *     parameters:
  *       - in: query
  *         name: lat
@@ -107,32 +108,27 @@ export const geocodeLocation = async (req: Request, res: Response) => {
  *         schema:
  *           type: string
  *         description: Longitude of the location
- *       - in: query
- *         name: limit
- *         schema:
- *           type: number
- *         description: Maximum number of results to return (default 5)
  *     responses:
  *       200:
- *         description: An array of location results
+ *         description: A location result
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/LocationResult'
+ *               $ref: '#/components/schemas/LocationResult'
  *       400:
  *         description: Missing latitude or longitude parameters
+ *       500:
+ *         description: Failed to fetch reverse geocoding data
  */
 export const reverseGeocodeLocation = async (req: Request, res: Response) => {
-    const { lat, lon, limit = 5 } = req.query;
+    const { lat, lon } = req.query;
 
     if (!lat || !lon) {
         return res.status(400).json({ error: "Latitude and longitude parameters are required" });
     }
 
     try {
-        const response = await client.get(`/reverse`, { params: { lat, lon, limit } });
+        const response = await client.get<OSMLocationResult>(`/reverse`, { params: { lat, lon } });
         const result = response.data;
         const locationResult: LocationResult = {
             name: result.name,
@@ -141,7 +137,7 @@ export const reverseGeocodeLocation = async (req: Request, res: Response) => {
             lon: result.lon
         };
 
-        res.json([locationResult]);
+        res.json(locationResult);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch reverse geocoding data" });
     }
