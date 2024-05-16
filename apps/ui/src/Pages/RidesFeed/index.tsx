@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Button, Box, IconButton, Tooltip } from '@mui/material';
-import { Add as AddIcon, Menu as MenuIcon } from '@mui/icons-material';
+import { Box, IconButton, Tooltip } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
 
 import { Ride } from '@communecar/types';
 
 import RideCard from './RideCard';
 import defaultTheme from '../../themes/default';
 import CreateRideDialog from './CreateRideDialog';
-import { Menu } from '../../Components/Menu/Menu';
+import { PageHeader } from '../../Components/PageHeader/PageHeader';
 
 export interface RidesFeedProps {
   rides: Ride[];
@@ -20,6 +20,7 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      <PageHeader title="Rides" />
       <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
         <Tooltip title="Create a new ride">
           <IconButton
@@ -36,13 +37,6 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
             <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
           </IconButton>
         </Tooltip>
-        <Menu
-          MenuButton={
-            <Button color="primary">
-              <MenuIcon />
-            </Button>
-          }
-        />
       </Box>
       {isDialogOpen && (
         <CreateRideDialog
