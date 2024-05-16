@@ -16,6 +16,7 @@ import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 import { ProtectedRoute } from './ProtectedRoute';
 import { UserProvider } from './hooks/Users/useUser';
 import { RoleProvider } from './contexts/role';
+import { SnackbarProvider } from './contexts/SnackbarContext';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
 import { useGetAllRides } from './hooks/Rides/useGetAllRides';
 
@@ -26,29 +27,34 @@ const App: React.FC = () => {
 
   return (
     <>
-      <UserProvider>
-        <RoleProvider>
-          <CssBaseline />
-          <Router>
-            <Routes>
-              <Route path="/" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/messages" element={<MessagesFeed />} />
-                <Route path="/rides" element={<RidesFeed rides={rides} />} />
-                <Route
-                  path="/communities"
-                  element={<CommunitiesFeed communities={communities} />}
-                />
-                <Route path="/home" element={<HomePage />} />
-                <Route path="/map" element={<MapPage />} />
-                <Route path="/map/navigation" element={<MapNavigationPage />} />
-                <Route path="/search" element={<SearchBar />} />
-              </Route>
-            </Routes>
-          </Router>
-        </RoleProvider>
-      </UserProvider>
+      <SnackbarProvider>
+        <UserProvider>
+          <RoleProvider>
+            <CssBaseline />
+            <Router>
+              <Routes>
+                <Route path="/" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/messages" element={<MessagesFeed />} />
+                  <Route path="/rides" element={<RidesFeed rides={rides} />} />
+                  <Route
+                    path="/communities"
+                    element={<CommunitiesFeed communities={communities} />}
+                  />
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/map" element={<MapPage />} />
+                  <Route
+                    path="/map/navigation"
+                    element={<MapNavigationPage />}
+                  />
+                  <Route path="/search" element={<SearchBar />} />
+                </Route>
+              </Routes>
+            </Router>
+          </RoleProvider>
+        </UserProvider>
+      </SnackbarProvider>
     </>
   );
 };

@@ -1,20 +1,15 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
-import {
-  AddRounded,
-} from '@mui/icons-material';
+import { AddRounded } from '@mui/icons-material';
 import { UserStatus } from '@communecar/types';
 import { useCallback } from 'react';
 import { statusIcons } from '../../utils/communities/userStatusIcons';
 
-export interface CommunityCardProps {
-  setJoined: React.Dispatch<React.SetStateAction<boolean>>;
+export interface StatusButtonProps {
+  onRequest: () => void;
   status?: UserStatus;
 }
 
-const StatusButton: React.FC<CommunityCardProps> = ({
-  setJoined,
-  status,
-}) => {
+const StatusButton: React.FC<StatusButtonProps> = ({ onRequest, status }) => {
   const renderIcon = useCallback(() => {
     if (status) {
       return statusIcons[status];
@@ -23,15 +18,15 @@ const StatusButton: React.FC<CommunityCardProps> = ({
     }
   }, [status]);
 
+  const isDisabled =
+    status === UserStatus.REJECTED || status === UserStatus.MANAGER;
+
   return (
     <Tooltip title={status ? status : 'Ask To Join'}>
       <Box>
-      <IconButton
-        onClick={() => setJoined((prev) => !prev)}
-        disabled={status === UserStatus.REJECTED}
-      >
-        {renderIcon()}
-      </IconButton>
+        <IconButton onClick={onRequest} disabled={isDisabled}>
+          {renderIcon()}
+        </IconButton>
       </Box>
     </Tooltip>
   );

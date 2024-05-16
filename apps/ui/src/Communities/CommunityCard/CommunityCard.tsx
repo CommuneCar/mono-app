@@ -5,11 +5,14 @@ import CardActions from '@mui/material/CardActions';
 import defaultTheme from '../../themes/default';
 
 import { UserStatus, Community } from '@communecar/types';
-import { useState } from 'react';
 import { StatusButton } from './StatusButton';
 import { CardHeader, Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
+import { useSnackbar } from '../../contexts/SnackbarContext';
+import { TEXT } from '../../themes/default/consts';
+import { membersStatus } from '../../utils/communities/membershipConsts';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   MANAGER_OPTIONS,
@@ -27,12 +30,24 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   userStatus,
   handleClickOnEdit,
 }) => {
+  const { showMessage } = useSnackbar();
   const navigate = useNavigate();
 
   const { name, description, picturesUrl } = community;
-  const [joined, setJoined] = useState(false);
+  const [status, setStatus] = useState<UserStatus | undefined>(userStatus);
 
-  console.log({ joined }); //TODO when the server read
+  const isMember = status ? membersStatus.includes(status) : false;
+
+  const onRequest = () => {
+    if (isMember) {
+      //TODO: Request to cancel community membership
+      setStatus(undefined);
+    } else {
+      //TODO: Request to join the community
+      setStatus(UserStatus.PENDING);
+    }
+    showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
+  };
 
   const handleEditClick = () => {
     handleClickOnEdit(community);
@@ -83,8 +98,8 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             </Grid>
             <Grid item xs={6}>
               <StatusButton
-                setJoined={setJoined}
-                status={userStatus}
+                onRequest={onRequest}
+                status={status}
               ></StatusButton>
             </Grid>
           </Grid>
