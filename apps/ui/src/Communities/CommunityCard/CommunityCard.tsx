@@ -1,27 +1,24 @@
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardActions from '@mui/material/CardActions';
-
-import defaultTheme from '../../themes/default';
-
-import { UserStatus, Community } from '@communecar/types';
-import { StatusButton } from './StatusButton';
-import { CardHeader, Grid } from '@mui/material';
-import { CommunityMembersDisplay } from './CommunityMembersDisplay';
-import { CardMenu } from '../../Components/CardMenu/CardMenu';
-import { useSnackbar } from '../../contexts/SnackbarContext';
-import { TEXT } from '../../themes/default/consts';
-import { membersStatus } from '../../utils/communities/membershipConsts';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Box, Card, CardActions, CardHeader } from '@mui/material';
+
+import { UserStatus, Community } from '@communecar/types';
+
 import {
-  MANAGER_OPTIONS,
   MEMBER_OPTIONS,
+  MANAGER_OPTIONS,
 } from '../../types/community-actions-enum';
+import { StatusButton } from './StatusButton';
+import defaultTheme from '../../themes/default';
+import { TEXT } from '../../themes/default/consts';
+import { useSnackbar } from '../../contexts/SnackbarContext';
+import { CardMenu } from '../../Components/CardMenu/CardMenu';
+import { CommunityMembersDisplay } from './CommunityMembersDisplay';
+import { membersStatus } from '../../utils/communities/membershipConsts';
 
 export interface CommunityCardProps {
   community: Community;
-  userStatus: UserStatus;
+  userStatus?: UserStatus;
   handleClickOnEdit: (communityToUpdate: Community) => void;
 }
 
@@ -90,23 +87,20 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           }
         />
         <CardActions>
-          <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Grid item xs={6}>
-              <CommunityMembersDisplay
-                pictures={picturesUrl}
-              ></CommunityMembersDisplay>
-            </Grid>
-            <Grid item xs={6}>
-              <StatusButton
-                onRequest={onRequest}
-                status={status}
-              ></StatusButton>
-            </Grid>
-          </Grid>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <CommunityMembersDisplay pictures={picturesUrl} />
+            <StatusButton onRequest={onRequest} status={status} />
+          </Box>
         </CardActions>
       </Card>
     </Box>
   );
 };
 
-export default CommunityCard;
+export { CommunityCard };

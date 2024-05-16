@@ -5,15 +5,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Community, UserStatus } from '@communecar/types';
 
 import { useUser } from '../hooks/Users/useUser';
-import CommunityCard from './CommunityCard/CommunityCard';
 import { SearchBar } from '../Components/Search/SearchBar';
+import { CommunityCard } from './CommunityCard/CommunityCard';
 import { FeedList } from '../Components/styles/FeedList.styled';
+import { PageHeader } from '../Components/PageHeader/PageHeader';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
+import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
-import { PageHeader } from '../Components/PageHeader/PageHeader';
-import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 
 export interface CommunitiesFeedProps {
   communities: Community[];
@@ -90,7 +90,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
       const communitiesObject = groupBy(prev, 'id');
       const communitiesDictionary: Record<string, Community> = mapValues(
         communitiesObject,
-        (value) => value[0],
+        (value) => value[0] as Community,
       );
       const newDisplay = {
         ...communitiesDictionary,

@@ -12,13 +12,22 @@ import { CommunityList } from '../../Components/CommunityList/CommunityList';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { Ride } from '@communecar/types';
+import { useLocation } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>('communities');
+  const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
+    'communities',
+  );
   const [selectedRide, setSelectedRide] = useState<Ride>();
 
-  const { data: communitiesData, isLoading: isLoadingCommunities } = useGetAllCommunities();
+  const { data: communitiesData, isLoading: isLoadingCommunities } =
+    useGetAllCommunities();
   const { data: ridesData, isLoading: isLoadingRides } = useGetAllRides();
+
+  const location = useLocation();
+  const communityId = location.state?.communityId;
+
+  const [selectedCommunityId, setSelectedCommunityId] = useState(communityId);
 
   const communities = useMemo(() => {
     if (isLoadingCommunities || isLoadingRides) {
@@ -26,13 +35,18 @@ const HomePage: React.FC = () => {
     }
 
     const groupedRides = groupBy(ridesData, 'communityName');
-    return communitiesData.map((community) => ({
-      ...community,
-      rides: groupedRides[community.name] ?? [],
-    }));
+    return communitiesData
+      ? communitiesData.map((community) => ({
+          ...community,
+          rides: groupedRides[community.name] ?? [],
+        }))
+      : [];
   }, [communitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
 
-  const ChangeSelectedTab = (_: MouseEvent<HTMLElement>, newTab: 'communities' | 'rides') => {
+  const ChangeSelectedTab = (
+    _: MouseEvent<HTMLElement>,
+    newTab: 'communities' | 'rides',
+  ) => {
     if (newTab !== null) {
       setSelectedTab(newTab);
     }
@@ -76,6 +90,8 @@ const HomePage: React.FC = () => {
           <CommunityList
             communities={communities}
             setSelectedRide={setSelectedRide}
+            communityId={selectedCommunityId}
+            setSelectedCommunityId={setSelectedCommunityId}
           />
         )}
         {selectedTab === 'rides' && <div>Something will be here :)</div>}
