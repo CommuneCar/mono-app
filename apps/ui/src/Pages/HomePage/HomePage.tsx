@@ -11,10 +11,10 @@ import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
-import {
-  useGetAllRides,
-  useGetAllCommunities,
-} from '../../hooks/Communities/useGetAllCommunities';
+import { useLocation } from 'react-router-dom';
+import { CommunityWithRides } from '../../Components/CommunityList/types';
+import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
+import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 
 const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
@@ -30,7 +30,14 @@ const HomePage: React.FC = () => {
     [session],
   );
 
-  const communities = useMemo(() => {
+  const session = useSession();
+
+  const userName = useMemo(
+    () => session?.user?.email?.split('@')[0],
+    [session],
+  );
+
+  const communities: CommunityWithRides[] = useMemo(() => {
     const baseCommunities = useGetAllCommunities();
     const baseRides = useGetAllRides();
 
@@ -41,6 +48,11 @@ const HomePage: React.FC = () => {
       rides: groupedRides[community.name] ?? [],
     }));
   }, []);
+
+  const location = useLocation();
+  const communityId = location.state?.communityId;
+
+  const [selectedCommunityId, setSelectedCommunityId] = useState(communityId);
 
   const ChangeSelectedTab = (
     _: MouseEvent<HTMLElement>,
@@ -89,6 +101,8 @@ const HomePage: React.FC = () => {
             <CommunityList
               communities={communities}
               setSelectedRide={setSelectedRide}
+              communityId={selectedCommunityId}
+              setSelectedCommunityId={setSelectedCommunityId}
             />
           )}
           {selectedTab === 'rides' && <>something will be here :)</>}

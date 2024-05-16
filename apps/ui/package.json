@@ -20,7 +20,7 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.43.1",
     "@types/react-router-dom": "^5.3.3",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "deck.gl": "^9.0.8",
     "hex-rgb": "^5.0.0",
     "leaflet": "^1.9.4",
