@@ -1,8 +1,7 @@
-import { Ride } from '@communecar/types';
-import { flatten, groupBy } from 'lodash';
-import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { flatten, groupBy } from 'lodash';
 
 import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
@@ -10,40 +9,33 @@ import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
-import { useLocation } from 'react-router-dom';
-import { CommunityWithRides } from '../../Components/CommunityList/types';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
+import { Ride } from '@communecar/types';
 
 const HomePage: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
-    'communities',
-  );
-
+  const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>('communities');
   const [selectedRide, setSelectedRide] = useState<Ride>();
 
-  const communities: CommunityWithRides[] = useMemo(() => {
-    const baseCommunities = useGetAllCommunities();
-    const baseRides = useGetAllRides();
+  const { data: communitiesData, isLoading: isLoadingCommunities } = useGetAllCommunities();
+  const { data: ridesData, isLoading: isLoadingRides } = useGetAllRides();
 
-    const groupedRides = groupBy(baseRides, 'communityName');
+  const communities = useMemo(() => {
+    if (isLoadingCommunities || isLoadingRides) {
+      return []; // Return an empty array or a loading state until data is available
+    }
 
-    return baseCommunities.map((community) => ({
+    const groupedRides = groupBy(ridesData, 'communityName');
+    return communitiesData.map((community) => ({
       ...community,
       rides: groupedRides[community.name] ?? [],
     }));
-  }, []);
+  }, [communitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
 
-  const location = useLocation();
-  const communityId = location.state?.communityId;
-
-  const [selectedCommunityId, setSelectedCommunityId] = useState(communityId);
-
-  const ChangeSelectedTab = (
-    _: MouseEvent<HTMLElement>,
-    newTab: 'communities' | 'rides',
-  ) => {
-    if (newTab !== null) setSelectedTab(newTab);
+  const ChangeSelectedTab = (_: MouseEvent<HTMLElement>, newTab: 'communities' | 'rides') => {
+    if (newTab !== null) {
+      setSelectedTab(newTab);
+    }
   };
 
   return (
@@ -69,28 +61,24 @@ const HomePage: React.FC = () => {
         }
       />
       <BottomDrawer>
-        <>
-          <Box style={{ margin: '2%' }}>
-            <ToggleButtonGroup
-              color="primary"
-              value={selectedTab}
-              exclusive
-              onChange={ChangeSelectedTab}
-            >
-              <ToggleButton value={'communities'}>My Communities</ToggleButton>
-              <ToggleButton value={'rides'}>My Rides</ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-          {selectedTab === 'communities' && (
-            <CommunityList
-              communities={communities}
-              setSelectedRide={setSelectedRide}
-              communityId={selectedCommunityId}
-              setSelectedCommunityId={setSelectedCommunityId}
-            />
-          )}
-          {selectedTab === 'rides' && <>something will be here :)</>}
-        </>
+        <Box style={{ margin: '2%' }}>
+          <ToggleButtonGroup
+            color="primary"
+            value={selectedTab}
+            exclusive
+            onChange={ChangeSelectedTab}
+          >
+            <ToggleButton value={'communities'}>My Communities</ToggleButton>
+            <ToggleButton value={'rides'}>My Rides</ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+        {selectedTab === 'communities' && (
+          <CommunityList
+            communities={communities}
+            setSelectedRide={setSelectedRide}
+          />
+        )}
+        {selectedTab === 'rides' && <div>Something will be here :)</div>}
       </BottomDrawer>
     </Page>
   );

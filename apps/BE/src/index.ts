@@ -1,4 +1,4 @@
-
+import cors from 'cors';
 import express from 'express';
 require('dotenv').config();  // Load environment variables
 import { postgraphileMiddleware } from './middleware/postgraphile.middleware';
@@ -7,6 +7,19 @@ import swaggerSpec from './config/swagger.config';
 import router from './routes';
 
 const app = express();
+const whitelistedDomains = process.env.WHITELISTED_DOMAINS?.split(';');
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || whitelistedDomains?.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    optionsSuccessStatus: 200
+}));
+
 
 // Middleware
 app.use(postgraphileMiddleware);
