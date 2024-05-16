@@ -107,9 +107,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     return allCommunitiesDisplay.filter(
       (community) =>
         userCommunitiesStatus[community.id] &&
-        memberStatus.includes(
-          userCommunitiesStatus[community.id] as UserStatus,
-        ),
+        memberStatus.includes(userCommunitiesStatus[community.id]),
     );
   }, [allCommunitiesDisplay, userCommunitiesStatus]);
 
@@ -170,7 +168,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
           <CommunityCard
             key={index}
             community={community}
-            userStatus={userCommunitiesStatus[community.id] as UserStatus}
+            userStatus={userCommunitiesStatus[community.id]}
             handleClickOnEdit={handleClickOnEdit}
           />
         ))}

@@ -16,9 +16,8 @@ const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
 
   communities &&
     communities.forEach((community) => {
-      communitiesStatus[community.id] = getRandomOption(
-        userStatusOptions,
-      ) as UserStatus;
+      communitiesStatus[community.id] =
+        getRandomOption<UserStatus>(userStatusOptions);
     });
 
   return communitiesStatus;

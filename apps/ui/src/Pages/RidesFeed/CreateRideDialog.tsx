@@ -63,7 +63,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             const startLocation = formJson.startLocation;
             const destination = formJson.destination;
             const communityName = formJson.communityName;
-            const png = getRandomOption(options);
+            const png = getRandomOption<string>(options);
             rides.push({
               communityName,
               driver: {

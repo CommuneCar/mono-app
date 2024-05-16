@@ -18,7 +18,7 @@ import { membersStatus } from '../../utils/communities/membershipConsts';
 
 export interface CommunityCardProps {
   community: Community;
-  userStatus: UserStatus;
+  userStatus?: UserStatus;
   handleClickOnEdit: (communityToUpdate: Community) => void;
 }
 

@@ -1,11 +1,9 @@
-import { graphqlRequest } from '../graphql';
-import { getRandomOption } from '../../utils';
-import tlv from '../../assets/tlv.png';
-import apple from '../../assets/apple.png';
-import camera from '../../assets/camera.png';
-import { axiosClient } from '../client';
 import axios from 'axios';
+
 import { LocationResult } from '@communetypes/Geocoding';
+
+import { axiosClient } from '../client';
+import { graphqlRequest } from '../graphql';
 
 interface GraphQLRideNode {
   id: string;
@@ -73,24 +71,26 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
   const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
     query,
   );
-  const options = [tlv, apple, camera];
   const rides: Ride[] = await Promise.all(
     data.allRides.nodes.map(async (node) => {
       const userNode = node.userRidesByRideId.nodes.find(
         (n) => n.userByUserId !== undefined,
       );
+
+      const { fromLat, fromLong, toLat, toLong } = node;
+
       const driver = userNode?.userByUserId || {
         id: 'default',
         firstName: 'Unknown',
         lastName: 'Driver',
       };
       const startLocationName = await geocode({
-        lat: node.fromLat,
-        lon: node.fromLong,
+        lat: fromLat,
+        lon: fromLong,
       });
       const destinationName = await geocode({
-        lat: node.toLat,
-        lon: node.toLong,
+        lat: toLat,
+        lon: toLong,
       });
 
       return {
@@ -104,14 +104,17 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         startLocation: [node.fromLat, node.fromLong],
         destinationName,
         destination: [node.toLat, node.toLong],
-        png: getRandomOption(options),
+        png: '',
       };
     }),
   );
   return rides;
 };
 
-async function geocode(coords: { lat: number; lon: number }): Promise<string> {
+const geocode = async (coords: {
+  lat: number;
+  lon: number;
+}): Promise<string> => {
   try {
     const response = await axiosClient.get<LocationResult[]>(
       '/api/v1/external/reverse-geocode',
@@ -138,4 +141,4 @@ async function geocode(coords: { lat: number; lon: number }): Promise<string> {
     console.log(error);
     return 'An extremely unknown location 😵‍💫😵‍💫';
   }
-}
+};
