@@ -38,7 +38,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
 
   const isMember = status ? membersStatus.includes(status) : false;
 
-  const onJoinRequest = () => {
+  const onRequest = () => {
     if (isMember) {
       //TODO: Request to cancel community membership
       setStatus(undefined);
@@ -98,7 +98,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             </Grid>
             <Grid item xs={6}>
               <StatusButton
-                onJoinRequest={onJoinRequest}
+                onRequest={onRequest}
                 status={status}
               ></StatusButton>
             </Grid>

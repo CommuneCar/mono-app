@@ -4,15 +4,12 @@ import { UserStatus } from '@communecar/types';
 import { useCallback } from 'react';
 import { statusIcons } from '../../utils/communities/userStatusIcons';
 
-export interface CommunityCardProps {
-  onJoinRequest: () => void;
+export interface StatusButtonProps {
+  onRequest: () => void;
   status?: UserStatus;
 }
 
-const StatusButton: React.FC<CommunityCardProps> = ({
-  onJoinRequest,
-  status,
-}) => {
+const StatusButton: React.FC<StatusButtonProps> = ({ onRequest, status }) => {
   const renderIcon = useCallback(() => {
     if (status) {
       return statusIcons[status];
@@ -27,7 +24,7 @@ const StatusButton: React.FC<CommunityCardProps> = ({
   return (
     <Tooltip title={status ? status : 'Ask To Join'}>
       <Box>
-        <IconButton onClick={onJoinRequest} disabled={isDisabled}>
+        <IconButton onClick={onRequest} disabled={isDisabled}>
           {renderIcon()}
         </IconButton>
       </Box>
