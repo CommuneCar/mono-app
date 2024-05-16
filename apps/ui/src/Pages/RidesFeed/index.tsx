@@ -45,11 +45,11 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
           setOpen={setIsDialogOpen}
         />
       )}
-      {rides.map((ride) => (
-        <RideCard key={ride.driver.id} {...ride} />
+      {rides.map((ride, index) => (
+        <RideCard key={index} {...ride} />
       ))}
     </Box>
   );
 };
 
-export default RidesFeed;
+export { RidesFeed };

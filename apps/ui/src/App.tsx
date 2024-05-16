@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 import { MapPage } from './Pages/Map';
-import RidesFeed from './Pages/RidesFeed';
 import SignIn from './Pages/SignIn/SignIn';
 import SignUp from './Pages/Signup/SignUp';
+import { RidesFeed } from './Pages/RidesFeed';
 import { RoleProvider } from './contexts/role';
 import { ProtectedRoute } from './ProtectedRoute';
 import SearchBar from './Components/Map/SearchBar';

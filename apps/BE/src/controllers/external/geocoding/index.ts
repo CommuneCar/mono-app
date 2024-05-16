@@ -1,15 +1,16 @@
-import { Request, Response } from "express";
-import axios from "axios";
-import { LocationResult } from "@communetypes/Geocoding";
-import { OSMLocationResult } from "@betypes/osm"
+import axios from 'axios';
+import { Request, Response } from 'express';
+import { OSMLocationResult } from '@betypes/osm';
+
+import { LocationResult } from '@communetypes/Geocoding';
 
 // Create a shared Axios instance
 const client = axios.create({
-    baseURL: 'https://nominatim.openstreetmap.org',
-    params: {
-        format: 'json',
-        limit: 5
-    }
+  baseURL: 'https://nominatim.openstreetmap.org',
+  params: {
+    format: 'json',
+    limit: 5,
+  },
 });
 
 /**
@@ -60,34 +61,35 @@ const client = axios.create({
  *         description: Missing location parameter
  */
 const geocodeLocation = async (req: Request, res: Response) => {
-    const { location, limit = 5 } = req.query;
+  const { location, limit = 5 } = req.query;
 
-    if (!location) {
-        return res.status(400).json({ error: "Location parameter is required" });
+  if (!location) {
+    return res.status(400).json({ error: 'Location parameter is required' });
+  }
+
+  try {
+    const response = await client.get<OSMLocationResult[]>(`/search`, {
+      params: { q: location as string, limit },
+    });
+
+    const results: LocationResult[] = response.data.map(
+      (item: OSMLocationResult) => ({
+        name: item.name,
+        displayName: item.display_name,
+        lat: item.lat,
+        lon: item.lon,
+      }),
+    );
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'No results found' });
     }
 
-    try {
-        const response = await client.get<OSMLocationResult[]>(`/search`, {
-            params: { q: location as string, limit }
-        });
-
-        const results: LocationResult[] = response.data.map((item: OSMLocationResult) => ({
-            name: item.name,
-            displayName: item.display_name,
-            lat: item.lat,
-            lon: item.lon
-        }));
-
-        if (results.length === 0) {
-            return res.status(404).json({ error: "No results found" });
-        }
-
-        res.json(results);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch geocoding data" });
-    }
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch geocoding data' });
+  }
 };
-
 
 /**
  * @swagger
@@ -121,26 +123,30 @@ const geocodeLocation = async (req: Request, res: Response) => {
  *         description: Failed to fetch reverse geocoding data
  */
 const reverseGeocodeLocation = async (req: Request, res: Response) => {
-    const { lat, lon } = req.query;
+  const { lat, lon } = req.query;
 
-    if (!lat || !lon) {
-        return res.status(400).json({ error: "Latitude and longitude parameters are required" });
-    }
+  if (!lat || !lon) {
+    return res
+      .status(400)
+      .json({ error: 'Latitude and longitude parameters are required' });
+  }
 
-    try {
-        const response = await client.get<OSMLocationResult>(`/reverse`, { params: { lat, lon } });
-        const result = response.data;
-        const locationResult: LocationResult = {
-            name: result.name,
-            displayName: result.display_name,
-            lat: result.lat,
-            lon: result.lon
-        };
+  try {
+    const response = await client.get<OSMLocationResult>(`/reverse`, {
+      params: { lat, lon },
+    });
+    const result = response.data;
+    const locationResult: LocationResult = {
+      name: result.name,
+      displayName: result.display_name,
+      lat: result.lat,
+      lon: result.lon,
+    };
 
-        res.json(locationResult);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch reverse geocoding data" });
-    }
+    res.json([locationResult]);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch reverse geocoding data' });
+  }
 };
 
 export { geocodeLocation, reverseGeocodeLocation };
