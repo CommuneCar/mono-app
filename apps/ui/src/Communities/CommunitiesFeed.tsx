@@ -90,7 +90,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
       const communitiesObject = groupBy(prev, 'id');
       const communitiesDictionary: Record<string, Community> = mapValues(
         communitiesObject,
-        (value) => value[0],
+        (value) => value[0] as Community,
       );
       const newDisplay = {
         ...communitiesDictionary,
@@ -107,7 +107,9 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     return allCommunitiesDisplay.filter(
       (community) =>
         userCommunitiesStatus[community.id] &&
-        memberStatus.includes(userCommunitiesStatus[community.id]),
+        memberStatus.includes(
+          userCommunitiesStatus[community.id] as UserStatus,
+        ),
     );
   }, [allCommunitiesDisplay, userCommunitiesStatus]);
 
@@ -168,7 +170,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
           <CommunityCard
             key={index}
             community={community}
-            userStatus={userCommunitiesStatus[community.id]}
+            userStatus={userCommunitiesStatus[community.id] as UserStatus}
             handleClickOnEdit={handleClickOnEdit}
           />
         ))}
