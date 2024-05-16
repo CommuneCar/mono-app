@@ -13,6 +13,11 @@ import { useSnackbar } from '../../contexts/SnackbarContext';
 import { TEXT } from '../../themes/default/consts';
 import { membersStatus } from '../../utils/communities/membershipConsts';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  MANAGER_OPTIONS,
+  MEMBER_OPTIONS,
+} from '../../types/community-actions-enum';
 
 export interface CommunityCardProps {
   community: Community;
@@ -26,6 +31,8 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   handleClickOnEdit,
 }) => {
   const { showMessage } = useSnackbar();
+  const navigate = useNavigate();
+
   const { name, description, picturesUrl } = community;
   const [status, setStatus] = useState<UserStatus | undefined>(userStatus);
 
@@ -46,6 +53,15 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
     handleClickOnEdit(community);
   };
 
+  const handleJumpToRides = () => {
+    navigate('/home', { state: { communityId: community.id } });
+  };
+
+  const optionActions: Record<string, () => void> = {
+    [MANAGER_OPTIONS.EDIT]: handleEditClick,
+    [MEMBER_OPTIONS.SEE_RIDES]: handleJumpToRides,
+  };
+
   return (
     <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -64,8 +80,12 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           }}
           action={
             <CardMenu
-              isManager={status === UserStatus.MANAGER}
-              handleEditClick={handleEditClick}
+              isManager={userStatus === UserStatus.MANAGER}
+              optionActions={optionActions}
+              isMember={
+                userStatus === UserStatus.MANAGER ||
+                userStatus === UserStatus.APPROVED
+              }
             />
           }
         />
