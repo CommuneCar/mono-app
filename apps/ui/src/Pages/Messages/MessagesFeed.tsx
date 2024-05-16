@@ -1,10 +1,10 @@
-import { Box, Button, CircularProgress, List, Typography } from '@mui/material';
+import { Box, CircularProgress, List, Typography } from '@mui/material';
 import { useUserMessages } from '../../hooks/Messages/useMessagesForUser';
 import { useUser } from '../../hooks/Users/useUser';
 import { Message } from '@communecar/types';
 import { MessageCard } from './MessageCard';
-import { Menu } from '../../Components/Menu/Menu';
-import { Menu as MenuIcon } from '@mui/icons-material';
+
+import { PageHeader } from '../../Components/PageHeader/PageHeader';
 
 const MessagesFeed = () => {
   const { user } = useUser();
@@ -22,25 +22,7 @@ const MessagesFeed = () => {
 
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-        }}
-      >
-        <Typography textTransform="uppercase" sx={{ letterSpacing: '0.15rem' }}>
-          Inbox
-        </Typography>
-        <Menu
-          MenuButton={
-            <Button sx={{ height: '100%' }} color="primary">
-              <MenuIcon />
-            </Button>
-          }
-        />
-      </Box>
+      <PageHeader title="Inbox" />
       <List>
         {messages.map((message: Message) => (
           <MessageCard
