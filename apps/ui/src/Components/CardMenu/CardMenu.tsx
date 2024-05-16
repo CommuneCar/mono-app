@@ -3,21 +3,23 @@ import { useState } from 'react';
 
 import { IconButton, Menu, MenuItem, Box } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { MANAGER_OPTIONS } from '../../types/community-actions-enum';
 import {
   ITEM_HEIGHT,
   managerOptions,
   userOptions,
 } from '../../utils/communities/cardMenuConsts';
+import { isEmpty } from 'lodash';
 
 export interface CardMenuProps {
-  handleEditClick: () => void;
   isManager?: boolean;
+  isMember?: boolean;
+  optionActions: Record<string, () => void>;
 }
 
 const CardMenu: React.FC<CardMenuProps> = ({
   isManager = false,
-  handleEditClick,
+  isMember = false,
+  optionActions,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -29,16 +31,20 @@ const CardMenu: React.FC<CardMenuProps> = ({
   };
 
   const handleSelectOption = (option: string) => {
-    if (option === MANAGER_OPTIONS.EDIT) {
-      handleEditClick();
+    const action = optionActions[option];
+    if (action) {
+      action();
     }
     handleClose();
   };
 
-  const options = [...userOptions, ...managerOptions];
+  const currentMangerOptions = isManager ? managerOptions : [];
+  const currentMemberOptions = isMember || isManager ? userOptions : [];
+
+  const options = [...currentMemberOptions, ...currentMangerOptions];
 
   return (
-    isManager && (
+    !isEmpty(options) && (
       <Box>
         <IconButton id="more" onClick={handleClick}>
           <MoreVertIcon />

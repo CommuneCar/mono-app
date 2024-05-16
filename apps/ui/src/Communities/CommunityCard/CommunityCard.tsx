@@ -10,6 +10,11 @@ import { StatusButton } from './StatusButton';
 import { CardHeader, Grid } from '@mui/material';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
+import { useNavigate } from 'react-router-dom';
+import {
+  MANAGER_OPTIONS,
+  MEMBER_OPTIONS,
+} from '../../types/community-actions-enum';
 
 export interface CommunityCardProps {
   community: Community;
@@ -22,13 +27,24 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   userStatus,
   handleClickOnEdit,
 }) => {
+  const navigate = useNavigate();
+
   const { name, description, picturesUrl } = community;
   const [joined, setJoined] = useState(false);
 
-  console.log({ joined }); //TODO when the server ready
+  console.log({ joined }); //TODO when the server read
 
   const handleEditClick = () => {
     handleClickOnEdit(community);
+  };
+
+  const handleJumpToRides = () => {
+    navigate('/home', { state: { communityId: community.id } });
+  };
+
+  const optionActions: Record<string, () => void> = {
+    [MANAGER_OPTIONS.EDIT]: handleEditClick,
+    [MEMBER_OPTIONS.SEE_RIDES]: handleJumpToRides,
   };
 
   return (
@@ -50,7 +66,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           action={
             <CardMenu
               isManager={userStatus === UserStatus.MANAGER}
-              handleEditClick={handleEditClick}
+              optionActions={optionActions}
+              isMember={
+                userStatus === UserStatus.MANAGER ||
+                userStatus === UserStatus.APPROVED
+              }
             />
           }
         />
