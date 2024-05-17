@@ -44,7 +44,6 @@ const authenticateUser = async (
   return {
     ...user,
     password,
-    id: `${user.id}`,
     gander: user.gender,
     phone: user.phoneNumber,
   };

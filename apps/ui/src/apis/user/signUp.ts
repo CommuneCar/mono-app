@@ -60,7 +60,6 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
   return {
     password,
     ...userResponse,
-    id: `${userResponse.id}`,
     phone: userResponse.phoneNumber,
     gander: userResponse.gender as Gender,
   };

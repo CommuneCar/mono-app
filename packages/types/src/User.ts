@@ -1,7 +1,7 @@
 import { Gender } from './Enums';
 
-export interface User {
-  id: string;
+interface User {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -11,3 +11,5 @@ export interface User {
   age?: number;
   avatarUrl?: string;
 }
+
+export type { User };
