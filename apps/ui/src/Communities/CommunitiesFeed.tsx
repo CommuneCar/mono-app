@@ -15,20 +15,37 @@ import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { UserCommunitiesStatus } from '../types/community-type';
+import { useSnackbar } from '../contexts/SnackbarContext';
+import { TEXT } from '../themes/default/consts';
 
 const CommunitiesFeed: React.FC = () => {
   const { data: communities } = useGetAllCommunities();
+  const { showMessage } = useSnackbar();
 
   const { user } = useUser();
-  const userCommunitiesStatusOriginal = useUserCommunitiesStatus(user?.id ?? 1);
+  const {
+    data: userStatusData,
+    error: userStatusError,
+    isLoading: userStatusIsLoading,
+  } = useUserCommunitiesStatus(user?.id ?? 1);
 
-  const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
-    userCommunitiesStatusOriginal ?? {},
-  );
+  const userStatus: UserCommunitiesStatus = useMemo(() => {
+    return userStatusError || userStatusIsLoading ? {} : userStatusData ?? {};
+  }, [userStatusData]);
+
+  const [userCommunitiesStatus, setUserCommunitiesStatus] =
+    useState<UserCommunitiesStatus>(userStatus);
 
   useEffect(() => {
-    setUserCommunitiesStatus(userCommunitiesStatusOriginal ?? {});
-  }, [userCommunitiesStatusOriginal]);
+    setUserCommunitiesStatus(userStatus);
+  }, [userStatusData]);
+
+  useEffect(() => {
+    if (userStatusError) {
+      showMessage(TEXT.alerts.FETCH_COMMUNITIES_REQUEST_FAILED, 'error');
+    }
+  }, [userStatusError]);
 
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] = useState<
     Community[]
@@ -173,6 +190,7 @@ const CommunitiesFeed: React.FC = () => {
             community={community}
             userStatus={userCommunitiesStatus[community.id]}
             handleClickOnEdit={handleClickOnEdit}
+            userStatusIsLoading={userStatusIsLoading}
           />
         ))}
       </FeedList>
