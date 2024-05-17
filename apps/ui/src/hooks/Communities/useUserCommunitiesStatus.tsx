@@ -1,24 +1,40 @@
 import { UserStatus } from '@communecar/types';
-
-import { getRandomOption } from '../../utils';
-import { useGetAllCommunities } from './useGetAllCommunities';
 import { UserCommunitiesStatus } from '../../types/community-type';
-
-const userStatusOptions: UserStatus[] = Object.values(
-  UserStatus,
-) as UserStatus[];
+import { fetchUserCommunitiesStatus } from '../../apis/communities/fetch-community-user-status';
+import { useEffect, useState } from 'react';
 
 const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
-  const { data: communities } = useGetAllCommunities();
-  console.log({ userId }); //TODO when the server ready
+  const [communitiesStatus, setCommunitiesStatus] =
+    useState<UserCommunitiesStatus>({});
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const communitiesStatus: UserCommunitiesStatus = {};
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchUserCommunitiesStatus(1);
+        const dataEntries = Object.entries(data);
+        const status: UserCommunitiesStatus = {};
+        dataEntries.forEach((item) => {
+          status[item[0]] = item[1] as UserStatus;
+        });
+        setCommunitiesStatus(status);
+      } catch (err) {
+        setError('Failed to fetch user communities status.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  communities &&
-    communities.forEach((community) => {
-      communitiesStatus[community.id] =
-        getRandomOption<UserStatus>(userStatusOptions);
-    });
+    fetchData();
+  }, [userId]);
+
+  useEffect(() => {
+    console.log({ communitiesStatus, userId });
+  }, [communitiesStatus]);
+
+  if (loading || error) return {}; // or a loading state
 
   return communitiesStatus;
 };
