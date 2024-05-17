@@ -19,12 +19,14 @@ export interface CommunityCardProps {
   community: Community;
   userStatus?: UserStatus;
   handleClickOnEdit: (communityToUpdate: Community) => void;
+  userStatusIsLoading: boolean;
 }
 
 const CommunityCard: React.FC<CommunityCardProps> = ({
   community,
   userStatus,
   handleClickOnEdit,
+  userStatusIsLoading,
 }) => {
   const { showMessage } = useSnackbar();
   const navigate = useNavigate();
@@ -90,7 +92,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             }}
           >
             <CommunityMembersDisplay pictures={picturesUrl} />
-            <StatusButton onRequest={onRequest} status={userStatus} />
+            <StatusButton
+              onRequest={onRequest}
+              status={userStatus}
+              isLoading={userStatusIsLoading}
+            />
           </Box>
         </CardActions>
       </Card>
