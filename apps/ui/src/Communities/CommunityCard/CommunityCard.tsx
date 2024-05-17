@@ -31,7 +31,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
 
   const { name, description, picturesUrl } = community;
 
-  const isMember = userStatus ? membersStatus.includes(userStatus) : false;
+  const isMember = userStatus && membersStatus.includes(userStatus);
   const onRequest = () => {
     if (isMember) {
       //TODO: Request to cancel community membership
