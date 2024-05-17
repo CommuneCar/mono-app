@@ -1,4 +1,4 @@
-import { Gander } from './Enums';
+import { Gender } from './Enums';
 
 export interface User {
   id: string;
@@ -7,7 +7,7 @@ export interface User {
   email: string;
   phone: string;
   password: string;
-  gander: Gander;
+  gander: Gender;
   age?: number;
   avatarUrl?: string;
 }

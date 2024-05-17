@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { Gander, User } from '@communecar/types';
+import { Gender, User } from '@communecar/types';
 
 import { graphqlRequest } from '../graphql';
 
@@ -45,7 +45,7 @@ const authenticateUser = async (
       lastName: string;
       email: string;
       phoneNumber: string;
-      gender: Gander;
+      gender: Gender;
       age: number;
     };
   }>(getUserQuery);

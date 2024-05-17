@@ -1,4 +1,4 @@
-import { Gander, Message, MessageType, User } from '@communecar/types';
+import { Gender, Message, MessageType, User } from '@communecar/types';
 
 const users: User[] = [
   {
@@ -7,7 +7,7 @@ const users: User[] = [
     lastName: 'Doe',
     email: 'john@doe.il',
     password: '123',
-    gander: Gander.MALE,
+    gander: Gender.MALE,
     phone: '0500000000',
     age: 20,
   },
@@ -17,7 +17,7 @@ const users: User[] = [
     lastName: 'Doe',
     email: 'jin@doe.il',
     password: '1234',
-    gander: Gander.FEMALE,
+    gander: Gender.FEMALE,
     phone: '0500000001',
     age: 20,
   },
@@ -27,7 +27,7 @@ const users: User[] = [
     lastName: 'admin',
     email: 'admin@admin.il',
     password: 'admin',
-    gander: Gander.OTHER,
+    gander: Gender.OTHER,
     phone: '0500000001',
     age: 20,
   },
