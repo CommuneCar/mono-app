@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CardActions, CardHeader } from '@mui/material';
 
@@ -31,20 +30,13 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const navigate = useNavigate();
 
   const { name, description, picturesUrl } = community;
-  const [status, setStatus] = useState<UserStatus | undefined>(userStatus);
 
-  useEffect(() => {
-    setStatus(userStatus);
-  }, [userStatus]);
-
-  const isMember = status ? membersStatus.includes(status) : false;
+  const isMember = userStatus ? membersStatus.includes(userStatus) : false;
   const onRequest = () => {
     if (isMember) {
       //TODO: Request to cancel community membership
-      setStatus(undefined);
     } else {
       //TODO: Request to join the community
-      setStatus(UserStatus.PENDING);
     }
     showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
   };
@@ -98,7 +90,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             }}
           >
             <CommunityMembersDisplay pictures={picturesUrl} />
-            <StatusButton onRequest={onRequest} status={status} />
+            <StatusButton onRequest={onRequest} status={userStatus} />
           </Box>
         </CardActions>
       </Card>

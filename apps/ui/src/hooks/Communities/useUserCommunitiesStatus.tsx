@@ -30,7 +30,7 @@ const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
     fetchData();
   }, [userId]);
 
-  if (loading || error) return {}; // or a loading state
+  if (loading || error) return {};
 
   return communitiesStatus;
 };
