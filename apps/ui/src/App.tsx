@@ -17,40 +17,35 @@ import MapNavigationPage from './Pages/MapNavigation';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
 import { SnackbarProvider } from './contexts/SnackbarContext';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const App: React.FC = () => {
-  const queryClient = new QueryClient();
-
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <SnackbarProvider>
-          <UserProvider>
-            <RoleProvider>
-              <CssBaseline />
-              <Router>
-                <Routes>
-                  <Route path="/" element={<SignIn />} />
-                  <Route path="/signup" element={<SignUp />} />
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="/messages" element={<MessagesFeed />} />
-                    <Route path="/rides" element={<RidesFeed />} />
-                    <Route path="/communities" element={<CommunitiesFeed />} />
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/map" element={<MapPage />} />
-                    <Route
-                      path="/map/navigation"
-                      element={<MapNavigationPage />}
-                    />
-                    <Route path="/search" element={<SearchBar />} />
-                  </Route>
-                </Routes>
-              </Router>
-            </RoleProvider>
-          </UserProvider>
-        </SnackbarProvider>
-      </QueryClientProvider>
+      <SnackbarProvider>
+        <UserProvider>
+          <RoleProvider>
+            <CssBaseline />
+            <Router>
+              <Routes>
+                <Route path="/" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/messages" element={<MessagesFeed />} />
+                  <Route path="/rides" element={<RidesFeed />} />
+                  <Route path="/communities" element={<CommunitiesFeed />} />
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/map" element={<MapPage />} />
+                  <Route
+                    path="/map/navigation"
+                    element={<MapNavigationPage />}
+                  />
+                  <Route path="/search" element={<SearchBar />} />
+                </Route>
+              </Routes>
+            </Router>
+          </RoleProvider>
+        </UserProvider>
+      </SnackbarProvider>
     </>
   );
 };

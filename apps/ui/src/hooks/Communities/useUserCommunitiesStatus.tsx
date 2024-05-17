@@ -1,6 +1,6 @@
 import { UserCommunitiesStatus } from '../../types/community-type';
 import { fetchUserCommunitiesStatus } from '../../apis/communities/fetch-community-user-status';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from 'react-query';
 
 const useUserCommunitiesStatus = (
   userId: number,
