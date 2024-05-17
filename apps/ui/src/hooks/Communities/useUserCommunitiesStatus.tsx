@@ -3,11 +3,11 @@ import { fetchUserCommunitiesStatus } from '../../apis/communities/fetch-communi
 import { useQuery } from '@tanstack/react-query';
 
 const useUserCommunitiesStatus = (
-  userId: string,
+  userId: number,
 ): UserCommunitiesStatus | undefined => {
   const { data, isLoading, error } = useQuery<UserCommunitiesStatus, Error>({
     queryKey: ['userCommunitiesStatus', userId],
-    queryFn: () => fetchUserCommunitiesStatus(Number(userId)),
+    queryFn: () => fetchUserCommunitiesStatus(userId),
   });
 
   if (isLoading || error) return undefined;
