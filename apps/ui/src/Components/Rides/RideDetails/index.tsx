@@ -6,7 +6,8 @@ import {
   DialogTitle,
   Button,
   Typography,
-  Box,
+  List,
+  ListItem,
   Divider,
 } from '@mui/material';
 import { Ride } from '@communecar/types';
@@ -22,12 +23,6 @@ const RideDetails: React.FC<JoinRideProps> = ({
   ride,
   setSelectedRide,
 }) => {
-  const formatRideStops = () => {
-    const stops = ride.destination.map(
-      (destination, index) => `${index + 1}. ${destination}`,
-    );
-    return stops.join('\n');
-  };
   const onCancel = () => {
     setSelectedRide(undefined);
   };
@@ -36,58 +31,39 @@ const RideDetails: React.FC<JoinRideProps> = ({
       <DialogTitle>Ride Details</DialogTitle>
       <Divider />
       <DialogContent>
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Driver:</Typography>
-          </Box>
-          {ride.driver.name}
-        </Typography>
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Start Location:</Typography>
-          </Box>
-          {ride.startLocationName}
-        </Typography>
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Destination:</Typography>
-          </Box>
-          {ride.destinationName}
-        </Typography>
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Stops:</Typography>
-          </Box>
-          {formatRideStops()}
-        </Typography>
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Community:</Typography>
-          </Box>
-          {ride.communityName}
-        </Typography>
-
-
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Shared drive gas fee:</Typography>
-          </Box>
-          {ride.gasMoney}
-        </Typography>
-
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Pronouns only:</Typography>
-          </Box>
-          {ride.pronouns ? 'yes' : 'no'}
-        </Typography>
-
-        <Typography component="div" display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Seats:</Typography>
-          </Box>
-          {ride.seats}
-        </Typography>
+        <List>
+          <ListItem>
+            <Typography variant="subtitle1">Driver: {ride.driver.name}</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography variant="subtitle1">Start Location: {ride.startLocationName}</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography variant="subtitle1">Destination: {ride.destinationName}</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography variant="subtitle1">Community: {ride.communityName}</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography variant="subtitle1">Shared Drive Gas Fee: ${ride.gasMoney}</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography variant="subtitle1">Pronouns Only: {ride.pronouns ? 'Yes' : 'No'}</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography variant="subtitle1">Seats: {ride.seats}</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography variant="subtitle1" component="div">
+              Pickups:
+              {ride.pickups.map((pickup, index) => (
+                <Typography key={index} sx={{ ml: 4 }}>
+                  {`${index + 1}. ${pickup.name} (${pickup.lat}, ${pickup.lon})`}
+                </Typography>
+              ))}
+            </Typography>
+          </ListItem>
+        </List>
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>

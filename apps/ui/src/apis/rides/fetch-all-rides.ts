@@ -27,6 +27,10 @@ interface GraphQLRideNode {
         firstName: string;
         lastName: string;
       };
+      fromLat: number;
+      fromLong: number;
+      toLat: number;
+      toLong: number;
     }>;
   };
 }
@@ -55,6 +59,10 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
               firstName
               lastName
             }
+            toLat
+            toLong
+            fromLong
+            fromLat
           }
         }
       }
@@ -66,17 +74,24 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
   );
   const rides: Ride[] = await Promise.all(
     data.allRides.nodes.map(async (node) => {
-      const userNode = node.userRidesByRideId.nodes.find(
-        (n) => n.userByUserId !== undefined,
-      );
-
       const { fromLat, fromLong, toLat, toLong } = node;
 
-      const driver = userNode?.userByUserId || {
+      const driver = node.userRidesByRideId.nodes.find(
+        n => n.userByUserId !== undefined,
+      )?.userByUserId || {
         id: 'default',
         firstName: 'Unknown',
         lastName: 'Driver',
       };
+
+      const pickups: Location[] = await Promise.all(
+        node.userRidesByRideId.nodes.map(async (pickupNode) => ({
+          lat: pickupNode.fromLat,
+          lon: pickupNode.fromLong,
+          name: await geocode({ lat: pickupNode.fromLat, lon: pickupNode.fromLong })
+        }))
+      );
+
       const startLocationName = await geocode({
         lat: fromLat,
         lon: fromLong,
@@ -101,6 +116,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         gasMoney: node.gasMoney ?? 0,
         pronouns: node.pronouns ?? false,
         seats: node.seats,
+        pickups,
       };
     }),
   );

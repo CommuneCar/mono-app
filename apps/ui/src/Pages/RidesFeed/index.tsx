@@ -31,7 +31,8 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
     png: '',
     gasMoney: 20,
     pronouns: true,
-    seats: 4
+    seats: 4,
+    pickups: []
   });
 
 
