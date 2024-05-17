@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -7,72 +7,86 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-  Box,
-  IconButton,
-  Autocomplete,
   Switch,
   FormControlLabel,
+  Typography,
 } from '@mui/material';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import SearchIcon from '@mui/icons-material/Search';
 import dayjs from 'dayjs';
 
-import { axiosClient } from '../../apis/client';
 import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
+import { LocationResult } from '@communetypes/Geocoding';
+import SearchLocations from '../Search/Locations';
+import { Ride } from '@communetypes/Ride';
+import { Community } from '@communetypes/Community';
+import SearchCommunities from '../Search/Communities';
+import { addNewRide } from '../../apis/rides/add-new-ride';
 
 const options = [tlv, apple, camera];
 
-const CreateRideDialog = ({ rides, setOpen, isOpen }) => {
+export interface CreateRideDialogProps {
+  rides: Ride[];
+  communities: Community[];
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+}
+
+const CreateRideDialog = ({ rides, communities, setOpen, isOpen }: CreateRideDialogProps) => {
   const [departureTime, setDepartureTime] = useState(dayjs());
-  const [communityName, setCommunityName] = useState('');
+  const [community, setCommunity] = useState<Community | null>(null);
   const [gasMoney, setGasMoney] = useState('');
   const [pronounsOnly, setPronounsOnly] = useState(false);
   const [seats, setSeats] = useState('');
-  const startLocationRef = useRef();
-  const destinationRef = useRef();
+  const [startLocation, setStartLocation] = useState<LocationResult | null>(null);
+  const [destination, setDestination] = useState<LocationResult | null>(null);
 
-  const handleSearchLocation = async (query) => {
-    try {
-      const response = await axiosClient.get('/api/v1/external/geocode', { params: { location: query } });
-      return response.data.map(location => ({
-        label: location.displayName || location.name,
-        lat: location.lat,
-        lon: location.lon
-      }));
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-      return [];
+  const handleLocationSelect = (location: LocationResult, type: string) => {
+    if (type === 'start') {
+      setStartLocation(location);
+    } else {
+      setDestination(location);
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const png = getRandomOption(options);
-    const startLocation = startLocationRef.current?.value;
-    const destination = destinationRef.current?.value;
+    
+    if (!community || !startLocation || !destination || !gasMoney || !seats) {
+      alert('All fields are required.');
+      return;
+    }
 
-    const newRide = {
-      communityName,
-      driver: { name: 'Dar Nachmani', id: 5 },
+    const png = getRandomOption(options);
+    const newRide: Ride = {
+      communityName: community.name,
+      driver: { name: 'Dar Nachmani', id: 5 },  // TODO: Replace with user from session
       departureTime: departureTime.toDate(),
-      startLocationName: startLocation,
-      destinationName: destination,
-      startLocation: [], // Replace with actual coordinates from Autocomplete
-      destination: [], // Replace with actual coordinates from Autocomplete
+      startLocationName: startLocation.displayName,
+      destinationName: destination.displayName,
+      startLocation: [parseFloat(startLocation.lat), parseFloat(startLocation.lon)],
+      destination: [parseFloat(destination.lat), parseFloat(destination.lon)],
       png,
       gasMoney: parseFloat(gasMoney),
       pronouns: pronounsOnly,
-      seats: parseInt(seats, 10)
+      seats: parseInt(seats, 10),
+      pickups: []
     };
-    rides.push(newRide);
-    handleClose();
+
+    try {
+      await addNewRide(newRide);
+      handleClose();
+    } catch (error) {
+      console.error('Error creating new ride:', error);
+    }
   };
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Dialog open={isOpen} onClose={handleClose} fullWidth>
@@ -81,17 +95,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }) => {
         <DialogContentText>
           Fill in the details to add a new ride.
         </DialogContentText>
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="communityName"
-          label="Community Name"
-          type="text"
-          fullWidth
-          value={communityName}
-          onChange={(e) => setCommunityName(e.target.value)}
-        />
+        <SearchCommunities communities={communities} selectedCommunity={community} setSelectedCommunity={setCommunity} />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
             label="Departure Time"
@@ -100,8 +104,10 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }) => {
             renderInput={(params) => <TextField {...params} fullWidth />}
           />
         </LocalizationProvider>
-        <SearchBar options={[]} handleChangeSearchValue={handleSearchLocation} ref={startLocationRef} placeholder="Start Location" />
-        <SearchBar options={[]} handleChangeSearchValue={handleSearchLocation} ref={destinationRef} placeholder="Destination" />
+        <Typography variant="h6" sx={{ mt: 2 }}>Start Location:</Typography>
+        <SearchLocations onSelect={(location) => handleLocationSelect(location, 'start')} />
+        <Typography variant="h6" sx={{ mt: 2 }}>Destination:</Typography>
+        <SearchLocations onSelect={(location) => handleLocationSelect(location, 'destination')} />
         <TextField
           margin="dense"
           id="gasMoney"
@@ -132,36 +138,5 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }) => {
     </Dialog>
   );
 };
-
-const SearchBar = React.forwardRef(({ options, handleChangeSearchValue, placeholder }, ref) => {
-  const handleChange = (_event, value) => {
-    handleChangeSearchValue(value);
-  };
-
-  return (
-    <Box sx={{ width: '100%', my: 2 }}>
-      <Autocomplete
-        freeSolo
-        options={options}
-        onChange={handleChange}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            placeholder={placeholder}
-            ref={ref}
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <IconButton onClick={() => handleChangeSearchValue(ref.current?.value)}>
-                  <SearchIcon />
-                </IconButton>
-              ),
-            }}
-          />
-        )}
-      />
-    </Box>
-  );
-});
 
 export default CreateRideDialog;

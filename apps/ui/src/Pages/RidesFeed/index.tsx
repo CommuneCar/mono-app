@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Add as AddIcon } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
 
-import { Ride } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 
 import RideCard from './RideCard';
 import defaultTheme from '../../themes/default';
@@ -13,9 +13,10 @@ import { addNewRide } from '../../apis/rides/add-new-ride';
 
 export interface RidesFeedProps {
   rides: Ride[];
+  communities: Community[];
 }
 
-const RidesFeed = ({ rides }: RidesFeedProps) => {
+const RidesFeed = ({ rides, communities }: RidesFeedProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [ride, setRide] = useState<Ride>({
     driver: {
@@ -70,6 +71,7 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
       {isDialogOpen && (
         <CreateRideDialog
           rides={rides}
+          communities={communities}
           isOpen={isDialogOpen}
           setOpen={setIsDialogOpen}
         />
