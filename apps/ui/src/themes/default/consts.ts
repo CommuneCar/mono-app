@@ -75,6 +75,12 @@ export const TEXT = {
   UPDATE_COMMUNITY_TITLE: 'Update Community',
   UPDATE_COMMUNITY_DESCRIPTION:
     'To Update a Community, please change all details here.',
+  alerts: {
+    SUCCESSFUL_REQUEST: 'Your request has been received',
+    REQUEST_FAILED: 'Your request failed, try again later',
+    FETCH_COMMUNITIES_REQUEST_FAILED:
+      'An error occurred in retrieving the complete information of communities',
+  },
 } as const;
 
 export const FORMS_TEXT = {

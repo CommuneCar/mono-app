@@ -132,7 +132,9 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
                     },
                   }}
                 >
-                  <ListItemButton onClick={() => navigate(menuOptions[text])}>
+                  <ListItemButton
+                    onClick={() => navigate(menuOptions[text] as string)}
+                  >
                     <ListItemText primary={text} />
                     <ChevronRightIcon color={'action'} />
                   </ListItemButton>

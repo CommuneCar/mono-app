@@ -1,5 +1,4 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Typography } from '@mui/material';
 import logoWithTitle from '../../assets/logo-with-title.png';
 
 interface SigningHeaderProps {
@@ -18,10 +17,7 @@ const SigningHeader: React.FC<SigningHeaderProps> = ({ titleText }) => {
         src={logoWithTitle}
         alt="Login Image"
       />
-      <Typography
-        component="h2"
-        variant="h2"
-      >
+      <Typography component="h2" variant="h2">
         {titleText}
       </Typography>
     </Box>

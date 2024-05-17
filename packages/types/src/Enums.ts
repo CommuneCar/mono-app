@@ -1,11 +1,11 @@
 export enum UserStatus {
-  APPROVED = 'Approved',
+  ACTIVE = 'Active',
   PENDING = 'Pending',
   REJECTED = 'Rejected',
   MANAGER = 'Manager',
 }
 
-export enum Gander {
+export enum Gender {
   FEMALE = 'Female',
   MALE = 'Male',
   OTHER = 'Other',

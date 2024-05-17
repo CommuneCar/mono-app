@@ -1,34 +1,59 @@
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardActions from '@mui/material/CardActions';
-
-import defaultTheme from '../../themes/default';
+import { useNavigate } from 'react-router-dom';
+import { Box, Card, CardActions, CardHeader } from '@mui/material';
 
 import { UserStatus, Community } from '@communecar/types';
-import { useState } from 'react';
+
+import {
+  MEMBER_OPTIONS,
+  MANAGER_OPTIONS,
+} from '../../types/community-actions-enum';
 import { StatusButton } from './StatusButton';
-import { CardHeader, Grid } from '@mui/material';
-import { CommunityMembersDisplay } from './CommunityMembersDisplay';
+import defaultTheme from '../../themes/default';
+import { TEXT } from '../../themes/default/consts';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
+import { CommunityMembersDisplay } from './CommunityMembersDisplay';
+import { membersStatus } from '../../utils/communities/membershipConsts';
 
 export interface CommunityCardProps {
   community: Community;
-  userStatus: UserStatus;
+  userStatus?: UserStatus;
   handleClickOnEdit: (communityToUpdate: Community) => void;
+  userStatusIsLoading: boolean;
 }
 
 const CommunityCard: React.FC<CommunityCardProps> = ({
   community,
   userStatus,
   handleClickOnEdit,
+  userStatusIsLoading,
 }) => {
-  const { name, description, picturesUrl } = community;
-  const [joined, setJoined] = useState(false);
+  const { showMessage } = useSnackbar();
+  const navigate = useNavigate();
 
-  console.log({ joined }); //TODO when the server ready
+  const { name, description, picturesUrl } = community;
+
+  const isMember = userStatus && membersStatus.includes(userStatus);
+  const onRequest = () => {
+    if (isMember) {
+      //TODO: Request to cancel community membership
+    } else {
+      //TODO: Request to join the community
+    }
+    showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
+  };
 
   const handleEditClick = () => {
     handleClickOnEdit(community);
+  };
+
+  const handleJumpToRides = () => {
+    navigate('/home', { state: { communityId: community.id } });
+  };
+
+  const optionActions: Record<string, () => void> = {
+    [MANAGER_OPTIONS.EDIT]: handleEditClick,
+    [MEMBER_OPTIONS.SEE_RIDES]: handleJumpToRides,
   };
 
   return (
@@ -50,28 +75,33 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           action={
             <CardMenu
               isManager={userStatus === UserStatus.MANAGER}
-              handleEditClick={handleEditClick}
+              optionActions={optionActions}
+              isMember={
+                userStatus === UserStatus.MANAGER ||
+                userStatus === UserStatus.ACTIVE
+              }
             />
           }
         />
         <CardActions>
-          <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Grid item xs={6}>
-              <CommunityMembersDisplay
-                pictures={picturesUrl}
-              ></CommunityMembersDisplay>
-            </Grid>
-            <Grid item xs={6}>
-              <StatusButton
-                setJoined={setJoined}
-                status={userStatus}
-              ></StatusButton>
-            </Grid>
-          </Grid>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <CommunityMembersDisplay pictures={picturesUrl} />
+            <StatusButton
+              onRequest={onRequest}
+              status={userStatus}
+              isLoading={userStatusIsLoading}
+            />
+          </Box>
         </CardActions>
       </Card>
     </Box>
   );
 };
 
-export default CommunityCard;
+export { CommunityCard };

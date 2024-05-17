@@ -7,6 +7,10 @@ import './index.css';
 
 import { App } from './App.tsx';
 import defaultTheme from './themes/default/index.tsx';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+
+const queryClient = new QueryClient();
 
 const updateServiceWorkers = registerSW({
   onNeedRefresh() {
@@ -19,7 +23,9 @@ const updateServiceWorkers = registerSW({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={defaultTheme}>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

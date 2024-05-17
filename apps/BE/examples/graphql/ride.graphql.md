@@ -197,3 +197,27 @@ query MyQuery {
   }
 }
 ```
+
+
+#### Associate a community id w/ a ride:
+```gql
+mutation UpdateRideCommunity {
+  updateRideById(
+    input: {
+      id: 1,
+      ridePatch: {
+        communityId: 1
+      }
+    }
+  ) {
+    ride {
+      id
+      communityId
+      community {
+        id
+        title
+      }
+    }
+  }
+}
+```

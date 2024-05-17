@@ -1,30 +1,31 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import defaultTheme from '../../themes/default';
-import SigningHeader from '../../Components/Signing/SigningHeader';
-import { PersonRounded, PhoneAndroidRounded } from '@mui/icons-material';
 import {
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  FormLabel,
-  Button,
-  TextField,
+  Box,
   Link,
   Grid,
-  Box,
+  Radio,
+  Button,
   Container,
+  TextField,
+  FormLabel,
+  RadioGroup,
+  ThemeProvider,
+  FormControlLabel,
 } from '@mui/material';
-import { SignUpUser } from '../../types/sign-up-user';
-import { useEffect, useState } from 'react';
-import { validateField } from '../../utils/signing/validation';
-import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { isEmpty } from 'lodash';
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { PersonRounded, PhoneAndroidRounded } from '@mui/icons-material';
+
+import { Gender } from '@communecar/types';
+
+import defaultTheme from '../../themes/default';
 import { useUser } from '../../hooks/Users/useUser';
-import { Gander } from '@communecar/types';
+import { SignUpUser } from '../../types/sign-up-user';
+import { validateField } from '../../utils/signing/validation';
+import SigningHeader from '../../Components/Signing/SigningHeader';
+import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
+import { EmailField } from '../../Components/Signing/Fields/EmailField';
+import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const SignUp = () => {
     email: '',
     password: '',
     phone: '',
-    gander: Gander.OTHER,
+    gander: Gender.OTHER,
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -81,10 +82,10 @@ const SignUp = () => {
       email: data.get('email') as string,
       password: data.get('password') as string,
       phone: data.get('phone') as string,
-      gander: (data.get('gander') as Gander) ?? Gander.OTHER,
+      gander: (data.get('gander') as Gender) ?? Gender.OTHER,
     };
-    signUp(newUser);
 
+    signUp(newUser);
     if (isSubmitEnabled) {
       navigate(DEFAULT_HOME_PAGE);
     }
@@ -197,7 +198,7 @@ const SignUp = () => {
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        [e.target.name]: e.target.value as Gander,
+                        [e.target.name]: e.target.value as Gender,
                       }))
                     }
                   >

@@ -1,35 +1,55 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { groupBy, mapValues } from 'lodash';
-import { Menu as MenuIcon } from '@mui/icons-material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
 
-import { Menu } from '../Components/Menu/Menu';
 import { useUser } from '../hooks/Users/useUser';
-import CommunityCard from './CommunityCard/CommunityCard';
 import { SearchBar } from '../Components/Search/SearchBar';
+import { CommunityCard } from './CommunityCard/CommunityCard';
 import { FeedList } from '../Components/styles/FeedList.styled';
+import { PageHeader } from '../Components/PageHeader/PageHeader';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
+import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
+import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { UserCommunitiesStatus } from '../types/community-type';
+import { useSnackbar } from '../contexts/SnackbarContext';
+import { TEXT } from '../themes/default/consts';
 
-export interface CommunitiesFeedProps {
-  communities: Community[];
-}
+const CommunitiesFeed: React.FC = () => {
+  const { data: communities } = useGetAllCommunities();
+  const { showMessage } = useSnackbar();
 
-const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   const { user } = useUser();
-  const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
-    user?.id ?? 'admin',
-  );
+  const {
+    data: userStatusData,
+    error: userStatusError,
+    isLoading: userStatusIsLoading,
+  } = useUserCommunitiesStatus(user?.id ?? 1);
 
-  const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
-    userCommunitiesStatusOriginal,
-  );
-  const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
-    useState<Community[]>(communities);
+  const userStatus: UserCommunitiesStatus = useMemo(() => {
+    return userStatusError || userStatusIsLoading ? {} : userStatusData ?? {};
+  }, [userStatusData]);
+
+  const [userCommunitiesStatus, setUserCommunitiesStatus] =
+    useState<UserCommunitiesStatus>(userStatus);
+
+  useEffect(() => {
+    setUserCommunitiesStatus(userStatus);
+  }, [userStatusData]);
+
+  useEffect(() => {
+    if (userStatusError) {
+      showMessage(TEXT.alerts.FETCH_COMMUNITIES_REQUEST_FAILED, 'error');
+    }
+  }, [userStatusError]);
+
+  const [allCommunitiesDisplay, setAllCommunitiesDisplay] = useState<
+    Community[]
+  >(communities ?? []);
   const [filteredCommunities, setFilteredCommunities] = useState(
     allCommunitiesDisplay,
   );
@@ -90,7 +110,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
       const communitiesObject = groupBy(prev, 'id');
       const communitiesDictionary: Record<string, Community> = mapValues(
         communitiesObject,
-        (value) => value[0],
+        (value) => value[0] as Community,
       );
       const newDisplay = {
         ...communitiesDictionary,
@@ -100,22 +120,53 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
     });
   };
 
+  const [showMyCommunities, setShowMyCommunities] = useState(false);
+
+  const myCommunities = useMemo(() => {
+    const memberStatus = [UserStatus.ACTIVE, UserStatus.MANAGER];
+    return allCommunitiesDisplay.filter(
+      (community) =>
+        userCommunitiesStatus[community.id] &&
+        memberStatus.includes(userCommunitiesStatus[community.id]),
+    );
+  }, [allCommunitiesDisplay, userCommunitiesStatus]);
+
+  const handleMyCommunitiesFilter = (showMyCommunities: boolean) => {
+    if (showMyCommunities) {
+      setFilteredCommunities(myCommunities);
+    } else {
+      setFilteredCommunities(allCommunitiesDisplay);
+    }
+  };
+
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minWidth: 370,
+      }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'cetner', width: '100%' }}>
+      <PageHeader title={'Communities'} />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'cetner',
+          width: '100%',
+        }}
+      >
         <SearchBar
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
         />
-        <Menu
-          MenuButton={
-            <Button sx={{ height: '100%' }} color="primary">
-              <MenuIcon />
-            </Button>
-          }
-        />
+        <MyEntitiesFilterButton
+          lable={'My Communities'}
+          setShowMyEntities={setShowMyCommunities}
+          showMyEntities={showMyCommunities}
+          filter={handleMyCommunitiesFilter}
+        ></MyEntitiesFilterButton>
       </Box>
       {isCreateOpen && (
         <CreateCommunity
@@ -139,6 +190,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
             community={community}
             userStatus={userCommunitiesStatus[community.id]}
             handleClickOnEdit={handleClickOnEdit}
+            userStatusIsLoading={userStatusIsLoading}
           />
         ))}
       </FeedList>

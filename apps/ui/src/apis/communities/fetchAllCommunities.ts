@@ -1,48 +1,60 @@
-import tlv from '../../assets/tlv.png';
-import apple from '../../assets/apple.png';
-import camera from '../../assets/camera.png';
+import { Community } from "@communecar/types";
+import { graphqlRequest } from "../graphql";
 
-import { getRandomOption } from '../../utils';
-import { Community } from '@communecar/types';
+interface UserNode {
+  profileImage: string | null;
+}
 
-const options = [tlv, apple, camera];
+interface UserCommunityNode {
+  userByUserId: UserNode;
+}
 
-const picturesUrl = [
-  getRandomOption(options),
-  getRandomOption(options),
-  getRandomOption(options),
-  getRandomOption(options),
-  getRandomOption(options),
-];
+interface CommunityNode {
+  id: string;
+  title: string;
+  description: string;
+  userCommunitiesByCommunityId: {
+    nodes: UserCommunityNode[];
+  };
+}
 
-const communities: Community[] = [
-  {
-    id: '1',
-    name: 'Travel friends Haifa - Tel Aviv',
-    description:
-      'A Commute traveling each morning from Haifa to Tel Aviv and back each evening.',
-    numberOfMembers: 20,
-    picturesUrl,
-  },
-  {
-    id: '2',
-    description:
-      'The biggest israeli community of Apple fans traveling to new stores and events together.',
-    name: 'Apple Friends - IL',
-    numberOfMembers: 50,
-    picturesUrl,
-  },
-  {
-    id: '3',
-    name: 'Camera Buddies  - photo fun!',
-    description: 'A group of hobby photographers traveling together',
-    numberOfMembers: 5,
-    picturesUrl,
-  },
-];
+interface CommunitiesData {
+  allCommunities: {
+    nodes: CommunityNode[];
+  };
+}
 
-const fetchAllCommunities = () => {
-  return communities;
+const fetchAllCommunities = async (): Promise<Community[]> => {
+  const query = `
+    query {
+      allCommunities {
+        nodes {
+          id
+          title
+          description
+          userCommunitiesByCommunityId {
+            nodes {
+              userByUserId {
+                profileImage
+              }
+            }
+          }
+        }
+      }
+    }`;
+  
+  const data = await graphqlRequest<CommunitiesData>(query);
+
+  return data.allCommunities.nodes.map((node): Community => {
+    const pictures = node.userCommunitiesByCommunityId.nodes.map(userCommunity => userCommunity.userByUserId.profileImage).filter((url): url is string => url != null);
+    return {
+      id: node.id,
+      name: node.title,
+      description: node.description,
+      numberOfMembers: node.userCommunitiesByCommunityId.nodes.length,
+      picturesUrl: pictures
+    };
+  });
 };
 
 export { fetchAllCommunities };

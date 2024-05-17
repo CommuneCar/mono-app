@@ -10,6 +10,8 @@ import {
   TextField,
   Grid,
 } from '@mui/material';
+import { useSnackbar } from '../../contexts/SnackbarContext';
+import { TEXT } from '../../themes/default/consts';
 
 interface JoinRideProps {
   setOpen: (isOpen: boolean) => void;
@@ -17,6 +19,8 @@ interface JoinRideProps {
 }
 
 const JoinRideDialog: React.FC<JoinRideProps> = ({ isOpen, setOpen }) => {
+  const { showMessage } = useSnackbar();
+
   const [isChecked, setChecked] = useState(false);
   const [numberOfRiders, setNumberOfRiders] = useState(1);
   const [location, setLocation] = useState('');
@@ -41,7 +45,11 @@ const JoinRideDialog: React.FC<JoinRideProps> = ({ isOpen, setOpen }) => {
     setOpen(false);
   };
 
-  const onSubmitForm = () => {};
+  const onSubmitForm = () => {
+    //TODO - submit
+    setOpen(false);
+    showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
+  };
 
   return (
     <Dialog open={isOpen} onClose={() => setOpen(false)}>
