@@ -64,7 +64,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             communityName,
             driver: {
               name: driver,
-              id: user!.id,
+              id: user!.id.toString(),
             },
             departureTime,
             startLocationName: startLocation,

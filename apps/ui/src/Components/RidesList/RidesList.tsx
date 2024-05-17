@@ -52,7 +52,7 @@ const RidesList: React.FC<RideListProps> = ({ rides, setSelectedRide }) => {
           setOpen={setIsCreateRideDialogOpen}
         />
       )}
-      {rides.map((ride, index) => (
+      {rides?.map((ride, index) => (
         <Box key={index} onClick={() => setSelectedRide(ride)}>
           <RideCard
             driver={ride.driver.name}

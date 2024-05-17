@@ -13,7 +13,7 @@ import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommuniti
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { RidesList } from '../../Components/RidesList/RidesList';
 import { RideDetails } from '../../Components/RideDetails/RideDetails';
-import { Ride } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 import { useLocation } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
@@ -22,18 +22,21 @@ const HomePage: React.FC = () => {
   );
   const [selectedRide, setSelectedRide] = useState<Ride>();
 
-  const rides = useMemo(() => {
-    const baseRides = useGetAllRides();
-    const activeRides = baseRides.filter(
-      (ride) => ride.departureTime.getTime() > new Date().getTime(),
-    );
-    return activeRides.sort(
-      (a, b) => a.departureTime.getTime() - b.departureTime.getTime(),
-    );
-  }, []);
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
   const { data: ridesData, isLoading: isLoadingRides } = useGetAllRides();
+
+  const rides = useMemo(() => {
+    const activeRides = ridesData?.filter(
+      (ride: Ride) => ride.departureTime.getTime() > new Date().getTime(),
+    );
+    return (
+      activeRides?.sort(
+        (a: Ride, b: Ride) =>
+          a.departureTime.getTime() - b.departureTime.getTime(),
+      ) || []
+    );
+  }, []);
 
   const location = useLocation();
   const communityId = location.state?.communityId;
@@ -47,7 +50,7 @@ const HomePage: React.FC = () => {
 
     const groupedRides = groupBy(ridesData, 'communityName');
     return communitiesData
-      ? communitiesData.map((community) => ({
+      ? communitiesData.map((community: Community) => ({
           ...community,
           rides: groupedRides[community.name] ?? [],
         }))
@@ -76,8 +79,8 @@ const HomePage: React.FC = () => {
         focusLocation={selectedRide?.startLocation}
         markers={
           flatten(
-            communities.map((community) =>
-              community.rides.map((ride) => ({
+            communities.map((community: Community) =>
+              community?.rides?.map((ride: Ride) => ({
                 geocode: ride.startLocation,
                 popUp: `${ride.driver.name} going to ${ride.destinationName}`,
               })),

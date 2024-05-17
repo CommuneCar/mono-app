@@ -3,14 +3,12 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Button,
-  Typography,
-  Box,
   Divider,
 } from '@mui/material';
 import { Ride } from '@communecar/types';
+import { RideContentItem } from './RideContentItem';
 
 interface JoinRideProps {
   isOpen: boolean;
@@ -37,36 +35,14 @@ const RideDetails: React.FC<JoinRideProps> = ({
       <DialogTitle>Ride Details</DialogTitle>
       <Divider />
       <DialogContent>
-        <DialogContentText display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Driver:</Typography>
-          </Box>
-          {ride.driver.name}
-        </DialogContentText>
-        <DialogContentText display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Start Location:</Typography>
-          </Box>
-          {ride.startLocationName}
-        </DialogContentText>
-        <DialogContentText display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Destination:</Typography>
-          </Box>
-          {ride.destinationName}
-        </DialogContentText>
-        <DialogContentText display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Stops:</Typography>
-          </Box>
-          {formatRideStops()}
-        </DialogContentText>
-        <DialogContentText display="flex" alignItems="center">
-          <Box component="span" sx={{ mr: 1 }}>
-            <Typography variant="subtitle1">Community:</Typography>
-          </Box>
-          {ride.communityName}
-        </DialogContentText>
+        <RideContentItem header="Driver:" text={ride.driver.name} />
+        <RideContentItem
+          header="Start Location:"
+          text={ride.startLocationName}
+        />
+        <RideContentItem header="Destination:" text={ride.destinationName} />
+        <RideContentItem header="Stops:" text={formatRideStops()} />
+        <RideContentItem header="Community:" text={ride.communityName} />
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
