@@ -76,7 +76,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
               optionActions={optionActions}
               isMember={
                 userStatus === UserStatus.MANAGER ||
-                userStatus === UserStatus.APPROVED
+                userStatus === UserStatus.ACTIVE
               }
             />
           }

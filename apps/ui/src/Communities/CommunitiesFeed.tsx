@@ -108,7 +108,7 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   const [showMyCommunities, setShowMyCommunities] = useState(false);
 
   const myCommunities = useMemo(() => {
-    const memberStatus = [UserStatus.APPROVED, UserStatus.MANAGER];
+    const memberStatus = [UserStatus.ACTIVE, UserStatus.MANAGER];
     return allCommunitiesDisplay.filter(
       (community) =>
         userCommunitiesStatus[community.id] &&
