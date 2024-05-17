@@ -14,16 +14,6 @@ export interface AllUserCommunitiesResponse {
   };
 }
 
-//   query GetUserCommunitiesStatus($userId: Int!) {
-//      userCommunity (userId: $userId) {
-//       communityId
-//       status
-//       community {
-//         id
-//         name
-//       }
-//     }
-//   }
 const GET_USER_COMMUNITIES_STATUS = `
 query GetUserCommunitiesStatus($userId: Int!) {
   allUserCommunities(condition: {userId: $userId}) {

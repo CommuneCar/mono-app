@@ -5,7 +5,7 @@ const authenticateUser = async (
   password: string,
 ): Promise<User> => {
   return {
-    id: '123',
+    id: '1',
     firstName: 'John',
     lastName: 'Doe',
     email,
