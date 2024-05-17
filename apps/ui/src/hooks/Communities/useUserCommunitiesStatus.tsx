@@ -13,7 +13,7 @@ const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await fetchUserCommunitiesStatus(1);
+        const data = await fetchUserCommunitiesStatus(Number(userId));
         const dataEntries = Object.entries(data);
         const status: UserCommunitiesStatus = {};
         dataEntries.forEach((item) => {

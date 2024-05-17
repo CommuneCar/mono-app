@@ -2,15 +2,23 @@ import { UserStatus } from '@communetypes/Enums';
 import { UserCommunitiesStatus } from '../../types/community-type';
 import { graphqlRequest } from '../graphql';
 
-export interface UserCommunityNode {
+interface UserCommunityNode {
   communityId: number;
   status: string;
   userId: number;
 }
+interface communityOwnerNode {
+  id: number;
+  ownerId: number;
+  title: string;
+}
 
-export interface AllUserCommunitiesResponse {
+interface AllUserCommunitiesResponse {
   allUserCommunities: {
     nodes: UserCommunityNode[];
+  };
+  allCommunities: {
+    nodes: communityOwnerNode[];
   };
 }
 
@@ -23,8 +31,17 @@ query GetUserCommunitiesStatus($userId: Int!) {
       userId
     }
   }
+   allCommunities(condition: { ownerId: $userId }) {
+    nodes {
+      id
+      ownerId
+      title
+    }
+  }
 }
 `;
+
+const managerStatus = 'Manager' as UserStatus;
 
 const fetchUserCommunitiesStatus = async (
   userId: number,
@@ -41,6 +58,9 @@ const fetchUserCommunitiesStatus = async (
 
     data.allUserCommunities.nodes.forEach((item) => {
       communitiesStatus[item.communityId] = item.status as UserStatus;
+    });
+    data.allCommunities.nodes.forEach((item) => {
+      communitiesStatus[item.id] = managerStatus;
     });
 
     return communitiesStatus;
