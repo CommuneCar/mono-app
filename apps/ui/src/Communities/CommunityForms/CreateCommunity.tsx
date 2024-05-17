@@ -7,18 +7,20 @@ interface CreateCommunityProps {
   onCreate: (community: Community) => void;
   isOpen: boolean;
   handleClose: () => void;
+  user: number;
 }
 
 const CreateCommunity: React.FC<CreateCommunityProps> = ({
   onCreate,
   isOpen,
   handleClose,
+  user,
 }) => {
   const {
     addCommunity,
     error: addCommunityError,
     isLoading: addCommunityIsLoading,
-  } = useCreateCommunity();
+  } = useCreateCommunity(user);
 
   const handleCreate = async (newCommunity: Community) => {
     try {
@@ -31,7 +33,7 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
   };
   return (
     <CommunityForm
-      isOpen={isOpen}
+      isOpen={isOpen && true}
       handleClose={handleClose}
       formTexts={FORMS_TEXT.CREATE_COMMUNITY}
       onSubmit={handleCreate}

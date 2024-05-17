@@ -148,6 +148,7 @@ const CommunitiesFeed: React.FC = () => {
       </Box>
       {isCreateOpen && (
         <CreateCommunity
+          user={user?.id ?? 1}
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}

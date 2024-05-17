@@ -1,14 +1,6 @@
 import { Community } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
 
-// const postNewCommunity = async (
-//   newCommunity: Community,
-// ): Promise<Community> => {
-//   return { ...newCommunity, id: newCommunity.name };
-// };
-
-// /src/apis/communities/createCommunity.ts
-
 const CREATE_COMMUNITY_MUTATION = `
   mutation CreateCommunity($input: CreateCommunityInput!) {
     createCommunity(input: { community: $input }) {
@@ -31,9 +23,18 @@ interface CreateCommunityResponse {
 }
 
 const postNewCommunity = async (
-  community: Omit<Community, 'id'>,
+  communityNew: Omit<Community, 'id'>,
+  userId: number,
 ): Promise<Community> => {
-  const variables = { input: community };
+  const variables = {
+    input: {
+      community: {
+        ownerId: userId,
+        title: communityNew.name,
+        description: communityNew.description,
+      },
+    },
+  };
 
   try {
     const data = await graphqlRequest<CreateCommunityResponse>(
