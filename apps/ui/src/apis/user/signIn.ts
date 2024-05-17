@@ -8,54 +8,45 @@ const authenticateUser = async (
   password: string,
 ): Promise<User> => {
   const getAllUserQuery = `{
-      allUsers{
+      allUsers(condition: {email: "${email}"}){
         nodes{
           id
+          firstName
+          lastName
           email
+          phoneNumber
+          gender
+          age
         }
       }
   }`;
 
-  const allUsers = await graphqlRequest<{
-    allUsers: { nodes: { id: number; email: string }[] };
+  const usersResponse = await graphqlRequest<{
+    allUsers: {
+      nodes: {
+        id: number;
+        email: string;
+        firstName: string;
+        lastName: string;
+        phoneNumber: string;
+        gender: Gender;
+        age: number;
+      }[];
+    };
   }>(getAllUserQuery);
 
-  const userId = allUsers.allUsers.nodes.filter((node) => node.email === email);
-
-  if (isEmpty(userId)) {
+  if (isEmpty(usersResponse)) {
     throw new Error('User not found.');
   }
 
-  const getUserQuery = `{
-    userById(id: ${userId[0].id}){
-      id
-      firstName
-      lastName
-      email
-      phoneNumber
-      gender
-      age
-    }
-  }`;
-
-  const { userById } = await graphqlRequest<{
-    userById: {
-      id: number;
-      firstName: string;
-      lastName: string;
-      email: string;
-      phoneNumber: string;
-      gender: Gender;
-      age: number;
-    };
-  }>(getUserQuery);
+  const user = usersResponse.allUsers.nodes[0];
 
   return {
-    ...userById,
-    id: `${userById.id}`,
-    phone: userById.phoneNumber,
+    ...user,
     password,
-    gander: userById.gender,
+    id: `${user.id}`,
+    gander: user.gender,
+    phone: user.phoneNumber,
   };
 };
 

@@ -13,13 +13,12 @@ import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
+import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
-export interface CommunitiesFeedProps {
-  communities: Community[];
-}
+const CommunitiesFeed: React.FC = () => {
+  const { data: communities } = useGetAllCommunities();
 
-const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   const { user } = useUser();
   const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
     user?.id ?? 'admin',
@@ -28,8 +27,9 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
     userCommunitiesStatusOriginal,
   );
-  const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
-    useState<Community[]>(communities);
+  const [allCommunitiesDisplay, setAllCommunitiesDisplay] = useState<
+    Community[]
+  >(communities ?? []);
   const [filteredCommunities, setFilteredCommunities] = useState(
     allCommunitiesDisplay,
   );
