@@ -1,21 +1,62 @@
+import { isEmpty } from 'lodash';
 import { Gander, User } from '@communecar/types';
+
+import { graphqlRequest } from '../graphql';
 
 const authenticateUser = async (
   email: string,
   password: string,
 ): Promise<User> => {
-  return {
-    id: '123',
-    firstName: 'John',
-    lastName: 'Doe',
-    email,
-    password,
-    gander: Gander.MALE,
-    phone: '000',
-    age: 20,
-  };
+  const getAllUserQuery = `{
+      allUsers{
+        nodes{
+          id
+          email
+        }
+      }
+  }`;
 
-  // throw new Error('User not found.'); //TODO
+  const allUsers = await graphqlRequest<{
+    allUsers: { nodes: { id: number; email: string }[] };
+  }>(getAllUserQuery);
+
+  const userId = allUsers.allUsers.nodes.filter((node) => node.email === email);
+
+  if (isEmpty(userId)) {
+    throw new Error('User not found.');
+  }
+
+  const getUserQuery = `{
+    userById(id: ${userId[0].id}){
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+      gender
+      age
+    }
+  }`;
+
+  const { userById } = await graphqlRequest<{
+    userById: {
+      id: number;
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber: string;
+      gender: Gander;
+      age: number;
+    };
+  }>(getUserQuery);
+
+  return {
+    ...userById,
+    id: `${userById.id}`,
+    phone: userById.phoneNumber,
+    password,
+    gander: userById.gender,
+  };
 };
 
 export { authenticateUser };
