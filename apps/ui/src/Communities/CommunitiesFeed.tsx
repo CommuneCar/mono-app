@@ -22,12 +22,17 @@ export interface CommunitiesFeedProps {
 const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   const { user } = useUser();
   const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
-    user?.id ?? 'admin',
+    user?.id ?? '1',
   );
 
   const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
     userCommunitiesStatusOriginal,
   );
+
+  useEffect(() => {
+    setUserCommunitiesStatus(userCommunitiesStatusOriginal);
+  }, [userCommunitiesStatusOriginal]);
+
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] =
     useState<Community[]>(communities);
   const [filteredCommunities, setFilteredCommunities] = useState(

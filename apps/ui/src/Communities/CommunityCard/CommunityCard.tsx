@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CardActions, CardHeader } from '@mui/material';
 
@@ -33,8 +33,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const { name, description, picturesUrl } = community;
   const [status, setStatus] = useState<UserStatus | undefined>(userStatus);
 
-  const isMember = status ? membersStatus.includes(status) : false;
+  useEffect(() => {
+    setStatus(userStatus);
+  }, [userStatus]);
 
+  const isMember = status ? membersStatus.includes(status) : false;
   const onRequest = () => {
     if (isMember) {
       //TODO: Request to cancel community membership

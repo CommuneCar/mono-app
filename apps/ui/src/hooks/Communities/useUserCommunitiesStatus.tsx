@@ -30,10 +30,6 @@ const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
     fetchData();
   }, [userId]);
 
-  useEffect(() => {
-    console.log({ communitiesStatus, userId });
-  }, [communitiesStatus]);
-
   if (loading || error) return {}; // or a loading state
 
   return communitiesStatus;
