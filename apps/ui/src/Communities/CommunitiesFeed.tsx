@@ -26,11 +26,11 @@ const CommunitiesFeed: React.FC<CommunitiesFeedProps> = ({ communities }) => {
   );
 
   const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
-    userCommunitiesStatusOriginal,
+    userCommunitiesStatusOriginal ?? {},
   );
 
   useEffect(() => {
-    setUserCommunitiesStatus(userCommunitiesStatusOriginal);
+    setUserCommunitiesStatus(userCommunitiesStatusOriginal ?? {});
   }, [userCommunitiesStatusOriginal]);
 
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] =

@@ -1,38 +1,18 @@
-import { UserStatus } from '@communecar/types';
 import { UserCommunitiesStatus } from '../../types/community-type';
 import { fetchUserCommunitiesStatus } from '../../apis/communities/fetch-community-user-status';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
-  const [communitiesStatus, setCommunitiesStatus] =
-    useState<UserCommunitiesStatus>({});
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+const useUserCommunitiesStatus = (
+  userId: string,
+): UserCommunitiesStatus | undefined => {
+  const { data, isLoading, error } = useQuery<UserCommunitiesStatus, Error>({
+    queryKey: ['userCommunitiesStatus', userId],
+    queryFn: () => fetchUserCommunitiesStatus(Number(userId)),
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchUserCommunitiesStatus(Number(userId));
-        const dataEntries = Object.entries(data);
-        const status: UserCommunitiesStatus = {};
-        dataEntries.forEach((item) => {
-          status[item[0]] = item[1] as UserStatus;
-        });
-        setCommunitiesStatus(status);
-      } catch (err) {
-        setError('Failed to fetch user communities status.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (isLoading || error) return undefined;
 
-    fetchData();
-  }, [userId]);
-
-  if (loading || error) return {};
-
-  return communitiesStatus;
+  return data;
 };
 
 export { useUserCommunitiesStatus };
