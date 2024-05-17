@@ -9,4 +9,7 @@ export interface Ride {
   destinationName: string;
   destination: [number, number];
   png: string;
+  gasMoney?: number;
+  pronouns?: boolean;
+  seats: number;
 }

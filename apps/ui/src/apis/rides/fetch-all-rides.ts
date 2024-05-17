@@ -4,6 +4,7 @@ import { LocationResult } from '@communetypes/Geocoding';
 
 import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
+import { Ride } from '@communetypes/Ride';
 
 interface GraphQLRideNode {
   id: string;
@@ -25,20 +26,6 @@ interface GraphQLRideNode {
       };
     }>;
   };
-}
-
-interface Ride {
-  driver: {
-    id: string;
-    name: string;
-  };
-  departureTime: Date;
-  communityName: string;
-  startLocationName: string;
-  startLocation: [number, number];
-  destinationName: string;
-  destination: [number, number];
-  png: string;
 }
 
 export const fetchAllRides = async (): Promise<Ride[]> => {

@@ -6,6 +6,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  Checkbox,
+  FormControlLabel,
 } from '@mui/material';
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -39,7 +41,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
   };
 
   const [value, setValue] = React.useState<Dayjs | null>(
-    dayjs('2022-04-17T15:30'),
+    dayjs(new Date()),
   );
 
   return (
@@ -64,11 +66,12 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             const destination = formJson.destination;
             const communityName = formJson.communityName;
             const png = getRandomOption<string>(options);
+            const seats = 0;
             rides.push({
               communityName,
               driver: {
                 name: driver,
-                id: '5',
+                id: 1,
               },
               departureTime,
               startLocationName: startLocation,
@@ -76,6 +79,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
               png,
               destinationName: destination,
               startLocation,
+              seats
             });
             handleClose();
           },
@@ -98,17 +102,6 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             fullWidth
             variant="standard"
           />
-          {/* <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="departureTime"
-            name="departureTime"
-            label="Departure Time"
-            type="date"
-            fullWidth
-            variant="standard"
-          /> */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker']}>
               <DateTimePicker
@@ -140,6 +133,38 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
             fullWidth
             variant="standard"
           />
+          <FormControlLabel control={<Checkbox defaultChecked />} label="Share your costs?" />
+          <FormControlLabel control={<Checkbox defaultChecked />} label="Same pronouns?" />
+          {/* <Checkbox
+            id="gas_money"
+            name="gas_money"
+            label="Share your costs?"
+            type="gas_money"
+            defaultChecked />
+          <Checkbox {...label} defaultChecked /> */}
+{/* 
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="gas_money"
+            name="gas_money"
+            label="Share your costs?"
+            type="gas_money"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="pronouns"
+            name="pronouns"
+            label="Same pronouns"
+            type="pronouns"
+            fullWidth
+            variant="standard"
+          /> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
