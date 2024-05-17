@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { LocationResult } from '@communetypes/Geocoding';
+import { LocationResult } from '@communecar/types/src/Geocoding';
 
 import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
@@ -14,6 +14,9 @@ interface GraphQLRideNode {
   toLat: number;
   toLong: number;
   startTime: string;
+  gasMoney?: number;
+  pronouns?: boolean;
+  seats: number;
   communityByCommunityId: {
     title: string;
   };
@@ -39,6 +42,9 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         toLat
         toLong
         startTime
+        gasMoney
+        pronouns
+        seats
         communityByCommunityId {
           title
         }
@@ -92,6 +98,9 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         destinationName,
         destination: [node.toLat, node.toLong],
         png: '',
+        gasMoney: node.gasMoney ?? 0,
+        pronouns: node.pronouns ?? false,
+        seats: node.seats,
       };
     }),
   );

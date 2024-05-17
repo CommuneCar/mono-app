@@ -66,6 +66,28 @@ const RideDetails: React.FC<JoinRideProps> = ({
           </Box>
           {ride.communityName}
         </Typography>
+
+
+        <Typography component="div" display="flex" alignItems="center">
+          <Box component="span" sx={{ mr: 1 }}>
+            <Typography variant="subtitle1">Shared drive gas fee:</Typography>
+          </Box>
+          {ride.gasMoney}
+        </Typography>
+
+        <Typography component="div" display="flex" alignItems="center">
+          <Box component="span" sx={{ mr: 1 }}>
+            <Typography variant="subtitle1">Pronouns only:</Typography>
+          </Box>
+          {ride.pronouns ? 'yes' : 'no'}
+        </Typography>
+
+        <Typography component="div" display="flex" alignItems="center">
+          <Box component="span" sx={{ mr: 1 }}>
+            <Typography variant="subtitle1">Seats:</Typography>
+          </Box>
+          {ride.seats}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>

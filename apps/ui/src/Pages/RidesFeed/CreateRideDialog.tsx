@@ -65,7 +65,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
               communityName,
               driver: {
                 name: driver,
-                id: '5',
+                id: 5,
               },
               departureTime,
               startLocationName: startLocation,
@@ -73,6 +73,9 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
               png,
               destinationName: destination,
               startLocation,
+              gasMoney: 0,
+              pronouns: false,
+              seats: 4
             });
             handleClose();
           },

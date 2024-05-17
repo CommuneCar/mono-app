@@ -36,7 +36,7 @@ const HomePage: React.FC = () => {
       return []; // Return an empty array or a loading state until data is available
     }
 
-    const groupedRides = groupBy(ridesData, 'communityName');
+    const groupedRides = groupBy(ridesData ?? [], 'communityName');
     return communitiesData
       ? communitiesData.map((community) => ({
         ...community,

@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import { Driver } from '@communecar/types/src/Driver';
 
 import defaultTheme from '../../themes/default';
+import React from 'react';
 
 export interface RideDescriptionProps {
   driver: Driver;
@@ -15,7 +16,7 @@ const RideDescription = ({
   driver,
   departureTime,
   startLocation,
-  destination,
+  destination
 }: RideDescriptionProps) => {
   const currentDate = new Date();
 
