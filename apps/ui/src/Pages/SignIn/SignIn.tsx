@@ -1,8 +1,8 @@
 import { isEmpty } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { Box, Button, Link, Container } from '@mui/material';
+import { Box, Button, Link, Container, Typography } from '@mui/material';
 
 import defaultTheme from '../../themes/default';
 import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
@@ -19,12 +19,12 @@ const SignIn: React.FC = () => {
   });
 
   const [formErrors, setFormErrors] = useState({
-    email: null,
-    password: null,
+    email: false,
+    password: false,
   });
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
-  const { signIn } = useUser();
+  const { signIn, error: serverError } = useUser();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -47,6 +47,13 @@ const SignIn: React.FC = () => {
       setIsSubmitEnabled(!hasErrors);
     }
   };
+
+  useEffect(() => {
+    setFormErrors({
+      email: serverError !== null,
+      password: serverError !== null,
+    });
+  }, [serverError]);
 
   const navigate = useNavigate();
 
@@ -98,7 +105,7 @@ const SignIn: React.FC = () => {
                 {TEXT.FORGOT_PASSWORD}
               </Link>
             </Box>
-
+            <Typography color={'error'}>{serverError}</Typography>
             <Button
               type="submit"
               fullWidth

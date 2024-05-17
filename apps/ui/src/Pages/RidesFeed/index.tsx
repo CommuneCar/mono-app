@@ -2,19 +2,16 @@ import { useState } from 'react';
 import { Add as AddIcon } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
 
-import { Ride } from '@communecar/types';
-
 import RideCard from './RideCard';
 import defaultTheme from '../../themes/default';
 import CreateRideDialog from './CreateRideDialog';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
+import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 
-export interface RidesFeedProps {
-  rides: Ride[];
-}
-
-const RidesFeed = ({ rides }: RidesFeedProps) => {
+const RidesFeed = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { data: rides } = useGetAllRides();
 
   return (
     <Box
@@ -40,14 +37,12 @@ const RidesFeed = ({ rides }: RidesFeedProps) => {
       </Box>
       {isDialogOpen && (
         <CreateRideDialog
-          rides={rides}
+          rides={rides ?? []}
           isOpen={isDialogOpen}
           setOpen={setIsDialogOpen}
         />
       )}
-      {rides.map((ride, index) => (
-        <RideCard key={index} {...ride} />
-      ))}
+      {rides?.map((ride, index) => <RideCard key={index} {...ride} />)}
     </Box>
   );
 };
