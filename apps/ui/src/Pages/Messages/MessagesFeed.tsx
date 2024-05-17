@@ -9,7 +9,7 @@ import { PageHeader } from '../../Components/PageHeader/PageHeader';
 const MessagesFeed = () => {
   const { user } = useUser();
   const { messages, loading, error, setMessages } = useUserMessages(
-    user?.id || 'admin',
+    user?.id || 1,
   );
 
   const handleActionComplete = (messageId: string, success: boolean) => {

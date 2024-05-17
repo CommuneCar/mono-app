@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { fetchMessagesForUser } from '../../apis/messages/fetchMessagesForUser';
 import { Message } from '@communecar/types';
 
-const useUserMessages = (userId: string) => {
+const useUserMessages = (userId: number) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
