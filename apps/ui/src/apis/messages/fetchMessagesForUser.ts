@@ -2,7 +2,7 @@ import { Gender, Message, MessageType, User } from '@communecar/types';
 
 const users: User[] = [
   {
-    id: '123',
+    id: 123,
     firstName: 'John',
     lastName: 'Doe',
     email: 'john@doe.il',
@@ -12,7 +12,7 @@ const users: User[] = [
     age: 20,
   },
   {
-    id: '1234',
+    id: 1234,
     firstName: 'Jin',
     lastName: 'Doe',
     email: 'jin@doe.il',
@@ -22,7 +22,7 @@ const users: User[] = [
     age: 20,
   },
   {
-    id: 'admin',
+    id: 12345,
     firstName: 'admin',
     lastName: 'admin',
     email: 'admin@admin.il',
@@ -100,7 +100,7 @@ const messages: Message[] = [
   },
 ];
 
-const fetchMessagesForUser = async (userId: string) => {
+const fetchMessagesForUser = async (userId: number) => {
   const messagesForUser = messages.filter((message) => {
     const usersIds = message.addresseeUsers.map((user) => user.id);
     return usersIds.includes(userId);

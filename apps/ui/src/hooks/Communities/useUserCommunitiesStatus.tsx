@@ -8,7 +8,7 @@ const userStatusOptions: UserStatus[] = Object.values(
   UserStatus,
 ) as UserStatus[];
 
-const useUserCommunitiesStatus = (userId: string): UserCommunitiesStatus => {
+const useUserCommunitiesStatus = (userId: number): UserCommunitiesStatus => {
   const { data: communities } = useGetAllCommunities();
   console.log({ userId }); //TODO when the server ready
 

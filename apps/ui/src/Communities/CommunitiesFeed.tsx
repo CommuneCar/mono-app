@@ -20,9 +20,7 @@ const CommunitiesFeed: React.FC = () => {
   const { data: communities } = useGetAllCommunities();
 
   const { user } = useUser();
-  const userCommunitiesStatusOriginal = useUserCommunitiesStatus(
-    user?.id ?? 'admin',
-  );
+  const userCommunitiesStatusOriginal = useUserCommunitiesStatus(user?.id ?? 1);
 
   const [userCommunitiesStatus, setUserCommunitiesStatus] = useState(
     userCommunitiesStatusOriginal,
