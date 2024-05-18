@@ -7,7 +7,6 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { Send } from '@mui/icons-material';
-import { JoinRideDialog } from '../JoinRide';
 
 interface RideCardProps {
   text: string;
@@ -17,7 +16,7 @@ interface RideCardProps {
 }
 
 const RideCard: React.FC<RideCardProps> = (props) => {
-  const { text, driver, joinRideDialogOpened, setJoinRideDialogOpened } = props;
+  const { text, driver, setJoinRideDialogOpened } = props;
 
   const handleJoinRideClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
