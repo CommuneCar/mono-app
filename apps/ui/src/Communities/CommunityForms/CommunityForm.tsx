@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  CircularProgress,
 } from '@mui/material';
 import { Community } from '@communecar/types';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
@@ -18,11 +19,12 @@ interface CommunityFormProps {
   communityToUpdate?: Community;
   formTexts: any;
   onSubmit: (community: Community) => void;
+  isLoading?: boolean;
 }
 
 const emptyCommunity: Community = {
   id: '',
-  name: '',
+  title: '',
   description: '',
   numberOfMembers: 0,
   picturesUrl: [],
@@ -34,6 +36,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   onSubmit,
   communityToUpdate,
   handleClose,
+  isLoading = false,
 }) => {
   const [community, setCommunity] = useState<Community>(
     communityToUpdate ?? emptyCommunity,
@@ -49,6 +52,13 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
     onSubmit(community);
   };
 
+  const submitButton = () => {
+    if (isLoading) {
+      return <CircularProgress size={24} color="info" />;
+    }
+    return <>{formTexts.submitText}</>;
+  };
+
   return (
     <Dialog
       open={isOpen}
@@ -62,16 +72,16 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
       <DialogContent>
         <DialogContentText>{formTexts.description}</DialogContentText>
         <TextField
-          id="communityName"
-          name="name"
-          label="Community Name"
-          type="communityName"
+          id="communityTitle"
+          name="title"
+          label="Community Title"
+          type="communityTitle"
           variant="standard"
           margin="dense"
           autoFocus
           required
           fullWidth
-          value={community.name}
+          value={community.title}
           onChange={handleChange}
         />
         <TextField
@@ -90,8 +100,12 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
-        <SubmitButton type="submit">{formTexts.submitText}</SubmitButton>
+        <Button onClick={handleClose} disabled={isLoading}>
+          {TEXT.CANCEL}
+        </Button>
+        <SubmitButton type="submit" disabled={isLoading}>
+          {submitButton()}
+        </SubmitButton>
       </DialogActions>
     </Dialog>
   );

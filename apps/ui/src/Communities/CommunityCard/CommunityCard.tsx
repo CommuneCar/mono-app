@@ -36,7 +36,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const { createMutation, deleteMutation, isCreatingStatus, isDeletingStatus } =
     useUserCommunityStatus(userId, Number(community.id));
 
-  const { name, description, picturesUrl } = community;
+  const { title, description, picturesUrl } = community;
 
   const isMember = userStatus && membersStatus.includes(userStatus);
   const onRequest = async () => {
@@ -65,7 +65,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
     <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardHeader
-          title={name}
+          title={title}
           titleTypographyProps={{
             variant: 'subtitle1',
             color: defaultTheme.palette.text.primary,

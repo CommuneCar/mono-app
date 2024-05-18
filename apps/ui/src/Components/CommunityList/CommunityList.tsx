@@ -46,13 +46,13 @@ const CommunityList: React.FC<CommunityListProps> = ({
         {filteredCommunities.map((community, index) => (
           <Box key={index}>
             <Typography variant="h5" align="left" px={1}>
-              {community.name}
+              {community.title}
             </Typography>
             {isEmpty(community.rides) ? (
               <Card variant={'outlined'} sx={{ m: 2, borderRadius: 5 }}>
                 <CardContent>
                   <Typography align={'left'} sx={{ fontSize: 14 }}>
-                    Sorry, No rides available for Community: "{community.name}"
+                    Sorry, No rides available for Community: "{community.title}"
                     for now
                   </Typography>
                 </CardContent>

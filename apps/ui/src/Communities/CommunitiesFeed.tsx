@@ -58,7 +58,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const options = useMemo(
-    () => allCommunitiesDisplay.map((community) => community.name),
+    () => allCommunitiesDisplay.map((community) => community.title),
     [allCommunitiesDisplay],
   );
 
@@ -72,7 +72,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
     (value: string) => {
       const newFilteredCommuniuties = value
         ? allCommunitiesDisplay.filter((community) =>
-            community.name.toLowerCase().includes(value),
+            community.title.toLowerCase().includes(value),
           )
         : allCommunitiesDisplay;
       setFilteredCommunities(newFilteredCommuniuties);
@@ -172,6 +172,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
       </Box>
       {isCreateOpen && (
         <CreateCommunity
+          user={user?.id ?? 1}
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
