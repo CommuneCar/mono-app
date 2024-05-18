@@ -10,8 +10,6 @@ export async function graphqlRequest<T>(
   variables: Record<string, unknown> = {},
 ): Promise<T> {
   try {
-    console.log(query);
-    console.log(variables);
     const response = await axiosClient.post<GraphQLResponse<T>>('/graphql', {
       query,
       variables,
