@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from 'react-query';
 import { UserStatus } from '@communecar/types';
 import {
   createUserCommunityStatus,
-  updateUserCommunityStatus,
   deleteUserCommunityStatus,
 } from '../../apis/communities/update-user-community-status';
 import { useSnackbar } from '../../contexts/SnackbarContext';
@@ -16,24 +15,6 @@ const useUserCommunityStatus = (userId: number, communityId: number) => {
   const createMutation = useMutation(
     (status: UserStatus) =>
       createUserCommunityStatus(userId, communityId, status),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([
-          'userCommunityStatus',
-          userId,
-          communityId,
-        ]);
-        showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
-      },
-      onError: () => {
-        showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
-      },
-    },
-  );
-
-  const updateMutation = useMutation(
-    (status: UserStatus) =>
-      updateUserCommunityStatus(userId, communityId, status),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([
@@ -66,7 +47,7 @@ const useUserCommunityStatus = (userId: number, communityId: number) => {
     },
   );
 
-  return { createMutation, updateMutation, deleteMutation };
+  return { createMutation, deleteMutation };
 };
 
 export { useUserCommunityStatus };
