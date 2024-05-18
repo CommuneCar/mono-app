@@ -17,11 +17,7 @@ const useUserCommunityStatus = (userId: number, communityId: number) => {
       createUserCommunityStatus(userId, communityId, status),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          'userCommunityStatus',
-          userId,
-          communityId,
-        ]);
+        queryClient.invalidateQueries(['userCommunitiesStatus', userId]);
         showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
       },
       onError: () => {
@@ -34,11 +30,7 @@ const useUserCommunityStatus = (userId: number, communityId: number) => {
     () => deleteUserCommunityStatus(userId, communityId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          'userCommunityStatus',
-          userId,
-          communityId,
-        ]);
+        queryClient.invalidateQueries(['userCommunitiesStatus', userId]);
         showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
       },
       onError: () => {
