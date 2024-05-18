@@ -46,15 +46,13 @@ const fetchAllCommunities = async (): Promise<Community[]> => {
   const data = await graphqlRequest<CommunitiesData>(query);
 
   return data.allCommunities.nodes.map((node): Community => {
-    const pictures = node.userCommunitiesByCommunityId.nodes
+    const picturesUrl = node.userCommunitiesByCommunityId.nodes
       .map((userCommunity) => userCommunity.userByUserId.profileImage)
       .filter((url): url is string => url != null);
     return {
-      id: node.id,
-      title: node.title,
-      description: node.description,
+      ...node,
       numberOfMembers: node.userCommunitiesByCommunityId.nodes.length,
-      picturesUrl: pictures,
+      picturesUrl,
     };
   });
 };
