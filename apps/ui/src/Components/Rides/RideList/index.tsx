@@ -1,18 +1,19 @@
 import dayjs from 'dayjs';
-import { Ride } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 
-import { RideCard } from '../RideCard/RideCard';
-import defaultTheme from '../../themes/default';
-import CreateRideDialog from '../../Pages/RidesFeed/CreateRideDialog';
+import { RideCard } from '../RideCard';
+import defaultTheme from '../../../themes/default';
+import CreateRideDialog from '../../../Pages/RidesFeed/CreateRideDialog';
 
 dayjs.extend(relativeTime);
 
 interface RideListProps {
   rides: Ride[];
+  communities: Community[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
   joinRideDialogOpened: boolean;
   setJoinRideDialogOpened: (isOpen: boolean) => void;
@@ -20,11 +21,18 @@ interface RideListProps {
 
 const RidesList: React.FC<RideListProps> = ({
   rides,
+  communities,
   setSelectedRide,
   joinRideDialogOpened,
   setJoinRideDialogOpened,
 }) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
+
+  const handleAddClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsCreateRideDialogOpen(true);
+  };
+
   return (
     <Box>
       <Box
@@ -41,7 +49,7 @@ const RidesList: React.FC<RideListProps> = ({
             edge="end"
             color="inherit"
             aria-label="add"
-            onClick={() => setIsCreateRideDialogOpen(true)}
+            onClick={handleAddClick}
             sx={{
               '&:hover': {
                 backgroundColor: defaultTheme.palette.action.hover,
@@ -54,12 +62,12 @@ const RidesList: React.FC<RideListProps> = ({
       </Box>
       {isCreateRideDialog && (
         <CreateRideDialog
-          rides={rides}
+          communities={communities}
           isOpen={isCreateRideDialog}
           setOpen={setIsCreateRideDialogOpen}
         />
       )}
-      {rides?.map((ride, index) => (
+      {rides.map((ride, index) => (
         <Box key={index} onClick={() => setSelectedRide(ride)}>
           <RideCard
             driver={ride.driver.name}

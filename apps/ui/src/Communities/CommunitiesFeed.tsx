@@ -13,14 +13,16 @@ import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
-import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { UserCommunitiesStatus } from '../types/community-type';
 import { useSnackbar } from '../contexts/SnackbarContext';
-import { TEXT } from '../themes/default/consts';
+import { TEXT, DEFAULT_USER_ID } from '../themes/default/consts';
 
-const CommunitiesFeed: React.FC = () => {
-  const { data: communities } = useGetAllCommunities();
+export interface CommunityFeedProps {
+  communities: Community[] | undefined;
+}
+
+const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
   const { showMessage } = useSnackbar();
 
   const { user } = useUser();
@@ -28,7 +30,7 @@ const CommunitiesFeed: React.FC = () => {
     data: userStatusData,
     error: userStatusError,
     isLoading: userStatusIsLoading,
-  } = useUserCommunitiesStatus(user?.id ?? 1);
+  } = useUserCommunitiesStatus(user?.id ?? DEFAULT_USER_ID);
 
   const userStatus: UserCommunitiesStatus = useMemo(() => {
     return userStatusError || userStatusIsLoading ? {} : userStatusData ?? {};
@@ -56,7 +58,7 @@ const CommunitiesFeed: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const options = useMemo(
-    () => allCommunitiesDisplay.map((community) => community.name),
+    () => allCommunitiesDisplay.map((community) => community.title),
     [allCommunitiesDisplay],
   );
 
@@ -70,7 +72,7 @@ const CommunitiesFeed: React.FC = () => {
     (value: string) => {
       const newFilteredCommuniuties = value
         ? allCommunitiesDisplay.filter((community) =>
-            community.name.toLowerCase().includes(value),
+            community.title.toLowerCase().includes(value),
           )
         : allCommunitiesDisplay;
       setFilteredCommunities(newFilteredCommuniuties);
@@ -170,6 +172,7 @@ const CommunitiesFeed: React.FC = () => {
       </Box>
       {isCreateOpen && (
         <CreateCommunity
+          user={user?.id ?? 1}
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
@@ -191,6 +194,7 @@ const CommunitiesFeed: React.FC = () => {
             userStatus={userCommunitiesStatus[community.id]}
             handleClickOnEdit={handleClickOnEdit}
             userStatusIsLoading={userStatusIsLoading}
+            userId={user?.id ?? DEFAULT_USER_ID}
           />
         ))}
       </FeedList>

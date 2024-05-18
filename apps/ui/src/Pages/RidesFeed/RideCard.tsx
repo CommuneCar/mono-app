@@ -20,7 +20,7 @@ const RideCard = ({
   communityName,
   departureTime,
   destinationName,
-  startLocationName,
+  startLocationName
 }: Ride) => {
   const [joined, setJoined] = useState(false);
   return (

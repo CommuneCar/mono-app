@@ -15,10 +15,16 @@ import { HomePage } from './Pages/HomePage/HomePage';
 import { UserProvider } from './hooks/Users/useUser';
 import MapNavigationPage from './Pages/MapNavigation';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
+import { useGetAllRides } from './hooks/Rides/useGetAllRides';
 import { SnackbarProvider } from './contexts/SnackbarContext';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
+import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 
 const App: React.FC = () => {
+  const { data: communities } = useGetAllCommunities();
+
+  const { data: rides } = useGetAllRides();
+
   return (
     <>
       <SnackbarProvider>
@@ -31,8 +37,16 @@ const App: React.FC = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/messages" element={<MessagesFeed />} />
-                  <Route path="/rides" element={<RidesFeed />} />
-                  <Route path="/communities" element={<CommunitiesFeed />} />
+                  <Route
+                    path="/rides"
+                    element={<RidesFeed rides={rides ?? []} communities={communities ?? []} />}
+                  />
+                  <Route
+                    path="/communities"
+                    element={
+                      <CommunitiesFeed communities={communities} />
+                    }
+                  />
                   <Route path="/home" element={<HomePage />} />
                   <Route path="/map" element={<MapPage />} />
                   <Route

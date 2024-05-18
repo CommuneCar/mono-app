@@ -10,7 +10,16 @@ import defaultTheme from './themes/default/index.tsx';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 60000,
+      cacheTime: 300000,
+      refetchInterval: 60000,
+    },
+  },
+});
 
 const updateServiceWorkers = registerSW({
   onNeedRefresh() {

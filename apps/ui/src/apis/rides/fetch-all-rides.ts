@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { LocationResult } from '@communetypes/Geocoding';
+import { LocationResult } from '@communecar/types/src/Geocoding';
 
 import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
@@ -14,19 +14,26 @@ interface GraphQLRideNode {
   toLat: number;
   toLong: number;
   startTime: string;
+  gasMoney?: number;
+  pronouns?: boolean;
+  seats: number;
   communityByCommunityId: {
     title: string;
   };
   userRidesByRideId: {
     nodes: Array<{
       userByUserId?: {
-        id: string;
+        id: number;
         firstName: string;
         lastName: string;
         profileImage: string;
         gender: string;
         phoneNumber: string;
       };
+      fromLat: number;
+      fromLong: number;
+      toLat: number;
+      toLong: number;
     }>;
   };
 }
@@ -42,6 +49,9 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         toLat
         toLong
         startTime
+        gasMoney
+        pronouns
+        seats
         communityByCommunityId {
           title
         }
@@ -53,6 +63,10 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
               lastName
               phoneNumber
             }
+            toLat
+            toLong
+            fromLong
+            fromLat
           }
         }
       }
@@ -64,18 +78,29 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
   );
   const rides: Ride[] = await Promise.all(
     data.allRides.nodes.map(async (node) => {
-      const userNode = node.userRidesByRideId.nodes.find(
-        (n) => n.userByUserId !== undefined,
-      );
-
       const { fromLat, fromLong, toLat, toLong, id } = node;
 
-      const driver = userNode?.userByUserId || {
-        id: 'default',
+      const driver = node.userRidesByRideId.nodes.find(
+        (n) => n.userByUserId !== undefined,
+      )?.userByUserId || {
+        id: -1,
         firstName: 'Unknown',
         lastName: 'Driver',
         phoneNumber: '1234567',
       };
+
+      const pickups = await Promise.all(
+        node.userRidesByRideId.nodes.map(async (pickupNode) => ({
+          lat: pickupNode.fromLat,
+          lon: pickupNode.fromLong,
+          name: await geocode({
+            lat: pickupNode.fromLat,
+            lon: pickupNode.fromLong,
+          }),
+          displayName: '',
+        })),
+      );
+
       const startLocationName = await geocode({
         lat: fromLat,
         lon: fromLong,
@@ -99,6 +124,10 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         destination: [node.toLat, node.toLong],
         png: '',
         id: id,
+        gasMoney: node.gasMoney ?? 0,
+        pronouns: node.pronouns ?? false,
+        seats: node.seats,
+        pickups,
       };
     }),
   );
@@ -137,55 +166,6 @@ const geocode = async (coords: {
   }
 };
 
-export const fetchRidesDriver = async (
-  rideId: number,
-): Promise<Driver | undefined> => {
-  const query = `{
-    allRides(condition: { id: ${rideId} }) {
-       nodes {
-        id
-        ownerId
-        userRidesByRideId {
-          nodes {
-            userByUserId {
-              id
-              firstName
-              lastName
-              profileImage
-              gender
-              phoneNumber
-            }
-          }
-        }
-      }
-    }
-  }`;
-
-  const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
-    query,
-  );
-  for (const node of data.allRides.nodes) {
-    const userNode = node.userRidesByRideId.nodes.find(
-      (n) => n.userByUserId !== undefined,
-    );
-
-    const { ownerId } = node;
-
-    const isDriver = userNode?.userByUserId?.id === ownerId;
-
-    if (isDriver) {
-      return {
-        id: userNode?.userByUserId?.id,
-        name: `${userNode?.userByUserId?.firstName} ${userNode?.userByUserId?.lastName}`,
-        pic: userNode?.userByUserId?.profileImage,
-        phoneNumber: userNode?.userByUserId?.phoneNumber,
-      } as Driver;
-    }
-  }
-
-  return undefined;
-};
-
 export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
   const query = `{
     allRides(condition: { id: ${rideId} }) {
@@ -214,7 +194,9 @@ export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
 
   const riders = data.allRides.nodes.flatMap((node) =>
     node.userRidesByRideId.nodes
-      .filter((userRide) => userRide?.userByUserId?.id !== node.ownerId)
+      .filter(
+        (userRide) => userRide?.userByUserId?.id.toString() !== node.ownerId,
+      )
       .map(
         (userRide) =>
           ({
