@@ -1,26 +1,30 @@
-import { useState } from 'react';
 import { Community } from '@communecar/types';
 import { postUpdateCommunity } from '../../apis/communities/update-community';
+import { useMutation, useQueryClient } from 'react-query';
+import { TEXT } from '../../themes/default/consts';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 
-const useUpdateCommunity = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+export const useUpdateCommunity = () => {
+  const queryClient = useQueryClient();
+  const { showMessage } = useSnackbar();
 
-  const updateCommunity = async (community: Community) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const updatedCommunity = await postUpdateCommunity(community);
-      setIsLoading(false);
-      return updatedCommunity;
-    } catch (err: any) {
-      setError(err);
-      setIsLoading(false);
-      throw err;
-    }
+  const mutation = useMutation(
+    (community: Partial<Community>) => postUpdateCommunity(community),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(['community', data.id]);
+        showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
+      },
+      onError(error) {
+        console.log(error);
+        showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
+      },
+    },
+  );
+
+  return {
+    updateCommunity: mutation.mutateAsync,
+    isUpdating: mutation.isLoading,
+    error: mutation.error,
   };
-
-  return { updateCommunity, isLoading, error };
 };
-
-export { useUpdateCommunity };
