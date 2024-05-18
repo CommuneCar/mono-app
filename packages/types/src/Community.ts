@@ -9,6 +9,3 @@ export interface Community {
   picturesUrl: string[];
   rides?: Ride[];
 }
-export type CommunityUpdate = Partial<
-  Pick<Community, 'title' | 'description' | 'location'>
->;

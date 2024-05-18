@@ -12,6 +12,7 @@ mutation {
       lat
       long
       ownerId
+      title
     }
   }
 }
