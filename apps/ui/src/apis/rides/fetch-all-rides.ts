@@ -205,8 +205,6 @@ export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
     query,
   );
 
-  console.log(data);
-
   const riders = data.allRides.nodes.flatMap((node) =>
     node.userRidesByRideId.nodes
       .filter((userRide) => userRide?.userByUserId?.id !== node.ownerId)
