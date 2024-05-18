@@ -31,21 +31,20 @@ const RidersContentItem: React.FC<DriverContentItemProps> = ({ riders }) => {
           <Typography variant="subtitle1">Riders:</Typography>
         </Box>
         <IconButton>{showRiders ? <ExpandLess /> : <ExpandMore />}</IconButton>
+
+        <Collapse in={showRiders}>
+          {riders && riders.length > 0
+            ? riders?.map((rider) => (
+                <UserLogo
+                  key={rider.id}
+                  name={rider.name}
+                  pic={rider.avatarUrl}
+                  bgColor={getAvatarColour()}
+                />
+              ))
+            : 'No riders yet'}
+        </Collapse>
       </DialogContentText>
-      <Collapse in={showRiders}>
-        {riders && riders.length > 0 ? (
-          riders?.map((rider) => (
-            <UserLogo
-              key={rider.id}
-              name={rider.name}
-              pic={rider.avatarUrl}
-              bgColor={getAvatarColour()}
-            />
-          ))
-        ) : (
-          <Typography>No riders yet</Typography>
-        )}
-      </Collapse>
     </Box>
   );
 };
