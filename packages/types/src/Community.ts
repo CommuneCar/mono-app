@@ -1,7 +1,7 @@
 import { Ride, Location } from './Ride';
 
 export interface Community {
-  id: string;
+  id: number;
   title: string;
   description: string;
   location?: Location;

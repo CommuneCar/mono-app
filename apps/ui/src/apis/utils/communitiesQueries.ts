@@ -13,6 +13,14 @@ mutation {
       long
       ownerId
       title
+      userCommunitiesByCommunityId {
+        totalCount
+        nodes {
+          userByUserId {
+            profileImage
+          }
+        }
+      }
     }
   }
 }
