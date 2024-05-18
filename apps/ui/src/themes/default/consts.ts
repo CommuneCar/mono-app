@@ -78,6 +78,8 @@ export const TEXT = {
   alerts: {
     SUCCESSFUL_REQUEST: 'Your request has been received',
     REQUEST_FAILED: 'Your request failed, try again later',
+    FETCH_COMMUNITIES_REQUEST_FAILED:
+      'An error occurred in retrieving the complete information of communities',
   },
 } as const;
 

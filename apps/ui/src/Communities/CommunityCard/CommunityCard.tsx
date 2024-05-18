@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CardActions, CardHeader } from '@mui/material';
 
@@ -20,28 +19,26 @@ export interface CommunityCardProps {
   community: Community;
   userStatus?: UserStatus;
   handleClickOnEdit: (communityToUpdate: Community) => void;
+  userStatusIsLoading: boolean;
 }
 
 const CommunityCard: React.FC<CommunityCardProps> = ({
   community,
   userStatus,
   handleClickOnEdit,
+  userStatusIsLoading,
 }) => {
   const { showMessage } = useSnackbar();
   const navigate = useNavigate();
 
   const { name, description, picturesUrl } = community;
-  const [status, setStatus] = useState<UserStatus | undefined>(userStatus);
 
-  const isMember = status ? membersStatus.includes(status) : false;
-
+  const isMember = userStatus && membersStatus.includes(userStatus);
   const onRequest = () => {
     if (isMember) {
       //TODO: Request to cancel community membership
-      setStatus(undefined);
     } else {
       //TODO: Request to join the community
-      setStatus(UserStatus.PENDING);
     }
     showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
   };
@@ -81,7 +78,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
               optionActions={optionActions}
               isMember={
                 userStatus === UserStatus.MANAGER ||
-                userStatus === UserStatus.APPROVED
+                userStatus === UserStatus.ACTIVE
               }
             />
           }
@@ -95,7 +92,11 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             }}
           >
             <CommunityMembersDisplay pictures={picturesUrl} />
-            <StatusButton onRequest={onRequest} status={status} />
+            <StatusButton
+              onRequest={onRequest}
+              status={userStatus}
+              isLoading={userStatusIsLoading}
+            />
           </Box>
         </CardActions>
       </Card>

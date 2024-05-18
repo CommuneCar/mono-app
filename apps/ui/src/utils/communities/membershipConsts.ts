@@ -1,5 +1,5 @@
 import { UserStatus } from '@communecar/types';
 
-const membersStatus = [UserStatus.APPROVED, UserStatus.PENDING];
+const membersStatus = [UserStatus.ACTIVE, UserStatus.PENDING];
 
 export { membersStatus };

@@ -1,26 +1,12 @@
-import { UserStatus } from '@communecar/types';
-
-import { getRandomOption } from '../../utils';
-import { useGetAllCommunities } from './useGetAllCommunities';
 import { UserCommunitiesStatus } from '../../types/community-type';
+import { fetchUserCommunitiesStatus } from '../../apis/communities/fetch-community-user-status';
+import { useQuery } from 'react-query';
 
-const userStatusOptions: UserStatus[] = Object.values(
-  UserStatus,
-) as UserStatus[];
-
-const useUserCommunitiesStatus = (userId: number): UserCommunitiesStatus => {
-  const { data: communities } = useGetAllCommunities();
-  console.log({ userId }); //TODO when the server ready
-
-  const communitiesStatus: UserCommunitiesStatus = {};
-
-  communities &&
-    communities.forEach((community) => {
-      communitiesStatus[community.id] =
-        getRandomOption<UserStatus>(userStatusOptions);
-    });
-
-  return communitiesStatus;
+const useUserCommunitiesStatus = (userId: number) => {
+  return useQuery<UserCommunitiesStatus, Error>({
+    queryKey: ['userCommunitiesStatus', userId],
+    queryFn: () => fetchUserCommunitiesStatus(userId),
+  });
 };
 
 export { useUserCommunitiesStatus };
