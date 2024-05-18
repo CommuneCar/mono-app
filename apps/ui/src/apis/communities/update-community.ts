@@ -1,30 +1,7 @@
 import { graphqlRequest } from '../graphql';
 import { Community } from '@communecar/types';
 import { getUpdateCommunityQuery } from '../utils/communitiesQueries';
-
-interface UpdateCommunityResponse {
-  updateCommunityById: {
-    community: CommunityNode;
-  };
-}
-interface CommunityNode {
-  id: number;
-  title: string;
-  description: string;
-  ownerId: number;
-  lat: number;
-  long: number;
-  userCommunitiesByCommunityId: {
-    totalCount: number;
-    nodes: UserCommunityNode[];
-  };
-}
-interface UserCommunityNode {
-  userByUserId: UserNode;
-}
-interface UserNode {
-  profileImage: string | null;
-}
+import { UpdateCommunityResponse } from '../types/communitiesResponse';
 
 const postUpdateCommunity = async (
   community: Community,

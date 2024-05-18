@@ -26,4 +26,40 @@ mutation {
 }
 `;
 };
-export { getUpdateCommunityQuery };
+
+const getCreateCommunityQuery = (
+  userId: number,
+  communityNew: Omit<Community, 'id'>,
+) => {
+  return `
+    mutation {
+  createCommunity(
+    input: {
+      community: {
+        ownerId: ${userId}, 
+        title: "${communityNew.title}",
+         description: "${communityNew.description}"
+      }
+    }
+  ) {
+    community {
+      id
+      ownerId
+      title
+      description
+      lat
+      long
+      userCommunitiesByCommunityId {
+        totalCount
+        nodes {
+          userByUserId {
+            profileImage
+          }
+        }
+      }
+    }
+  }
+}
+  `;
+};
+export { getUpdateCommunityQuery, getCreateCommunityQuery };
