@@ -1,38 +1,54 @@
+import { isEmpty } from 'lodash';
 import { Box, CircularProgress, List, Typography } from '@mui/material';
-import { useUserMessages } from '../../hooks/Messages/useMessagesForUser';
-import { useUser } from '../../hooks/Users/useUser';
-import { Message } from '@communecar/types';
-import { MessageCard } from './MessageCard';
 
+import { Message } from '@communecar/types';
+
+import { Page } from '../HomePage/styles';
+import { MessageCard } from './MessageCard';
+import { useUser } from '../../hooks/Users/useUser';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
+import { useGetUserMessages } from '../../apis/messages/fetchMessagesForUser';
 
 const MessagesFeed = () => {
   const { user } = useUser();
-  const { messages, loading, error, setMessages } = useUserMessages(
-    user?.id || 1,
-  );
+  const {
+    data: messages,
+    isLoading: loading,
+    isError,
+    error,
+  } = useGetUserMessages(user?.id || 1);
 
   const handleActionComplete = (messageId: string, success: boolean) => {
-    if (success) setMessages(messages.filter((msg) => msg.id !== messageId));
+    console.log(messageId, success);
   };
 
   if (loading) return <CircularProgress />;
-  if (error)
+  if (isError)
     return <Typography color="error">Error: {error.message}</Typography>;
 
   return (
-    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+    <Page>
       <PageHeader title="Inbox" />
-      <List>
-        {messages.map((message: Message) => (
-          <MessageCard
-            message={message}
-            key={message.id}
-            onActionComplete={handleActionComplete}
-          />
-        ))}
-      </List>
-    </Box>
+      <Box sx={{ width: '100%' }}>
+        {isEmpty(messages) || !messages ? (
+          <Box>
+            <Typography>
+              It appears you have no new messages right now :(
+            </Typography>
+          </Box>
+        ) : (
+          <List>
+            {messages.map((message: Message) => (
+              <MessageCard
+                message={message}
+                key={message.id}
+                onActionComplete={handleActionComplete}
+              />
+            ))}
+          </List>
+        )}
+      </Box>
+    </Page>
   );
 };
 
