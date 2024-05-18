@@ -7,7 +7,7 @@ import { Page } from '../HomePage/styles';
 import { MessageCard } from './MessageCard';
 import { useUser } from '../../hooks/Users/useUser';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
-import { useGetUserMessages } from '../../apis/messages/fetchMessagesForUser';
+import { useGetUserMessages } from '../../hooks/Messages/fetchMessagesForUser';
 
 const MessagesFeed = () => {
   const { user } = useUser();

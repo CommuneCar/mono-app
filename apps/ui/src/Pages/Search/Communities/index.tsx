@@ -8,13 +8,17 @@ interface SelectCommunityProps {
   setSelectedCommunity: (community: Community | null) => void;
 }
 
-const SearchCommunities: React.FC<SelectCommunityProps> = ({ communities, selectedCommunity, setSelectedCommunity }) => {
+const SearchCommunities: React.FC<SelectCommunityProps> = ({
+  communities,
+  selectedCommunity,
+  setSelectedCommunity,
+}) => {
   return (
     <Autocomplete
       value={selectedCommunity}
       onChange={(_, newValue) => setSelectedCommunity(newValue)}
       options={communities}
-      getOptionLabel={(option) => option.title || ""}
+      getOptionLabel={(option) => option.title || ''}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       renderOption={(props, option) => (
         <li {...props} key={option.id}>
