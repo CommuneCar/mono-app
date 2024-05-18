@@ -1,7 +1,7 @@
 import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 import { UserStatus } from '@communecar/types';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { statusIcons } from '../../utils/communities/userStatusIcons';
 
 export interface StatusButtonProps {
@@ -15,7 +15,7 @@ const StatusButton: React.FC<StatusButtonProps> = ({
   status,
   isLoading,
 }) => {
-  const renderIcon = useCallback(() => {
+  const renderIcon = useMemo(() => {
     if (isLoading) {
       return <CircularProgress />;
     }
@@ -27,13 +27,15 @@ const StatusButton: React.FC<StatusButtonProps> = ({
   }, [status]);
 
   const isDisabled =
-    status === UserStatus.REJECTED || status === UserStatus.MANAGER;
+    isLoading ||
+    status === UserStatus.REJECTED ||
+    status === UserStatus.MANAGER;
 
   return (
     <Tooltip title={status ? status : 'Ask To Join'}>
       <Box>
         <IconButton onClick={onRequest} disabled={isDisabled}>
-          {renderIcon()}
+          {renderIcon}
         </IconButton>
       </Box>
     </Tooltip>
