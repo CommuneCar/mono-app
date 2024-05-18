@@ -24,7 +24,7 @@ import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
 import { LocationResult } from '@communetypes/Geocoding';
 import SearchLocations from '../Search/Locations';
-import { Ride } from '@communetypes/Ride';
+import { CreateRideSchema } from '@communetypes/CreateRideSchema';
 import { Community } from '@communetypes/Community';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
@@ -70,8 +70,7 @@ const CreateRideDialog = ({
     }
 
     const png = getRandomOption(options);
-    const newRide: Ride = {
-      id: 1,
+    const newRide: CreateRideSchema = {
       communityName: community.title,
       driver: { name: 'Dar Nachmani', id: 5, phoneNumber: '123456' }, // TODO: Replace with user from session
       departureTime: departureTime!.toDate(),
