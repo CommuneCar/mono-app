@@ -16,6 +16,7 @@ export interface RidesFeedProps {
 
 const RidesFeed = ({ rides, communities }: RidesFeedProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}

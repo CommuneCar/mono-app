@@ -10,8 +10,8 @@ import {
   TextField,
   Grid,
 } from '@mui/material';
-import { useSnackbar } from '../../contexts/SnackbarContext';
-import { TEXT } from '../../themes/default/consts';
+import { useSnackbar } from '../../../contexts/SnackbarContext';
+import { TEXT } from '../../../themes/default/consts';
 
 interface JoinRideProps {
   setOpen: (isOpen: boolean) => void;
