@@ -23,7 +23,7 @@ interface GraphQLRideNode {
   userRidesByRideId: {
     nodes: Array<{
       userByUserId?: {
-        id: string;
+        id: number;
         firstName: string;
         lastName: string;
       };
@@ -79,7 +79,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
       const driver = node.userRidesByRideId.nodes.find(
         n => n.userByUserId !== undefined,
       )?.userByUserId || {
-        id: 'default',
+        id: -1,
         firstName: 'Unknown',
         lastName: 'Driver',
       };

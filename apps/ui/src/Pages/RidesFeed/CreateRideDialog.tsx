@@ -9,7 +9,6 @@ import {
   TextField,
   Switch,
   FormControlLabel,
-  Typography,
   Box,
 } from '@mui/material';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
@@ -37,7 +36,7 @@ export interface CreateRideDialogProps {
 
 const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProps) => {
   const { mutate: addRide } = useAddNewRide();
-  const [departureTime, setDepartureTime] = useState(dayjs());
+  const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(dayjs());
   const [community, setCommunity] = useState<Community | null>(null);
   const [gasMoney, setGasMoney] = useState('0');
   const [pronounsOnly, setPronounsOnly] = useState(false);
@@ -53,9 +52,7 @@ const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProp
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    
+  const handleSubmit = async () => {    
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
       alert('All fields are required.');
       return;
@@ -65,7 +62,7 @@ const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProp
     const newRide: Ride = {
       communityName: community.name,
       driver: { name: 'Dar Nachmani', id: 5 },  // TODO: Replace with user from session
-      departureTime: departureTime.toDate(),
+      departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
       startLocation: [parseFloat(startLocation.lat), parseFloat(startLocation.lon)],
@@ -104,7 +101,7 @@ const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProp
             <DateTimePicker
               label="Departure Time"
               value={departureTime}
-              onChange={setDepartureTime}
+              onChange={(newValue) => setDepartureTime(newValue)}
               slotProps={{ textField: { fullWidth: true } }}
             />
           </LocalizationProvider>
