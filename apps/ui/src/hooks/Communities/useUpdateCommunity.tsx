@@ -14,7 +14,7 @@ export const useUpdateCommunity = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['communities']);
+        queryClient.invalidateQueries('communities');
         showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
       },
       onError(error) {
