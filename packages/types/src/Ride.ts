@@ -7,7 +7,7 @@ export interface Location {
 }
 
 export interface Ride {
-  id: string;
+  id: number;
   driver: Driver;
   departureTime: Date;
   communityName: string;

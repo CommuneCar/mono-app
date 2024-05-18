@@ -4,7 +4,7 @@ import { LocationResult } from '@communecar/types/src/Geocoding';
 
 import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
-import { Ride, Rider, Driver } from '@communecar/types';
+import { Ride, Rider } from '@communecar/types';
 
 interface GraphQLRideNode {
   id: string;
@@ -112,7 +112,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
 
       return {
         driver: {
-          id: driver.id,
+          id: Number(driver.id),
           name: `${driver.firstName} ${driver.lastName}`,
           phoneNumber: driver.phoneNumber,
         },
@@ -123,7 +123,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         destinationName,
         destination: [node.toLat, node.toLong],
         png: '',
-        id: id,
+        id: Number(id),
         gasMoney: node.gasMoney ?? 0,
         pronouns: node.pronouns ?? false,
         seats: node.seats,
@@ -166,7 +166,7 @@ const geocode = async (coords: {
   }
 };
 
-export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
+export const fetchRidersByRideId = async (rideId: number): Promise<Rider[]> => {
   const query = `{
     allRides(condition: { id: ${rideId} }) {
        nodes {

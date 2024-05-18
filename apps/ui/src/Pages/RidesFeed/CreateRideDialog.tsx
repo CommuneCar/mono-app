@@ -68,6 +68,7 @@ const CreateRideDialog = ({
 
     const png = getRandomOption(options);
     const newRide: Ride = {
+      id: 1,
       communityName: community.title,
       driver: { name: 'Dar Nachmani', id: 5, phoneNumber: '123456' }, // TODO: Replace with user from session
       departureTime: departureTime!.toDate(),

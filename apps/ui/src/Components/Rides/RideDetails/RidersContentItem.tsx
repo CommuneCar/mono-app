@@ -6,10 +6,10 @@ import {
   Collapse,
   Typography,
 } from '@mui/material';
-import UserLogo from '../UserAvatar/UserAvatar';
+import UserLogo from '../../UserAvatar/UserAvatar';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Rider } from '@communetypes/Rider';
-import { getAvatarColour } from '../UserAvatar/utils';
+import { getAvatarColour } from '../../UserAvatar/utils';
 
 interface DriverContentItemProps {
   riders: Rider[] | undefined;
@@ -33,25 +33,28 @@ const RidersContentItem: React.FC<DriverContentItemProps> = ({ riders }) => {
         <IconButton>{showRiders ? <ExpandLess /> : <ExpandMore />}</IconButton>
 
         <Collapse in={showRiders}>
-          {riders && riders.length > 0
-            ? riders?.map((rider) => (
+          {riders && riders.length > 0 ? (
+            <Box display="flex" flexWrap="wrap" mt={2}>
+              {riders.map((rider) => (
                 <Box
                   key={rider.id}
                   display="flex"
                   flexDirection="column"
                   alignItems="center"
-                  mt={2}
+                  m={1}
                 >
                   <UserLogo
-                    key={rider.id}
                     name={rider.name}
                     pic={rider.avatarUrl}
                     bgColor={getAvatarColour()}
                   />
                   <Typography variant="caption">{rider.phoneNumber}</Typography>
                 </Box>
-              ))
-            : 'No riders yet'}
+              ))}
+            </Box>
+          ) : (
+            <Typography>No riders yet</Typography>
+          )}
         </Collapse>
       </DialogContentText>
     </Box>

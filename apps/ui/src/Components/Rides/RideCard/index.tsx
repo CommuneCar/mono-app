@@ -53,10 +53,6 @@ const RideCard: React.FC<RideCardProps> = (props) => {
           Join Ride
         </Button>
       </CardActions>
-      <JoinRideDialog
-        isOpen={joinRideDialogOpened}
-        setOpen={setJoinRideDialogOpened}
-      />
     </Card>
   );
 };
