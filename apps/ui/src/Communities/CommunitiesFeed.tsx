@@ -16,8 +16,7 @@ import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { UserCommunitiesStatus } from '../types/community-type';
 import { useSnackbar } from '../contexts/SnackbarContext';
-import { TEXT } from '../themes/default/consts';
-
+import { TEXT, DEFAULT_USER_ID } from '../themes/default/consts';
 
 export interface CommunityFeedProps {
   communities: Community[] | undefined;
@@ -31,7 +30,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
     data: userStatusData,
     error: userStatusError,
     isLoading: userStatusIsLoading,
-  } = useUserCommunitiesStatus(user?.id ?? 1);
+  } = useUserCommunitiesStatus(user?.id ?? DEFAULT_USER_ID);
 
   const userStatus: UserCommunitiesStatus = useMemo(() => {
     return userStatusError || userStatusIsLoading ? {} : userStatusData ?? {};
@@ -194,6 +193,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
             userStatus={userCommunitiesStatus[community.id]}
             handleClickOnEdit={handleClickOnEdit}
             userStatusIsLoading={userStatusIsLoading}
+            userId={user?.id ?? DEFAULT_USER_ID}
           />
         ))}
       </FeedList>
