@@ -44,7 +44,7 @@ const App: React.FC = () => {
                   <Route
                     path="/communities"
                     element={
-                      <CommunitiesFeed communities={communities ?? []} />
+                      <CommunitiesFeed communities={communities} />
                     }
                   />
                   <Route path="/home" element={<HomePage />} />

@@ -97,7 +97,7 @@ const HomePage: React.FC = () => {
           />
         )}
         {selectedTab === 'rides' && (
-          <RidesList rides={ridesData ?? []} setSelectedRide={setSelectedRide} />
+          <RidesList rides={ridesData ?? []} communities={communitiesData ?? []} setSelectedRide={setSelectedRide} />
         )}
         {!!selectedRide && (
           <RideDetails

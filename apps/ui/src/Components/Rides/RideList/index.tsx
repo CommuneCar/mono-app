@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Ride } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Box, IconButton, Tooltip } from '@mui/material';
@@ -13,10 +13,11 @@ dayjs.extend(relativeTime);
 
 interface RideListProps {
   rides: Ride[];
+  communities: Community[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
-const RidesList: React.FC<RideListProps> = ({ rides, setSelectedRide }) => {
+const RidesList: React.FC<RideListProps> = ({ rides, communities, setSelectedRide }) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
   return (
     <Box>
@@ -47,7 +48,7 @@ const RidesList: React.FC<RideListProps> = ({ rides, setSelectedRide }) => {
       </Box>
       {isCreateRideDialog && (
         <CreateRideDialog
-          rides={rides}
+          communities={communities}
           isOpen={isCreateRideDialog}
           setOpen={setIsCreateRideDialogOpen}
         />

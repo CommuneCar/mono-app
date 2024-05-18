@@ -70,7 +70,6 @@ const RidesFeed = ({ rides, communities }: RidesFeedProps) => {
       </Box>
       {isDialogOpen && (
         <CreateRideDialog
-          rides={rides}
           communities={communities}
           isOpen={isDialogOpen}
           setOpen={setIsDialogOpen}

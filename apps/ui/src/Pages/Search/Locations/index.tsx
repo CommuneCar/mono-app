@@ -23,10 +23,11 @@ const CenteredBox = styled(Box)({
 });
 
 interface SearchLocationsProps {
+  label: string;
   onSelect: (location: LocationResult) => void;
 }
 
-const SearchLocations: React.FC<SearchLocationsProps> = ({ onSelect }) => {
+const SearchLocations: React.FC<SearchLocationsProps> = ({ label, onSelect }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationResult[]>([]);
@@ -46,12 +47,6 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({ onSelect }) => {
   };
 
   const handleLocationSelect = (location: LocationResult) => {
-    console.log(
-      'Selected location:',
-      location.displayName,
-      location.lat,
-      location.lon,
-    );
     setInputValue(location.displayName);
     setLocations([]);
     onSelect(location);
@@ -64,7 +59,7 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({ onSelect }) => {
           fullWidth
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          label="Search for a location"
+          label={label}
           variant="outlined"
           InputProps={{
             endAdornment: (

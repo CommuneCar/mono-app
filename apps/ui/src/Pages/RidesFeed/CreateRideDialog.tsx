@@ -10,6 +10,7 @@ import {
   Switch,
   FormControlLabel,
   Typography,
+  Box,
 } from '@mui/material';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -24,23 +25,23 @@ import SearchLocations from '../Search/Locations';
 import { Ride } from '@communetypes/Ride';
 import { Community } from '@communetypes/Community';
 import SearchCommunities from '../Search/Communities';
-import { addNewRide } from '../../apis/rides/add-new-ride';
+import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
 
 const options = [tlv, apple, camera];
 
 export interface CreateRideDialogProps {
-  rides: Ride[];
   communities: Community[];
   setOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
 }
 
-const CreateRideDialog = ({ rides, communities, setOpen, isOpen }: CreateRideDialogProps) => {
+const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProps) => {
+  const { mutate: addRide } = useAddNewRide();
   const [departureTime, setDepartureTime] = useState(dayjs());
   const [community, setCommunity] = useState<Community | null>(null);
-  const [gasMoney, setGasMoney] = useState('');
+  const [gasMoney, setGasMoney] = useState('0');
   const [pronounsOnly, setPronounsOnly] = useState(false);
-  const [seats, setSeats] = useState('');
+  const [seats, setSeats] = useState('0');
   const [startLocation, setStartLocation] = useState<LocationResult | null>(null);
   const [destination, setDestination] = useState<LocationResult | null>(null);
 
@@ -76,12 +77,14 @@ const CreateRideDialog = ({ rides, communities, setOpen, isOpen }: CreateRideDia
       pickups: []
     };
 
-    try {
-      await addNewRide(newRide);
-      handleClose();
-    } catch (error) {
-      console.error('Error creating new ride:', error);
-    }
+    addRide(newRide, {
+      onSuccess: () => {
+        handleClose()
+      },
+      onError: (error) => {
+        console.error('Error creating new ride:', error);  // TODO: Throw an alert or smth
+      }
+    })
   };
 
   const handleClose = () => {
@@ -96,18 +99,18 @@ const CreateRideDialog = ({ rides, communities, setOpen, isOpen }: CreateRideDia
           Fill in the details to add a new ride.
         </DialogContentText>
         <SearchCommunities communities={communities} selectedCommunity={community} setSelectedCommunity={setCommunity} />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateTimePicker
-            label="Departure Time"
-            value={departureTime}
-            onChange={setDepartureTime}
-            renderInput={(params) => <TextField {...params} fullWidth />}
-          />
-        </LocalizationProvider>
-        <Typography variant="h6" sx={{ mt: 2 }}>Start Location:</Typography>
-        <SearchLocations onSelect={(location) => handleLocationSelect(location, 'start')} />
-        <Typography variant="h6" sx={{ mt: 2 }}>Destination:</Typography>
-        <SearchLocations onSelect={(location) => handleLocationSelect(location, 'destination')} />
+        <Box my={2}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              label="Departure Time"
+              value={departureTime}
+              onChange={setDepartureTime}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+          </LocalizationProvider>
+        </Box>
+        <SearchLocations label="Start location" onSelect={(location) => handleLocationSelect(location, 'start')} />
+        <SearchLocations label="Destination" onSelect={(location) => handleLocationSelect(location, 'destination')} />
         <TextField
           margin="dense"
           id="gasMoney"
@@ -119,7 +122,7 @@ const CreateRideDialog = ({ rides, communities, setOpen, isOpen }: CreateRideDia
         />
         <FormControlLabel
           control={<Switch checked={pronounsOnly} onChange={(e) => setPronounsOnly(e.target.checked)} />}
-          label="Pronouns Only"
+          label="Same pronouns only"
         />
         <TextField
           margin="dense"

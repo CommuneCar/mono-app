@@ -15,6 +15,12 @@ const SearchCommunities: React.FC<SelectCommunityProps> = ({ communities, select
       onChange={(_, newValue) => setSelectedCommunity(newValue)}
       options={communities}
       getOptionLabel={(option) => option.name || ""}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
+      renderOption={(props, option) => (
+        <li {...props} key={option.id}>
+          {option.name}
+        </li>
+      )}
       renderInput={(params) => (
         <TextField
           {...params}
