@@ -84,11 +84,12 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         lastName: 'Driver',
       };
 
-      const pickups: Location[] = await Promise.all(
+      const pickups = await Promise.all(
         node.userRidesByRideId.nodes.map(async (pickupNode) => ({
           lat: pickupNode.fromLat,
           lon: pickupNode.fromLong,
-          name: await geocode({ lat: pickupNode.fromLat, lon: pickupNode.fromLong })
+          name: await geocode({ lat: pickupNode.fromLat, lon: pickupNode.fromLong }),
+          displayName: ''
         }))
       );
 
