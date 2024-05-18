@@ -13,14 +13,17 @@ import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
-import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { UserCommunitiesStatus } from '../types/community-type';
 import { useSnackbar } from '../contexts/SnackbarContext';
 import { TEXT } from '../themes/default/consts';
 
-const CommunitiesFeed: React.FC = () => {
-  const { data: communities } = useGetAllCommunities();
+
+export interface CommunityFeedProps {
+  communities: Community[] | undefined;
+}
+
+const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
   const { showMessage } = useSnackbar();
 
   const { user } = useUser();
