@@ -7,7 +7,7 @@ import {
   CardActions,
   CardContent,
 } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { Ride } from '@communecar/types';
 
@@ -20,7 +20,7 @@ const RideCard = ({
   communityName,
   departureTime,
   destinationName,
-  startLocationName,
+  startLocationName
 }: Ride) => {
   const [joined, setJoined] = useState(false);
   return (

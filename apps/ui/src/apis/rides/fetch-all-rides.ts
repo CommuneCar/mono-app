@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { LocationResult } from '@communetypes/Geocoding';
+import { LocationResult } from '@communecar/types/src/Geocoding';
 
 import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
@@ -14,6 +14,9 @@ interface GraphQLRideNode {
   toLat: number;
   toLong: number;
   startTime: string;
+  gasMoney?: number;
+  pronouns?: boolean;
+  seats: number;
   communityByCommunityId: {
     title: string;
   };
@@ -24,6 +27,10 @@ interface GraphQLRideNode {
         firstName: string;
         lastName: string;
       };
+      fromLat: number;
+      fromLong: number;
+      toLat: number;
+      toLong: number;
     }>;
   };
 }
@@ -39,6 +46,9 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         toLat
         toLong
         startTime
+        gasMoney
+        pronouns
+        seats
         communityByCommunityId {
           title
         }
@@ -49,6 +59,10 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
               firstName
               lastName
             }
+            toLat
+            toLong
+            fromLong
+            fromLat
           }
         }
       }
@@ -60,17 +74,24 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
   );
   const rides: Ride[] = await Promise.all(
     data.allRides.nodes.map(async (node) => {
-      const userNode = node.userRidesByRideId.nodes.find(
-        (n) => n.userByUserId !== undefined,
-      );
-
       const { fromLat, fromLong, toLat, toLong } = node;
 
-      const driver = userNode?.userByUserId || {
+      const driver = node.userRidesByRideId.nodes.find(
+        n => n.userByUserId !== undefined,
+      )?.userByUserId || {
         id: 'default',
         firstName: 'Unknown',
         lastName: 'Driver',
       };
+
+      const pickups: Location[] = await Promise.all(
+        node.userRidesByRideId.nodes.map(async (pickupNode) => ({
+          lat: pickupNode.fromLat,
+          lon: pickupNode.fromLong,
+          name: await geocode({ lat: pickupNode.fromLat, lon: pickupNode.fromLong })
+        }))
+      );
+
       const startLocationName = await geocode({
         lat: fromLat,
         lon: fromLong,
@@ -92,6 +113,10 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         destinationName,
         destination: [node.toLat, node.toLong],
         png: '',
+        gasMoney: node.gasMoney ?? 0,
+        pronouns: node.pronouns ?? false,
+        seats: node.seats,
+        pickups,
       };
     }),
   );
