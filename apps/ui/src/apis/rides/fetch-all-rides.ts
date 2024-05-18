@@ -204,28 +204,21 @@ export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
   const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
     query,
   );
-  const riderPromises = data.allRides.nodes.map(async (node) => {
-    const userNode = node.userRidesByRideId.nodes.find(
-      (n) => n.userByUserId !== undefined,
-    );
 
-    const { ownerId } = node;
+  console.log(data);
 
-    const isDriver = userNode?.userByUserId?.id === ownerId;
-
-    if (!isDriver) {
-      return {
-        id: userNode?.userByUserId?.id,
-        name: `${userNode?.userByUserId?.firstName} ${userNode?.userByUserId?.lastName}`,
-        gender: userNode?.userByUserId?.gender,
-        pic: userNode?.userByUserId?.profileImage,
-      } as Rider;
-    }
-    return undefined;
-  });
-
-  const riders = (await Promise.all(riderPromises)).filter(
-    (rider): rider is Rider => rider !== undefined,
+  const riders = data.allRides.nodes.flatMap((node) =>
+    node.userRidesByRideId.nodes
+      .filter((userRide) => userRide?.userByUserId?.id !== node.ownerId)
+      .map(
+        (userRide) =>
+          ({
+            id: userRide?.userByUserId?.id,
+            name: `${userRide?.userByUserId?.firstName} ${userRide?.userByUserId?.lastName}`,
+            gender: userRide?.userByUserId?.gender,
+            pic: userRide?.userByUserId?.profileImage,
+          }) as Rider,
+      ),
   );
 
   return riders;

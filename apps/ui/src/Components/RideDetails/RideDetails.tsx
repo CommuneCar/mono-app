@@ -34,6 +34,8 @@ const RideDetails: React.FC<JoinRideProps> = ({
   const onCancel = () => {
     setSelectedRide(undefined);
   };
+  console.log(riders);
+
   return (
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
       <DialogTitle>Ride Details</DialogTitle>
