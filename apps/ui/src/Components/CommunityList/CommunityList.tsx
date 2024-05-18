@@ -6,7 +6,7 @@ import React, { Dispatch, SetStateAction, useMemo } from 'react';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 
 import { CommunityWithRides } from './types';
-import { RideCard } from '../RideCard/RideCard';
+import { RideCard } from '../Rides/RideCard';
 import { FilterAltOffRounded } from '@mui/icons-material';
 
 dayjs.extend(relativeTime);

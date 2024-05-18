@@ -15,7 +15,7 @@ const RideDescription = ({
   driver,
   departureTime,
   startLocation,
-  destination,
+  destination
 }: RideDescriptionProps) => {
   const currentDate = new Date();
 
