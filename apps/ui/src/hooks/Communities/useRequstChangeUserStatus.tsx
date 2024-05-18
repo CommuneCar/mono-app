@@ -39,7 +39,12 @@ const useUserCommunityStatus = (userId: number, communityId: number) => {
     },
   );
 
-  return { createMutation, deleteMutation };
+  return {
+    createMutation,
+    deleteMutation,
+    isCreatingStatus: createMutation.isLoading,
+    isDeletingStatus: deleteMutation.isLoading,
+  };
 };
 
 export { useUserCommunityStatus };

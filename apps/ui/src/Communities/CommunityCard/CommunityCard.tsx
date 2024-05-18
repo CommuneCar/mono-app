@@ -33,10 +33,8 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
 }) => {
   const { showMessage } = useSnackbar();
   const navigate = useNavigate();
-  const { createMutation, deleteMutation } = useUserCommunityStatus(
-    userId,
-    Number(community.id),
-  );
+  const { createMutation, deleteMutation, isCreatingStatus, isDeletingStatus } =
+    useUserCommunityStatus(userId, Number(community.id));
 
   const { name, description, picturesUrl } = community;
 
@@ -102,7 +100,9 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             <StatusButton
               onRequest={onRequest}
               status={userStatus}
-              isLoading={userStatusIsLoading}
+              isLoading={
+                userStatusIsLoading || isCreatingStatus || isDeletingStatus
+              }
             />
           </Box>
         </CardActions>
