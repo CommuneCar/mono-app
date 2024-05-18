@@ -1,4 +1,4 @@
-import { Community, CommunityUpdate } from '@communecar/types';
+import { Community } from '@communecar/types';
 import { postUpdateCommunity } from '../../apis/communities/update-community';
 import { useMutation, useQueryClient } from 'react-query';
 import { TEXT } from '../../themes/default/consts';
@@ -10,19 +10,11 @@ export const useUpdateCommunity = () => {
 
   const mutation = useMutation(
     (community: Community) => {
-      console.log({
-        title: community.title,
-        description: community.description,
-      });
-
-      return postUpdateCommunity(Number(community.id), {
-        title: community.title,
-        description: community.description,
-      });
+      return postUpdateCommunity(community);
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['community', data.id]);
+      onSuccess: () => {
+        queryClient.invalidateQueries(['communities']);
         showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
       },
       onError(error) {

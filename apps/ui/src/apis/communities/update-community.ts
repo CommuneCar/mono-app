@@ -1,19 +1,6 @@
 import { graphqlRequest } from '../graphql';
-import { Community, CommunityUpdate } from '@communecar/types';
-
-const UpdateCommunityQuery = `
-mutation UpdateCommunity($input: UpdateCommunityInput!){
-  updateCommunityById(input: $input) {
-    community {
-      description
-      id
-      lat
-      long
-      ownerId
-    }
-  }
-}
-`;
+import { Community } from '@communecar/types';
+import { getUpdateCommunityQuery } from '../utils/communitiesQueries';
 
 interface UpdateCommunityResponse {
   updateCommunityById: {
@@ -22,21 +9,12 @@ interface UpdateCommunityResponse {
 }
 
 const postUpdateCommunity = async (
-  communityId: number,
-  communityPatch: CommunityUpdate,
+  community: Community,
 ): Promise<Community> => {
-  const variables = {
-    input: {
-      id: communityId,
-      communityPatch,
-    },
-  };
+  const query = getUpdateCommunityQuery(community);
 
   try {
-    const data = await graphqlRequest<UpdateCommunityResponse>(
-      UpdateCommunityQuery,
-      variables,
-    );
+    const data = await graphqlRequest<UpdateCommunityResponse>(query);
     return data.updateCommunityById.community;
   } catch (error) {
     console.error('Error updating community:', error);
