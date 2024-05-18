@@ -52,7 +52,12 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({ children }) => {
   return (
     <SnackbarContext.Provider value={{ showMessage }}>
       {children}
-      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        sx={{ width: 'auto' }}
+      >
         <Alert onClose={handleClose} severity={severity} variant="filled">
           {message}
         </Alert>
