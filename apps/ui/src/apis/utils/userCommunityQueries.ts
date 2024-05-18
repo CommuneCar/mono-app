@@ -1,6 +1,6 @@
 import { UserStatus } from '@communetypes/Enums';
 
-const queryDeleteUserCommunityStatus = (
+const getDeleteUserCommunityStatusQuery = (
   userId: number,
   communityId: number,
 ) => `
@@ -17,7 +17,7 @@ mutation {
 }
 `;
 
-const queryCreateUserCommunityStatus = (
+const getCreateUserCommunityStatusQuery = (
   userId: number,
   communityId: number,
   status: UserStatus,
@@ -39,4 +39,4 @@ mutation {
     `;
 };
 
-export { queryDeleteUserCommunityStatus, queryCreateUserCommunityStatus };
+export { getDeleteUserCommunityStatusQuery, getCreateUserCommunityStatusQuery };
