@@ -2,18 +2,20 @@ import { useState } from 'react';
 import { RequestActions } from '../../types/actions';
 import { respondToMessage } from '../../apis/messages/respondToMessage';
 
+import { Message } from '@communecar/types';
+
 const useRespondToMessage = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const submitRespondToMessage = async (
-    messageId: string,
+    message: Message,
     action: RequestActions,
   ) => {
     setLoading(true);
     setError(null);
     try {
-      await respondToMessage(messageId, action);
+      await respondToMessage(message, action);
       setLoading(false);
       return true;
     } catch (err) {

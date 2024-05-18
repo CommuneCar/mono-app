@@ -63,6 +63,7 @@ const fetchJoinCommunitiesMessagesForUser = async (
         id: community.id + user.userByUserId.id + user.userByUserId.lastName,
         type: MessageType.JOINING_COMMUNITY_REQUEST,
         addresseeUsers: [currentUser.userById],
+        entityId: community.id,
         entityName: community.title,
         time: new Date(Date.now()),
         creatorUser: user.userByUserId,

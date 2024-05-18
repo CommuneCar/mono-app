@@ -12,15 +12,12 @@ import { useGetUserMessages } from '../../apis/messages/fetchMessagesForUser';
 const MessagesFeed = () => {
   const { user } = useUser();
   const {
+    refetch,
     data: messages,
     isLoading: loading,
     isError,
     error,
   } = useGetUserMessages(user?.id || 1);
-
-  const handleActionComplete = (messageId: string, success: boolean) => {
-    console.log(messageId, success);
-  };
 
   if (loading) return <CircularProgress />;
   if (isError)
@@ -42,7 +39,7 @@ const MessagesFeed = () => {
               <MessageCard
                 message={message}
                 key={message.id}
-                onActionComplete={handleActionComplete}
+                onActionComplete={() => refetch()}
               />
             ))}
           </List>
