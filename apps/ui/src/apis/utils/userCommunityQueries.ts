@@ -4,16 +4,17 @@ const queryDeleteUserCommunityStatus = (
   userId: number,
   communityId: number,
 ) => `
-  mutation {
-    deleteUserCommunityByUserIdAndCommunityId(
-      input: {
-        userId: ${userId}
-        communityId: ${communityId}
-      }
-    ) {
-      deletedUserCommunityId
+mutation {
+  deleteUserCommunityByUserIdAndCommunityId(
+    input: { userId: ${userId}, communityId: ${communityId} }
+  ) {
+    userCommunity {
+      communityId
+      status
+      userId
     }
   }
+}
 `;
 
 const queryCreateUserCommunityStatus = (
