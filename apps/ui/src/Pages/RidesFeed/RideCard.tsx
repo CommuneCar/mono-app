@@ -7,7 +7,7 @@ import {
   CardActions,
   CardContent,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Ride } from '@communecar/types';
 
