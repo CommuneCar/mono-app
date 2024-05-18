@@ -72,10 +72,10 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
       <DialogContent>
         <DialogContentText>{formTexts.description}</DialogContentText>
         <TextField
-          id="communityName"
-          name="name"
-          label="Community Name"
-          type="communityName"
+          id="communityTitle"
+          name="title"
+          label="Community Title"
+          type="communityTitle"
           variant="standard"
           margin="dense"
           autoFocus
