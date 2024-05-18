@@ -1,7 +1,7 @@
 import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 import { UserStatus } from '@communecar/types';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { statusIcons } from '../../utils/communities/userStatusIcons';
 
 export interface StatusButtonProps {
