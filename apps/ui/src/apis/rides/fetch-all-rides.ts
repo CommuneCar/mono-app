@@ -25,6 +25,7 @@ interface GraphQLRideNode {
         lastName: string;
         profileImage: string;
         gender: string;
+        phoneNumber: string;
       };
     }>;
   };
@@ -50,6 +51,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
               id
               firstName
               lastName
+              phoneNumber
             }
           }
         }
@@ -72,6 +74,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         id: 'default',
         firstName: 'Unknown',
         lastName: 'Driver',
+        phoneNumber: '1234567',
       };
       const startLocationName = await geocode({
         lat: fromLat,
@@ -86,6 +89,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         driver: {
           id: driver.id,
           name: `${driver.firstName} ${driver.lastName}`,
+          phoneNumber: driver.phoneNumber,
         },
         departureTime: new Date(node.startTime),
         communityName: node.communityByCommunityId?.title,
@@ -149,6 +153,7 @@ export const fetchRidesDriver = async (
               lastName
               profileImage
               gender
+              phoneNumber
             }
           }
         }
@@ -173,6 +178,7 @@ export const fetchRidesDriver = async (
         id: userNode?.userByUserId?.id,
         name: `${userNode?.userByUserId?.firstName} ${userNode?.userByUserId?.lastName}`,
         pic: userNode?.userByUserId?.profileImage,
+        phoneNumber: userNode?.userByUserId?.phoneNumber,
       } as Driver;
     }
   }
@@ -194,6 +200,7 @@ export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
               lastName
               profileImage
               gender
+              phoneNumber
             }
           }
         }
@@ -215,6 +222,7 @@ export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
             name: `${userRide?.userByUserId?.firstName} ${userRide?.userByUserId?.lastName}`,
             gender: userRide?.userByUserId?.gender,
             pic: userRide?.userByUserId?.profileImage,
+            phoneNumber: userRide?.userByUserId?.phoneNumber,
           }) as Rider,
       ),
   );

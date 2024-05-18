@@ -34,14 +34,16 @@ const RideDetails: React.FC<JoinRideProps> = ({
   const onCancel = () => {
     setSelectedRide(undefined);
   };
-  console.log(riders);
 
   return (
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
       <DialogTitle>Ride Details</DialogTitle>
       <Divider />
       <DialogContent>
-        <DriverContentItem header="Driver:" text={ride.driver.name} />
+        <DriverContentItem
+          text={ride.driver.name}
+          phoneNumber={ride.driver.phoneNumber}
+        />
         <RideContentItem
           header="Start Location:"
           text={ride.startLocationName}

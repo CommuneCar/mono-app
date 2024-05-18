@@ -4,20 +4,23 @@ import UserLogo from '../UserAvatar/UserAvatar';
 import { DRIVER_ITEM_COLOR } from '../UserAvatar/consts';
 
 interface DriverContentItemProps {
-  header: string;
+  phoneNumber: string;
   text: string;
 }
 
 const DriverContentItem: React.FC<DriverContentItemProps> = ({
-  header,
   text,
+  phoneNumber,
 }) => {
   return (
     <DialogContentText display="flex" alignItems="center">
-      <Box component="span" sx={{ mr: 1 }}>
-        <Typography variant="subtitle1">{header}</Typography>
+      <Box component="span" sx={{ minWidth: '100px', mr: 1 }}>
+        <Typography variant="subtitle1">Driver:</Typography>
       </Box>
-      <UserLogo name={text} bgColor={DRIVER_ITEM_COLOR} />
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <UserLogo name={text} bgColor={DRIVER_ITEM_COLOR} />
+        <Typography variant="caption">{phoneNumber}</Typography>
+      </Box>
     </DialogContentText>
   );
 };

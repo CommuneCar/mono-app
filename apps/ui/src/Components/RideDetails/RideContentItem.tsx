@@ -8,11 +8,18 @@ interface JoinRideProps {
 
 const RideContentItem: React.FC<JoinRideProps> = ({ header, text }) => {
   return (
-    <DialogContentText display="flex" alignItems="center">
-      <Box component="span" sx={{ mr: 1 }}>
-        <Typography variant="subtitle1">{header}</Typography>
+    <DialogContentText>
+      <Box display="flex" alignItems="center">
+        <Box
+          display="grid"
+          gridTemplateColumns="100px 1fr"
+          gap={2}
+          alignItems="center"
+        >
+          <Typography variant="subtitle1">{header}</Typography>
+        </Box>
+        <Typography variant="body1">{text}</Typography>
       </Box>
-      {text}
     </DialogContentText>
   );
 };

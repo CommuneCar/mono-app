@@ -27,7 +27,7 @@ const RidersContentItem: React.FC<DriverContentItemProps> = ({ riders }) => {
         onClick={toggleRidersList}
         style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
       >
-        <Box component="span" sx={{ mr: 1 }}>
+        <Box component="span" sx={{ minWidth: '100px', mr: 1 }}>
           <Typography variant="subtitle1">Riders:</Typography>
         </Box>
         <IconButton>{showRiders ? <ExpandLess /> : <ExpandMore />}</IconButton>
@@ -35,12 +35,21 @@ const RidersContentItem: React.FC<DriverContentItemProps> = ({ riders }) => {
         <Collapse in={showRiders}>
           {riders && riders.length > 0
             ? riders?.map((rider) => (
-                <UserLogo
+                <Box
                   key={rider.id}
-                  name={rider.name}
-                  pic={rider.avatarUrl}
-                  bgColor={getAvatarColour()}
-                />
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  mt={2}
+                >
+                  <UserLogo
+                    key={rider.id}
+                    name={rider.name}
+                    pic={rider.avatarUrl}
+                    bgColor={getAvatarColour()}
+                  />
+                  <Typography variant="caption">{rider.phoneNumber}</Typography>
+                </Box>
               ))
             : 'No riders yet'}
         </Collapse>

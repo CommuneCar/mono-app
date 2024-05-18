@@ -5,6 +5,7 @@ interface Rider {
   name: string;
   gender: Gender;
   avatarUrl?: string;
+  phoneNumber: string;
 }
 
 export type { Rider };
