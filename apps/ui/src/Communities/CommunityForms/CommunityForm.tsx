@@ -19,7 +19,7 @@ interface CommunityFormProps {
   communityToUpdate?: Community;
   formTexts: any;
   onSubmit: (community: Community) => void;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const emptyCommunity: Community = {
@@ -36,7 +36,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   onSubmit,
   communityToUpdate,
   handleClose,
-  isLoading,
+  isLoading = false,
 }) => {
   const [community, setCommunity] = useState<Community>(
     communityToUpdate ?? emptyCommunity,
