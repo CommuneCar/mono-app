@@ -31,7 +31,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const { showMessage } = useSnackbar();
   const navigate = useNavigate();
 
-  const { name, description, picturesUrl } = community;
+  const { title: name, description, picturesUrl } = community;
 
   const isMember = userStatus && membersStatus.includes(userStatus);
   const onRequest = () => {

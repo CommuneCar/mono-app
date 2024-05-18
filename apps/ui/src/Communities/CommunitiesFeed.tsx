@@ -56,7 +56,7 @@ const CommunitiesFeed: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const options = useMemo(
-    () => allCommunitiesDisplay.map((community) => community.name),
+    () => allCommunitiesDisplay.map((community) => community.title),
     [allCommunitiesDisplay],
   );
 
@@ -70,7 +70,7 @@ const CommunitiesFeed: React.FC = () => {
     (value: string) => {
       const newFilteredCommuniuties = value
         ? allCommunitiesDisplay.filter((community) =>
-            community.name.toLowerCase().includes(value),
+            community.title.toLowerCase().includes(value),
           )
         : allCommunitiesDisplay;
       setFilteredCommunities(newFilteredCommuniuties);

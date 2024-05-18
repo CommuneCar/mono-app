@@ -17,7 +17,7 @@ const postNewCommunity = async (
     input: {
       community: {
         ownerId: ${userId}, 
-        title: "${communityNew.name}",
+        title: "${communityNew.title}",
          description: "${communityNew.description}"
       }
     }

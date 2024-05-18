@@ -24,7 +24,7 @@ interface CommunityFormProps {
 
 const emptyCommunity: Community = {
   id: '',
-  name: '',
+  title: '',
   description: '',
   numberOfMembers: 0,
   picturesUrl: [],
@@ -81,7 +81,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
           autoFocus
           required
           fullWidth
-          value={community.name}
+          value={community.title}
           onChange={handleChange}
         />
         <TextField

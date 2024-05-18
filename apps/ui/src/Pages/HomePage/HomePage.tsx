@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
     return communitiesData
       ? communitiesData.map((community) => ({
           ...community,
-          rides: groupedRides[community.name] ?? [],
+          rides: groupedRides[community.title] ?? [],
         }))
       : [];
   }, [communitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
