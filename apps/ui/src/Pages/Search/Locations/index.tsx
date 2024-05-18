@@ -29,7 +29,10 @@ interface SearchLocationsProps {
   onSelect: (location: LocationResult) => void;
 }
 
-const SearchLocations: React.FC<SearchLocationsProps> = ({ label, onSelect }) => {
+const SearchLocations: React.FC<SearchLocationsProps> = ({
+  label,
+  onSelect,
+}) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationResult[]>([]);
@@ -38,7 +41,9 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({ label, onSelect }) =>
   const searchLocations = async () => {
     setLoading(true);
     try {
-      const response = await axiosClient.get('/api/v1/external/geocode', { params: { location: inputValue, limit: 3 } });
+      const response = await axiosClient.get('/api/v1/external/geocode', {
+        params: { location: inputValue, limit: 3 },
+      });
       const data: LocationResult[] = await response.data;
       setLocations(data);
     } catch (error) {
@@ -70,9 +75,10 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({ label, onSelect }) =>
               <Button
                 onClick={searchLocations}
                 disabled={loading}
-                startIcon={loading ? <CircularProgress size={20} /> : <SearchIcon />}
+                startIcon={
+                  loading ? <CircularProgress size={20} /> : <SearchIcon />
+                }
                 style={{ maxWidth: 16 }}
-                variant="outlined"
               />
             ),
           }}

@@ -11,7 +11,10 @@ import {
   FormControlLabel,
   Box,
 } from '@mui/material';
-import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  MobileDateTimePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
@@ -114,7 +117,7 @@ const CreateRideDialog = ({
         />
         <Box my={2}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
+            <MobileDateTimePicker
               label="Departure Time"
               value={departureTime}
               onChange={(newValue) => setDepartureTime(newValue)}
