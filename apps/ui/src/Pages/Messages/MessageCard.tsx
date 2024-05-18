@@ -1,21 +1,21 @@
-import { Message, MessageType } from '@communecar/types';
 import {
-  Avatar,
   Box,
+  Avatar,
   Button,
-  CircularProgress,
   ListItem,
-  ListItemAvatar,
-  ListItemText,
   Typography,
+  ListItemText,
+  ListItemAvatar,
+  CircularProgress,
 } from '@mui/material';
-import { formatDateRelative } from '../../utils/format/formatDateRelative';
+
+import { Message, MessageType } from '@communecar/types';
+
 import { RequestActions } from '../../types/actions';
-import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
 import { actionTextDisplay } from './ActionTextDisplay';
 import { BoldText } from '../../Components/styles/BoldText.styled';
-import { useSnackbar } from '../../contexts/SnackbarContext';
-import { TEXT } from '../../themes/default/consts';
+import { formatDateRelative } from '../../utils/format/formatDateRelative';
+import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
 
 export interface MessageCardProps {
   message: Message;
@@ -26,21 +26,8 @@ const MessageCard: React.FC<MessageCardProps> = ({
   message,
   onActionComplete,
 }) => {
-  const { showMessage } = useSnackbar();
-  const { submitRespondToMessage, isLoading, error } = useRespondToMessage();
-
-  const handleAction = async (action: RequestActions) => {
-    const success = await submitRespondToMessage(message.id, action);
-    if (success && !isLoading) {
-      showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
-      onActionComplete(message.id, true);
-    } else {
-      showMessage(
-        `Failed to ${action} the request: ${error?.message}`,
-        'error',
-      );
-    }
-  };
+  const { mutateAsync: submitRespondToMessage, isLoading } =
+    useRespondToMessage();
 
   const isRequestType = [
     MessageType.JOINING_COMMUNITY_REQUEST,
@@ -87,7 +74,13 @@ const MessageCard: React.FC<MessageCardProps> = ({
         >
           <Button
             color="primary"
-            onClick={() => handleAction(RequestActions.ACCEPT)}
+            onClick={async () => {
+              const success = await submitRespondToMessage({
+                message,
+                action: RequestActions.ACCEPT,
+              });
+              onActionComplete(message.id, success);
+            }}
             disabled={isLoading}
             sx={{ textTransform: 'none' }}
           >
@@ -95,7 +88,13 @@ const MessageCard: React.FC<MessageCardProps> = ({
           </Button>
           <Button
             color="secondary"
-            onClick={() => handleAction(RequestActions.DECLINE)}
+            onClick={async () => {
+              const success = await submitRespondToMessage({
+                message,
+                action: RequestActions.DECLINE,
+              });
+              onActionComplete(message.id, success);
+            }}
             disabled={isLoading}
             sx={{ textTransform: 'none' }}
           >
