@@ -38,31 +38,4 @@ mutation {
     `;
 };
 
-const queryUpdateUserCommunityStatus = (
-  userId: number,
-  communityId: number,
-  status: UserStatus,
-) => {
-  return `mutation {
-  updateUserCommunityByUserIdAndCommunityId(
-    input: {
-      userCommunityPatch: { status: "${status}" }
-      userId: ${userId}
-      communityId: ${communityId}
-    }
-  ) {
-    userCommunity {
-      status
-      userId
-      communityId
-    }
-  }
-}
-`;
-};
-
-export {
-  queryDeleteUserCommunityStatus,
-  queryCreateUserCommunityStatus,
-  queryUpdateUserCommunityStatus,
-};
+export { queryDeleteUserCommunityStatus, queryCreateUserCommunityStatus };

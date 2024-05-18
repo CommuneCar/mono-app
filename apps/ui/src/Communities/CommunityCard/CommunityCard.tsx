@@ -14,12 +14,14 @@ import { useSnackbar } from '../../contexts/SnackbarContext';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { membersStatus } from '../../utils/communities/membershipConsts';
+import { useUserCommunityStatus } from '../../hooks/Communities/useRequstChangeUserStatus';
 
 export interface CommunityCardProps {
   community: Community;
   userStatus?: UserStatus;
   handleClickOnEdit: (communityToUpdate: Community) => void;
   userStatusIsLoading: boolean;
+  userId: number;
 }
 
 const CommunityCard: React.FC<CommunityCardProps> = ({
@@ -27,18 +29,23 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   userStatus,
   handleClickOnEdit,
   userStatusIsLoading,
+  userId,
 }) => {
   const { showMessage } = useSnackbar();
   const navigate = useNavigate();
+  const { createMutation, deleteMutation } = useUserCommunityStatus(
+    userId,
+    Number(community.id),
+  );
 
   const { name, description, picturesUrl } = community;
 
   const isMember = userStatus && membersStatus.includes(userStatus);
-  const onRequest = () => {
+  const onRequest = async () => {
     if (isMember) {
-      //TODO: Request to cancel community membership
+      await deleteMutation.mutateAsync();
     } else {
-      //TODO: Request to join the community
+      await createMutation.mutateAsync(UserStatus.PENDING);
     }
     showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
   };
