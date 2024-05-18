@@ -10,7 +10,7 @@ interface UserCommunityNode {
 }
 
 interface CommunityNode {
-  id: string;
+  id: number;
   title: string;
   description: string;
   userCommunitiesByCommunityId: {

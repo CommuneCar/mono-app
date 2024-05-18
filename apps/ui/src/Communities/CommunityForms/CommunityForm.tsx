@@ -23,7 +23,7 @@ interface CommunityFormProps {
 }
 
 const emptyCommunity: Community = {
-  id: '',
+  id: -1,
   title: '',
   description: '',
   numberOfMembers: 0,

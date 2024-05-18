@@ -1,42 +1,19 @@
 import { Community } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
-
-interface CreateCommunityResponse {
-  createCommunity: {
-    community: Community;
-  };
-}
+import { getCreateCommunityQuery } from '../utils/communitiesQueries';
+import { CreateCommunityResponse } from '../types/communitiesResponse';
+import { handleCommunityResponse } from '../utils/handleCommunityResponse';
 
 const postNewCommunity = async (
-  communityNew: Omit<Community, 'id'>,
+  newCommunity: Omit<Community, 'id'>,
   userId: number,
 ): Promise<Community> => {
-  const createCommunityQuery = `
-    mutation {
-  createCommunity(
-    input: {
-      community: {
-        ownerId: ${userId}, 
-        title: "${communityNew.title}",
-         description: "${communityNew.description}"
-      }
-    }
-  ) {
-    community {
-      id
-      ownerId
-      title
-      description
-      lat
-      long
-    }
-  }
-}
-  `;
+  const query = getCreateCommunityQuery(userId, newCommunity);
+
   try {
-    const data =
-      await graphqlRequest<CreateCommunityResponse>(createCommunityQuery);
-    return data.createCommunity.community;
+    const data = await graphqlRequest<CreateCommunityResponse>(query);
+    const result = handleCommunityResponse(data.createCommunity.community);
+    return result;
   } catch (error) {
     console.error('Error creating community:', error);
     throw error;
