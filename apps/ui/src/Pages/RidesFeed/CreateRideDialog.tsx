@@ -60,19 +60,7 @@ const CreateRideDialog = ({ rides, setOpen, isOpen }: ICreateRideDialog) => {
           const destination = formJson.destination;
           const communityName = formJson.communityName;
           const png = getRandomOption(options);
-          // rides.push({
-          //   communityName,
-          //   driver: {
-          //     name: driver,
-          //     id: user!.id.toString(),
-          //   },
-          //   departureTime,
-          //   startLocationName: startLocation,
-          //   destination,
-          //   png,
-          //   destinationName: destination,
-          //   startLocation,
-          // });
+          //TODO: Add create ride request here
           handleClose();
         },
       }}

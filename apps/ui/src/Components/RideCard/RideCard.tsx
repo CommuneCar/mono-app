@@ -6,7 +6,7 @@ import {
   CardActions,
   IconButton,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { Send } from '@mui/icons-material';
 import { JoinRideDialog } from '../JoinRide/JoinRide';
 import { useUser } from '../../hooks/Users/useUser';
