@@ -2,8 +2,7 @@ import { Gender } from './Enums';
 
 interface Rider {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   gender: Gender;
   avatarUrl?: string;
 }

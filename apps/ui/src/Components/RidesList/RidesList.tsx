@@ -14,9 +14,16 @@ dayjs.extend(relativeTime);
 interface RideListProps {
   rides: Ride[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
+  joinRideDialogOpened: boolean;
+  setJoinRideDialogOpened: (isOpen: boolean) => void;
 }
 
-const RidesList: React.FC<RideListProps> = ({ rides, setSelectedRide }) => {
+const RidesList: React.FC<RideListProps> = ({
+  rides,
+  setSelectedRide,
+  joinRideDialogOpened,
+  setJoinRideDialogOpened,
+}) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
   return (
     <Box>
@@ -57,6 +64,8 @@ const RidesList: React.FC<RideListProps> = ({ rides, setSelectedRide }) => {
           <RideCard
             driver={ride.driver.name}
             text={`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+            joinRideDialogOpened={joinRideDialogOpened}
+            setJoinRideDialogOpened={setJoinRideDialogOpened}
           />
         </Box>
       ))}

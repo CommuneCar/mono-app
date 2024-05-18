@@ -1,6 +1,7 @@
 import { Driver } from './Driver';
 
 export interface Ride {
+  id: string;
   driver: Driver;
   departureTime: Date;
   communityName: string;

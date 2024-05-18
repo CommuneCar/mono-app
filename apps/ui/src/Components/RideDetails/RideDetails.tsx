@@ -9,6 +9,10 @@ import {
 } from '@mui/material';
 import { Ride } from '@communecar/types';
 import { RideContentItem } from './RideContentItem';
+import { useGetRidersByRideId } from '../../hooks/Rides/useGetRiders';
+import UserLogo from '../UserAvatar/UserAvatar';
+import { DriverContentItem } from './DriverContentItem';
+import { getAvatarColour } from '../UserAvatar/utils';
 
 interface JoinRideProps {
   isOpen: boolean;
@@ -21,6 +25,7 @@ const RideDetails: React.FC<JoinRideProps> = ({
   ride,
   setSelectedRide,
 }) => {
+  const { data: riders } = useGetRidersByRideId(ride.id);
   const formatRideStops = () => {
     const stops = ride.destination.map(
       (destination, index) => `${index + 1}.${destination}`,
@@ -31,11 +36,11 @@ const RideDetails: React.FC<JoinRideProps> = ({
     setSelectedRide(undefined);
   };
   return (
-    <Dialog open={isOpen} onClose={() => setSelectedRide(undefined)} fullWidth>
+    <Dialog open={isOpen} onClose={onCancel} fullWidth>
       <DialogTitle>Ride Details</DialogTitle>
       <Divider />
       <DialogContent>
-        <RideContentItem header="Driver:" text={ride.driver.name} />
+        <DriverContentItem header="Driver:" text={ride.driver.name} />
         <RideContentItem
           header="Start Location:"
           text={ride.startLocationName}
@@ -44,6 +49,13 @@ const RideDetails: React.FC<JoinRideProps> = ({
         <RideContentItem header="Stops:" text={formatRideStops()} />
         <RideContentItem header="Community:" text={ride.communityName} />
       </DialogContent>
+      {riders?.map((rider) => (
+        <UserLogo
+          name={rider.name}
+          pic={rider.avatarUrl}
+          bgColor={getAvatarColour()}
+        />
+      ))}
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
       </DialogActions>

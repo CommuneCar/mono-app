@@ -66,7 +66,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         (n) => n.userByUserId !== undefined,
       );
 
-      const { fromLat, fromLong, toLat, toLong } = node;
+      const { fromLat, fromLong, toLat, toLong, id } = node;
 
       const driver = userNode?.userByUserId || {
         id: 'default',
@@ -94,6 +94,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         destinationName,
         destination: [node.toLat, node.toLong],
         png: '',
+        id: id,
       };
     }),
   );
@@ -179,7 +180,7 @@ export const fetchRidesDriver = async (
   return undefined;
 };
 
-export const fetchRidersByRideId = async (rideId: number): Promise<Rider[]> => {
+export const fetchRidersByRideId = async (rideId: string): Promise<Rider[]> => {
   const query = `{
     allRides(condition: { id: ${rideId} }) {
        nodes {
@@ -215,8 +216,7 @@ export const fetchRidersByRideId = async (rideId: number): Promise<Rider[]> => {
     if (!isDriver) {
       return {
         id: userNode?.userByUserId?.id,
-        firstName: userNode?.userByUserId?.firstName,
-        lastName: userNode?.userByUserId?.lastName,
+        name: `${userNode?.userByUserId?.firstName} ${userNode?.userByUserId?.lastName}`,
         gender: userNode?.userByUserId?.gender,
         pic: userNode?.userByUserId?.profileImage,
       } as Rider;

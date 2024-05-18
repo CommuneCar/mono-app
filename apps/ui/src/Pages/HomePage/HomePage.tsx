@@ -15,12 +15,14 @@ import { RidesList } from '../../Components/RidesList/RidesList';
 import { RideDetails } from '../../Components/RideDetails/RideDetails';
 import { Community, Ride } from '@communecar/types';
 import { useLocation } from 'react-router-dom';
+import { JoinRideDialog } from '../../Components/JoinRide/JoinRide';
 
 const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
     'communities',
   );
   const [selectedRide, setSelectedRide] = useState<Ride>();
+  const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
 
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
@@ -106,10 +108,17 @@ const HomePage: React.FC = () => {
             setSelectedRide={setSelectedRide}
             communityId={selectedCommunityId}
             setSelectedCommunityId={setSelectedCommunityId}
+            joinRideDialogOpened={joinRideDialogOpened}
+            setJoinRideDialogOpened={setJoinRideDialogOpened}
           />
         )}
         {selectedTab === 'rides' && (
-          <RidesList rides={rides} setSelectedRide={setSelectedRide} />
+          <RidesList
+            rides={rides}
+            setSelectedRide={setSelectedRide}
+            joinRideDialogOpened={joinRideDialogOpened}
+            setJoinRideDialogOpened={setJoinRideDialogOpened}
+          />
         )}
         {!!selectedRide && (
           <RideDetails
@@ -118,6 +127,10 @@ const HomePage: React.FC = () => {
             setSelectedRide={setSelectedRide}
           />
         )}
+        <JoinRideDialog
+          isOpen={joinRideDialogOpened}
+          setOpen={setJoinRideDialogOpened}
+        />
       </BottomDrawer>
     </Page>
   );

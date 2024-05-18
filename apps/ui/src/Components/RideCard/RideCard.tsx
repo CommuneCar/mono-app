@@ -16,12 +16,13 @@ import HailIcon from '@mui/icons-material/Hail';
 interface RideCardProps {
   text: string;
   driver: string;
+  joinRideDialogOpened: boolean;
+  setJoinRideDialogOpened: (isOpen: boolean) => void;
 }
 
 const RideCard: React.FC<RideCardProps> = (props) => {
   const { user } = useUser();
-  const { text, driver } = props;
-  const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
+  const { text, driver, joinRideDialogOpened, setJoinRideDialogOpened } = props;
 
   return (
     <Card variant={'outlined'} sx={{ m: 2, borderRadius: 5 }}>
@@ -46,7 +47,10 @@ const RideCard: React.FC<RideCardProps> = (props) => {
           endIcon={<Send />}
           variant={'contained'}
           size={'small'}
-          onClick={() => setJoinRideDialogOpened(true)}
+          onClick={(event) => {
+            event.stopPropagation();
+            setJoinRideDialogOpened(true);
+          }}
         >
           Join Ride
         </Button>
