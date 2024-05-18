@@ -16,11 +16,8 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
   handleClose,
   user,
 }) => {
-  const {
-    addCommunity,
-    error: addCommunityError,
-    isLoading: addCommunityIsLoading,
-  } = useCreateCommunity(user);
+  const { addCommunity, isLoading: addCommunityIsLoading } =
+    useCreateCommunity(user);
 
   const handleCreate = async (newCommunity: Community) => {
     try {
