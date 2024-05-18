@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  CircularProgress,
 } from '@mui/material';
 import { Community } from '@communecar/types';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
@@ -18,6 +19,7 @@ interface CommunityFormProps {
   communityToUpdate?: Community;
   formTexts: any;
   onSubmit: (community: Community) => void;
+  isLoading: boolean;
 }
 
 const emptyCommunity: Community = {
@@ -34,6 +36,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   onSubmit,
   communityToUpdate,
   handleClose,
+  isLoading,
 }) => {
   const [community, setCommunity] = useState<Community>(
     communityToUpdate ?? emptyCommunity,
@@ -47,6 +50,13 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onSubmit(community);
+  };
+
+  const submitButton = () => {
+    if (isLoading) {
+      return <CircularProgress size={24} color="info" />;
+    }
+    return <>{formTexts.submitText}</>;
   };
 
   return (
@@ -90,8 +100,12 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{TEXT.CANCEL}</Button>
-        <SubmitButton type="submit">{formTexts.submitText}</SubmitButton>
+        <Button onClick={handleClose} disabled={isLoading}>
+          {TEXT.CANCEL}
+        </Button>
+        <SubmitButton type="submit" disabled={isLoading}>
+          {submitButton()}
+        </SubmitButton>
       </DialogActions>
     </Dialog>
   );

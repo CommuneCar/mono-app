@@ -37,6 +37,7 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
       handleClose={handleClose}
       formTexts={FORMS_TEXT.CREATE_COMMUNITY}
       onSubmit={handleCreate}
+      isLoading={addCommunityIsLoading}
     ></CommunityForm>
   );
 };
