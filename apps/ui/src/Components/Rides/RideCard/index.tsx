@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Send } from '@mui/icons-material';
-import { JoinRideDialog } from '../../JoinRide/JoinRide';
+import { JoinRideDialog } from '../JoinRide';
 
 interface RideCardProps {
   text: string;
@@ -17,6 +17,12 @@ interface RideCardProps {
 const RideCard: React.FC<RideCardProps> = (props) => {
   const { text, driver } = props;
   const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
+
+  const handleJoinRideClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    console.log("clicked on join ride");
+    setJoinRideDialogOpened(true);
+  };
 
   return (
     <Card variant={'outlined'} sx={{ m: 2, borderRadius: 5 }}>
@@ -34,7 +40,7 @@ const RideCard: React.FC<RideCardProps> = (props) => {
           endIcon={<Send />}
           variant={'contained'}
           size={'small'}
-          onClick={() => setJoinRideDialogOpened(true)}
+          onClick={handleJoinRideClick}
         >
           Join Ride
         </Button>

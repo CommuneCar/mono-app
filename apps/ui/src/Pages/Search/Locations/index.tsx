@@ -14,6 +14,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { styled } from '@mui/material/styles';
 import { axiosClient } from '../../../apis/client';
 import { LocationResult } from '@communetypes/Geocoding';
+import { useSnackbar } from '../../../contexts/SnackbarContext';
+import { TEXT } from '../../../themes/default/consts';
 
 const CenteredBox = styled(Box)({
   display: 'flex',
@@ -31,6 +33,7 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({ label, onSelect }) =>
   const [inputValue, setInputValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationResult[]>([]);
+  const { showMessage } = useSnackbar();
 
   const searchLocations = async () => {
     setLoading(true);
@@ -41,6 +44,7 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({ label, onSelect }) =>
     } catch (error) {
       console.error('Error fetching locations:', error);
       setLocations([]);
+      showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
     } finally {
       setLoading(false);
     }

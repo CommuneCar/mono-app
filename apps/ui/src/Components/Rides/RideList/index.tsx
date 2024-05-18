@@ -19,6 +19,12 @@ interface RideListProps {
 
 const RidesList: React.FC<RideListProps> = ({ rides, communities, setSelectedRide }) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
+
+  const handleAddClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsCreateRideDialogOpen(true);
+  };
+
   return (
     <Box>
       <Box
@@ -35,7 +41,7 @@ const RidesList: React.FC<RideListProps> = ({ rides, communities, setSelectedRid
             edge="end"
             color="inherit"
             aria-label="add"
-            onClick={() => setIsCreateRideDialogOpen(true)}
+            onClick={handleAddClick}
             sx={{
               '&:hover': {
                 backgroundColor: defaultTheme.palette.action.hover,
