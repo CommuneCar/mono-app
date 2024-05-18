@@ -10,9 +10,8 @@ import {
 import { Ride } from '@communecar/types';
 import { RideContentItem } from './RideContentItem';
 import { useGetRidersByRideId } from '../../hooks/Rides/useGetRiders';
-import UserLogo from '../UserAvatar/UserAvatar';
 import { DriverContentItem } from './DriverContentItem';
-import { getAvatarColour } from '../UserAvatar/utils';
+import { RidersContentItem } from './RidersContentItem';
 
 interface JoinRideProps {
   isOpen: boolean;
@@ -48,14 +47,8 @@ const RideDetails: React.FC<JoinRideProps> = ({
         <RideContentItem header="Destination:" text={ride.destinationName} />
         <RideContentItem header="Stops:" text={formatRideStops()} />
         <RideContentItem header="Community:" text={ride.communityName} />
+        <RidersContentItem riders={riders} />
       </DialogContent>
-      {riders?.map((rider) => (
-        <UserLogo
-          name={rider.name}
-          pic={rider.avatarUrl}
-          bgColor={getAvatarColour()}
-        />
-      ))}
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
       </DialogActions>
