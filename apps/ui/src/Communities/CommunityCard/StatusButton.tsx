@@ -16,9 +16,6 @@ const StatusButton: React.FC<StatusButtonProps> = ({
   isLoading,
 }) => {
   const renderIcon = useMemo(() => {
-    if (isLoading) {
-      return <CircularProgress />;
-    }
     if (status) {
       return statusIcons[status];
     } else {
@@ -35,7 +32,7 @@ const StatusButton: React.FC<StatusButtonProps> = ({
     <Tooltip title={status ? status : 'Ask To Join'}>
       <Box>
         <IconButton onClick={onRequest} disabled={isDisabled}>
-          {renderIcon}
+          {isLoading ? <CircularProgress /> : renderIcon}
         </IconButton>
       </Box>
     </Tooltip>
