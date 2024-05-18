@@ -1,11 +1,12 @@
 import { Community } from '@communecar/types';
 import { postNewCommunity } from '../../apis/communities/createCommnuity';
 
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { TEXT } from '../../themes/default/consts';
 
 const useCreateCommunity = (userId: number) => {
+  const queryClient = useQueryClient();
   const { showMessage } = useSnackbar();
   const mutation = useMutation<Community, Error, Omit<Community, 'id'>>(
     (newCommunity: Omit<Community, 'id'>) =>
@@ -16,6 +17,7 @@ const useCreateCommunity = (userId: number) => {
         showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
       },
       onSuccess: () => {
+        queryClient.invalidateQueries('communities');
         showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
       },
     },
