@@ -2,13 +2,28 @@ import { Gender, User } from '@communecar/types';
 
 import { graphqlRequest } from '../graphql';
 import { SignUpUser } from '../../types/sign-up-user';
+import dayjs, { Dayjs } from 'dayjs';
+import { isNil } from 'lodash';
+
+const handleAge = (birthdate: Dayjs | null) => {
+  if (!isNil(birthdate)) {
+    const today = dayjs();
+    const age = today.diff(birthdate, 'year');
+
+    if (today.isBefore(birthdate.add(age, 'year'))) {
+      return age - 1;
+    }
+
+    return age;
+  }
+};
 
 const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
   const {
     age,
     email,
     phone,
-    gander,
+    gender,
     lastName,
     password,
     firstName,
@@ -22,8 +37,8 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         lastName: "${lastName}",
         email: "${email}",
         profileImage: "${avatarUrl}",
-        age: ${age ?? 6},
-        gender: "${gander}",
+        age: ${handleAge(age)},
+        gender: "${gender}",
         phoneNumber: "${phone}"
       }
     }) {
@@ -61,7 +76,7 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
     password,
     ...userResponse,
     phone: userResponse.phoneNumber,
-    gander: userResponse.gender as Gender,
+    gender: userResponse.gender as Gender,
   };
 };
 
