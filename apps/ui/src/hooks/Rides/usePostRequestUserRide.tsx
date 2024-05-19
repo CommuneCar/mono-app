@@ -3,7 +3,7 @@ import { postRequestToJoinRide } from '../../apis/rides/request-to-join-ride';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { TEXT } from '../../themes/default/consts';
 
-export const useUpdateUserRideStatus = () => {
+const usePostRequestUserRide = () => {
   const queryClient = useQueryClient();
   const { showMessage } = useSnackbar();
 
@@ -29,3 +29,5 @@ export const useUpdateUserRideStatus = () => {
     },
   );
 };
+
+export { usePostRequestUserRide };
