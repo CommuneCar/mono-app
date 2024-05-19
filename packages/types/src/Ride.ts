@@ -1,10 +1,18 @@
 import { Driver } from './Driver';
+import { User } from './User';
 
 export interface Location {
   lat: number;
   lon: number;
   name?: string;
 }
+
+type RenameIdToUserId<T extends { id: any }> = Omit<T, 'id'> & {
+  userId: T['id'];
+};
+
+export type UserLocation = Location &
+  RenameIdToUserId<Pick<User, 'id' | 'firstName' | 'lastName' | 'phone'>>;
 
 export interface Ride {
   driver: Driver;
@@ -14,7 +22,7 @@ export interface Ride {
   startLocation: [number, number];
   destinationName: string;
   destination: [number, number];
-  pickups: Location[];
+  pickups: UserLocation[];
   png: string;
   gasMoney: number;
   pronouns: boolean;

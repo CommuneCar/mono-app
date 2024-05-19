@@ -17,7 +17,11 @@ interface RideListProps {
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
-const RidesList: React.FC<RideListProps> = ({ rides, communities, setSelectedRide }) => {
+const RidesList: React.FC<RideListProps> = ({
+  rides,
+  communities,
+  setSelectedRide,
+}) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
 
   const handleAddClick = (event: React.MouseEvent) => {

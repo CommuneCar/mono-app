@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
 
   const communities = useMemo(() => {
     if (isLoadingCommunities || isLoadingRides) {
-      return []; // Return an empty array or a loading state until data is available
+      return [];
     }
 
     const groupedRides = groupBy(ridesData ?? [], 'communityName');
