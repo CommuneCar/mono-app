@@ -3,7 +3,7 @@ import { Message, MessageType, User } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
 import { isEmpty } from 'lodash';
 
-const fetchJoinCommunitiesMessagesForUser = async (
+const fetchJoinCommunitiesMessages = async (
   userId: number,
 ): Promise<Message[]> => {
   const allUserOwnerCommunitiesQuery = `{
@@ -102,4 +102,4 @@ const getBasePendingCommunityQuery = (commmunityId: number) => {
     }`;
 };
 
-export { fetchJoinCommunitiesMessagesForUser };
+export { fetchJoinCommunitiesMessages };

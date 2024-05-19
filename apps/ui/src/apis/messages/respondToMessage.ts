@@ -4,6 +4,10 @@ import {
   acceptJoinCommunityRequest,
   declineJoinCommunityRequest,
 } from './joinCommunityRequest';
+import {
+  acceptJoinRideRequest,
+  declineJoinRideRequest,
+} from '../rides/join-ride-request';
 
 const respondToMessage = async (message: Message, action: RequestActions) => {
   return typeToAction[message.type](message, action);
@@ -30,8 +34,13 @@ const typeToAction: Record<
   [MessageType.JOINING_RIDE_REQUEST]: (
     message: Message,
     action: RequestActions,
-  ): void => {
-    console.log(message.id, action);
+  ) => {
+    const actions = {
+      [RequestActions.ACCEPT]: acceptJoinRideRequest,
+      [RequestActions.DECLINE]: declineJoinRideRequest,
+    };
+
+    return actions[action](message);
   },
   [MessageType.APPROVED_COMMUNITY_REQUEST]: (
     message: Message,
