@@ -7,12 +7,11 @@ export interface Location {
   name?: string;
 }
 
-type RenameIdToUserId<T extends { id: any }> = Omit<T, 'id'> & {
+export type RenameIdToUserId<T extends { id: number }> = Omit<T, 'id'> & {
   userId: T['id'];
 };
 
-export type UserLocation = Location &
-  RenameIdToUserId<Pick<User, 'id' | 'firstName' | 'lastName' | 'phone'>>;
+export type UserLocation = Location & RenameIdToUserId<Omit<User, 'password'>>;
 
 export interface Ride {
   driver: Driver;

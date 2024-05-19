@@ -4,7 +4,14 @@ import { LocationResult } from '@communecar/types/src/Geocoding';
 
 import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
-import { Ride, UserLocation, UserRideStatus } from '@communecar/types';
+import {
+  Gender,
+  RenameIdToUserId,
+  Ride,
+  User,
+  UserLocation,
+  UserRideStatus,
+} from '@communecar/types';
 
 interface GraphQLRideNode {
   id: string;
@@ -27,6 +34,9 @@ interface GraphQLRideNode {
         firstName: string;
         lastName: string;
         phoneNumber: string;
+        profileImage: string;
+        gender: string;
+        email: string;
       };
       fromLat: number;
       fromLong: number;
@@ -40,41 +50,45 @@ interface GraphQLRideNode {
 
 export const fetchAllRides = async (): Promise<Ride[]> => {
   const query = `{
-    allRides {
-      nodes {
-        id
-        ownerId
-        fromLat
-        fromLong
-        toLat
-        toLong
-        startTime
-        gasMoney
-        pronouns
-        seats
-        communityByCommunityId {
-          title
-        }
-        userRidesByRideId {
-          nodes {
-            userByUserId {
-              id
-              firstName
-              lastName
-              phoneNumber
-            }
-            fromLat
-            fromLong
-            rideId
-            toLat
-            toLong
-            status
-            userId
+  allRides {
+    nodes {
+      id
+      ownerId
+      fromLat
+      fromLong
+      toLat
+      toLong
+      startTime
+      gasMoney
+      pronouns
+      seats
+      communityByCommunityId {
+        title
+      }
+      userRidesByRideId {
+        nodes {
+          userByUserId {
+            id
+            firstName
+            lastName
+            phoneNumber
+            profileImage
+            gender
+            email
           }
+          fromLat
+          fromLong
+          rideId
+          toLat
+          toLong
+          status
+          userId
         }
       }
     }
-  }`;
+  }
+}
+`;
 
   const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
     query,
@@ -94,19 +108,28 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
       const pickups: UserLocation[] = await Promise.all(
         node.userRidesByRideId.nodes
           .filter((node) => node.status == UserRideStatus.CONFIRMED)
-          .map(async (pickupNode) => ({
-            lat: pickupNode.fromLat,
-            lon: pickupNode.fromLong,
-            name: await geocode({
+          .map(async (pickupNode) => {
+            const user: RenameIdToUserId<Omit<User, 'password'>> = {
+              userId: pickupNode.userByUserId?.id ?? -1,
+              firstName: pickupNode.userByUserId?.firstName ?? '',
+              lastName: pickupNode.userByUserId?.lastName ?? '',
+              phone: pickupNode.userByUserId?.phoneNumber ?? '',
+              email: pickupNode.userByUserId?.email ?? '',
+              gander:
+                (pickupNode.userByUserId?.gender as Gender) ?? Gender.OTHER,
+              avatarUrl: pickupNode.userByUserId?.profileImage,
+            };
+            return {
               lat: pickupNode.fromLat,
               lon: pickupNode.fromLong,
-            }),
-            displayName: '',
-            userId: pickupNode.userByUserId?.id ?? -1,
-            firstName: pickupNode.userByUserId?.firstName ?? '',
-            lastName: pickupNode.userByUserId?.lastName ?? '',
-            phone: pickupNode.userByUserId?.phoneNumber ?? '',
-          })) ?? [],
+              name: await geocode({
+                lat: pickupNode.fromLat,
+                lon: pickupNode.fromLong,
+              }),
+              displayName: '',
+              ...user,
+            };
+          }) ?? [],
       );
 
       const startLocationName = await geocode({
