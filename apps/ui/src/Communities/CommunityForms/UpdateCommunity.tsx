@@ -16,15 +16,13 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
   handleClose,
   communityToUpdate,
 }) => {
-  const { updateCommunity } = useUpdateCommunity();
+  const { updateCommunity, isUpdating } = useUpdateCommunity();
 
   const handleUpdate = async (newCommunity: Community) => {
     try {
       const updatedCommunity = await updateCommunity(newCommunity);
       onUpdate(updatedCommunity);
-    } catch (err) {
-      console.error('Failed to update community:', err);
-    }
+    } catch (err) {}
     handleClose();
   };
   return (
@@ -34,6 +32,7 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
       formTexts={FORMS_TEXT.UPDATE_COMMUNITY}
       onSubmit={handleUpdate}
       communityToUpdate={communityToUpdate}
+      isLoading={isUpdating}
     ></CommunityForm>
   );
 };
