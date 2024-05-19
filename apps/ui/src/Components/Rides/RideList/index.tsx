@@ -8,6 +8,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { RideCard } from '../RideCard';
 import defaultTheme from '../../../themes/default';
 import CreateRideDialog from '../../../Pages/RidesFeed/CreateRideDialog';
+import { useUser } from '../../../hooks/Users/useUser';
 
 dayjs.extend(relativeTime);
 
@@ -17,8 +18,14 @@ interface RideListProps {
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
-const RidesList: React.FC<RideListProps> = ({ rides, communities, setSelectedRide }) => {
+const RidesList: React.FC<RideListProps> = ({
+  rides,
+  communities,
+  setSelectedRide,
+}) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
+  const { user } = useUser();
+  // const {} = useGetUserRideConnections(user?.id ?? 1);
 
   const handleAddClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -64,6 +71,7 @@ const RidesList: React.FC<RideListProps> = ({ rides, communities, setSelectedRid
           <RideCard
             driver={ride.driver.name}
             text={`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+            userId={user?.id ?? 1}
           />
         </Box>
       ))}
