@@ -93,13 +93,15 @@ const SignIn: React.FC = () => {
             width="100%" // Ensure the form takes full width
           >
             <EmailField
+              emailValue=""
               emailError={formErrors['email'] ?? false}
               handleChange={handleChange}
-            ></EmailField>
+            />
             <PasswordField
+              passwordValue=""
               passwordError={formErrors['password'] ?? false}
               handleChange={handleChange}
-            ></PasswordField>
+            />
             <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Link href="#" variant="body2">
                 {TEXT.FORGOT_PASSWORD}
