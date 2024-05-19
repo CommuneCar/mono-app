@@ -4,6 +4,7 @@ import { graphqlRequest } from '../graphql';
 import { SignUpUser } from '../../types/sign-up-user';
 import dayjs, { Dayjs } from 'dayjs';
 import { isNil } from 'lodash';
+import { hashString } from './utils';
 
 const handleAge = (birthdate: Dayjs | null) => {
   if (!isNil(birthdate)) {
@@ -30,6 +31,8 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
     avatarUrl,
   } = newUser;
 
+  const hashedPassword = await hashString(password);
+
   const newUserQuery = `mutation {
     createUser(input: {
       user: {
@@ -40,6 +43,7 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         age: ${handleAge(age)},
         gender: "${gender}",
         phoneNumber: "${phone}"
+        password: "${hashedPassword}"
       }
     }) {
       user {
@@ -51,6 +55,7 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         age
         gender
         phoneNumber
+        password
       }
     }
   }`;
@@ -66,6 +71,7 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         age: number;
         gender: string;
         phoneNumber: string;
+        password: string;
       };
     };
   }>(newUserQuery);
@@ -73,7 +79,6 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
   const { user: userResponse } = newUserResponse.createUser;
 
   return {
-    password,
     ...userResponse,
     phone: userResponse.phoneNumber,
     gender: userResponse.gender as Gender,
