@@ -7,7 +7,7 @@ interface GraphQLRideResponse {
   };
 }
 
-export const addNewRide = async (ride: Ride): Promise<Ride> => {
+export const addNewRide = async (ride: Omit<Ride, 'id'>): Promise<Ride> => {
   const query = `mutation CreateRide($input: CreateRideInput!) {
     createRide(input: $input) {
       ride {
@@ -35,11 +35,14 @@ export const addNewRide = async (ride: Ride): Promise<Ride> => {
         pronouns: ride.pronouns ?? false,
         startTime: ride.departureTime.toISOString(),
         seats: ride.seats,
-        modificationTs: new Date().toISOString()
-      }
-    }
+        modificationTs: new Date().toISOString(),
+      },
+    },
   };
 
-  const responseData = await graphqlRequest<GraphQLRideResponse>(query, variables);
+  const responseData = await graphqlRequest<GraphQLRideResponse>(
+    query,
+    variables,
+  );
   return responseData.createRide.ride;
 };
