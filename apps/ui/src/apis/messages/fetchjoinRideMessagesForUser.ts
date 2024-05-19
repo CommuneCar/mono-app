@@ -2,9 +2,7 @@ import { Message, MessageType, User } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
 import { isEmpty } from 'lodash';
 
-const fetchJoinRideMessagesForUser = async (
-  userId: number,
-): Promise<Message[]> => {
+const fetchJoinRideMessages = async (userId: number): Promise<Message[]> => {
   const allUserOwnerRidesQuery = `{
         allRides(condition: {ownerId: ${userId}}){
             nodes{
@@ -104,4 +102,4 @@ const getBasePendingRideQuery = (rideId: number) => {
       }`;
 };
 
-export { fetchJoinRideMessagesForUser };
+export { fetchJoinRideMessages };
