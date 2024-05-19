@@ -44,7 +44,6 @@ const authenticateUser = async (
   return {
     ...user,
     password,
-    gander: user.gender,
     phone: user.phoneNumber,
   };
 };
