@@ -141,7 +141,8 @@ const SignUp = () => {
       component: (
         <Box sx={{ margin: 2 }}>
           <EmailField
-            emailError={formErrors['email'] ?? false}
+            emailValue={formData.email}
+            emailError={formErrors.email ?? false}
             handleChange={handleChange}
           />
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -168,6 +169,7 @@ const SignUp = () => {
       component: (
         <Box sx={{ margin: 2 }}>
           <PasswordField
+            passwordValue={formData.password}
             passwordError={formErrors.password ?? false}
             handleChange={handleChange}
           />
@@ -188,6 +190,7 @@ const SignUp = () => {
           >
             <DatePicker
               label={"when's your birthday?"}
+              value={formData.age}
               onChange={(date) =>
                 setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
               }
@@ -207,10 +210,14 @@ const SignUp = () => {
             >
               <FormControlLabel
                 value="Female"
-                control={<Radio />}
+                control={<Radio checked={formData.gender === 'Female'} />}
                 label="Female"
               />
-              <FormControlLabel value="Male" control={<Radio />} label="Male" />
+              <FormControlLabel
+                value="Male"
+                control={<Radio checked={formData.gender === 'Male'} />}
+                label="Male"
+              />
               <FormControlLabel
                 value="Other"
                 control={
