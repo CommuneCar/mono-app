@@ -103,3 +103,5 @@ const getBasePendingRideQuery = (rideId: number) => {
         }
       }`;
 };
+
+export { fetchJoinRideMessagesForUser };
