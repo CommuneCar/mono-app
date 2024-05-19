@@ -1,29 +1,34 @@
-import { useState } from 'react';
+import { useMutation } from 'react-query';
+
+import { Message } from '@communecar/types';
+
+import { TEXT } from '../../themes/default/consts';
 import { RequestActions } from '../../types/actions';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 import { respondToMessage } from '../../apis/messages/respondToMessage';
 
 const useRespondToMessage = () => {
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const { showMessage } = useSnackbar();
 
-  const submitRespondToMessage = async (
-    messageId: string,
-    action: RequestActions,
-  ) => {
-    setLoading(true);
-    setError(null);
-    try {
-      await respondToMessage(messageId, action);
-      setLoading(false);
-      return true;
-    } catch (err) {
-      setError(err as Error);
-      setLoading(false);
-      return false;
-    }
-  };
-
-  return { submitRespondToMessage, isLoading, error };
+  return useMutation(
+    async (params: { message: Message; action: RequestActions }) => {
+      try {
+        await respondToMessage(params.message, params.action);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
+    {
+      onError: (error: any) => {
+        console.error('Error responding to message', error);
+        showMessage(TEXT.alerts.REQUEST_FAILED);
+      },
+      onSuccess: () => {
+        showMessage(TEXT.alerts.SUCCESSFUL_REQUEST);
+      },
+    },
+  );
 };
 
 export { useRespondToMessage };

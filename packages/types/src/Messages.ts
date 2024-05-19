@@ -4,6 +4,7 @@ type Message = {
   id: string;
   creatorUser: User;
   time: Date;
+  entityId: number;
   entityName: string;
   type: MessageType;
   addresseeUsers: User[];

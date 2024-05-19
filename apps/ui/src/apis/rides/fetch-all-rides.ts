@@ -23,7 +23,7 @@ interface GraphQLRideNode {
   userRidesByRideId: {
     nodes: Array<{
       userByUserId?: {
-        id: string;
+        id: number;
         firstName: string;
         lastName: string;
       };
@@ -79,16 +79,17 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
       const driver = node.userRidesByRideId.nodes.find(
         n => n.userByUserId !== undefined,
       )?.userByUserId || {
-        id: 'default',
+        id: -1,
         firstName: 'Unknown',
         lastName: 'Driver',
       };
 
-      const pickups: Location[] = await Promise.all(
+      const pickups = await Promise.all(
         node.userRidesByRideId.nodes.map(async (pickupNode) => ({
           lat: pickupNode.fromLat,
           lon: pickupNode.fromLong,
-          name: await geocode({ lat: pickupNode.fromLat, lon: pickupNode.fromLong })
+          name: await geocode({ lat: pickupNode.fromLat, lon: pickupNode.fromLong }),
+          displayName: ''
         }))
       );
 

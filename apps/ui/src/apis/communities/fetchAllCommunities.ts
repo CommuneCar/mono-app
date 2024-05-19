@@ -1,5 +1,5 @@
-import { Community } from "@communecar/types";
-import { graphqlRequest } from "../graphql";
+import { Community } from '@communecar/types';
+import { graphqlRequest } from '../graphql';
 
 interface UserNode {
   profileImage: string | null;
@@ -10,7 +10,7 @@ interface UserCommunityNode {
 }
 
 interface CommunityNode {
-  id: string;
+  id: number;
   title: string;
   description: string;
   userCommunitiesByCommunityId: {
@@ -42,17 +42,17 @@ const fetchAllCommunities = async (): Promise<Community[]> => {
         }
       }
     }`;
-  
+
   const data = await graphqlRequest<CommunitiesData>(query);
 
   return data.allCommunities.nodes.map((node): Community => {
-    const pictures = node.userCommunitiesByCommunityId.nodes.map(userCommunity => userCommunity.userByUserId.profileImage).filter((url): url is string => url != null);
+    const picturesUrl = node.userCommunitiesByCommunityId.nodes
+      .map((userCommunity) => userCommunity.userByUserId.profileImage)
+      .filter((url): url is string => url != null);
     return {
-      id: node.id,
-      name: node.title,
-      description: node.description,
+      ...node,
       numberOfMembers: node.userCommunitiesByCommunityId.nodes.length,
-      picturesUrl: pictures
+      picturesUrl,
     };
   });
 };

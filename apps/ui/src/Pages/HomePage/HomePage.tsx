@@ -11,7 +11,7 @@ import { CommunityList } from '../../Components/CommunityList/CommunityList';
 
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
-import { Ride } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 import { useLocation } from 'react-router-dom';
 import { RidesList } from '../../Components/Rides/RideList';
 import { RideDetails } from '../../Components/Rides/RideDetails';
@@ -38,10 +38,10 @@ const HomePage: React.FC = () => {
 
     const groupedRides = groupBy(ridesData ?? [], 'communityName');
     return communitiesData
-      ? communitiesData.map((community) => ({
-        ...community,
-        rides: groupedRides[community.name] ?? [],
-      }))
+      ? communitiesData.map((community: Community) => ({
+          ...community,
+          rides: groupedRides[community.title] ?? [],
+        }))
       : [];
   }, [communitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
 
@@ -68,7 +68,7 @@ const HomePage: React.FC = () => {
         markers={
           flatten(
             communities.map((community) =>
-              community.rides.map((ride) => ({
+              community.rides.map((ride: Ride) => ({
                 geocode: ride.startLocation,
                 popUp: `${ride.driver.name} going to ${ride.destinationName}`,
               })),
@@ -97,7 +97,11 @@ const HomePage: React.FC = () => {
           />
         )}
         {selectedTab === 'rides' && (
-          <RidesList rides={ridesData ?? []} communities={communitiesData ?? []} setSelectedRide={setSelectedRide} />
+          <RidesList
+            rides={ridesData ?? []}
+            communities={communitiesData ?? []}
+            setSelectedRide={setSelectedRide}
+          />
         )}
         {!!selectedRide && (
           <RideDetails

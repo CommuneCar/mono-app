@@ -3,6 +3,7 @@ import { pxToRem } from './utils';
 export const DEFAULT_FONT_SIZE = 14;
 export const DEFAULT_HTML_FONT_SIZE = 14; // For REM calculations only
 export const SPACING_SCALING_FACTOR = 2;
+export const DEFAULT_USER_ID = 1;
 
 export const BORDER_RADII = {
   XS: 5,

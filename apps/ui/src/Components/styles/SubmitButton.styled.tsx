@@ -9,6 +9,11 @@ const SubmitButton = styled(Button)`
     background-color: ${defaultTheme.palette.action.hoverOpacity};
     color: ${defaultTheme.palette.primary.main};
   }
+
+  &.Mui-disabled {
+    background-color: ${defaultTheme.palette.action.disabledBackground};
+    color: ${defaultTheme.palette.action.disabled};
+  }
 `;
 
 export { SubmitButton };

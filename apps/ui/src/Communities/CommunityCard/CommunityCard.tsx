@@ -14,12 +14,14 @@ import { useSnackbar } from '../../contexts/SnackbarContext';
 import { CardMenu } from '../../Components/CardMenu/CardMenu';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { membersStatus } from '../../utils/communities/membershipConsts';
+import { useUserCommunityStatus } from '../../hooks/Communities/useRequstChangeUserStatus';
 
 export interface CommunityCardProps {
   community: Community;
   userStatus?: UserStatus;
   handleClickOnEdit: (communityToUpdate: Community) => void;
   userStatusIsLoading: boolean;
+  userId: number;
 }
 
 const CommunityCard: React.FC<CommunityCardProps> = ({
@@ -27,18 +29,21 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   userStatus,
   handleClickOnEdit,
   userStatusIsLoading,
+  userId,
 }) => {
   const { showMessage } = useSnackbar();
   const navigate = useNavigate();
+  const { createMutation, deleteMutation, isCreatingStatus, isDeletingStatus } =
+    useUserCommunityStatus(userId, Number(community.id));
 
-  const { name, description, picturesUrl } = community;
+  const { title, description, picturesUrl } = community;
 
   const isMember = userStatus && membersStatus.includes(userStatus);
-  const onRequest = () => {
+  const onRequest = async () => {
     if (isMember) {
-      //TODO: Request to cancel community membership
+      await deleteMutation.mutateAsync();
     } else {
-      //TODO: Request to join the community
+      await createMutation.mutateAsync(UserStatus.PENDING);
     }
     showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
   };
@@ -60,7 +65,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
     <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardHeader
-          title={name}
+          title={title}
           titleTypographyProps={{
             variant: 'subtitle1',
             color: defaultTheme.palette.text.primary,
@@ -95,7 +100,9 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
             <StatusButton
               onRequest={onRequest}
               status={userStatus}
-              isLoading={userStatusIsLoading}
+              isLoading={
+                userStatusIsLoading || isCreatingStatus || isDeletingStatus
+              }
             />
           </Box>
         </CardActions>

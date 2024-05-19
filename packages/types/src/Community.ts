@@ -1,9 +1,10 @@
-import { Ride } from './Ride';
+import { Ride, Location } from './Ride';
 
 export interface Community {
-  id: string;
-  name: string;
+  id: number;
+  title: string;
   description: string;
+  location?: Location;
   numberOfMembers: number;
   picturesUrl: string[];
   rides?: Ride[];
