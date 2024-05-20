@@ -11,7 +11,10 @@ import {
   FormControlLabel,
   Box,
 } from '@mui/material';
-import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  MobileDateTimePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
@@ -21,10 +24,11 @@ import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
 import { LocationResult } from '@communetypes/Geocoding';
 import SearchLocations from '../Search/Locations';
-import { Ride } from '@communetypes/Ride';
+import { CreateRideSchema } from '@communetypes/CreateRideSchema';
 import { Community } from '@communetypes/Community';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
+import { useUser } from '../../hooks/Users/useUser';
 
 const options = [tlv, apple, camera];
 
@@ -34,14 +38,23 @@ export interface CreateRideDialogProps {
   isOpen: boolean;
 }
 
-const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProps) => {
+const CreateRideDialog = ({
+  communities,
+  setOpen,
+  isOpen,
+}: CreateRideDialogProps) => {
+  const { user } = useUser();
   const { mutate: addRide } = useAddNewRide();
-  const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(dayjs());
+  const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
+    dayjs(),
+  );
   const [community, setCommunity] = useState<Community | null>(null);
   const [gasMoney, setGasMoney] = useState('0');
   const [pronounsOnly, setPronounsOnly] = useState(false);
   const [seats, setSeats] = useState('0');
-  const [startLocation, setStartLocation] = useState<LocationResult | null>(null);
+  const [startLocation, setStartLocation] = useState<LocationResult | null>(
+    null,
+  );
   const [destination, setDestination] = useState<LocationResult | null>(null);
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
@@ -52,36 +65,44 @@ const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProp
     }
   };
 
-  const handleSubmit = async () => {    
+  const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
       alert('All fields are required.');
       return;
     }
+    if (!user) {
+      alert('Login is required for this operation');
+      return;
+    }
 
     const png = getRandomOption(options);
-    const newRide: Ride = {
+    const newRide: CreateRideSchema = {
       communityName: community.title,
-      driver: { name: 'Dar Nachmani', id: 5 },  // TODO: Replace with user from session
+      driver: {
+        name: `${user.firstName} ${user.lastName}`,
+        id: user.id,
+        phoneNumber: user.phone,
+      },
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
-      startLocation: [parseFloat(startLocation.lat), parseFloat(startLocation.lon)],
+      startLocation: [
+        parseFloat(startLocation.lat),
+        parseFloat(startLocation.lon),
+      ],
       destination: [parseFloat(destination.lat), parseFloat(destination.lon)],
       png,
       gasMoney: parseFloat(gasMoney),
       pronouns: pronounsOnly,
       seats: parseInt(seats, 10),
-      pickups: []
+      pickups: [],
     };
 
     addRide(newRide, {
       onSuccess: () => {
-        handleClose()
+        handleClose();
       },
-      onError: (error) => {
-        console.error('Error creating new ride:', error);  // TODO: Throw an alert or smth
-      }
-    })
+    });
   };
 
   const handleClose = () => {
@@ -89,21 +110,30 @@ const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProp
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} fullWidth PaperProps={{
-      style: {
-        height: '75vh', // Sets the dialog height to 75% of the viewport height
-        maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
-      }
-    }}>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      fullWidth
+      PaperProps={{
+        style: {
+          height: '75vh', // Sets the dialog height to 75% of the viewport height
+          maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
+        },
+      }}
+    >
       <DialogTitle>Create Ride</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Fill in the details to add a new ride.
         </DialogContentText>
-        <SearchCommunities communities={communities} selectedCommunity={community} setSelectedCommunity={setCommunity} />
+        <SearchCommunities
+          communities={communities}
+          selectedCommunity={community}
+          setSelectedCommunity={setCommunity}
+        />
         <Box my={2}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
+            <MobileDateTimePicker
               label="Departure Time"
               value={departureTime}
               onChange={(newValue) => setDepartureTime(newValue)}
@@ -111,8 +141,14 @@ const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProp
             />
           </LocalizationProvider>
         </Box>
-        <SearchLocations label="Start location" onSelect={(location) => handleLocationSelect(location, 'start')} />
-        <SearchLocations label="Destination" onSelect={(location) => handleLocationSelect(location, 'destination')} />
+        <SearchLocations
+          label="Start location"
+          onSelect={(location) => handleLocationSelect(location, 'start')}
+        />
+        <SearchLocations
+          label="Destination"
+          onSelect={(location) => handleLocationSelect(location, 'destination')}
+        />
         <TextField
           margin="dense"
           id="gasMoney"
@@ -123,7 +159,12 @@ const CreateRideDialog = ({ communities, setOpen, isOpen }: CreateRideDialogProp
           onChange={(e) => setGasMoney(e.target.value)}
         />
         <FormControlLabel
-          control={<Switch checked={pronounsOnly} onChange={(e) => setPronounsOnly(e.target.checked)} />}
+          control={
+            <Switch
+              checked={pronounsOnly}
+              onChange={(e) => setPronounsOnly(e.target.checked)}
+            />
+          }
           label="Same pronouns only"
         />
         <TextField

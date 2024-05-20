@@ -15,12 +15,16 @@ interface RideListProps {
   rides: Ride[];
   communities: Community[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
+  joinRideDialogOpened: boolean;
+  setJoinRideDialogOpened: (isOpen: boolean) => void;
 }
 
 const RidesList: React.FC<RideListProps> = ({
   rides,
   communities,
   setSelectedRide,
+  joinRideDialogOpened,
+  setJoinRideDialogOpened,
 }) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
 
@@ -68,6 +72,8 @@ const RidesList: React.FC<RideListProps> = ({
           <RideCard
             driver={ride.driver.name}
             text={`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+            joinRideDialogOpened={joinRideDialogOpened}
+            setJoinRideDialogOpened={setJoinRideDialogOpened}
           />
         </Box>
       ))}

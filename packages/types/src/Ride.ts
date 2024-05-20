@@ -14,6 +14,7 @@ export type RenameIdToUserId<T extends { id: number }> = Omit<T, 'id'> & {
 export type UserLocation = Location & RenameIdToUserId<Omit<User, 'password'>>;
 
 export interface Ride {
+  id: number;
   driver: Driver;
   departureTime: Date;
   communityName: string;
