@@ -1,9 +1,22 @@
+import { graphqlRequest } from '../graphql';
 import { Community } from '@communecar/types';
+import { getUpdateCommunityQuery } from '../utils/communitiesQueries';
+import { UpdateCommunityResponse } from '../types/communitiesResponse';
+import { handleCommunityResponse } from '../utils/handleCommunityResponse';
 
 const postUpdateCommunity = async (
-  newCommunity: Community,
+  community: Community,
 ): Promise<Community> => {
-  return { ...newCommunity };
+  const query = getUpdateCommunityQuery(community);
+
+  try {
+    const data = await graphqlRequest<UpdateCommunityResponse>(query);
+    const result = handleCommunityResponse(data.updateCommunityById.community);
+    return result;
+  } catch (error) {
+    console.error('Error updating community:', error);
+    throw error;
+  }
 };
 
 export { postUpdateCommunity };

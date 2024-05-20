@@ -103,7 +103,12 @@ const CreateRideDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} fullWidth>
+    <Dialog open={isOpen} onClose={handleClose} fullWidth PaperProps={{
+      style: {
+        height: '75vh', // Sets the dialog height to 75% of the viewport height
+        maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
+      }
+    }}>
       <DialogTitle>Create Ride</DialogTitle>
       <DialogContent>
         <DialogContentText>

@@ -14,7 +14,7 @@ dayjs.extend(relativeTime);
 interface CommunityListProps {
   communities: CommunityWithRides[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
-  communityId?: string;
+  communityId?: number;
   setSelectedCommunityId: React.Dispatch<any>;
   joinRideDialogOpened: boolean;
   setJoinRideDialogOpened: (isOpen: boolean) => void;
