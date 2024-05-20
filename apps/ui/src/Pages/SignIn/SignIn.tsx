@@ -93,13 +93,20 @@ const SignIn: React.FC = () => {
             width="100%"
           >
             <EmailField
-              emailError={formErrors['email'] ?? false}
+              emailValue={formData.email}
+              emailError={formErrors.email ?? false}
               handleChange={handleChange}
-            ></EmailField>
+            />
             <PasswordField
-              passwordError={formErrors['password'] ?? false}
+              passwordValue={formData.password}
+              passwordError={formErrors.password ?? false}
               handleChange={handleChange}
             ></PasswordField>
+            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+              <Link href="#" variant="body2">
+                {TEXT.FORGOT_PASSWORD}
+              </Link>
+            </Box>
             <Typography color={'error'}>{serverError}</Typography>
             <Button
               type="submit"
