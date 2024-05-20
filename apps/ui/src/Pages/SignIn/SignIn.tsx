@@ -79,9 +79,9 @@ const SignIn: React.FC = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            minHeight: '100vh', // Ensure the container takes the full height of the viewport
-            justifyContent: 'center', // Center the content vertically
-            padding: '0 20px', // Add padding on the sides for mobile devices
+            minHeight: '100vh',
+            justifyContent: 'center',
+            padding: '0 20px',
           }}
         >
           <SigningHeader titleText="Login"></SigningHeader>
@@ -90,7 +90,7 @@ const SignIn: React.FC = () => {
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
-            width="100%" // Ensure the form takes full width
+            width="100%"
           >
             <EmailField
               emailError={formErrors['email'] ?? false}
@@ -100,11 +100,11 @@ const SignIn: React.FC = () => {
               passwordError={formErrors['password'] ?? false}
               handleChange={handleChange}
             ></PasswordField>
-            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+            {/* <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Link href="#" variant="body2">
                 {TEXT.FORGOT_PASSWORD}
               </Link>
-            </Box>
+            </Box> */}
             <Typography color={'error'}>{serverError}</Typography>
             <Button
               type="submit"
