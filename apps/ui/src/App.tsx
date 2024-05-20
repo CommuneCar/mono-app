@@ -29,15 +29,6 @@ const App: React.FC = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/messages" element={<MessagesFeed />} />
-                  {/* <Route
-                    path="/rides"
-                    element={
-                      <RidesFeed
-                        rides={rides ?? []}
-                        communities={communities ?? []}
-                      />
-                    }
-                  /> */}
                   <Route
                     path="/communities"
                     element={<CommunitiesFeed communities={communities} />}
