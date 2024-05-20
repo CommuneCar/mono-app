@@ -16,7 +16,8 @@ import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { UserCommunitiesStatus } from '../types/community-type';
 import { useSnackbar } from '../contexts/SnackbarContext';
-import { TEXT, DEFAULT_USER_ID } from '../themes/default/consts';
+import { TEXT } from '../themes/default/consts';
+import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
 
 export interface CommunityFeedProps {
   communities: Community[] | undefined;
@@ -172,7 +173,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
       </Box>
       {isCreateOpen && (
         <CreateCommunity
-          user={user?.id ?? 1}
+          user={user?.id ?? DEFAULT_USER_ID}
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}

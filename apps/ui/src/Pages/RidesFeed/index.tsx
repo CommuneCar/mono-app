@@ -6,8 +6,8 @@ import { Community, Ride } from '@communecar/types';
 
 import RideCard from './RideCard';
 import defaultTheme from '../../themes/default';
-import CreateRideDialog from './CreateRideDialog';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
+import { CreateRideDialog } from './CreateRideDialog';
 
 export interface RidesFeedProps {
   rides: Ride[];

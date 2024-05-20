@@ -8,6 +8,7 @@ import { MessageCard } from './MessageCard';
 import { useUser } from '../../hooks/Users/useUser';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
 import { useGetUserMessages } from '../../hooks/Messages/fetchMessagesForUser';
+import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 
 const MessagesFeed = () => {
   const { user } = useUser();
@@ -17,7 +18,7 @@ const MessagesFeed = () => {
     isLoading: loading,
     isError,
     error,
-  } = useGetUserMessages(user?.id || 1);
+  } = useGetUserMessages(user?.id || DEFAULT_USER_ID);
 
   if (loading) return <CircularProgress />;
   if (isError)

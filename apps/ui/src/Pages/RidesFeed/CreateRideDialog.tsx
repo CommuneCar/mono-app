@@ -12,18 +12,17 @@ import {
   DialogContentText,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import { DateTimePicker } from '@mui/x-date-pickers';
 
 import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
-import { LocationResult } from '@communetypes/Geocoding';
 import SearchLocations from '../Search/Locations';
-import { Ride } from '@communetypes/Ride';
-import { Community } from '@communetypes/Community';
+import { Community, Ride, LocationResult } from '@communecar/types';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
+import { useUser } from '../../hooks/Users/useUser';
+import { MobileDateTimePicker } from '@mui/x-date-pickers';
 
 const options = [tlv, apple, camera];
 
@@ -38,7 +37,8 @@ const CreateRideDialog = ({
   setOpen,
   isOpen,
 }: CreateRideDialogProps) => {
-  const { mutate: addRide } = useAddNewRide();
+  const { mutateAsync: addRide, isSuccess } = useAddNewRide();
+  const { user } = useUser();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
   );
@@ -58,17 +58,28 @@ const CreateRideDialog = ({
       setDestination(location);
     }
   };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
       alert('All fields are required.');
       return;
     }
+    if (!user) {
+      alert('Login is required for this operation');
+      return;
+    }
 
     const png = getRandomOption(options);
-    const newRide: Ride = {
+    const newRide: Omit<Ride, 'id'> = {
       communityName: community.title,
-      driver: { name: 'Dar Nachmani', id: 5 }, // TODO: Replace with user from session
+      driver: {
+        name: `${user.firstName} ${user.lastName}`,
+        id: user.id,
+        phoneNumber: user.phone,
+      },
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
@@ -84,19 +95,15 @@ const CreateRideDialog = ({
       pickups: [],
     };
 
-    addRide(newRide, {
-      onSuccess: () => {
-        handleClose();
-      },
-      onError: (error) => {
-        console.error('Error creating new ride:', error); // TODO: Throw an alert or smth
-      },
-    });
+    await addRide(newRide);
+    if (isSuccess) {
+      handleClose();
+    }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  if (isSuccess) {
+    handleClose();
+  }
 
   return (
     <Dialog
@@ -105,8 +112,8 @@ const CreateRideDialog = ({
       fullWidth
       PaperProps={{
         style: {
-          height: '75vh', // Sets the dialog height to 75% of the viewport height
-          maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
+          height: '75vh',
+          maxHeight: '75vh',
         },
       }}
     >
@@ -121,7 +128,7 @@ const CreateRideDialog = ({
           setSelectedCommunity={setCommunity}
         />
         <Box my={2}>
-          <DateTimePicker
+          <MobileDateTimePicker
             label="Departure Time"
             value={departureTime}
             onChange={(newValue) => setDepartureTime(newValue)}
@@ -172,4 +179,4 @@ const CreateRideDialog = ({
   );
 };
 
-export default CreateRideDialog;
+export { CreateRideDialog };

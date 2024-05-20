@@ -22,6 +22,7 @@ model User {
   age           Int
   gender        String
   phoneNumber   String          @unique
+  password       String   @default("super-secret-password")
   userCommunity UserCommunity[]
   userRide      UserRide[]
 }
@@ -50,8 +51,10 @@ model Ride {
   id              Int         @id @default(autoincrement())
   ownerId         Int
   modificationTs  DateTime    @updatedAt
+  fromName        String?
   fromLat         Float
   fromLong        Float
+  toName          String?
   toLat           Float
   toLong          Float
   gasMoney        Int
@@ -71,6 +74,9 @@ model UserRide {
   fromLong  Float
   toLat     Float
   toLong    Float
+  flexibleLocation Boolean @default(false)
+  passengersCount Int @default(1)
+  modificationTs DateTime @updatedAt @default(now())
   user      User   @relation(fields: [userId], references: [id])
   ride      Ride   @relation(fields: [rideId], references: [id])
   @@id([userId, rideId])

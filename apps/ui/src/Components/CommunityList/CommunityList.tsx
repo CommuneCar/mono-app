@@ -16,6 +16,8 @@ interface CommunityListProps {
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
   communityId?: number;
   setSelectedCommunityId: React.Dispatch<any>;
+  joinRideDialogOpened: boolean;
+  setJoinRideDialogOpened: (isOpen: boolean) => void;
 }
 
 const CommunityList: React.FC<CommunityListProps> = ({
@@ -23,6 +25,8 @@ const CommunityList: React.FC<CommunityListProps> = ({
   setSelectedRide,
   communityId,
   setSelectedCommunityId,
+  joinRideDialogOpened,
+  setJoinRideDialogOpened,
 }) => {
   const filteredCommunities = useMemo(() => {
     return communityId
@@ -63,6 +67,8 @@ const CommunityList: React.FC<CommunityListProps> = ({
                   <RideCard
                     driver={ride.driver.name}
                     text={`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+                    joinRideDialogOpened={joinRideDialogOpened}
+                    setJoinRideDialogOpened={setJoinRideDialogOpened}
                   />
                 </Box>
               ))
