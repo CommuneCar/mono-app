@@ -11,7 +11,6 @@ import {
   User,
   UserLocation,
   UserRideStatus,
-  Rider,
 } from '@communecar/types';
 
 interface GraphQLRideNode {
@@ -198,50 +197,4 @@ const geocode = async (coords: {
     console.log(error);
     return 'An extremely unknown location 😵‍💫😵‍💫';
   }
-};
-
-export const fetchRidersByRideId = async (rideId: number): Promise<Rider[]> => {
-  const query = `{
-    allRides(condition: { id: ${rideId} }) {
-       nodes {
-        id
-        ownerId
-        userRidesByRideId {
-          nodes {
-            userByUserId {
-              id
-              firstName
-              lastName
-              profileImage
-              gender
-              phoneNumber
-            }
-          }
-        }
-      }
-    }
-  }`;
-
-  const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
-    query,
-  );
-
-  const riders = data.allRides.nodes.flatMap((node) =>
-    node.userRidesByRideId.nodes
-      .filter(
-        (userRide) => userRide?.userByUserId?.id.toString() !== node.ownerId,
-      )
-      .map(
-        (userRide) =>
-          ({
-            id: userRide?.userByUserId?.id,
-            name: `${userRide?.userByUserId?.firstName} ${userRide?.userByUserId?.lastName}`,
-            gender: userRide?.userByUserId?.gender,
-            pic: userRide?.userByUserId?.profileImage,
-            phoneNumber: userRide?.userByUserId?.phoneNumber,
-          }) as Rider,
-      ),
-  );
-
-  return riders;
 };

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import {
   Dialog,
   DialogActions,
@@ -34,6 +34,10 @@ const RideDetails: React.FC<JoinRideProps> = ({
   const onCancel = () => {
     setSelectedRide(undefined);
   };
+
+  useEffect(() => {
+    console.log({ ride, riders });
+  }, [riders, ride]);
 
   return (
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
