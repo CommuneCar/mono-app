@@ -1,5 +1,6 @@
 import { Ride } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
+import { CreateRideSchema } from '@communetypes/CreateRideSchema';
 
 interface GraphQLRideResponse {
   createRide: {
@@ -7,7 +8,7 @@ interface GraphQLRideResponse {
   };
 }
 
-export const addNewRide = async (ride: Omit<Ride, 'id'>): Promise<Ride> => {
+export const addNewRide = async (ride: CreateRideSchema): Promise<Ride> => {
   const query = `mutation CreateRide($input: CreateRideInput!) {
     createRide(input: $input) {
       ride {

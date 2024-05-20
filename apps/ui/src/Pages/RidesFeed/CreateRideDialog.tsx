@@ -11,7 +11,10 @@ import {
   FormControlLabel,
   Box,
 } from '@mui/material';
-import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  MobileDateTimePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
@@ -19,12 +22,11 @@ import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
-import { LocationResult } from '@communetypes/Geocoding';
 import SearchLocations from '../Search/Locations';
-import { Ride } from '@communetypes/Ride';
-import { Community } from '@communetypes/Community';
+import { Community, Ride, LocationResult } from '@communecar/types';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
+import { useUser } from '../../hooks/Users/useUser';
 
 const options = [tlv, apple, camera];
 
@@ -40,6 +42,7 @@ const CreateRideDialog = ({
   isOpen,
 }: CreateRideDialogProps) => {
   const { mutateAsync: addRide, isSuccess } = useAddNewRide();
+  const { user } = useUser();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
   );
@@ -68,11 +71,19 @@ const CreateRideDialog = ({
       alert('All fields are required.');
       return;
     }
+    if (!user) {
+      alert('Login is required for this operation');
+      return;
+    }
 
     const png = getRandomOption(options);
     const newRide: Omit<Ride, 'id'> = {
       communityName: community.title,
-      driver: { name: 'Dar Nachmani', id: 5 }, // TODO: Replace with user from session
+      driver: {
+        name: `${user.firstName} ${user.lastName}`,
+        id: user.id,
+        phoneNumber: user.phone,
+      },
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
@@ -87,15 +98,6 @@ const CreateRideDialog = ({
       seats: parseInt(seats, 10),
       pickups: [],
     };
-
-    addRide(newRide, {
-      onSuccess: () => {
-        handleClose();
-      },
-      onError: (error) => {
-        console.error('Error creating new ride:', error); // TODO: Throw an alert or smth
-      },
-    });
 
     await addRide(newRide);
     if (isSuccess) {
@@ -131,7 +133,7 @@ const CreateRideDialog = ({
         />
         <Box my={2}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
+            <MobileDateTimePicker
               label="Departure Time"
               value={departureTime}
               onChange={(newValue) => setDepartureTime(newValue)}

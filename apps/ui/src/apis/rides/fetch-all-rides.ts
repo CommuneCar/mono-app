@@ -95,7 +95,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
   );
   const rides: Ride[] = await Promise.all(
     data.allRides.nodes.map(async (node) => {
-      const { fromLat, fromLong, toLat, toLong } = node;
+      const { fromLat, fromLong, toLat, toLong, id } = node;
 
       const driver = node.userRidesByRideId.nodes.find(
         (node) => node.userByUserId !== undefined,
@@ -103,6 +103,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         id: -1,
         firstName: 'Unknown',
         lastName: 'Driver',
+        phoneNumber: '1234567',
       };
 
       const pickups: UserLocation[] = await Promise.all(
@@ -145,8 +146,9 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
       return {
         id: node.id,
         driver: {
-          id: driver.id,
+          id: Number(driver.id),
           name: `${driver.firstName} ${driver.lastName}`,
+          phoneNumber: driver.phoneNumber,
         },
         departureTime: new Date(node.startTime),
         communityName: node.communityByCommunityId?.title,
@@ -155,6 +157,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         destinationName,
         destination: [node.toLat, node.toLong],
         png: '',
+        id: Number(id),
         gasMoney: node.gasMoney ?? 0,
         pronouns: node.pronouns ?? false,
         seats: node.seats,
