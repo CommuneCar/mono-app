@@ -1,21 +1,16 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import {
+  Box,
   Button,
+  Switch,
   Dialog,
+  TextField,
   DialogTitle,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  TextField,
-  Switch,
   FormControlLabel,
-  Box,
+  DialogContentText,
 } from '@mui/material';
-import {
-  LocalizationProvider,
-  MobileDateTimePicker,
-} from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
 import { getRandomOption } from '../../utils';
@@ -27,6 +22,7 @@ import { Community, Ride, LocationResult } from '@communecar/types';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
 import { useUser } from '../../hooks/Users/useUser';
+import { MobileDateTimePicker } from '@mui/x-date-pickers';
 
 const options = [tlv, apple, camera];
 
@@ -132,14 +128,12 @@ const CreateRideDialog = ({
           setSelectedCommunity={setCommunity}
         />
         <Box my={2}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileDateTimePicker
-              label="Departure Time"
-              value={departureTime}
-              onChange={(newValue) => setDepartureTime(newValue)}
-              slotProps={{ textField: { fullWidth: true } }}
-            />
-          </LocalizationProvider>
+          <MobileDateTimePicker
+            label="Departure Time"
+            value={departureTime}
+            onChange={(newValue) => setDepartureTime(newValue)}
+            slotProps={{ textField: { fullWidth: true } }}
+          />
         </Box>
         <SearchLocations
           label="Start location"

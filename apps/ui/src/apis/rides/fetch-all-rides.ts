@@ -37,6 +37,7 @@ interface GraphQLRideNode {
         profileImage: string;
         gender: string;
         email: string;
+        age: number;
       };
       fromLat: number;
       fromLong: number;
@@ -116,9 +117,10 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
               lastName: pickupNode.userByUserId?.lastName ?? '',
               phone: pickupNode.userByUserId?.phoneNumber ?? '',
               email: pickupNode.userByUserId?.email ?? '',
-              gander:
+              gender:
                 (pickupNode.userByUserId?.gender as Gender) ?? Gender.OTHER,
               avatarUrl: pickupNode.userByUserId?.profileImage,
+              age: pickupNode.userByUserId?.age ?? 0,
             };
             return {
               lat: pickupNode.fromLat,

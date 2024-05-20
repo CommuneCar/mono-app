@@ -2,18 +2,36 @@ import { Gender, User } from '@communecar/types';
 
 import { graphqlRequest } from '../graphql';
 import { SignUpUser } from '../../types/sign-up-user';
+import dayjs, { Dayjs } from 'dayjs';
+import { isNil } from 'lodash';
+import { hashString } from './utils';
+
+const handleAge = (birthdate: Dayjs | null) => {
+  if (!isNil(birthdate)) {
+    const today = dayjs();
+    const age = today.diff(birthdate, 'year');
+
+    if (today.isBefore(birthdate.add(age, 'year'))) {
+      return age - 1;
+    }
+
+    return age;
+  }
+};
 
 const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
   const {
     age,
     email,
     phone,
-    gander,
+    gender,
     lastName,
     password,
     firstName,
     avatarUrl,
   } = newUser;
+
+  const hashedPassword = await hashString(password);
 
   const newUserQuery = `mutation {
     createUser(input: {
@@ -22,9 +40,10 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         lastName: "${lastName}",
         email: "${email}",
         profileImage: "${avatarUrl}",
-        age: ${age ?? 6},
-        gender: "${gander}",
+        age: ${handleAge(age)},
+        gender: "${gender}",
         phoneNumber: "${phone}"
+        password: "${hashedPassword}"
       }
     }) {
       user {
@@ -36,6 +55,7 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         age
         gender
         phoneNumber
+        password
       }
     }
   }`;
@@ -51,6 +71,7 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         age: number;
         gender: string;
         phoneNumber: string;
+        password: string;
       };
     };
   }>(newUserQuery);
@@ -58,10 +79,9 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
   const { user: userResponse } = newUserResponse.createUser;
 
   return {
-    password,
     ...userResponse,
     phone: userResponse.phoneNumber,
-    gander: userResponse.gender as Gender,
+    gender: userResponse.gender as Gender,
   };
 };
 
