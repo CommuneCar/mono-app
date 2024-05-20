@@ -6,7 +6,7 @@ import {
   Collapse,
   Typography,
 } from '@mui/material';
-import UserLogo from '../../UserAvatar/UserAvatar';
+import { UserLogo } from '../../UserAvatar/UserAvatar';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Rider } from '@communetypes/Rider';
 import { getAvatarColour } from '../../UserAvatar/utils';

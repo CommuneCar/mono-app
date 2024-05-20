@@ -27,4 +27,4 @@ const UserLogo = ({ name, pic, bgColor }: UserLogoProps) => {
   );
 };
 
-export default UserLogo;
+export { UserLogo };

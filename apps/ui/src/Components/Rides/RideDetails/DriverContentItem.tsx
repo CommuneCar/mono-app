@@ -1,6 +1,6 @@
 import React from 'react';
 import { DialogContentText, Typography, Box } from '@mui/material';
-import UserLogo from '../../UserAvatar/UserAvatar';
+import { UserLogo } from '../../UserAvatar/UserAvatar';
 import { DRIVER_ITEM_COLOR } from '../../UserAvatar/consts';
 
 interface DriverContentItemProps {
