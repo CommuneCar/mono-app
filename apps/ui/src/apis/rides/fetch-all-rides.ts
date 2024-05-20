@@ -4,7 +4,14 @@ import { LocationResult } from '@communecar/types/src/Geocoding';
 
 import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
-import { Ride } from '@communecar/types';
+import {
+  Gender,
+  RenameIdToUserId,
+  Ride,
+  User,
+  UserLocation,
+  UserRideStatus,
+} from '@communecar/types';
 
 interface GraphQLRideNode {
   id: string;
@@ -26,48 +33,62 @@ interface GraphQLRideNode {
         id: number;
         firstName: string;
         lastName: string;
+        phoneNumber: string;
+        profileImage: string;
+        gender: string;
+        email: string;
       };
       fromLat: number;
       fromLong: number;
       toLat: number;
       toLong: number;
+      status: UserRideStatus;
+      userId: string;
     }>;
   };
 }
 
 export const fetchAllRides = async (): Promise<Ride[]> => {
   const query = `{
-    allRides {
-      nodes {
-        id
-        ownerId
-        fromLat
-        fromLong
-        toLat
-        toLong
-        startTime
-        gasMoney
-        pronouns
-        seats
-        communityByCommunityId {
-          title
-        }
-        userRidesByRideId {
-          nodes {
-            userByUserId {
-              id
-              firstName
-              lastName
-            }
-            toLat
-            toLong
-            fromLong
-            fromLat
+  allRides {
+    nodes {
+      id
+      ownerId
+      fromLat
+      fromLong
+      toLat
+      toLong
+      startTime
+      gasMoney
+      pronouns
+      seats
+      communityByCommunityId {
+        title
+      }
+      userRidesByRideId {
+        nodes {
+          userByUserId {
+            id
+            firstName
+            lastName
+            phoneNumber
+            profileImage
+            gender
+            email
           }
+          fromLat
+          fromLong
+          rideId
+          toLat
+          toLong
+          status
+          userId
         }
       }
     }
-  }`;
+  }
+}
+`;
 
   const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
     query,
@@ -77,26 +98,45 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
       const { fromLat, fromLong, toLat, toLong } = node;
 
       const driver = node.userRidesByRideId.nodes.find(
-        n => n.userByUserId !== undefined,
+        (node) => node.userByUserId !== undefined,
       )?.userByUserId || {
         id: -1,
         firstName: 'Unknown',
         lastName: 'Driver',
       };
 
-      const pickups = await Promise.all(
-        node.userRidesByRideId.nodes.map(async (pickupNode) => ({
-          lat: pickupNode.fromLat,
-          lon: pickupNode.fromLong,
-          name: await geocode({ lat: pickupNode.fromLat, lon: pickupNode.fromLong }),
-          displayName: ''
-        }))
+      const pickups: UserLocation[] = await Promise.all(
+        node.userRidesByRideId.nodes
+          .filter((node) => node.status == UserRideStatus.CONFIRMED)
+          .map(async (pickupNode) => {
+            const user: RenameIdToUserId<Omit<User, 'password'>> = {
+              userId: pickupNode.userByUserId?.id ?? -1,
+              firstName: pickupNode.userByUserId?.firstName ?? '',
+              lastName: pickupNode.userByUserId?.lastName ?? '',
+              phone: pickupNode.userByUserId?.phoneNumber ?? '',
+              email: pickupNode.userByUserId?.email ?? '',
+              gander:
+                (pickupNode.userByUserId?.gender as Gender) ?? Gender.OTHER,
+              avatarUrl: pickupNode.userByUserId?.profileImage,
+            };
+            return {
+              lat: pickupNode.fromLat,
+              lon: pickupNode.fromLong,
+              name: await geocode({
+                lat: pickupNode.fromLat,
+                lon: pickupNode.fromLong,
+              }),
+              displayName: '',
+              ...user,
+            };
+          }) ?? [],
       );
 
       const startLocationName = await geocode({
         lat: fromLat,
         lon: fromLong,
       });
+
       const destinationName = await geocode({
         lat: toLat,
         lon: toLong,
