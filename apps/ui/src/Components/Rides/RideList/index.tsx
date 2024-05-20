@@ -7,7 +7,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 
 import { RideCard } from '../RideCard';
 import defaultTheme from '../../../themes/default';
-import CreateRideDialog from '../../../Pages/RidesFeed/CreateRideDialog';
+import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
 
 dayjs.extend(relativeTime);
 

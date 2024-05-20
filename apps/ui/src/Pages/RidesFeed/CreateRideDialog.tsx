@@ -22,10 +22,8 @@ import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
-import { LocationResult } from '@communetypes/Geocoding';
 import SearchLocations from '../Search/Locations';
-import { CreateRideSchema } from '@communetypes/CreateRideSchema';
-import { Community } from '@communetypes/Community';
+import { Community, Ride, LocationResult } from '@communecar/types';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
 import { useUser } from '../../hooks/Users/useUser';
@@ -43,8 +41,8 @@ const CreateRideDialog = ({
   setOpen,
   isOpen,
 }: CreateRideDialogProps) => {
+  const { mutateAsync: addRide, isSuccess } = useAddNewRide();
   const { user } = useUser();
-  const { mutate: addRide } = useAddNewRide();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
   );
@@ -64,6 +62,9 @@ const CreateRideDialog = ({
       setDestination(location);
     }
   };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
@@ -76,7 +77,7 @@ const CreateRideDialog = ({
     }
 
     const png = getRandomOption(options);
-    const newRide: CreateRideSchema = {
+    const newRide: Omit<Ride, 'id'> = {
       communityName: community.title,
       driver: {
         name: `${user.firstName} ${user.lastName}`,
@@ -98,16 +99,15 @@ const CreateRideDialog = ({
       pickups: [],
     };
 
-    addRide(newRide, {
-      onSuccess: () => {
-        handleClose();
-      },
-    });
+    await addRide(newRide);
+    if (isSuccess) {
+      handleClose();
+    }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  if (isSuccess) {
+    handleClose();
+  }
 
   return (
     <Dialog
@@ -116,8 +116,8 @@ const CreateRideDialog = ({
       fullWidth
       PaperProps={{
         style: {
-          height: '75vh', // Sets the dialog height to 75% of the viewport height
-          maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
+          height: '75vh',
+          maxHeight: '75vh',
         },
       }}
     >
@@ -185,4 +185,4 @@ const CreateRideDialog = ({
   );
 };
 
-export default CreateRideDialog;
+export { CreateRideDialog };

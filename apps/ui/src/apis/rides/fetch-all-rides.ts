@@ -14,7 +14,7 @@ import {
 } from '@communecar/types';
 
 interface GraphQLRideNode {
-  id: string;
+  id: number;
   ownerId: string;
   fromLat: number;
   fromLong: number;
@@ -144,6 +144,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
       });
 
       return {
+        id,
         driver: {
           id: Number(driver.id),
           name: `${driver.firstName} ${driver.lastName}`,
@@ -156,7 +157,6 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
         destinationName,
         destination: [node.toLat, node.toLong],
         png: '',
-        id: Number(id),
         gasMoney: node.gasMoney ?? 0,
         pronouns: node.pronouns ?? false,
         seats: node.seats,
