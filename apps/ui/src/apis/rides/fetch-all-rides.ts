@@ -98,7 +98,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
       const { fromLat, fromLong, toLat, toLong } = node;
 
       const driver = node.userRidesByRideId.nodes.find(
-        (n) => n.userByUserId !== undefined,
+        (node) => node.userByUserId !== undefined,
       )?.userByUserId || {
         id: -1,
         firstName: 'Unknown',
