@@ -1,6 +1,6 @@
 const getUserRideQueries = (userId: number) => {
   return `
-query MyQuery {
+query {
   allUserRides(condition: { userId: ${userId} }) {
     nodes {
       fromLat
