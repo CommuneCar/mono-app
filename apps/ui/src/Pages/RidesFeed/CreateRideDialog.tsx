@@ -106,8 +106,8 @@ const CreateRideDialog = ({
       fullWidth
       PaperProps={{
         style: {
-          height: '75vh', // Sets the dialog height to 75% of the viewport height
-          maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
+          height: '75vh',
+          maxHeight: '75vh',
         },
       }}
     >
@@ -175,4 +175,4 @@ const CreateRideDialog = ({
   );
 };
 
-export default CreateRideDialog;
+export { CreateRideDialog };
