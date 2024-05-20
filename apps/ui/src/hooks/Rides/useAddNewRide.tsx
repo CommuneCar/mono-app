@@ -10,7 +10,6 @@ const useAddNewRide = () => {
 
   return useMutation(async (ride: Omit<Ride, 'id'>) => addNewRide(ride), {
     onSuccess: () => {
-      // Successfully added the ride, invalidate previous rides and fetch new values from the BE:
       queryClient.invalidateQueries('rides');
       showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
     },

@@ -39,7 +39,7 @@ const CreateRideDialog = ({
   setOpen,
   isOpen,
 }: CreateRideDialogProps) => {
-  const { mutate: addRide } = useAddNewRide();
+  const { mutateAsync: addRide, isSuccess } = useAddNewRide();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
   );
@@ -58,6 +58,9 @@ const CreateRideDialog = ({
     } else {
       setDestination(location);
     }
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleSubmit = async () => {
@@ -93,11 +96,16 @@ const CreateRideDialog = ({
         console.error('Error creating new ride:', error); // TODO: Throw an alert or smth
       },
     });
+
+    await addRide(newRide);
+    if (isSuccess) {
+      handleClose();
+    }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  if (isSuccess) {
+    handleClose();
+  }
 
   return (
     <Dialog
