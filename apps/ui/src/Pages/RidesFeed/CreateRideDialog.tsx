@@ -28,6 +28,7 @@ import { CreateRideSchema } from '@communetypes/CreateRideSchema';
 import { Community } from '@communetypes/Community';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
+import { useUser } from '../../hooks/Users/useUser';
 
 const options = [tlv, apple, camera];
 
@@ -42,6 +43,7 @@ const CreateRideDialog = ({
   setOpen,
   isOpen,
 }: CreateRideDialogProps) => {
+  const { user } = useUser();
   const { mutate: addRide } = useAddNewRide();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
@@ -68,11 +70,19 @@ const CreateRideDialog = ({
       alert('All fields are required.');
       return;
     }
+    if (!user) {
+      alert('Login is required for this operation');
+      return;
+    }
 
     const png = getRandomOption(options);
     const newRide: CreateRideSchema = {
       communityName: community.title,
-      driver: { name: 'Dar Nachmani', id: 5, phoneNumber: '123456' }, // TODO: Replace with user from session
+      driver: {
+        name: `${user.firstName} ${user.lastName}`,
+        id: user.id,
+        phoneNumber: user.phone,
+      },
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
@@ -92,9 +102,6 @@ const CreateRideDialog = ({
       onSuccess: () => {
         handleClose();
       },
-      onError: (error) => {
-        console.error('Error creating new ride:', error); // TODO: Throw an alert or smth
-      },
     });
   };
 
@@ -103,12 +110,17 @@ const CreateRideDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} fullWidth PaperProps={{
-      style: {
-        height: '75vh', // Sets the dialog height to 75% of the viewport height
-        maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
-      }
-    }}>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      fullWidth
+      PaperProps={{
+        style: {
+          height: '75vh', // Sets the dialog height to 75% of the viewport height
+          maxHeight: '75vh', // Optional: ensures the dialog does not exceed this height
+        },
+      }}
+    >
       <DialogTitle>Create Ride</DialogTitle>
       <DialogContent>
         <DialogContentText>

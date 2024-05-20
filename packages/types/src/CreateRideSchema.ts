@@ -1,22 +1,4 @@
 import { Driver } from './Driver';
+import { Ride } from './Ride';
 
-export interface Location {
-  lat: number;
-  lon: number;
-  name?: string;
-}
-
-export interface CreateRideSchema {
-  driver: Driver;
-  departureTime: Date;
-  communityName: string;
-  startLocationName: string;
-  startLocation: [number, number];
-  destinationName: string;
-  destination: [number, number];
-  pickups: Location[];
-  png: string;
-  gasMoney: number;
-  pronouns: boolean;
-  seats: number;
-}
+export type CreateRideSchema = Omit<Ride, 'id'>;
