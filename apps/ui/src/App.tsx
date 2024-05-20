@@ -6,22 +6,17 @@ import './App.css';
 
 import SignIn from './Pages/SignIn/SignIn';
 import SignUp from './Pages/Signup/SignUp';
-import { RidesFeed } from './Pages/RidesFeed';
 import { RoleProvider } from './contexts/role';
 import { ProtectedRoute } from './ProtectedRoute';
 import { HomePage } from './Pages/HomePage/HomePage';
 import { UserProvider } from './hooks/Users/useUser';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
-import { useGetAllRides } from './hooks/Rides/useGetAllRides';
 import { SnackbarProvider } from './contexts/SnackbarContext';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
 import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 
 const App: React.FC = () => {
   const { data: communities } = useGetAllCommunities();
-
-  const { data: rides } = useGetAllRides();
-
   return (
     <>
       <SnackbarProvider>
@@ -34,7 +29,7 @@ const App: React.FC = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/messages" element={<MessagesFeed />} />
-                  <Route
+                  {/* <Route
                     path="/rides"
                     element={
                       <RidesFeed
@@ -42,7 +37,7 @@ const App: React.FC = () => {
                         communities={communities ?? []}
                       />
                     }
-                  />
+                  /> */}
                   <Route
                     path="/communities"
                     element={<CommunitiesFeed communities={communities} />}

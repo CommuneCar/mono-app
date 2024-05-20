@@ -48,7 +48,6 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
     () => ({
       Home: '/home',
       Messages: '/messages',
-      Rides: '/rides',
       Communities: '/communities',
     }),
     [],
