@@ -19,6 +19,7 @@ const authenticateUser = async (
           gender
           password
           age
+          profileImage
         }
       }
   }`;
@@ -34,6 +35,7 @@ const authenticateUser = async (
         password: string;
         gender: Gender;
         age: number;
+        profileImage: string;
       }[];
     };
   }>(getAllUserQuery);
@@ -50,6 +52,7 @@ const authenticateUser = async (
   return {
     ...user,
     phone: user.phoneNumber,
+    avatarUrl: user.profileImage,
   };
 };
 
