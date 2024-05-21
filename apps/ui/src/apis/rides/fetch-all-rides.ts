@@ -69,6 +69,9 @@ const fetchAllRides = async (): Promise<Ride[]> => {
         seats
         fromName
         toName
+        communityByCommunityId{
+          title
+        }
         userRidesByRideId {
           nodes {
             userByUserId {
