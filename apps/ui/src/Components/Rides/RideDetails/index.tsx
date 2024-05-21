@@ -1,13 +1,15 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Button,
+  Dialog,
   Divider,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
+import React, { Dispatch, SetStateAction } from 'react';
+
 import { Ride } from '@communecar/types';
+
 import { RideContentItem } from './RideContentItem';
 import { DriverContentItem } from './DriverContentItem';
 import { RidersContentItem } from './RidersContentItem';
@@ -16,28 +18,22 @@ import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
 interface JoinRideProps {
   isOpen: boolean;
   ride: Ride;
-  setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const RideDetails: React.FC<JoinRideProps> = ({
-  isOpen,
-  ride,
-  setSelectedRide,
-}) => {
+const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
   const { data: riders } = useGetRidersByRideId(ride.id);
+
   const formatRideStops = () => {
-    const stops = ride.destination.map(
-      (destination, index) => `${index + 1}.${destination}`,
+    const stops = ride.pickups.map(
+      (destination, index) => `${index + 1}.${destination.lon}`,
     );
     return stops.join('\n');
   };
-  const onCancel = () => {
-    setSelectedRide(undefined);
-  };
 
-  useEffect(() => {
-    console.log({ ride, riders });
-  }, [riders, ride]);
+  const onCancel = () => {
+    setIsOpen(false);
+  };
 
   return (
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
