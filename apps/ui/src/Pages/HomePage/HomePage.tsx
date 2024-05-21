@@ -1,10 +1,5 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  ToggleButton,
-  ToggleButtonGroup,
-} from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { flatten, groupBy } from 'lodash';
 
