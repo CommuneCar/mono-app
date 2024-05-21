@@ -1,14 +1,15 @@
 import dayjs from 'dayjs';
-import { Community, Ride } from '@communecar/types';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Box, IconButton, Tooltip } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
+import { Box, IconButton, Tooltip } from '@mui/material';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+
+import { Community, Ride } from '@communecar/types';
 
 import { RideCard } from '../RideCard';
 import defaultTheme from '../../../themes/default';
+import { UserRidesStatus } from '../../../types/ride-user-type';
 import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
-import { UserRidesStatus } from 'apps/ui/src/types/ride-user-type';
 
 dayjs.extend(relativeTime);
 
