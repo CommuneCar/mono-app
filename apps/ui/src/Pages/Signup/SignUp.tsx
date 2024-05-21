@@ -306,10 +306,11 @@ const SignUp = () => {
         <Box
           sx={{
             display: 'flex',
-            padding: '20px',
-            minHeight: '100vh',
-            alignItems: 'center',
             flexDirection: 'column',
+            alignItems: 'center',
+            minHeight: '100vh',
+            justifyContent: 'center',
+            padding: '0 20px',
           }}
         >
           <SigningHeader titleText={'Sign Up'} />

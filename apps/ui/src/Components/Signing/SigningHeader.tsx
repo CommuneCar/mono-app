@@ -7,15 +7,14 @@ interface SigningHeaderProps {
 
 const SigningHeader: React.FC<SigningHeaderProps> = ({ titleText }) => {
   return (
-    <Box sx={{ top: 0 }}>
+    <Box>
       <Box
         component="img"
         sx={{
-          width: '100%', // Make image width 100% for responsiveness
-          marginTop: -10,
+          width: '100%',
+          top: 0,
           maxWidth: '22rem',
-          minHeight: '22rem',
-          mt: '0.5%',
+          mt: -2,
         }}
         src={logoWithTitle}
         alt="Login Image"

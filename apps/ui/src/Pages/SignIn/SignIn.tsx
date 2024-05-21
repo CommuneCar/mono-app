@@ -1,7 +1,6 @@
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
 import {
   Box,
   Button,
@@ -11,13 +10,13 @@ import {
   CircularProgress,
 } from '@mui/material';
 
-import defaultTheme from '../../themes/default';
 import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { validateField } from '../../utils/signing/validation';
 import SigningHeader from '../../Components/Signing/SigningHeader';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { useUser } from '../../hooks/Users/useUser';
+import { Page } from '../HomePage/styles';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -82,7 +81,7 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <Page>
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -135,7 +134,7 @@ const SignIn: React.FC = () => {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </Page>
   );
 };
 
