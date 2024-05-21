@@ -26,4 +26,4 @@ const SigningHeader: React.FC<SigningHeaderProps> = ({ titleText }) => {
   );
 };
 
-export default SigningHeader;
+export { SigningHeader };

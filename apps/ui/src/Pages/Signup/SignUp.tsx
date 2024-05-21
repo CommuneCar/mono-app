@@ -33,7 +33,7 @@ import { validateField } from '../../utils/signing/validation';
 import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import SigningHeader from '../../Components/Signing/SigningHeader';
+import { SigningHeader } from '../../Components/Signing/SigningHeader';
 
 const SignUp = () => {
   const navigate = useNavigate();
