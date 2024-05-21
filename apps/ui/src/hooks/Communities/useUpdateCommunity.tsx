@@ -18,7 +18,7 @@ export const useUpdateCommunity = () => {
         showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
       },
       onError(error) {
-        console.log(error);
+        console.error(error);
         showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
       },
     },

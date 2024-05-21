@@ -75,11 +75,7 @@ const CreateRideDialog = ({
     const png = getRandomOption(options);
     const newRide: Omit<Ride, 'id'> = {
       communityName: community.title,
-      driver: {
-        name: `${user.firstName} ${user.lastName}`,
-        id: user.id,
-        phoneNumber: user.phone,
-      },
+      driver: user,
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
