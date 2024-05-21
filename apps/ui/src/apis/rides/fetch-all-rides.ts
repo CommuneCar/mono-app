@@ -18,8 +18,10 @@ interface GraphQLRideNode {
   ownerId: number;
   fromLat: number;
   fromLong: number;
+  fromName?: string;
   toLat: number;
   toLong: number;
+  toName?: string;
   startTime: string;
   gasMoney?: number;
   pronouns?: boolean;
@@ -41,8 +43,10 @@ interface GraphQLRideNode {
       };
       fromLat: number;
       fromLong: number;
+      fromName?: string;
       toLat: number;
       toLong: number;
+      toName?: string;
       status: UserRideStatus;
       userId: string;
     }>;
@@ -51,44 +55,43 @@ interface GraphQLRideNode {
 
 const fetchAllRides = async (): Promise<Ride[]> => {
   const query = `{
-  allRides {
-    nodes {
-      id
-      ownerId
-      fromLat
-      fromLong
-      toLat
-      toLong
-      startTime
-      gasMoney
-      pronouns
-      seats
-      communityByCommunityId {
-        title
-      }
-      userRidesByRideId {
-        nodes {
-          userByUserId {
-            id
-            firstName
-            lastName
-            phoneNumber
-            profileImage
-            gender
-            email
+    allRides {
+      nodes {
+        id
+        ownerId
+        fromLat
+        fromLong
+        toLat
+        toLong
+        startTime
+        gasMoney
+        pronouns
+        seats
+        fromName
+        toName
+        userRidesByRideId {
+          nodes {
+            userByUserId {
+              id
+              firstName
+              lastName
+              phoneNumber
+              profileImage
+              gender
+              email
+            }
+            fromLat
+            fromLong
+            rideId
+            toLat
+            toLong
+            status
+            userId
           }
-          fromLat
-          fromLong
-          rideId
-          toLat
-          toLong
-          status
-          userId
         }
       }
     }
-  }
-}
+  }  
 `;
 
   const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
@@ -97,7 +100,7 @@ const fetchAllRides = async (): Promise<Ride[]> => {
 
   const rides: Ride[] = await Promise.all(
     data.allRides.nodes.map(async (node) => {
-      const { fromLat, fromLong, toLat, toLong, id } = node;
+      const { fromName, fromLat, fromLong, toName, toLat, toLong, id } = node;
 
       const driver = (await getDriver(node.ownerId)) as User;
 
@@ -119,22 +122,26 @@ const fetchAllRides = async (): Promise<Ride[]> => {
             return {
               lat: pickupNode.fromLat,
               lon: pickupNode.fromLong,
-              name: await geocode({
-                lat: pickupNode.fromLat,
-                lon: pickupNode.fromLong,
-              }),
+              name:
+                pickupNode.fromName ??
+                (await geocode({
+                  lat: pickupNode.fromLat,
+                  lon: pickupNode.fromLong,
+                })),
               displayName: '',
               ...user,
             };
           }) ?? [],
       );
 
-      const startLocationName = await geocode({
-        lat: fromLat,
-        lon: fromLong,
-      });
+      const startLocationName =
+        fromName ??
+        (await geocode({
+          lat: fromLat,
+          lon: fromLong,
+        }));
 
-      const destinationName = await geocode({
+      const destinationName = toName ?? await geocode({
         lat: toLat,
         lon: toLong,
       });
