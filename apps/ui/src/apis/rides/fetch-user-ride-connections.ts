@@ -1,6 +1,7 @@
 import { UserRide } from '@communecar/types';
-import { UserRidesStatus } from '../../types/ride-user-type';
+
 import { graphqlRequest } from '../graphql';
+import { UserRidesStatus } from '../../types/ride-user-type';
 import { getUserRideQueries } from '../utils/userRideQueries';
 
 const fetchUserRides = async (userId: number): Promise<UserRidesStatus> => {

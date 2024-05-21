@@ -68,8 +68,6 @@ const fetchRidersByRideId = async (rideId: number): Promise<Rider[]> => {
 
   const data = await graphqlRequest<GraphQLRideResponse>(query);
 
-  console.log({ data });
-
   const riders: Rider[] = data.allRides.nodes.flatMap((node) =>
     node.userRidesByRideId.nodes
       .filter((userRide) => userRide.userByUserId.id !== node.ownerId)

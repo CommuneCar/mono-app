@@ -20,6 +20,9 @@ export const addNewRide = async (ride: CreateRideSchema): Promise<Ride> => {
         toLong
         startTime
         seats
+        communityId
+        fromName
+        toName
       }
     }
   }`;
@@ -37,6 +40,9 @@ export const addNewRide = async (ride: CreateRideSchema): Promise<Ride> => {
         startTime: ride.departureTime.toISOString(),
         seats: ride.seats,
         modificationTs: new Date().toISOString(),
+        communityId: ride.communityId,
+        fromName: ride.startLocationName ?? null,
+        toName: ride.destinationName ?? null,
       },
     },
   };

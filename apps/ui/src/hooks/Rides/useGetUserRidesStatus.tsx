@@ -15,6 +15,7 @@ const useGetUserRidesStatus = (userId: number) => {
         console.error('Error in fetch user ride status', error);
         showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
       },
+      refetchInterval: 10000,
     },
   );
 };

@@ -1,24 +1,27 @@
+import { flatten, groupBy } from 'lodash';
+import { useLocation } from 'react-router-dom';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { Menu as MenuIcon } from '@mui/icons-material';
-import { flatten, groupBy } from 'lodash';
+
+import { Community, Ride } from '@communecar/types';
 
 import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
+import { useUser } from '../../hooks/Users/useUser';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
+import { RidesList } from '../../Components/Rides/RideList';
+import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
+import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
-
+import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
-import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
-import { Community, Ride } from '@communecar/types';
-import { useLocation } from 'react-router-dom';
-import { RidesList } from '../../Components/Rides/RideList';
-import { RideDetails } from '../../Components/Rides/RideDetails';
-import { JoinRideDialog } from '../../Components/Rides/JoinRide';
 import { PageLoader } from '../../Components/PageLoader/PageLoader';
 
 const HomePage: React.FC = () => {
+  const { user } = useUser();
+
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
     'communities',
   );
@@ -28,6 +31,7 @@ const HomePage: React.FC = () => {
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
   const { data: ridesData, isLoading: isLoadingRides } = useGetAllRides();
+  const { data: statuses } = useGetUserRidesStatus(user?.id ?? DEFAULT_USER_ID);
 
   const location = useLocation();
   const communityId = location.state?.communityId;
@@ -73,7 +77,7 @@ const HomePage: React.FC = () => {
             communities.map((community) =>
               community.rides.map((ride: Ride) => ({
                 geocode: ride.startLocation,
-                popUp: `${ride.driver.name} going to ${ride.destinationName}`,
+                popUp: `${ride.driver.firstName} ${ride.driver.lastName} going to ${ride.destinationName}`,
               })),
             ),
           ) as MarkerInfo[]
@@ -97,31 +101,19 @@ const HomePage: React.FC = () => {
             communities={communities}
             setSelectedRide={setSelectedRide}
             communityId={selectedCommunityId}
-            setSelectedCommunityId={setSelectedCommunityId}
             joinRideDialogOpened={joinRideDialogOpened}
+            setSelectedCommunityId={setSelectedCommunityId}
             setJoinRideDialogOpened={setJoinRideDialogOpened}
           />
         )}
         {selectedTab === 'rides' && (
           <RidesList
-            setSelectedRide={setSelectedRide}
-            joinRideDialogOpened={joinRideDialogOpened}
-            setJoinRideDialogOpened={setJoinRideDialogOpened}
             rides={ridesData ?? []}
+            userRideStatus={statuses ?? {}}
+            setSelectedRide={setSelectedRide}
             communities={communitiesData ?? []}
           />
         )}
-        {!!selectedRide && (
-          <RideDetails
-            ride={selectedRide}
-            isOpen={!!selectedRide}
-            setSelectedRide={setSelectedRide}
-          />
-        )}
-        <JoinRideDialog
-          isOpen={joinRideDialogOpened}
-          setOpen={setJoinRideDialogOpened}
-        />
       </BottomDrawer>
     </Page>
   );
