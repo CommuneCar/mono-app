@@ -18,7 +18,7 @@ import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
 import SearchLocations from '../Search/Locations';
-import { Community, Ride, LocationResult } from '@communecar/types';
+import { Community, CreateRideSchema, LocationResult } from '@communecar/types';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
 import { useUser } from '../../hooks/Users/useUser';
@@ -73,8 +73,9 @@ const CreateRideDialog = ({
     }
 
     const png = getRandomOption(options);
-    const newRide: Omit<Ride, 'id'> = {
+    const newRide: CreateRideSchema = {
       communityName: community.title,
+      communityId: community.id,
       driver: user,
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
