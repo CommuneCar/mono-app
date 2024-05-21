@@ -1,4 +1,3 @@
-import { Driver } from './Driver';
 import { User } from './User';
 
 export interface Location {
@@ -15,7 +14,7 @@ export type UserLocation = Location & RenameIdToUserId<Omit<User, 'password'>>;
 
 export interface Ride {
   id: number;
-  driver: Driver;
+  driver: User;
   departureTime: Date;
   communityName: string;
   startLocationName: string;

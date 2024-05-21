@@ -1,8 +1,10 @@
-import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
-import { AddRounded } from '@mui/icons-material';
-import { UserStatus } from '@communecar/types';
 import { useMemo } from 'react';
-import { statusIcons } from '../../utils/communities/userStatusIcons';
+import { AddRounded } from '@mui/icons-material';
+import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
+
+import { UserStatus } from '@communecar/types';
+
+import { communityStatusIcons } from '../../utils/communities/userStatusIcons';
 
 export interface StatusButtonProps {
   onRequest: () => void;
@@ -17,7 +19,7 @@ const StatusButton: React.FC<StatusButtonProps> = ({
 }) => {
   const renderIcon = useMemo(() => {
     if (status) {
-      return statusIcons[status];
+      return communityStatusIcons[status];
     } else {
       return <AddRounded />;
     }

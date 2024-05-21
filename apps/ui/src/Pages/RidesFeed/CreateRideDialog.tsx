@@ -76,11 +76,7 @@ const CreateRideDialog = ({
     const newRide: CreateRideSchema = {
       communityName: community.title,
       communityId: community.id,
-      driver: {
-        name: `${user.firstName} ${user.lastName}`,
-        id: user.id,
-        phoneNumber: user.phone,
-      },
+      driver: user,
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,

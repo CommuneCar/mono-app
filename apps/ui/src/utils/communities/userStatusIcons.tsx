@@ -1,16 +1,24 @@
-import { UserStatus } from '@communecar/types';
+import { UserRideStatus, UserStatus } from '@communecar/types';
 import {
   CheckRounded,
   HourglassEmptyRounded,
   BlockRounded,
   ManageAccountsRounded,
+  DoNotDisturb,
 } from '@mui/icons-material';
 
-const statusIcons: Record<UserStatus, JSX.Element> = {
+const communityStatusIcons: Record<UserStatus, JSX.Element> = {
   [UserStatus.ACTIVE]: <CheckRounded />,
   [UserStatus.PENDING]: <HourglassEmptyRounded />,
   [UserStatus.REJECTED]: <BlockRounded />,
   [UserStatus.MANAGER]: <ManageAccountsRounded />,
 };
 
-export { statusIcons };
+const rideStatusIcons: Record<UserRideStatus, JSX.Element> = {
+  [UserRideStatus.CONFIRMED]: <CheckRounded />,
+  [UserRideStatus.PENDING]: <HourglassEmptyRounded />,
+  [UserRideStatus.REJECTED]: <BlockRounded />,
+  [UserRideStatus.CANCELLED]: <DoNotDisturb />,
+};
+
+export { communityStatusIcons, rideStatusIcons };

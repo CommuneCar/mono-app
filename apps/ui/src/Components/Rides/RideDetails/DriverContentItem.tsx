@@ -6,11 +6,13 @@ import { DRIVER_ITEM_COLOR } from '../../UserAvatar/consts';
 interface DriverContentItemProps {
   phoneNumber: string;
   text: string;
+  avatarUrl?: string;
 }
 
 const DriverContentItem: React.FC<DriverContentItemProps> = ({
   text,
   phoneNumber,
+  avatarUrl,
 }) => {
   return (
     <DialogContentText display="flex" alignItems="center">
@@ -18,7 +20,11 @@ const DriverContentItem: React.FC<DriverContentItemProps> = ({
         <Typography variant="subtitle1">Driver:</Typography>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <UserLogo name={text} bgColor={DRIVER_ITEM_COLOR} />
+        <UserLogo
+          pic={avatarUrl ?? ''}
+          name={text}
+          bgColor={DRIVER_ITEM_COLOR}
+        />
         <Typography variant="caption">{phoneNumber}</Typography>
       </Box>
     </DialogContentText>

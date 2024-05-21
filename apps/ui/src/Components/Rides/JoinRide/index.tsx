@@ -1,29 +1,45 @@
 import React, { useState } from 'react';
 import {
+  Grid,
   Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Button,
   Checkbox,
-  FormControlLabel,
   TextField,
-  Grid,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
-import { useSnackbar } from '../../../contexts/SnackbarContext';
+
+import { LocationResult, Ride } from '@communecar/types';
+
 import { TEXT } from '../../../themes/default/consts';
+import { useUser } from '../../../hooks/Users/useUser';
+import SearchLocations from '../../../Pages/Search/Locations';
+import { useSnackbar } from '../../../contexts/SnackbarContext';
+import { DEFAULT_USER_ID } from '../../../apis/utils/defaultConst';
+import { usePostRequestUserRide } from '../../../hooks/Rides/usePostRequestUserRide';
 
 interface JoinRideProps {
+  rideToJoin: Ride;
   setOpen: (isOpen: boolean) => void;
   isOpen: boolean;
 }
 
-const JoinRideDialog: React.FC<JoinRideProps> = ({ isOpen, setOpen }) => {
+const JoinRideDialog: React.FC<JoinRideProps> = ({
+  isOpen,
+  setOpen,
+  rideToJoin,
+}) => {
   const { showMessage } = useSnackbar();
+
+  const { user } = useUser();
+  const { mutateAsync, isLoading: isJoiningRide } = usePostRequestUserRide();
 
   const [isChecked, setChecked] = useState(false);
   const [numberOfRiders, setNumberOfRiders] = useState(1);
-  const [location, setLocation] = useState('');
+  const [_, setLocation] = useState<LocationResult>({} as LocationResult);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
@@ -34,21 +50,22 @@ const JoinRideDialog: React.FC<JoinRideProps> = ({ isOpen, setOpen }) => {
     setNumberOfRiders(value);
   };
 
-  const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(event.target.value);
-  };
-
   const onCancel = () => {
     setChecked(false);
     setNumberOfRiders(1);
-    setLocation('');
+    setLocation({} as LocationResult);
     setOpen(false);
   };
 
   const onSubmitForm = () => {
-    //TODO - submit
-    setOpen(false);
-    showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
+    mutateAsync({
+      userId: user?.id ?? DEFAULT_USER_ID,
+      rideId: rideToJoin.id,
+      status: 'Pending',
+    }).then(() => {
+      setOpen(false);
+      showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
+    });
   };
 
   return (
@@ -57,13 +74,11 @@ const JoinRideDialog: React.FC<JoinRideProps> = ({ isOpen, setOpen }) => {
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
-              label="Pickup Location"
-              type="text"
-              value={location}
-              onChange={handleLocationChange}
-              margin="normal"
-              fullWidth
+            <SearchLocations
+              label={'Pickup location'}
+              onSelect={(location: LocationResult): void => {
+                setLocation(location);
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -76,25 +91,29 @@ const JoinRideDialog: React.FC<JoinRideProps> = ({ isOpen, setOpen }) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Number of passengers"
               type="number"
+              margin="normal"
               value={numberOfRiders}
+              label="Number of passengers"
               onChange={handleNumberChange}
               inputProps={{ min: 1, max: 5 }}
-              margin="normal"
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button
-          onClick={() => {
-            onSubmitForm();
-          }}
-        >
-          Join
-        </Button>
+        {isJoiningRide ? (
+          <CircularProgress />
+        ) : (
+          <Button
+            onClick={() => {
+              onSubmitForm();
+            }}
+          >
+            Join
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
