@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { Box, CircularProgress, List, Typography } from '@mui/material';
+import { Box, List, Typography } from '@mui/material';
 
 import { Message } from '@communecar/types';
 
@@ -8,6 +8,8 @@ import { MessageCard } from './MessageCard';
 import { useUser } from '../../hooks/Users/useUser';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
 import { useGetUserMessages } from '../../hooks/Messages/fetchMessagesForUser';
+import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
+import { PageLoader } from '../../Components/PageLoader/PageLoader';
 
 const MessagesFeed = () => {
   const { user } = useUser();
@@ -17,15 +19,15 @@ const MessagesFeed = () => {
     isLoading: loading,
     isError,
     error,
-  } = useGetUserMessages(user?.id || 1);
+  } = useGetUserMessages(user?.id || DEFAULT_USER_ID);
 
-  if (loading) return <CircularProgress />;
   if (isError)
     return <Typography color="error">Error: {error.message}</Typography>;
 
   return (
     <Page>
       <PageHeader title="Inbox" />
+      <PageLoader isLoading={loading} paddingTop={4} />
       <Box sx={{ width: '100%' }}>
         {isEmpty(messages) || !messages ? (
           <Box>

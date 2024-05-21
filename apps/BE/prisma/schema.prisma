@@ -72,8 +72,12 @@ model UserRide {
   status    String
   fromLat   Float
   fromLong  Float
+  fromName  String?
   toLat     Float
   toLong    Float
+  toName    String?
+  flexibleLocation Boolean @default(false)
+  passengersCount Int @default(1)
   modificationTs DateTime @updatedAt @default(now())
   user      User   @relation(fields: [userId], references: [id])
   ride      Ride   @relation(fields: [rideId], references: [id])

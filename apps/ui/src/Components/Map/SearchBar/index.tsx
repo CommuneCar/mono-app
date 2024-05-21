@@ -104,4 +104,4 @@ const LocationSearch: React.FC = () => {
   );
 };
 
-export default LocationSearch;
+export { LocationSearch };

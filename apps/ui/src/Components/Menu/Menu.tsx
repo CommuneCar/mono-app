@@ -48,12 +48,7 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
     () => ({
       Home: '/home',
       Messages: '/messages',
-      Rides: '/rides',
       Communities: '/communities',
-      Invitations: '',
-      'Search bar': '/search',
-      Map: '/map',
-      'Map navigation': '/map/navigation',
     }),
     [],
   );
@@ -101,7 +96,10 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
               justifyContent: 'center',
             }}
           >
-            <Avatar sx={{ height: '100px', width: '100px' }} />
+            <Avatar
+              src={user?.avatarUrl}
+              sx={{ height: '100px', width: '100px' }}
+            />
             <Typography sx={{ marginTop: '5%' }}>
               Hi {user?.firstName} {user?.lastName[0]}. 👋
             </Typography>

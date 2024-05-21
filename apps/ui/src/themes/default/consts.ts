@@ -3,7 +3,6 @@ import { pxToRem } from './utils';
 export const DEFAULT_FONT_SIZE = 14;
 export const DEFAULT_HTML_FONT_SIZE = 14; // For REM calculations only
 export const SPACING_SCALING_FACTOR = 2;
-export const DEFAULT_USER_ID = 1;
 
 export const BORDER_RADII = {
   XS: 5,
@@ -81,6 +80,8 @@ export const TEXT = {
     REQUEST_FAILED: 'Your request failed, try again later',
     FETCH_COMMUNITIES_REQUEST_FAILED:
       'An error occurred in retrieving the complete information of communities',
+    FETCH_ALL_RIDES_FAILED: 'Error fetching all rides',
+    FETCH_ALL_COMMUNITIES_FAILED: 'Error fetching all communities',
   },
 } as const;
 

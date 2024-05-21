@@ -15,17 +15,14 @@ import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { UserCommunitiesStatus } from '../types/community-type';
-import { useSnackbar } from '../contexts/SnackbarContext';
-import { TEXT, DEFAULT_USER_ID } from '../themes/default/consts';
+import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
+import { PageLoader } from '../Components/PageLoader/PageLoader';
+import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 
-export interface CommunityFeedProps {
-  communities: Community[] | undefined;
-}
-
-const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
-  const { showMessage } = useSnackbar();
-
+const CommunitiesFeed = () => {
   const { user } = useUser();
+  const { data: communities, isLoading: isCommunitiesLoading } =
+    useGetAllCommunities();
   const {
     data: userStatusData,
     error: userStatusError,
@@ -42,12 +39,6 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
   useEffect(() => {
     setUserCommunitiesStatus(userStatus);
   }, [userStatusData]);
-
-  useEffect(() => {
-    if (userStatusError) {
-      showMessage(TEXT.alerts.FETCH_COMMUNITIES_REQUEST_FAILED, 'error');
-    }
-  }, [userStatusError]);
 
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] = useState<
     Community[]
@@ -172,7 +163,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
       </Box>
       {isCreateOpen && (
         <CreateCommunity
-          user={user?.id ?? 1}
+          user={user?.id ?? DEFAULT_USER_ID}
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
@@ -186,6 +177,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
           communityToUpdate={communityToUpdate}
         />
       )}
+      <PageLoader isLoading={isCommunitiesLoading} paddingTop={5} />
       <FeedList>
         {filteredCommunities.map((community, index) => (
           <CommunityCard

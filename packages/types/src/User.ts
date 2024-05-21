@@ -7,8 +7,8 @@ interface User {
   email: string;
   phone: string;
   password: string;
-  gander: Gender;
-  age?: number;
+  gender: Gender;
+  age: number;
   avatarUrl?: string;
 }
 

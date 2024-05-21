@@ -1,4 +1,4 @@
-import { Driver } from './Driver';
+import { User } from './User';
 
 export interface Location {
   lat: number;
@@ -6,15 +6,22 @@ export interface Location {
   name?: string;
 }
 
+export type RenameIdToUserId<T extends { id: number }> = Omit<T, 'id'> & {
+  userId: T['id'];
+};
+
+export type UserLocation = Location & RenameIdToUserId<Omit<User, 'password'>>;
+
 export interface Ride {
-  driver: Driver;
+  id: number;
+  driver: User;
   departureTime: Date;
   communityName: string;
   startLocationName: string;
   startLocation: [number, number];
   destinationName: string;
   destination: [number, number];
-  pickups: Location[];
+  pickups: UserLocation[];
   png: string;
   gasMoney: number;
   pronouns: boolean;

@@ -11,8 +11,10 @@ const SigningHeader: React.FC<SigningHeaderProps> = ({ titleText }) => {
       <Box
         component="img"
         sx={{
-          width: '100%', // Make image width 100% for responsiveness
-          marginTop: -10,
+          width: '100%',
+          top: 0,
+          maxWidth: '22rem',
+          mt: -2,
         }}
         src={logoWithTitle}
         alt="Login Image"
@@ -24,4 +26,4 @@ const SigningHeader: React.FC<SigningHeaderProps> = ({ titleText }) => {
   );
 };
 
-export default SigningHeader;
+export { SigningHeader };

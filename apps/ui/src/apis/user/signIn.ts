@@ -2,6 +2,7 @@ import { isEmpty } from 'lodash';
 import { Gender, User } from '@communecar/types';
 
 import { graphqlRequest } from '../graphql';
+import { hashString } from './utils';
 
 const authenticateUser = async (
   email: string,
@@ -16,7 +17,9 @@ const authenticateUser = async (
           email
           phoneNumber
           gender
+          password
           age
+          profileImage
         }
       }
   }`;
@@ -29,8 +32,10 @@ const authenticateUser = async (
         firstName: string;
         lastName: string;
         phoneNumber: string;
+        password: string;
         gender: Gender;
         age: number;
+        profileImage: string;
       }[];
     };
   }>(getAllUserQuery);
@@ -40,12 +45,14 @@ const authenticateUser = async (
   }
 
   const user = usersResponse.allUsers.nodes[0];
-
+  const hashedPassword = await hashString(password);
+  if (hashedPassword !== user.password) {
+    throw new Error('password is not correct');
+  }
   return {
     ...user,
-    password,
-    gander: user.gender,
     phone: user.phoneNumber,
+    avatarUrl: user.profileImage,
   };
 };
 

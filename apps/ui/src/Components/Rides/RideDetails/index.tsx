@@ -1,69 +1,58 @@
-import React, { Dispatch, SetStateAction } from 'react';
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Button,
-  Typography,
-  List,
-  ListItem,
+  Dialog,
   Divider,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
+import React, { Dispatch, SetStateAction } from 'react';
+
 import { Ride } from '@communecar/types';
+
+import { RideContentItem } from './RideContentItem';
+import { DriverContentItem } from './DriverContentItem';
+import { RidersContentItem } from './RidersContentItem';
+import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
 
 interface JoinRideProps {
   isOpen: boolean;
   ride: Ride;
-  setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const RideDetails: React.FC<JoinRideProps> = ({
-  isOpen,
-  ride,
-  setSelectedRide,
-}) => {
-  const onCancel = () => {
-    setSelectedRide(undefined);
+const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
+  const { data: riders } = useGetRidersByRideId(ride.id);
+
+  const formatRideStops = () => {
+    const stops = ride.pickups.map(
+      (destination, index) => `${index + 1}.${destination.lon}`,
+    );
+    return stops.join('\n');
   };
+
+  const onCancel = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <Dialog open={isOpen} onClose={() => setSelectedRide(undefined)} fullWidth>
+    <Dialog open={isOpen} onClose={onCancel} fullWidth>
       <DialogTitle>Ride Details</DialogTitle>
       <Divider />
       <DialogContent>
-        <List>
-          <ListItem>
-            <Typography variant="subtitle1">Driver: {ride.driver.name}</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="subtitle1">Start Location: {ride.startLocationName}</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="subtitle1">Destination: {ride.destinationName}</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="subtitle1">Community: {ride.communityName}</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="subtitle1">Shared Drive Gas Fee: ${ride.gasMoney}</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="subtitle1">Pronouns Only: {ride.pronouns ? 'Yes' : 'No'}</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="subtitle1">Seats: {ride.seats}</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="subtitle1" component="div">
-              Pickups:
-              {ride.pickups.map((pickup, index) => (
-                <Typography key={index} sx={{ ml: 4 }}>
-                  {`${index + 1}. ${pickup.name} (${pickup.lat}, ${pickup.lon})`}
-                </Typography>
-              ))}
-            </Typography>
-          </ListItem>
-        </List>
+        <DriverContentItem
+          phoneNumber={ride.driver.phone}
+          avatarUrl={ride.driver.avatarUrl}
+          text={`${ride.driver.firstName} ${ride.driver.lastName}`}
+        />
+        <RideContentItem
+          header="Start Location:"
+          text={ride.startLocationName}
+        />
+        <RideContentItem header="Destination:" text={ride.destinationName} />
+        <RideContentItem header="Stops:" text={formatRideStops()} />
+        <RideContentItem header="Community:" text={ride.communityName} />
+        <RidersContentItem riders={riders} />
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
