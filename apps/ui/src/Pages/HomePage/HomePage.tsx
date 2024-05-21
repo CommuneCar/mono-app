@@ -1,5 +1,10 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { flatten, groupBy } from 'lodash';
 
@@ -16,6 +21,7 @@ import { useLocation } from 'react-router-dom';
 import { RidesList } from '../../Components/Rides/RideList';
 import { RideDetails } from '../../Components/Rides/RideDetails';
 import { JoinRideDialog } from '../../Components/Rides/JoinRide';
+import { PageLoader } from '../../Components/PageLoader/PageLoader';
 
 const HomePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'communities' | 'rides'>(
@@ -90,6 +96,7 @@ const HomePage: React.FC = () => {
             <ToggleButton value={'rides'}>My Rides</ToggleButton>
           </ToggleButtonGroup>
         </Box>
+        <PageLoader isLoading={isLoadingCommunities || isLoadingRides} />
         {selectedTab === 'communities' && (
           <CommunityList
             communities={communities}
