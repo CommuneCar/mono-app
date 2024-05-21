@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { OSMLocationResult } from '@betypes/osm';
 
 import { LocationResult } from '@communetypes/Geocoding';
+import { geocodeWithFallback } from '../../../utils/geocoding';
 
 // Create a shared Axios instance
 const client = axios.create({
@@ -61,30 +62,16 @@ const client = axios.create({
  *         description: Missing location parameter
  */
 const geocodeLocation = async (req: Request, res: Response) => {
-  const { location, limit = 5 } = req.query;
-
+  const { location } = req.query;
   if (!location) {
     return res.status(400).json({ error: 'Location parameter is required' });
   }
 
   try {
-    const response = await client.get<OSMLocationResult[]>(`/search`, {
-      params: { q: location as string, limit },
-    });
-
-    const results: LocationResult[] = response.data.map(
-      (item: OSMLocationResult) => ({
-        name: item.name,
-        displayName: item.display_name,
-        lat: item.lat,
-        lon: item.lon,
-      }),
-    );
-
+    const results = await geocodeWithFallback(location as string);
     if (results.length === 0) {
       return res.status(404).json({ error: 'No results found' });
     }
-
     res.json(results);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch geocoding data' });
