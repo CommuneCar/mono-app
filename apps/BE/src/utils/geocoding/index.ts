@@ -6,15 +6,17 @@ const clientNominatim = axios.create({ baseURL: 'https://nominatim.openstreetmap
 const clientMapsCo = axios.create({ baseURL: 'https://geocode.maps.co' });
 const clientLocationIQ = axios.create({ baseURL: 'https://us1.locationiq.com/v1', params: { format: 'json' } });
 
+const GEOCODE_MAPS_CO_KEY = process.env.GEOCODE_MAPS_CO_KEY || 'your_maps_co_api_key';
+const LOCATIONIQ_KEY = process.env.LOCATIONIQ_KEY || 'your_locationiq_api_key';
+const SEARCH_API_PATH = '/search';
+const REVERSE_API_PATH = 'reverse';
+
 // Utility to perform parallel geocoding requests with fallback
 async function geocodeWithFallback(location: string): Promise<any> {
   const queries = [
-    clientNominatim.get(`/search`, { params: { q: location } }).then(response => {
-        console.log("nominatim")
-        return response.data
-    }),
-    clientMapsCo.get(`/search`, { params: { q: location, api_key: process.env.GEOCODE_MAPS_CO_KEY || 'your_maps_co_api_key' } }).then(response => response.data),
-    clientLocationIQ.get(`/search`, { params: { q: location, key: process.env.LOCATIONIQ_KEY || 'your_locationiq_api_key' } }).then(response => response.data)
+    clientNominatim.get(SEARCH_API_PATH, { params: { q: location } }).then(response => response.data),
+    clientMapsCo.get(SEARCH_API_PATH, { params: { q: location, api_key: GEOCODE_MAPS_CO_KEY } }).then(response => response.data),
+    clientLocationIQ.get(SEARCH_API_PATH, { params: { q: location, key: LOCATIONIQ_KEY } }).then(response => response.data)
   ];
 
   try {
@@ -34,9 +36,9 @@ async function geocodeWithFallback(location: string): Promise<any> {
 
 async function reverseGeocodeWithFallback(latitude: string, longitude: string): Promise<any> {
   const queries = [
-    clientNominatim.get(`/reverse`, { params: { lat: latitude, lon: longitude } }).then(response => response.data),
-    clientMapsCo.get(`/reverse`, { params: { lat: latitude, lon: longitude, api_key: process.env.GEOCODE_MAPS_CO_KEY || 'your_maps_co_api_key' } }).then(response => response.data),
-    clientLocationIQ.get(`/reverse`, { params: { lat: latitude, lon: longitude, key: process.env.LOCATIONIQ_KEY || 'your_locationiq_api_key' } }).then(response => response.data)
+    clientNominatim.get(REVERSE_API_PATH, { params: { lat: latitude, lon: longitude } }).then(response => response.data),
+    clientMapsCo.get(REVERSE_API_PATH, { params: { lat: latitude, lon: longitude, api_key: GEOCODE_MAPS_CO_KEY } }).then(response => response.data),
+    clientLocationIQ.get(REVERSE_API_PATH, { params: { lat: latitude, lon: longitude, key: LOCATIONIQ_KEY } }).then(response => response.data)
   ];
 
   try {
