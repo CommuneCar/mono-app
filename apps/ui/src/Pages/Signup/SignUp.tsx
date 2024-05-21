@@ -34,6 +34,7 @@ import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { SigningHeader } from '../../Components/Signing/SigningHeader';
+import { SigininBox } from '../../Components/styles/SigninBox.styled';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -303,16 +304,7 @@ const SignUp = () => {
   return (
     <Page>
       <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            minHeight: '100vh',
-            justifyContent: 'center',
-            padding: '0 20px',
-          }}
-        >
+        <SigininBox>
           <SigningHeader titleText={'Sign Up'} />
           <Box
             sx={{
@@ -328,7 +320,7 @@ const SignUp = () => {
             <Typography component="h4" variant="h6">
               {steps[activeStep].title}
             </Typography>
-            {steps[activeStep].component}
+            <Box width={'100%'}>{steps[activeStep].component}</Box>
             <Box sx={{ textTransform: 'none' }}>
               <Button
                 onClick={handleBack}
@@ -352,7 +344,7 @@ const SignUp = () => {
               </Link>
             </Grid>
           </Grid>
-        </Box>
+        </SigininBox>
       </Container>
     </Page>
   );

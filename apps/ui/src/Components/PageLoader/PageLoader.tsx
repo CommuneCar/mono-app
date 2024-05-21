@@ -13,12 +13,10 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 }) => {
   return (
     <>
-      {isLoading ? (
+      {isLoading && (
         <Box minHeight={`${minHeight}rem`} paddingTop={`${paddingTop}rem`}>
           <CircularProgress size={100} thickness={2} variant="indeterminate" />
         </Box>
-      ) : (
-        <></>
       )}
     </>
   );

@@ -17,6 +17,7 @@ import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { useUser } from '../../hooks/Users/useUser';
 import { Page } from '../HomePage/styles';
+import { SigininBox } from '../../Components/styles/SigninBox.styled';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -83,16 +84,7 @@ const SignIn: React.FC = () => {
   return (
     <Page>
       <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            minHeight: '100vh',
-            justifyContent: 'center',
-            padding: '0 20px',
-          }}
-        >
+        <SigininBox>
           <SigningHeader titleText="Login"></SigningHeader>
           <Box
             component="form"
@@ -132,7 +124,7 @@ const SignIn: React.FC = () => {
               </Link>
             </Box>
           </Box>
-        </Box>
+        </SigininBox>
       </Container>
     </Page>
   );

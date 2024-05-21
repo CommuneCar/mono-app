@@ -108,13 +108,6 @@ const CreateRideDialog = ({
     handleClose();
   }
 
-  const submitButton = () => {
-    if (isLoading) {
-      return <CircularProgress size={24} color="info" />;
-    }
-    return <>{TEXT.CREATE}</>;
-  };
-
   return (
     <Dialog
       open={isOpen}
@@ -186,7 +179,11 @@ const CreateRideDialog = ({
           {TEXT.CANCEL}
         </Button>
         <SubmitButton type="submit" disabled={isLoading} onClick={handleSubmit}>
-          {submitButton()}
+          {isLoading ? (
+            <CircularProgress size={24} color="info" />
+          ) : (
+            TEXT.CREATE
+          )}
         </SubmitButton>
       </DialogActions>
     </Dialog>

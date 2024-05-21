@@ -14,11 +14,8 @@ import { HomePage } from './Pages/HomePage/HomePage';
 import { UserProvider } from './hooks/Users/useUser';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
-import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 
 const App: React.FC = () => {
-  const { data: communities, isLoading: isCommunitiesLoading } =
-    useGetAllCommunities();
   return (
     <>
       <UserProvider>
@@ -34,16 +31,7 @@ const App: React.FC = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/messages" element={<MessagesFeed />} />
-
-                  <Route
-                    path="/communities"
-                    element={
-                      <CommunitiesFeed
-                        communities={communities}
-                        isCommunitiesLoading={isCommunitiesLoading}
-                      />
-                    }
-                  />
+                  <Route path="/communities" element={<CommunitiesFeed />} />
                   <Route path="/home" element={<HomePage />} />
                 </Route>
               </Routes>

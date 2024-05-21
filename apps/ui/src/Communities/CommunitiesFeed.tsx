@@ -17,17 +17,12 @@ import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitie
 import { UserCommunitiesStatus } from '../types/community-type';
 import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
 import { PageLoader } from '../Components/PageLoader/PageLoader';
+import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 
-export interface CommunityFeedProps {
-  communities: Community[] | undefined;
-  isCommunitiesLoading: boolean;
-}
-
-const CommunitiesFeed: React.FC<CommunityFeedProps> = ({
-  communities,
-  isCommunitiesLoading,
-}) => {
+const CommunitiesFeed = () => {
   const { user } = useUser();
+  const { data: communities, isLoading: isCommunitiesLoading } =
+    useGetAllCommunities();
   const {
     data: userStatusData,
     error: userStatusError,
