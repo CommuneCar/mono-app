@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
 
 import { LocationResult, Ride } from '@communecar/types';
@@ -34,7 +35,7 @@ const JoinRideDialog: React.FC<JoinRideProps> = ({
   const { showMessage } = useSnackbar();
 
   const { user } = useUser();
-  const { mutateAsync } = usePostRequestUserRide();
+  const { mutateAsync, isLoading: isJoiningRide } = usePostRequestUserRide();
 
   const [isChecked, setChecked] = useState(false);
   const [numberOfRiders, setNumberOfRiders] = useState(1);
@@ -102,13 +103,17 @@ const JoinRideDialog: React.FC<JoinRideProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button
-          onClick={() => {
-            onSubmitForm();
-          }}
-        >
-          Join
-        </Button>
+        {isJoiningRide ? (
+          <CircularProgress />
+        ) : (
+          <Button
+            onClick={() => {
+              onSubmitForm();
+            }}
+          >
+            Join
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
