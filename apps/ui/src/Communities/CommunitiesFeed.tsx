@@ -15,8 +15,6 @@ import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 import { UserCommunitiesStatus } from '../types/community-type';
-import { useSnackbar } from '../contexts/SnackbarContext';
-import { TEXT } from '../themes/default/consts';
 import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
 import { PageLoader } from '../Components/PageLoader/PageLoader';
 
@@ -29,8 +27,6 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({
   communities,
   isCommunitiesLoading,
 }) => {
-  const { showMessage } = useSnackbar();
-
   const { user } = useUser();
   const {
     data: userStatusData,
@@ -48,12 +44,6 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({
   useEffect(() => {
     setUserCommunitiesStatus(userStatus);
   }, [userStatusData]);
-
-  useEffect(() => {
-    if (userStatusError) {
-      showMessage(TEXT.alerts.FETCH_COMMUNITIES_REQUEST_FAILED, 'error');
-    }
-  }, [userStatusError]);
 
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] = useState<
     Community[]
