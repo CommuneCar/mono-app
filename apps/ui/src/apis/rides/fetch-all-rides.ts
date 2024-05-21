@@ -141,10 +141,12 @@ const fetchAllRides = async (): Promise<Ride[]> => {
           lon: fromLong,
         }));
 
-      const destinationName = toName ?? await geocode({
-        lat: toLat,
-        lon: toLong,
-      });
+      const destinationName =
+        toName ??
+        (await geocode({
+          lat: toLat,
+          lon: toLong,
+        }));
 
       return {
         id,
@@ -167,8 +169,6 @@ const fetchAllRides = async (): Promise<Ride[]> => {
 };
 
 const getDriver = async (userId: number): Promise<Omit<User, 'password'>> => {
-  console.log(userId);
-
   const userQuery = `{
     userById(id: ${userId}){
       id
