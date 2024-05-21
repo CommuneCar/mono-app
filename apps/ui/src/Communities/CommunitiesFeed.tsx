@@ -18,12 +18,17 @@ import { UserCommunitiesStatus } from '../types/community-type';
 import { useSnackbar } from '../contexts/SnackbarContext';
 import { TEXT } from '../themes/default/consts';
 import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
+import { PageLoader } from '../Components/PageLoader/PageLoader';
 
 export interface CommunityFeedProps {
   communities: Community[] | undefined;
+  isCommunitiesLoading: boolean;
 }
 
-const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
+const CommunitiesFeed: React.FC<CommunityFeedProps> = ({
+  communities,
+  isCommunitiesLoading,
+}) => {
   const { showMessage } = useSnackbar();
 
   const { user } = useUser();
@@ -187,6 +192,7 @@ const CommunitiesFeed: React.FC<CommunityFeedProps> = ({ communities }) => {
           communityToUpdate={communityToUpdate}
         />
       )}
+      <PageLoader isLoading={isCommunitiesLoading} paddingTop={5} />
       <FeedList>
         {filteredCommunities.map((community, index) => (
           <CommunityCard

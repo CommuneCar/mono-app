@@ -17,7 +17,8 @@ import { CommunitiesFeed } from './Communities/CommunitiesFeed';
 import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 
 const App: React.FC = () => {
-  const { data: communities } = useGetAllCommunities();
+  const { data: communities, isLoading: isCommunitiesLoading } =
+    useGetAllCommunities();
   return (
     <>
       <UserProvider>
@@ -36,7 +37,12 @@ const App: React.FC = () => {
 
                   <Route
                     path="/communities"
-                    element={<CommunitiesFeed communities={communities} />}
+                    element={
+                      <CommunitiesFeed
+                        communities={communities}
+                        isCommunitiesLoading={isCommunitiesLoading}
+                      />
+                    }
                   />
                   <Route path="/home" element={<HomePage />} />
                 </Route>
