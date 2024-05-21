@@ -34,8 +34,6 @@ const CommunityList: React.FC<CommunityListProps> = ({
       : communities;
   }, [communityId, communities]);
 
-  console.log({ communities });
-
   return (
     <Box>
       <Box sx={{ minHeight: '2.5rem' }}>
