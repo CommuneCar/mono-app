@@ -10,6 +10,7 @@ import {
   DialogContent,
   FormControlLabel,
   DialogContentText,
+  CircularProgress,
 } from '@mui/material';
 import dayjs from 'dayjs';
 
@@ -23,6 +24,8 @@ import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';
 import { useUser } from '../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
+import { TEXT } from '../../themes/default/consts';
+import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
 
 const options = [tlv, apple, camera];
 
@@ -37,7 +40,7 @@ const CreateRideDialog = ({
   setOpen,
   isOpen,
 }: CreateRideDialogProps) => {
-  const { mutateAsync: addRide, isSuccess } = useAddNewRide();
+  const { mutateAsync: addRide, isSuccess, isLoading } = useAddNewRide();
   const { user } = useUser();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
@@ -104,6 +107,13 @@ const CreateRideDialog = ({
   if (isSuccess) {
     handleClose();
   }
+
+  const submitButton = () => {
+    if (isLoading) {
+      return <CircularProgress size={24} color="info" />;
+    }
+    return <>{TEXT.CREATE}</>;
+  };
 
   return (
     <Dialog
@@ -172,8 +182,12 @@ const CreateRideDialog = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSubmit}>Create</Button>
+        <Button onClick={handleClose} disabled={isLoading}>
+          {TEXT.CANCEL}
+        </Button>
+        <SubmitButton type="submit" disabled={isLoading} onClick={handleSubmit}>
+          {submitButton()}
+        </SubmitButton>
       </DialogActions>
     </Dialog>
   );
