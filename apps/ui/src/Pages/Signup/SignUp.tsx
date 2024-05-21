@@ -10,6 +10,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Container,
+  CircularProgress,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
@@ -36,7 +37,7 @@ import SigningHeader from '../../Components/Signing/SigningHeader';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { signUp } = useUser();
+  const { signUp, error: serverError } = useUser();
 
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<SignUpUser>({
@@ -60,6 +61,8 @@ const SignUp = () => {
   });
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasErrors, setHasErrors] = useState(false);
 
   const handleNext = () => {
     setActiveStep((step) => step + 1);
@@ -74,6 +77,7 @@ const SignUp = () => {
     const allFieldsFilled = Object.values(formData).every(
       (field) => !isEmpty(field),
     );
+    setHasErrors(hasErrors);
     if (!allFieldsFilled) {
       setIsSubmitEnabled(false);
     } else {
@@ -90,9 +94,11 @@ const SignUp = () => {
     setFormErrors((prev) => ({ ...prev, [name]: error ? error : null }));
   };
 
-  const handleSubmit = () => {
-    signUp(formData);
-    if (isSubmitEnabled) {
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const success = await signUp(formData);
+    setIsLoading(false);
+    if (success) {
       navigate(DEFAULT_HOME_PAGE);
     }
   };
@@ -262,14 +268,27 @@ const SignUp = () => {
       title: "that's it! Enjoy your ride",
       component: (
         <Box sx={{ margin: 2 }}>
+          {hasErrors ? (
+            <Typography color={'error'}>
+              You have entered incorrect details, please repeat the process
+              again...
+            </Typography>
+          ) : (
+            <></>
+          )}
+          <Typography color={'error'}>{serverError}</Typography>
           <Button
             fullWidth
             variant="contained"
             onClick={handleSubmit}
-            disabled={!isSubmitEnabled}
+            disabled={!isSubmitEnabled && !hasErrors}
             sx={{ mt: 3, mb: 2, width: '100%' }}
           >
-            {TEXT.CONTINUE}
+            {isLoading ? (
+              <CircularProgress size={24} color="info" />
+            ) : (
+              TEXT.CONTINUE
+            )}
           </Button>
         </Box>
       ),
