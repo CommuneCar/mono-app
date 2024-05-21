@@ -9,6 +9,7 @@ import {
   Typography,
   RadioGroup,
   FormControlLabel,
+  Container,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
@@ -182,52 +183,60 @@ const SignUp = () => {
         <Box sx={{ margin: 2 }}>
           <Box
             sx={{
-              mt: '1rem',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'baseline',
+              alignItems: 'center',
             }}
           >
-            <DatePicker
-              label={"when's your birthday?"}
-              value={formData.age}
-              onChange={(date) =>
-                setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
-              }
-            />
-            <FormLabel id="demo-controlled-radio-buttons-group" required>
-              Gender
-            </FormLabel>
-            <RadioGroup
-              row
-              name="gender"
-              onChange={(e) => {
-                setFormData((prev) => ({
-                  ...prev,
-                  gender: e.target.value as Gender,
-                }));
+            <Box
+              sx={{
+                mt: '1rem',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'baseline',
               }}
             >
-              <FormControlLabel
-                value="Female"
-                control={<Radio checked={formData.gender === 'Female'} />}
-                label="Female"
-              />
-              <FormControlLabel
-                value="Male"
-                control={<Radio checked={formData.gender === 'Male'} />}
-                label="Male"
-              />
-              <FormControlLabel
-                value="Other"
-                control={
-                  <Radio
-                    checked={!formData.gender || formData.gender === 'Other'}
-                  />
+              <DatePicker
+                label={"when's your birthday?"}
+                value={formData.age}
+                onChange={(date) =>
+                  setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
                 }
-                label="Other"
               />
-            </RadioGroup>
+              <FormLabel id="demo-controlled-radio-buttons-group" required>
+                Gender
+              </FormLabel>
+              <RadioGroup
+                row
+                name="gender"
+                onChange={(e) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    gender: e.target.value as Gender,
+                  }));
+                }}
+              >
+                <FormControlLabel
+                  value="Female"
+                  control={<Radio checked={formData.gender === 'Female'} />}
+                  label="Female"
+                />
+                <FormControlLabel
+                  value="Male"
+                  control={<Radio checked={formData.gender === 'Male'} />}
+                  label="Male"
+                />
+                <FormControlLabel
+                  value="Other"
+                  control={
+                    <Radio
+                      checked={!formData.gender || formData.gender === 'Other'}
+                    />
+                  }
+                  label="Other"
+                />
+              </RadioGroup>
+            </Box>
           </Box>
         </Box>
       ),
@@ -274,35 +283,57 @@ const SignUp = () => {
 
   return (
     <Page>
-      <Box
-        sx={{
-          display: 'flex',
-          padding: '20px',
-          minHeight: '100vh',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <SigningHeader titleText={'Sign Up'} />
-        <Box sx={{ marginTop: 5 }}>
-          <Typography component="h4" variant="h6">
-            {steps[activeStep].title}
-          </Typography>
-          {steps[activeStep].component}
-          <Button onClick={handleBack} disabled={activeStep === 0}>
-            Back
-          </Button>
-          {!isLastStep && <Button onClick={handleNext}>Next</Button>}
-        </Box>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            display: 'flex',
+            padding: '20px',
+            minHeight: '100vh',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <SigningHeader titleText={'Sign Up'} />
+          <Box
+            sx={{
+              marginTop: 5,
+              width: '100%',
+              alignContent: 'center',
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="h4" variant="h6">
+              {steps[activeStep].title}
+            </Typography>
+            {steps[activeStep].component}
+            <Box sx={{ textTransform: 'none' }}>
+              <Button
+                onClick={handleBack}
+                disabled={activeStep === 0}
+                sx={{ textTransform: 'none' }}
+              >
+                Back
+              </Button>
+              {!isLastStep && (
+                <Button onClick={handleNext} sx={{ textTransform: 'none' }}>
+                  Next
+                </Button>
+              )}
+            </Box>
+          </Box>
 
-        <Grid container justifyContent="center ">
-          <Grid item>
-            <Link href="/" variant="body2">
-              {TEXT.SIGNIN}
-            </Link>
+          <Grid container justifyContent="center ">
+            <Grid item>
+              <Link href="/" variant="body2">
+                {TEXT.SIGNIN}
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </Container>
     </Page>
   );
 };
