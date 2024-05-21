@@ -8,7 +8,7 @@ import './index.css';
 import { App } from './App.tsx';
 import defaultTheme from './themes/default/index.tsx';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
+import { SnackbarProvider } from './contexts/SnackbarContext.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +33,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={defaultTheme}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <SnackbarProvider>
+          <App />
+        </SnackbarProvider>
       </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>,

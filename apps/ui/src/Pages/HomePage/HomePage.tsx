@@ -17,6 +17,7 @@ import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
+import { PageLoader } from '../../Components/PageLoader/PageLoader';
 
 const HomePage: React.FC = () => {
   const { user } = useUser();
@@ -94,6 +95,7 @@ const HomePage: React.FC = () => {
             <ToggleButton value={'rides'}>My Rides</ToggleButton>
           </ToggleButtonGroup>
         </Box>
+        <PageLoader isLoading={isLoadingCommunities || isLoadingRides} />
         {selectedTab === 'communities' && (
           <CommunityList
             communities={communities}

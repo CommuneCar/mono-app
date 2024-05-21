@@ -1,16 +1,23 @@
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import { Box, Button, Link, Container, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Link,
+  Container,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 
-import defaultTheme from '../../themes/default';
 import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { validateField } from '../../utils/signing/validation';
-import SigningHeader from '../../Components/Signing/SigningHeader';
+import { SigningHeader } from '../../Components/Signing/SigningHeader';
 import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { useUser } from '../../hooks/Users/useUser';
+import { Page } from '../HomePage/styles';
+import { SigininBox } from '../../Components/styles/SigninBox.styled';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +30,7 @@ const SignIn: React.FC = () => {
     password: false,
   });
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { signIn, error: serverError } = useUser();
 
@@ -59,6 +67,7 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     const data = new FormData(event.currentTarget);
     const userSignIn = {
       email: data.get('email') as string,
@@ -67,23 +76,15 @@ const SignIn: React.FC = () => {
 
     if (isSubmitEnabled) {
       const success = await signIn(userSignIn.email, userSignIn.password);
+      setIsLoading(false);
       if (success) navigate(DEFAULT_HOME_PAGE);
     }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <Page>
       <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            minHeight: '100vh',
-            justifyContent: 'center',
-            padding: '0 20px',
-          }}
-        >
+        <SigininBox>
           <SigningHeader titleText="Login"></SigningHeader>
           <Box
             component="form"
@@ -110,7 +111,11 @@ const SignIn: React.FC = () => {
               sx={{ mt: 3, mb: 2, width: '100%' }}
               disabled={!isSubmitEnabled}
             >
-              {TEXT.LOGIN}
+              {isLoading ? (
+                <CircularProgress size={24} color="info" />
+              ) : (
+                TEXT.LOGIN
+              )}
             </Button>
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -119,9 +124,9 @@ const SignIn: React.FC = () => {
               </Link>
             </Box>
           </Box>
-        </Box>
+        </SigininBox>
       </Container>
-    </ThemeProvider>
+    </Page>
   );
 };
 
