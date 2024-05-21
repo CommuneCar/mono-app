@@ -28,6 +28,8 @@ const HomePage: React.FC = () => {
     useGetAllCommunities();
   const { data: ridesData, isLoading: isLoadingRides } = useGetAllRides();
 
+  console.log({ ridesData });
+
   const location = useLocation();
   const communityId = location.state?.communityId;
 
