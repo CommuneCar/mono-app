@@ -15,7 +15,7 @@ import {
 
 interface GraphQLRideNode {
   id: number;
-  ownerId: string;
+  ownerId: number;
   fromLat: number;
   fromLong: number;
   toLat: number;
@@ -49,7 +49,7 @@ interface GraphQLRideNode {
   };
 }
 
-export const fetchAllRides = async (): Promise<Ride[]> => {
+const fetchAllRides = async (): Promise<Ride[]> => {
   const query = `{
   allRides {
     nodes {
@@ -94,18 +94,12 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
   const data = await graphqlRequest<{ allRides: { nodes: GraphQLRideNode[] } }>(
     query,
   );
+
   const rides: Ride[] = await Promise.all(
     data.allRides.nodes.map(async (node) => {
       const { fromLat, fromLong, toLat, toLong, id } = node;
 
-      const driver = node.userRidesByRideId.nodes.find(
-        (node) => node.userByUserId !== undefined,
-      )?.userByUserId || {
-        id: -1,
-        firstName: 'Unknown',
-        lastName: 'Driver',
-        phoneNumber: '1234567',
-      };
+      const driver = (await getDriver(node.ownerId)) as User;
 
       const pickups: UserLocation[] = await Promise.all(
         node.userRidesByRideId.nodes
@@ -147,11 +141,7 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
 
       return {
         id,
-        driver: {
-          id: Number(driver.id),
-          name: `${driver.firstName} ${driver.lastName}`,
-          phoneNumber: driver.phoneNumber,
-        },
+        driver,
         departureTime: new Date(node.startTime),
         communityName: node.communityByCommunityId?.title,
         startLocationName,
@@ -167,6 +157,43 @@ export const fetchAllRides = async (): Promise<Ride[]> => {
     }),
   );
   return rides;
+};
+
+const getDriver = async (userId: number): Promise<Omit<User, 'password'>> => {
+  console.log(userId);
+
+  const userQuery = `{
+    userById(id: ${userId}){
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+      gender
+      age
+      profileImage
+    }
+  }`;
+
+  const data = await graphqlRequest<{
+    userById: {
+      id: number;
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber: string;
+      gender: string;
+      age: number;
+      profileImage: string;
+    };
+  }>(userQuery);
+
+  return {
+    ...data.userById,
+    phone: data.userById.phoneNumber,
+    avatarUrl: data.userById.profileImage,
+    gender: data.userById.gender as Gender,
+  };
 };
 
 const geocode = async (coords: {
@@ -200,3 +227,5 @@ const geocode = async (coords: {
     return 'An extremely unknown location 😵‍💫😵‍💫';
   }
 };
+
+export { fetchAllRides };

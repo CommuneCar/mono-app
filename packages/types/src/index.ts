@@ -4,6 +4,5 @@ export * from './Messages';
 export * from './Ride';
 export * from './Enums';
 export * from './Rider';
-export * from './Driver';
 export * from './UserRide';
 export * from './Geocoding';

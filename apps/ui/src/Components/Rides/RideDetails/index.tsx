@@ -41,8 +41,9 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
       <Divider />
       <DialogContent>
         <DriverContentItem
-          text={ride.driver.name}
-          phoneNumber={ride.driver.phoneNumber}
+          phoneNumber={ride.driver.phone}
+          avatarUrl={ride.driver.avatarUrl}
+          text={`${ride.driver.firstName} ${ride.driver.lastName}`}
         />
         <RideContentItem
           header="Start Location:"

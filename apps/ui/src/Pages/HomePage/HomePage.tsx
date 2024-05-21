@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
             communities.map((community) =>
               community.rides.map((ride: Ride) => ({
                 geocode: ride.startLocation,
-                popUp: `${ride.driver.name} going to ${ride.destinationName}`,
+                popUp: `${ride.driver.firstName} ${ride.driver.lastName} going to ${ride.destinationName}`,
               })),
             ),
           ) as MarkerInfo[]

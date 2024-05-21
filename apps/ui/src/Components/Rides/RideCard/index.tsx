@@ -42,7 +42,7 @@ const RideCard: React.FC<RideCardProps> = ({ ride, rideStatus }) => {
             color={'text.secondary'}
             component={'h6'}
           >
-            {`${ride.driver.name}`}
+            {`${ride.driver.firstName} ${ride.driver.lastName}`}
           </Typography>
           <Typography sx={{ fontSize: 14 }} align={'left'}>
             {`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
