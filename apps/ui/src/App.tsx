@@ -13,7 +13,6 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { HomePage } from './Pages/HomePage/HomePage';
 import { UserProvider } from './hooks/Users/useUser';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
-import { SnackbarProvider } from './contexts/SnackbarContext';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
 import { useGetAllCommunities } from './hooks/Communities/useGetAllCommunities';
 
