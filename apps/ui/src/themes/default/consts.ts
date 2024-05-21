@@ -80,6 +80,8 @@ export const TEXT = {
     REQUEST_FAILED: 'Your request failed, try again later',
     FETCH_COMMUNITIES_REQUEST_FAILED:
       'An error occurred in retrieving the complete information of communities',
+    FETCH_ALL_RIDES_FAILED: 'Error fetching all rides',
+    FETCH_ALL_COMMUNITIES_FAILED: 'Error fetching all communities',
   },
 } as const;
 

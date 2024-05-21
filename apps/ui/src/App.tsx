@@ -21,33 +21,31 @@ const App: React.FC = () => {
   const { data: communities } = useGetAllCommunities();
   return (
     <>
-      <SnackbarProvider>
-        <UserProvider>
-          <RoleProvider>
-            <LocalizationProvider
-              dateAdapter={AdapterDayjs}
-              adapterLocale={'en-gb'}
-            >
-              <CssBaseline />
-              <Router>
-                <Routes>
-                  <Route path="/" element={<SignIn />} />
-                  <Route path="/signup" element={<SignUp />} />
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="/messages" element={<MessagesFeed />} />
+      <UserProvider>
+        <RoleProvider>
+          <LocalizationProvider
+            dateAdapter={AdapterDayjs}
+            adapterLocale={'en-gb'}
+          >
+            <CssBaseline />
+            <Router>
+              <Routes>
+                <Route path="/" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/messages" element={<MessagesFeed />} />
 
-                    <Route
-                      path="/communities"
-                      element={<CommunitiesFeed communities={communities} />}
-                    />
-                    <Route path="/home" element={<HomePage />} />
-                  </Route>
-                </Routes>
-              </Router>
-            </LocalizationProvider>
-          </RoleProvider>
-        </UserProvider>
-      </SnackbarProvider>
+                  <Route
+                    path="/communities"
+                    element={<CommunitiesFeed communities={communities} />}
+                  />
+                  <Route path="/home" element={<HomePage />} />
+                </Route>
+              </Routes>
+            </Router>
+          </LocalizationProvider>
+        </RoleProvider>
+      </UserProvider>
     </>
   );
 };
