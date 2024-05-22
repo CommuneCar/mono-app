@@ -3,19 +3,19 @@ import defaultTheme from '../../themes/default';
 import AddIcon from '@mui/icons-material/Add';
 
 interface AddNewButtonProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleAddClick: (event: React.MouseEvent) => void;
   tooltipText: string;
 }
 
 const AddNewButton: React.FC<AddNewButtonProps> = ({
-  setIsOpen,
+  handleAddClick,
   tooltipText,
 }) => {
   return (
     <Tooltip title={tooltipText}>
       <Fab
         color="default"
-        onClick={() => setIsOpen(true)}
+        onClick={handleAddClick}
         sx={{
           position: 'fixed',
           bottom: '0%',
