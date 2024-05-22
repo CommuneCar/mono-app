@@ -132,6 +132,10 @@ const CommunitiesFeed = () => {
     }
   };
 
+  const handleAddClick = (_event: React.MouseEvent) => {
+    setIsCreateOpen(true);
+  };
+
   return (
     <Box
       sx={{
@@ -191,7 +195,7 @@ const CommunitiesFeed = () => {
         ))}
       </FeedList>
       <AddNewButton
-        setIsOpen={setIsCreateOpen}
+        handleAddClick={handleAddClick}
         tooltipText="Create a new community"
       />
     </Box>

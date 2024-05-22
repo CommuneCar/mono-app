@@ -1,15 +1,14 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Add as AddIcon } from '@mui/icons-material';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { Community, Ride } from '@communecar/types';
 
 import { RideCard } from '../RideCard';
-import defaultTheme from '../../../themes/default';
 import { UserRidesStatus } from '../../../types/ride-user-type';
 import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
+import { AddNewButton } from '../../AddNew/AddNewButton';
 
 dayjs.extend(relativeTime);
 
@@ -28,38 +27,16 @@ const RidesList: React.FC<RideListProps> = ({
 }) => {
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(false);
 
-  const handleAddClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
+  const handleAddClick = (_event: React.MouseEvent) => {
     setIsCreateRideDialogOpen(true);
   };
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          paddingRight: 5,
-        }}
-      >
-        <Tooltip title="Create a new ride">
-          <IconButton
-            edge="end"
-            color="inherit"
-            aria-label="add"
-            onClick={handleAddClick}
-            sx={{
-              '&:hover': {
-                backgroundColor: defaultTheme.palette.action.hover,
-              },
-            }}
-          >
-            <AddIcon sx={{ color: defaultTheme.palette.info.dark }} />
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <AddNewButton
+        handleAddClick={handleAddClick}
+        tooltipText="Create a new ride"
+      />
       {isCreateRideDialog && (
         <CreateRideDialog
           communities={communities}
