@@ -86,7 +86,6 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
                 marginTop: '5%',
                 marginLeft: '5%',
                 borderRadius: '8px',
-                border: `solid ${defaultTheme.palette.info.dark} 1px`,
               }}
               onClick={() => setIsOpen(false)}
             >
@@ -126,7 +125,7 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
                 <ToggleButton value={'rider'}>rider</ToggleButton>
               </ToggleButtonGroup>
             </Box>
-            <List>
+            <List sx={{ mt: '10%' }}>
               {Object.keys(menuOptions).map((text) => (
                 <Box key={text}>
                   <ListItem
