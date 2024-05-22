@@ -31,9 +31,7 @@ const MessagesFeed = () => {
       <Box sx={{ width: '100%' }}>
         {(isEmpty(messages) || !messages) && !loading ? (
           <Box>
-            <Typography>
-              It appears you have no new messages right now :(
-            </Typography>
+            <Typography>You have no messages at the moment :(</Typography>
           </Box>
         ) : (
           <List>

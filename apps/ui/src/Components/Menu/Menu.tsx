@@ -68,80 +68,90 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
         }}
       >
         <Box
-          sx={{ width: 250 }}
+          sx={{
+            width: 250,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'stretch',
+            height: '100vh',
+          }}
           role={'presentation'}
           onClick={() => setIsOpen(false)}
           onKeyDown={() => setIsOpen(false)}
         >
-          <IconButton
-            sx={{
-              marginTop: '5%',
-              marginLeft: '5%',
-              borderRadius: '8px',
-              border: `solid ${defaultTheme.palette.info.dark} 1px`,
-            }}
-            onClick={() => setIsOpen(false)}
-          >
-            <ChevronLeftIcon />
-          </IconButton>
-
-          <Box
-            sx={{
-              width: '100%',
-              height: '40%',
-              display: 'flex',
-              marginTop: '5%',
-              alignItems: 'center',
-              flexDirection: 'column',
-              justifyContent: 'center',
-            }}
-          >
-            <Avatar
-              src={user?.avatarUrl}
-              sx={{ height: '100px', width: '100px' }}
-            />
-            <Typography sx={{ marginTop: '5%' }}>
-              Hi {user?.firstName} {user?.lastName[0]}. 👋
-            </Typography>
-          </Box>
-          <Box
-            sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}
-          >
-            <ToggleButtonGroup
-              exclusive
-              value={role}
-              size={'small'}
-              color={'primary'}
-              onChange={handleChangeRole}
+          <Box>
+            <IconButton
+              sx={{
+                marginTop: '5%',
+                marginLeft: '5%',
+                borderRadius: '8px',
+                border: `solid ${defaultTheme.palette.info.dark} 1px`,
+              }}
+              onClick={() => setIsOpen(false)}
             >
-              <ToggleButton value={'driver'}>Driver</ToggleButton>
-              <ToggleButton value={'rider'}>rider</ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-          <List>
-            {Object.keys(menuOptions).map((text) => (
-              <Box key={text}>
-                <ListItem
-                  sx={{
-                    paddingRight: '0',
-                    color: defaultTheme.palette.info.dark,
-                    '&:hover': {
-                      backgroundColor: defaultTheme.palette.action.hover,
-                    },
-                  }}
-                >
-                  <ListItemButton
-                    onClick={() => navigate(menuOptions[text] as string)}
+              <ChevronLeftIcon />
+            </IconButton>
+
+            <Box
+              sx={{
+                width: '100%',
+                height: '40%',
+                display: 'flex',
+                marginTop: '5%',
+                alignItems: 'center',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            >
+              <Avatar
+                src={user?.avatarUrl}
+                sx={{ height: '100px', width: '100px' }}
+              />
+              <Typography sx={{ marginTop: '5%' }}>
+                Hi {user?.firstName} {user?.lastName[0]}. 👋
+              </Typography>
+            </Box>
+            <Box
+              sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}
+            >
+              <ToggleButtonGroup
+                exclusive
+                value={role}
+                size={'small'}
+                color={'primary'}
+                onChange={handleChangeRole}
+              >
+                <ToggleButton value={'driver'}>Driver</ToggleButton>
+                <ToggleButton value={'rider'}>rider</ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+            <List>
+              {Object.keys(menuOptions).map((text) => (
+                <Box key={text}>
+                  <ListItem
+                    sx={{
+                      paddingRight: '0',
+                      color: defaultTheme.palette.info.dark,
+                      '&:hover': {
+                        backgroundColor: defaultTheme.palette.action.hover,
+                      },
+                    }}
                   >
-                    <ListItemText primary={text} />
-                    <ChevronRightIcon color={'action'} />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-              </Box>
-            ))}
-          </List>
-          <Box sx={{ marginTop: '80px' }}>
+                    <ListItemButton
+                      onClick={() => navigate(menuOptions[text] as string)}
+                    >
+                      <ListItemText primary={text} />
+                      <ChevronRightIcon color={'action'} />
+                    </ListItemButton>
+                  </ListItem>
+                  <Divider />
+                </Box>
+              ))}
+            </List>
+          </Box>
+
+          <Box>
             <Divider />
             <ListItem
               sx={{
