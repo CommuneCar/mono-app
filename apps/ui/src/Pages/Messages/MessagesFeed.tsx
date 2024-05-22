@@ -29,7 +29,7 @@ const MessagesFeed = () => {
       <PageHeader title="Inbox" />
       <PageLoader isLoading={loading} paddingTop={4} />
       <Box sx={{ width: '100%' }}>
-        {isEmpty(messages) || !messages ? (
+        {(isEmpty(messages) || !messages) && !loading ? (
           <Box>
             <Typography>
               It appears you have no new messages right now :(
@@ -37,7 +37,7 @@ const MessagesFeed = () => {
           </Box>
         ) : (
           <List>
-            {messages.map((message: Message) => (
+            {messages?.map((message: Message) => (
               <MessageCard
                 message={message}
                 key={message.id}
