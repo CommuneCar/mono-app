@@ -1,5 +1,27 @@
 import { Community } from '@communetypes/Community';
 
+const getFetchAllCommunitiesQuery = () => {
+  return `
+    query {
+      allCommunities {
+        nodes {
+          id
+          title
+          description
+          lat
+          long
+          userCommunitiesByCommunityId {
+            nodes {
+              userByUserId {
+                profileImage
+              }
+            }
+          }
+        }
+      }
+    }`;
+};
+
 const getUpdateCommunityQuery = (community: Community) => {
   return `
 mutation {
@@ -72,4 +94,8 @@ const getCreateCommunityQuery = (
 }
   `;
 };
-export { getUpdateCommunityQuery, getCreateCommunityQuery };
+export {
+  getUpdateCommunityQuery,
+  getCreateCommunityQuery,
+  getFetchAllCommunitiesQuery,
+};
