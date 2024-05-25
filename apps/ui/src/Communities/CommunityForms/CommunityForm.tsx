@@ -10,10 +10,10 @@ import {
   CircularProgress,
   Box,
 } from '@mui/material';
-import { Community } from '@communecar/types';
+import { Community, LocationResult, Location } from '@communecar/types';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
 import { TEXT } from '../../themes/default/consts';
-import SearchLocations from '../../Pages/Search/Locations';
+import { SearchLocations } from '../../Pages/Search/Locations';
 
 interface CommunityFormProps {
   isOpen: boolean;
@@ -47,6 +47,16 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setCommunity((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectLoaction = (locationResult: LocationResult) => {
+    const { lat, lon, displayName } = locationResult;
+    const location: Location = {
+      lat: Number(lat),
+      lon: Number(lon),
+      name: displayName,
+    };
+    setCommunity((prev) => ({ ...prev, ...location }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -102,8 +112,9 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
         />
         <Box sx={{ maxWidth: '350px' }}>
           <SearchLocations
-            label="Start location"
-            onSelect={(location) => console.log(location, 'start')}
+            label="Base Location"
+            onSelect={handleSelectLoaction}
+            serachFieldvariant="standard"
           />
         </Box>
       </DialogContent>

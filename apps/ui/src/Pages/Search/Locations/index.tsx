@@ -27,11 +27,13 @@ const CenteredBox = styled(Box)({
 interface SearchLocationsProps {
   label: string;
   onSelect: (location: LocationResult) => void;
+  serachFieldvariant?: 'filled' | 'outlined' | 'standard';
 }
 
 const SearchLocations: React.FC<SearchLocationsProps> = ({
   label,
   onSelect,
+  serachFieldvariant = 'outlined',
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -69,7 +71,7 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           label={label}
-          variant="outlined"
+          variant={serachFieldvariant}
           InputProps={{
             endAdornment: (
               <Button
@@ -109,4 +111,4 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({
   );
 };
 
-export default SearchLocations;
+export { SearchLocations };
