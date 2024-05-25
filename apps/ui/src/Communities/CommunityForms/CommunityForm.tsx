@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextField,
   Button,
@@ -56,7 +56,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
       lon: Number(lon),
       name: displayName,
     };
-    setCommunity((prev) => ({ ...prev, ...location }));
+    setCommunity((prev) => ({ ...prev, location: location }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {

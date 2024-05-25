@@ -27,10 +27,19 @@ mutation {
 `;
 };
 
+const getLocationFields = (communityNew: Omit<Community, 'id'>) => {
+  return `
+    ${communityNew.location?.lat ? `lat: ${communityNew.location.lat},` : ''}
+    ${communityNew.location?.lon ? `long: ${communityNew.location.lon},` : ''}
+  `;
+};
+
 const getCreateCommunityQuery = (
   userId: number,
   communityNew: Omit<Community, 'id'>,
 ) => {
+  const locationFields = getLocationFields(communityNew);
+
   return `
     mutation {
   createCommunity(
@@ -38,7 +47,8 @@ const getCreateCommunityQuery = (
       community: {
         ownerId: ${userId}, 
         title: "${communityNew.title}",
-         description: "${communityNew.description}"
+         description: "${communityNew.description}",
+         ${locationFields}
       }
     }
   ) {
