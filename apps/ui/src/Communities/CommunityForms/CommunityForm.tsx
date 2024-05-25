@@ -8,10 +8,12 @@ import {
   DialogContent,
   DialogContentText,
   CircularProgress,
+  Box,
 } from '@mui/material';
 import { Community } from '@communecar/types';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
 import { TEXT } from '../../themes/default/consts';
+import SearchLocations from '../../Pages/Search/Locations';
 
 interface CommunityFormProps {
   isOpen: boolean;
@@ -98,6 +100,12 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
           onChange={handleChange}
           multiline
         />
+        <Box sx={{ maxWidth: '350px' }}>
+          <SearchLocations
+            label="Start location"
+            onSelect={(location) => console.log(location, 'start')}
+          />
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
