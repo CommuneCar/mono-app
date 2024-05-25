@@ -110,7 +110,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
           onChange={handleChange}
           multiline
         />
-        <Box sx={{ maxWidth: '350px' }}>
+        <Box sx={{ maxWidth: '350px', width: '100%' }}>
           <SearchLocations
             label="Base Location"
             onSelect={handleSelectLoaction}
