@@ -21,7 +21,7 @@ import {
   CloudUpload as CloudUploadIcon,
 } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers';
-import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import { Gender } from '@communecar/types';
 
@@ -35,6 +35,7 @@ import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { SigningHeader } from '../../Components/Signing/SigningHeader';
 import { SigininBox } from '../../Components/styles/SigninBox.styled';
+import { ProgressMobileStepper } from '../../Components/Signing/SignUpFooter/ProgressMobileStepper';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -198,8 +199,8 @@ const SignUp = () => {
             <Box
               sx={{
                 mt: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
+                // display: 'flex',
+                // flexDirection: 'column',
                 alignItems: 'baseline',
               }}
             >
@@ -296,10 +297,7 @@ const SignUp = () => {
     },
   };
 
-  const isLastStep = useMemo(
-    () => steps[activeStep + 1] === undefined,
-    [activeStep],
-  );
+  const maxSteps = Object.keys(steps).length ?? 6;
 
   return (
     <Page>
@@ -321,20 +319,12 @@ const SignUp = () => {
               {steps[activeStep].title}
             </Typography>
             <Box width={'100%'}>{steps[activeStep].component}</Box>
-            <Box sx={{ textTransform: 'none' }}>
-              <Button
-                onClick={handleBack}
-                disabled={activeStep === 0}
-                sx={{ textTransform: 'none' }}
-              >
-                Back
-              </Button>
-              {!isLastStep && (
-                <Button onClick={handleNext} sx={{ textTransform: 'none' }}>
-                  Next
-                </Button>
-              )}
-            </Box>
+            <ProgressMobileStepper
+              activeStep={activeStep}
+              handleBack={handleBack}
+              handleNext={handleNext}
+              maxSteps={maxSteps}
+            />
           </Box>
 
           <Grid container justifyContent="center ">
