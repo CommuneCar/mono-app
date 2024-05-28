@@ -2,13 +2,9 @@ import {
   Box,
   Link,
   Grid,
-  Radio,
   Button,
   TextField,
-  FormLabel,
   Typography,
-  RadioGroup,
-  FormControlLabel,
   Container,
   CircularProgress,
 } from '@mui/material';
@@ -36,6 +32,7 @@ import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { SigningHeader } from '../../Components/Signing/SigningHeader';
 import { SigininBox } from '../../Components/styles/SigninBox.styled';
 import { ProgressMobileStepper } from '../../Components/Signing/SignUpFooter/ProgressMobileStepper';
+import { GenderField } from '../../Components/Signing/Fields/GenderField';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -193,58 +190,38 @@ const SignUp = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              width: '100%',
             }}
           >
-            <Box
+            {/* <Box
               sx={{
                 mt: '1rem',
                 // display: 'flex',
                 // flexDirection: 'column',
                 alignItems: 'baseline',
               }}
-            >
-              <DatePicker
-                label={"when's your birthday?"}
-                value={formData.age}
-                onChange={(date) =>
-                  setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
-                }
-              />
-              <FormLabel id="demo-controlled-radio-buttons-group" required>
-                Gender
-              </FormLabel>
-              <RadioGroup
-                row
-                name="gender"
-                onChange={(e) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    gender: e.target.value as Gender,
-                  }));
-                }}
-              >
-                <FormControlLabel
-                  value="Female"
-                  control={<Radio checked={formData.gender === 'Female'} />}
-                  label="Female"
-                />
-                <FormControlLabel
-                  value="Male"
-                  control={<Radio checked={formData.gender === 'Male'} />}
-                  label="Male"
-                />
-                <FormControlLabel
-                  value="Other"
-                  control={
-                    <Radio
-                      checked={!formData.gender || formData.gender === 'Other'}
-                    />
-                  }
-                  label="Other"
-                />
-              </RadioGroup>
-            </Box>
+            > */}
+            <DatePicker
+              sx={{ width: '100%', mb: '0.5rem' }}
+              disableFuture={true}
+              label={"when's your birthday?"}
+              value={formData.age}
+              onChange={(date) =>
+                setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
+              }
+            />
+            <GenderField
+              formDataGender={formData.gender}
+              handleChange={(e) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  gender: e.target.value as Gender,
+                }));
+              }}
+            />
+            {/* </Box> */}
           </Box>
         </Box>
       ),
@@ -260,7 +237,7 @@ const SignUp = () => {
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
           >
-            profile picture
+            Profile Picture
             <VisuallyHiddenInput type="file" />
           </Button>
         </Box>
@@ -270,13 +247,11 @@ const SignUp = () => {
       title: "that's it! Enjoy your ride",
       component: (
         <Box sx={{ margin: 2 }}>
-          {hasErrors ? (
+          {hasErrors && (
             <Typography color={'error'}>
               You have entered incorrect details, please repeat the process
               again...
             </Typography>
-          ) : (
-            <></>
           )}
           <Typography color={'error'}>{serverError}</Typography>
           <Button

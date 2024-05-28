@@ -11,6 +11,7 @@ export interface ProgressMobileStepperProps {
   handleNext: () => void;
   handleBack: () => void;
 }
+
 const ProgressMobileStepper: React.FC<ProgressMobileStepperProps> = ({
   maxSteps,
   handleNext,
