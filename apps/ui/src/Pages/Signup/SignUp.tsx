@@ -195,14 +195,6 @@ const SignUp = () => {
               width: '100%',
             }}
           >
-            {/* <Box
-              sx={{
-                mt: '1rem',
-                // display: 'flex',
-                // flexDirection: 'column',
-                alignItems: 'baseline',
-              }}
-            > */}
             <DatePicker
               sx={{ width: '100%', mb: '0.5rem' }}
               disableFuture={true}
@@ -221,7 +213,6 @@ const SignUp = () => {
                 }));
               }}
             />
-            {/* </Box> */}
           </Box>
         </Box>
       ),
