@@ -4,6 +4,8 @@ import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import { Box, Link } from '@mui/material';
+import { TEXT } from '../../../themes/default/consts';
 
 export interface ProgressMobileStepperProps {
   maxSteps: number;
@@ -23,33 +25,48 @@ const ProgressMobileStepper: React.FC<ProgressMobileStepperProps> = ({
   const isLastStep = maxSteps === activeStep + 1;
 
   return (
-    <MobileStepper
-      variant="progress"
-      steps={maxSteps}
-      position="bottom"
-      activeStep={activeStep}
-      sx={{ width: '100%', flexGrow: 1 }}
-      nextButton={
-        <Button size="small" onClick={handleNext} disabled={isLastStep}>
-          Next
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
-        </Button>
-      }
-      backButton={
-        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
-          Back
-        </Button>
-      }
-    />
+    <Box
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '5rem',
+      }}
+    >
+      <Box sx={{}}>
+        <Link href="/" variant="body2">
+          {TEXT.SIGNIN}
+        </Link>
+      </Box>
+      <MobileStepper
+        variant="progress"
+        steps={maxSteps}
+        position="bottom"
+        activeStep={activeStep}
+        sx={{ width: '100%', flexGrow: 1 }}
+        nextButton={
+          <Button size="small" onClick={handleNext} disabled={isLastStep}>
+            Next
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowLeft />
+            ) : (
+              <KeyboardArrowRight />
+            )}
+          </Button>
+        }
+        backButton={
+          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowRight />
+            ) : (
+              <KeyboardArrowLeft />
+            )}
+            Back
+          </Button>
+        }
+      />
+    </Box>
   );
 };
 

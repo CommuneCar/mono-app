@@ -1,7 +1,5 @@
 import {
   Box,
-  Link,
-  Grid,
   Button,
   TextField,
   Typography,
@@ -143,7 +141,7 @@ const SignUp = () => {
       ),
     },
     1: {
-      title: "let's keep in touch",
+      title: "Let's keep in touch",
       component: (
         <Box sx={{ margin: 2 }}>
           <EmailField
@@ -171,7 +169,7 @@ const SignUp = () => {
       ),
     },
     2: {
-      title: "shh.. don't tell anyone",
+      title: "Shh.. don't tell anyone",
       component: (
         <Box sx={{ margin: 2 }}>
           <PasswordField
@@ -183,7 +181,7 @@ const SignUp = () => {
       ),
     },
     3: {
-      title: 'tell us a bit more about yourself',
+      title: 'Tell us a bit more about yourself',
       component: (
         <Box sx={{ margin: 2 }}>
           <Box
@@ -218,7 +216,7 @@ const SignUp = () => {
       ),
     },
     4: {
-      title: 'what do you look like?',
+      title: 'What do you look like?',
       component: (
         <Box sx={{ margin: 2 }}>
           <Button
@@ -227,6 +225,7 @@ const SignUp = () => {
             variant="contained"
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
+            sx={{ mt: 3, mb: 2, width: '100%' }}
           >
             Profile Picture
             <VisuallyHiddenInput type="file" />
@@ -235,7 +234,7 @@ const SignUp = () => {
       ),
     },
     5: {
-      title: "that's it! Enjoy your ride",
+      title: "That's it! Enjoy your ride",
       component: (
         <Box sx={{ margin: 2 }}>
           {hasErrors && (
@@ -272,7 +271,7 @@ const SignUp = () => {
           <SigningHeader titleText={'Sign Up'} />
           <Box
             sx={{
-              marginTop: 5,
+              marginTop: '10%',
               width: '100%',
               alignContent: 'center',
               display: 'flex',
@@ -281,7 +280,13 @@ const SignUp = () => {
               alignItems: 'center',
             }}
           >
-            <Typography component="h4" variant="h6">
+            <Typography
+              sx={{
+                marginBottom: '5%',
+              }}
+              component="h4"
+              variant="h6"
+            >
               {steps[activeStep].title}
             </Typography>
             <Box width={'100%'}>{steps[activeStep].component}</Box>
@@ -292,14 +297,6 @@ const SignUp = () => {
               maxSteps={maxSteps}
             />
           </Box>
-
-          <Grid container justifyContent="center ">
-            <Grid item>
-              <Link href="/" variant="body2">
-                {TEXT.SIGNIN}
-              </Link>
-            </Grid>
-          </Grid>
         </SigininBox>
       </Container>
     </Page>
