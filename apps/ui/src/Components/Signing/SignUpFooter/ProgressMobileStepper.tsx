@@ -32,9 +32,12 @@ const ProgressMobileStepper: React.FC<ProgressMobileStepperProps> = ({
         display: 'flex',
         flexDirection: 'column',
         height: '5rem',
+        backgroundColor: 'background.paper',
+        width: '100%',
+        zIndex: 1000,
       }}
     >
-      <Box sx={{}}>
+      <Box sx={{ textAlign: 'center' }}>
         <Link href="/" variant="body2">
           {TEXT.SIGNIN}
         </Link>

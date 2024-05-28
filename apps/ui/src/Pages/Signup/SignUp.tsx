@@ -266,30 +266,41 @@ const SignUp = () => {
 
   return (
     <Page>
-      <Container component="main" maxWidth="xs">
+      <Container
+        component="main"
+        maxWidth="xs"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          justifyContent: 'space-between',
+        }}
+      >
         <SigininBox>
           <SigningHeader titleText={'Sign Up'} />
           <Box
             sx={{
-              marginTop: '10%',
+              marginTop: '5%',
               width: '100%',
-              alignContent: 'center',
               display: 'flex',
               justifyContent: 'flex-start',
               flexDirection: 'column',
+              alignContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Typography
-              sx={{
-                marginBottom: '5%',
-              }}
-              component="h4"
-              variant="h6"
-            >
-              {steps[activeStep].title}
-            </Typography>
-            <Box width={'100%'}>{steps[activeStep].component}</Box>
+            <Box sx={{ width: '100%', paddingBottom: '6rem' }}>
+              <Typography
+                sx={{
+                  marginBottom: '5%',
+                }}
+                component="h4"
+                variant="h6"
+              >
+                {steps[activeStep].title}
+              </Typography>
+              <Box width={'100%'}>{steps[activeStep].component}</Box>
+            </Box>
             <ProgressMobileStepper
               activeStep={activeStep}
               handleBack={handleBack}
