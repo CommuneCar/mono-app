@@ -26,7 +26,7 @@ const ProgressMobileStepper: React.FC<ProgressMobileStepperProps> = ({
     <MobileStepper
       variant="progress"
       steps={maxSteps}
-      position="static"
+      position="bottom"
       activeStep={activeStep}
       sx={{ width: '100%', flexGrow: 1 }}
       nextButton={
