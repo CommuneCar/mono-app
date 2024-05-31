@@ -1,18 +1,18 @@
-import { Autocomplete, Box, TextField } from '@mui/material';
+import { Autocomplete, Box, CircularProgress, TextField } from '@mui/material';
 import { useState } from 'react';
 import { UsersSelectorOption } from '../../types/users-selector-option';
 
 export interface UsersSelectorProps {
   options: UsersSelectorOption[];
   fieldLabel?: string;
+  isOptionsLoading?: boolean;
 }
 
 const UsersSelector: React.FC<UsersSelectorProps> = ({
   options,
   fieldLabel = 'Users',
+  isOptionsLoading = false,
 }) => {
-  console.log({ options });
-
   const [selectedUsers, setSelectedUsers] = useState<UsersSelectorOption[]>([]);
 
   const handleSelectUser = (
@@ -23,14 +23,19 @@ const UsersSelector: React.FC<UsersSelectorProps> = ({
     if (reason === 'selectOption') {
       setSelectedUsers(value);
     }
-    console.log({ value });
   };
 
   return (
-    <Box>
+    <Box mb={2} sx={{ width: '100%', maxWidth: '750px' }}>
       <Autocomplete
-        options={options}
-        renderInput={(params) => <TextField {...params} label={fieldLabel} />}
+        options={[]}
+        renderInput={(params) =>
+          isOptionsLoading ? (
+            <CircularProgress sx={{ alignSelf: 'center' }} />
+          ) : (
+            <TextField {...params} label={fieldLabel} variant="standard" />
+          )
+        }
         multiple
         filterSelectedOptions
         disableClearable

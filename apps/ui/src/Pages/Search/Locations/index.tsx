@@ -9,6 +9,7 @@ import {
   CardContent,
   Button,
   Tooltip,
+  IconButton,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -83,14 +84,13 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({
             }}
             InputProps={{
               endAdornment: (
-                <Button
+                <IconButton
                   onClick={searchLocations}
                   disabled={loading}
-                  startIcon={
-                    loading ? <CircularProgress size={20} /> : <SearchIcon />
-                  }
-                  style={{ maxWidth: 16 }}
-                />
+                  sx={{ maxWidth: 16 }}
+                >
+                  {loading ? <CircularProgress size={20} /> : <SearchIcon />}
+                </IconButton>
               ),
             }}
           />

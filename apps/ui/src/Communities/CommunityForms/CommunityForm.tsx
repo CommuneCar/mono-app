@@ -15,7 +15,6 @@ import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
 import { TEXT } from '../../themes/default/consts';
 import { SearchLocations } from '../../Pages/Search/Locations';
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
-import { UsersSelectorOption } from '../../types/users-selector-option';
 import { useGetAllUsersOptions } from '../../hooks/Users/useGetAllUsersOptions';
 
 interface CommunityFormProps {
@@ -52,10 +51,6 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
     isLoading: isGetAllUsersLoading,
     error: getAllUsersError,
   } = useGetAllUsersOptions();
-
-  // const usersOptions: UsersSelectorOption[] = [
-  //   { userId: 3, label: 'zoe shwartz', email: 'jojo', phone: '050' },
-  // ];
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -96,42 +91,54 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
       <DialogTitle>{formTexts.title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{formTexts.description}</DialogContentText>
-        <TextField
-          id="communityTitle"
-          name="title"
-          label="Community Title"
-          type="communityTitle"
-          variant="standard"
-          margin="dense"
-          autoFocus
-          required
-          fullWidth
-          value={community.title}
-          onChange={handleChange}
-        />
-        <TextField
-          id="description"
-          name="description"
-          label="Description"
-          type="description"
-          variant="standard"
-          margin="dense"
-          autoFocus
-          required
-          fullWidth
-          value={community.description}
-          onChange={handleChange}
-          multiline
-        />
         <Box sx={{ maxWidth: '350px', width: '100%' }}>
+          <TextField
+            id="communityTitle"
+            name="title"
+            label="Community Title"
+            type="communityTitle"
+            variant="standard"
+            margin="dense"
+            autoFocus
+            required
+            fullWidth
+            value={community.title}
+            onChange={handleChange}
+          />
+          <TextField
+            id="description"
+            name="description"
+            label="Description"
+            type="description"
+            variant="standard"
+            margin="dense"
+            autoFocus
+            required
+            fullWidth
+            value={community.description}
+            onChange={handleChange}
+            multiline
+          />
           <SearchLocations
             label="Base Location"
             onSelect={handleSelectLoaction}
             serachFieldvariant="standard"
           />
+          {!getAllUsersError && (
+            <UsersSelector
+              options={usersOptions ?? []}
+              fieldLabel="Add Admins"
+              isOptionsLoading={isGetAllUsersLoading}
+            />
+          )}
+          {!getAllUsersError && (
+            <UsersSelector
+              options={usersOptions ?? []}
+              fieldLabel="Add Members"
+              isOptionsLoading={isGetAllUsersLoading}
+            />
+          )}
         </Box>
-        <UsersSelector options={usersOptions ?? []} fieldLabel="Add Admins" />
-        <UsersSelector options={usersOptions ?? []} fieldLabel="Add Members" />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
