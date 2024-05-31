@@ -16,6 +16,7 @@ import { TEXT } from '../../themes/default/consts';
 import { SearchLocations } from '../../Pages/Search/Locations';
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { UsersSelectorOption } from '../../types/users-selector-option';
+import { useGetAllUsersOptions } from '../../hooks/Users/useGetAllUsersOptions';
 
 interface CommunityFormProps {
   isOpen: boolean;
@@ -46,9 +47,15 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
     communityToUpdate ?? emptyCommunity,
   );
 
-  const usersOptions: UsersSelectorOption[] = [
-    { userId: 3, label: 'zoe shwartz', email: 'jojo', phone: '050' },
-  ];
+  const {
+    data: usersOptions,
+    isLoading: isGetAllUsersLoading,
+    error: getAllUsersError,
+  } = useGetAllUsersOptions();
+
+  // const usersOptions: UsersSelectorOption[] = [
+  //   { userId: 3, label: 'zoe shwartz', email: 'jojo', phone: '050' },
+  // ];
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -123,8 +130,8 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
             serachFieldvariant="standard"
           />
         </Box>
-        <UsersSelector options={usersOptions} fieldLabel="Add Admins" />
-        <UsersSelector options={usersOptions} fieldLabel="Add Members" />
+        <UsersSelector options={usersOptions ?? []} fieldLabel="Add Admins" />
+        <UsersSelector options={usersOptions ?? []} fieldLabel="Add Members" />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>

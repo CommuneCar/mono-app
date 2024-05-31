@@ -11,6 +11,8 @@ const UsersSelector: React.FC<UsersSelectorProps> = ({
   options,
   fieldLabel = 'Users',
 }) => {
+  console.log({ options });
+
   const [selectedUsers, setSelectedUsers] = useState<UsersSelectorOption[]>([]);
 
   const handleSelectUser = (
