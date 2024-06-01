@@ -167,7 +167,7 @@ const CommunitiesFeed = () => {
       </Box>
       {isCreateOpen && (
         <CreateCommunity
-          user={user?.id ?? DEFAULT_USER_ID}
+          userId={user?.id ?? DEFAULT_USER_ID}
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}

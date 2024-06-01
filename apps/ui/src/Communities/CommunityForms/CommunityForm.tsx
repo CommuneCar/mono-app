@@ -22,7 +22,11 @@ interface CommunityFormProps {
   handleClose: () => void;
   communityToUpdate?: Community;
   formTexts: any;
-  onSubmit: (community: Community) => void;
+  onSubmit: (
+    community: Community,
+    newAdmins: number[],
+    newMembers: number[],
+  ) => void;
   isLoading?: boolean;
 }
 
@@ -45,6 +49,8 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   const [community, setCommunity] = useState<Community>(
     communityToUpdate ?? emptyCommunity,
   );
+  const [communityManagers, setCommunityManagers] = useState<number[]>([]);
+  const [newCommunityMembers, setNewCommunityMembers] = useState<number[]>([]);
 
   const {
     data: usersOptions,
@@ -69,7 +75,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onSubmit(community);
+    onSubmit(community, communityManagers, newCommunityMembers);
   };
 
   const submitButton = () => {
@@ -129,6 +135,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
               options={usersOptions ?? []}
               fieldLabel="Add Admins"
               isOptionsLoading={isGetAllUsersLoading}
+              setSelectedUsersIds={setCommunityManagers}
             />
           )}
           {!getAllUsersError && (
@@ -136,6 +143,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
               options={usersOptions ?? []}
               fieldLabel="Add Members"
               isOptionsLoading={isGetAllUsersLoading}
+              setSelectedUsersIds={setNewCommunityMembers}
             />
           )}
         </Box>

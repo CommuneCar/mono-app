@@ -1,3 +1,4 @@
+import { UserRideStatus } from './Enums';
 import { Ride, Location } from './Ride';
 
 export interface Community {
@@ -8,4 +9,10 @@ export interface Community {
   numberOfMembers: number;
   picturesUrl: string[];
   rides?: Ride[];
+}
+
+export interface UserCommunity {
+  userId: number;
+  communityId: number;
+  status: UserRideStatus;
 }
