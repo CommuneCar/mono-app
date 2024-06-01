@@ -1,6 +1,7 @@
-import { Box, Button, Typography } from '@mui/material';
-import { Menu } from '../Menu/Menu';
 import { Menu as MenuIcon } from '@mui/icons-material';
+import { Box, Button, Typography } from '@mui/material';
+
+import { Menu } from '../Menu/Menu';
 
 export interface PageHeaderProps {
   title: string;
@@ -18,7 +19,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
         px: '1%',
       }}
     >
-      <Typography textTransform="uppercase" sx={{ letterSpacing: '0.15rem' }}>
+      <Typography
+        textTransform="uppercase"
+        sx={{ letterSpacing: '0.15rem', px: '8px' }}
+      >
         {title}
       </Typography>
       <Menu

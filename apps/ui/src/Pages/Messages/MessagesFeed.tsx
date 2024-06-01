@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { Dictionary, groupBy, isEmpty } from 'lodash';
 import { Box, List, Typography } from '@mui/material';
 
 import { Message } from '@communecar/types';
@@ -6,10 +6,10 @@ import { Message } from '@communecar/types';
 import { Page } from '../HomePage/styles';
 import { MessageCard } from './MessageCard';
 import { useUser } from '../../hooks/Users/useUser';
-import { PageHeader } from '../../Components/PageHeader/PageHeader';
-import { useGetUserMessages } from '../../hooks/Messages/fetchMessagesForUser';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
+import { PageHeader } from '../../Components/PageHeader/PageHeader';
 import { PageLoader } from '../../Components/PageLoader/PageLoader';
+import { useGetUserMessages } from '../../hooks/Messages/fetchMessagesForUser';
 
 const MessagesFeed = () => {
   const { user } = useUser();
@@ -24,6 +24,20 @@ const MessagesFeed = () => {
   if (isError)
     return <Typography color="error">Error: {error.message}</Typography>;
 
+  const messagesByType: Dictionary<Message[]> = groupBy(messages, (message) => {
+    if (message.creatorUser.id === user?.id) {
+      return 'My Requests';
+    }
+
+    if (message.type.includes('Community')) {
+      return 'Community Requests';
+    }
+
+    if (message.type.includes('Ride')) {
+      return 'Ride Requests';
+    }
+  });
+
   return (
     <Page>
       <PageHeader title="Inbox" />
@@ -34,15 +48,32 @@ const MessagesFeed = () => {
             <Typography>You have no messages at the moment :(</Typography>
           </Box>
         ) : (
-          <List>
-            {messages?.map((message: Message) => (
-              <MessageCard
-                message={message}
-                key={message.id}
-                onActionComplete={() => refetch()}
-              />
-            ))}
-          </List>
+          <Box sx={{ overflowY: 'auto', maxHeight: '80%' }}>
+            {Object.entries(messagesByType).map(([key, messages]) => {
+              return (
+                <Box key={messages[0].id}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      mx: '16px',
+                      borderBottom: 'solid 1px #e0e0e0',
+                    }}
+                  >
+                    <Typography>{key}</Typography>
+                  </Box>
+                  <List sx={{ overflowY: 'auto', maxHeight: '350px' }}>
+                    {messages?.map((message: Message) => (
+                      <MessageCard
+                        message={message}
+                        key={message.id}
+                        onActionComplete={() => refetch()}
+                      />
+                    ))}
+                  </List>
+                </Box>
+              );
+            })}
+          </Box>
         )}
       </Box>
     </Page>
