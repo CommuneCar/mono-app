@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import MobileStepper from '@mui/material/MobileStepper';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { Box, Link } from '@mui/material';
+import { Box, Link, MobileStepper, Button, useTheme } from '@mui/material';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { TEXT } from '../../../themes/default/consts';
 
 export interface ProgressMobileStepperProps {
