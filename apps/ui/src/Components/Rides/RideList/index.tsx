@@ -17,11 +17,12 @@ interface RideListProps {
   userRideStatus: UserRidesStatus;
   communities: Community[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
+  userCommunities: Community[];
 }
 
 const RidesList: React.FC<RideListProps> = ({
   rides,
-  communities,
+  userCommunities,
   userRideStatus,
   setSelectedRide,
 }) => {
@@ -39,7 +40,7 @@ const RidesList: React.FC<RideListProps> = ({
       />
       {isCreateRideDialog && (
         <CreateRideDialog
-          communities={communities}
+          communities={userCommunities}
           isOpen={isCreateRideDialog}
           setOpen={setIsCreateRideDialogOpen}
         />

@@ -18,6 +18,7 @@ import { CommunityList } from '../../Components/CommunityList/CommunityList';
 import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { PageLoader } from '../../Components/PageLoader/PageLoader';
+import { useGetAllUserCommunities } from '../../hooks/Communities/useGetAllUserCommunities';
 
 const HomePage: React.FC = () => {
   const { user } = useUser();
@@ -30,6 +31,8 @@ const HomePage: React.FC = () => {
 
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
+  const { data: userCommunitiesData, isLoading: isLoadingUserCommunities } =
+    useGetAllUserCommunities(user!.id);
   const { data: ridesData, isLoading: isLoadingRides } = useGetAllRides();
   const { data: statuses } = useGetUserRidesStatus(user?.id ?? DEFAULT_USER_ID);
 
@@ -60,6 +63,8 @@ const HomePage: React.FC = () => {
       setSelectedTab(newTab);
     }
   };
+
+  console.log(userCommunitiesData);
 
   return (
     <Page>
@@ -95,7 +100,11 @@ const HomePage: React.FC = () => {
             <ToggleButton value={'rides'}>My Rides</ToggleButton>
           </ToggleButtonGroup>
         </Box>
-        <PageLoader isLoading={isLoadingCommunities || isLoadingRides} />
+        <PageLoader
+          isLoading={
+            isLoadingCommunities || isLoadingRides || isLoadingUserCommunities
+          }
+        />
         {selectedTab === 'communities' && (
           <CommunityList
             communities={communities}
@@ -112,6 +121,7 @@ const HomePage: React.FC = () => {
             userRideStatus={statuses ?? {}}
             setSelectedRide={setSelectedRide}
             communities={communitiesData ?? []}
+            userCommunities={userCommunitiesData ?? []}
           />
         )}
       </BottomDrawer>
