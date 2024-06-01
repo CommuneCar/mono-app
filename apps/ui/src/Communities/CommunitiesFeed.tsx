@@ -6,18 +6,18 @@ import { Community, UserStatus } from '@communecar/types';
 
 import { useUser } from '../hooks/Users/useUser';
 import { SearchBar } from '../Components/Search/SearchBar';
+import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
 import { CommunityCard } from './CommunityCard/CommunityCard';
+import { UserCommunitiesStatus } from '../types/community-type';
 import { FeedList } from '../Components/styles/FeedList.styled';
+import { PageLoader } from '../Components/PageLoader/PageLoader';
 import { PageHeader } from '../Components/PageHeader/PageHeader';
 import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
-import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
-import { UserCommunitiesStatus } from '../types/community-type';
-import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
-import { PageLoader } from '../Components/PageLoader/PageLoader';
 import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
+import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
 
 const CommunitiesFeed = () => {
   const { user } = useUser();
@@ -139,19 +139,19 @@ const CommunitiesFeed = () => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
         minWidth: 370,
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
       }}
     >
       <PageHeader title={'Communities'} />
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'cetner',
           width: '100%',
+          display: 'flex',
+          alignItems: 'cetner',
+          flexDirection: 'column',
         }}
       >
         <SearchBar
@@ -163,7 +163,7 @@ const CommunitiesFeed = () => {
           setShowMyEntities={setShowMyCommunities}
           showMyEntities={showMyCommunities}
           filter={handleMyCommunitiesFilter}
-        ></MyEntitiesFilterButton>
+        />
       </Box>
       {isCreateOpen && (
         <CreateCommunity
@@ -187,10 +187,10 @@ const CommunitiesFeed = () => {
           <CommunityCard
             key={index}
             community={community}
-            userStatus={userCommunitiesStatus[community.id]}
+            userId={user?.id ?? DEFAULT_USER_ID}
             handleClickOnEdit={handleClickOnEdit}
             userStatusIsLoading={userStatusIsLoading}
-            userId={user?.id ?? DEFAULT_USER_ID}
+            userStatus={userCommunitiesStatus[community.id]}
           />
         ))}
       </FeedList>
