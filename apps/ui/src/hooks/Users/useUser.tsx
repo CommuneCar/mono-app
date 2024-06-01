@@ -8,6 +8,7 @@ import React, {
 import { User } from '@communecar/types';
 import { authenticateUser, singUpNewUser } from '../../apis/user/index';
 import { SignUpUser } from '../../types/sign-up-user';
+import { useSessionStorage } from 'react-use';
 
 type UserContextType = {
   user: User | null;
@@ -32,15 +33,15 @@ interface UserProviderProps {
 }
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useSessionStorage<User | null>('user', null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    // const storedUser = localStorage.getItem('user');
+    // if (storedUser) {
+    //   setUser(JSON.parse(storedUser));
+    // }
     setLoading(false);
   }, []);
 
@@ -58,7 +59,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const signOut = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
   };
 
   const signUp = async (newUser: SignUpUser) => {
@@ -75,7 +76,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const logInUser = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
     setError(null);
   };
 
