@@ -38,10 +38,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // const storedUser = localStorage.getItem('user');
-    // if (storedUser) {
-    //   setUser(JSON.parse(storedUser));
-    // }
     setLoading(false);
   }, []);
 
