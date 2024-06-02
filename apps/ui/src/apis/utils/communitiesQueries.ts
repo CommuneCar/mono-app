@@ -10,6 +10,7 @@ const getFetchAllCommunitiesQuery = () => {
           description
           lat
           long
+          baseLocationName
           userCommunitiesByCommunityId {
             nodes {
               userByUserId {
@@ -35,6 +36,7 @@ mutation {
       long
       ownerId
       title
+      baseLocationName
       userCommunitiesByCommunityId {
         totalCount
         nodes {
@@ -53,6 +55,7 @@ const getLocationFields = (communityNew: Omit<Community, 'id'>) => {
   return `
     ${communityNew.location?.lat ? `lat: ${communityNew.location.lat},` : ''}
     ${communityNew.location?.lon ? `long: ${communityNew.location.lon},` : ''}
+    ${communityNew.location?.name ? `baseLocationName: "${communityNew.location.name}"` : ''}
   `;
 };
 
@@ -61,6 +64,7 @@ const getCreateCommunityQuery = (
   communityNew: Omit<Community, 'id'>,
 ) => {
   const locationFields = getLocationFields(communityNew);
+  console.log(locationFields);
 
   return `
     mutation {
@@ -81,6 +85,7 @@ const getCreateCommunityQuery = (
       description
       lat
       long
+      baseLocationName
       userCommunitiesByCommunityId {
         totalCount
         nodes {

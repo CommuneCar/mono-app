@@ -17,6 +17,7 @@ interface CommunityNode {
   ownerId: number;
   lat: number;
   long: number;
+  baseLocationName: string;
   userCommunitiesByCommunityId: {
     totalCount: number;
     nodes: UserCommunityNode[];
