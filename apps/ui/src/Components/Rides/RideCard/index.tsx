@@ -5,6 +5,7 @@ import {
   CardContent,
   CardActions,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -24,6 +25,7 @@ interface RideCardProps {
 const RideCard: React.FC<RideCardProps> = ({ ride, rideStatus }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const isRideFull = ride.pickups.length === ride.seats;
 
   const handleJoinRideClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -54,14 +56,17 @@ const RideCard: React.FC<RideCardProps> = ({ ride, rideStatus }) => {
             <Info />
           </IconButton>
           {!rideStatus ? (
-            <Button
-              endIcon={<Send />}
-              variant={'contained'}
-              size={'small'}
-              onClick={handleJoinRideClick}
-            >
-              Join Ride
-            </Button>
+            <Tooltip title={isRideFull ? 'Ride is full at the moment' : ''}>
+              <Button
+                endIcon={!isRideFull && <Send />}
+                variant={'contained'}
+                size={'small'}
+                onClick={handleJoinRideClick}
+                disabled={isRideFull}
+              >
+                {isRideFull ? 'Ride Full' : 'Join Ride'}
+              </Button>
+            </Tooltip>
           ) : (
             <IconButton disabled>
               {rideStatusIcons[rideStatus.status]}
