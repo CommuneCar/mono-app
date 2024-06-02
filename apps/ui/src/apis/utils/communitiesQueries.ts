@@ -24,10 +24,18 @@ const getFetchAllCommunitiesQuery = () => {
 };
 
 const getUpdateCommunityQuery = (community: Community) => {
+  const locationFields = getLocationFields(community);
   return `
 mutation {
   updateCommunityById(
-    input: { id: ${community.id}, communityPatch: { description: "${community.description}", title: "${community.title}" } }
+    input: { 
+      id: ${community.id}, 
+      communityPatch: { 
+        description: "${community.description}", 
+        title: "${community.title}", 
+        ${locationFields} 
+      } 
+    }
   ) {
     community {
       description
@@ -64,8 +72,6 @@ const getCreateCommunityQuery = (
   communityNew: Omit<Community, 'id'>,
 ) => {
   const locationFields = getLocationFields(communityNew);
-  console.log(locationFields);
-
   return `
     mutation {
   createCommunity(
