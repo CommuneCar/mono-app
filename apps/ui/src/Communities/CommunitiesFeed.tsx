@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import { groupBy, mapValues } from 'lodash';
+import { Box, IconButton } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
@@ -12,7 +13,6 @@ import { UserCommunitiesStatus } from '../types/community-type';
 import { FeedList } from '../Components/styles/FeedList.styled';
 import { PageLoader } from '../Components/PageLoader/PageLoader';
 import { PageHeader } from '../Components/PageHeader/PageHeader';
-import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
@@ -174,12 +174,17 @@ const CommunitiesFeed = () => {
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
         />
-        <MyEntitiesFilterButton
-          lable={'My Communities'}
-          setShowMyEntities={setShowMyCommunities}
-          showMyEntities={showMyCommunities}
-          filter={handleMyCommunitiesFilter}
-        />
+        <Box display={'flex'} justifyContent={'space-between'}>
+          <MyEntitiesFilterButton
+            lable={'My Communities'}
+            setShowMyEntities={setShowMyCommunities}
+            showMyEntities={showMyCommunities}
+            filter={handleMyCommunitiesFilter}
+          />
+          <IconButton onClick={handleAddClick}>
+            <Add />
+          </IconButton>
+        </Box>
       </Box>
       {isCreateOpen && (
         <CreateCommunity
@@ -210,10 +215,6 @@ const CommunitiesFeed = () => {
           />
         ))}
       </FeedList>
-      <AddNewButton
-        handleAddClick={handleAddClick}
-        tooltipText="Create a new community"
-      />
     </Box>
   );
 };
