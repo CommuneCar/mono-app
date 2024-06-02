@@ -14,10 +14,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
       sx={{
         width: '100%',
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        my: '20px',
-        px: '20px',
+        my: isMobile ? '1%' : '20px',
+        px: isMobile ? '1%' : '20px',
+        justifyContent: 'space-between',
       }}
     >
       <Typography textTransform="uppercase" sx={{ letterSpacing: '0.15rem' }}>
