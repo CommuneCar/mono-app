@@ -16,8 +16,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        my: '1%',
-        px: '1%',
+        my: '20px',
+        px: '20px',
       }}
     >
       <Typography textTransform="uppercase" sx={{ letterSpacing: '0.15rem' }}>

@@ -25,7 +25,7 @@ const MessagesFeed = () => {
     return <Typography color="error">Error: {error.message}</Typography>;
 
   return (
-    <Page>
+    <Page sx={{ width: '100%' }}>
       <PageHeader title="Inbox" />
       <PageLoader isLoading={loading} paddingTop={4} />
       <Box sx={{ width: '100%' }}>

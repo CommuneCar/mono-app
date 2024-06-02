@@ -1,4 +1,4 @@
-import { Box, IconButton, styled } from '@mui/material';
+import { Box, Card, IconButton, styled } from '@mui/material';
 
 const Page = styled(Box)(() => ({
   top: 0,
@@ -19,4 +19,14 @@ const MainMenuButton = styled(IconButton)(() => ({
   zIndex: 10,
 }));
 
-export { Page, MainMenuButton };
+const PageCard = styled(Card)(() => ({
+  top: 100,
+  left: 280,
+  zIndex: 20,
+  height: '85%',
+  width: '25%',
+  borderRadius: '8px',
+  position: 'absolute',
+}));
+
+export { Page, MainMenuButton, PageCard };

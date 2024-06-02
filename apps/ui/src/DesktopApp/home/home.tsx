@@ -1,6 +1,5 @@
 import {
   Box,
-  Card,
   List,
   Avatar,
   Divider,
@@ -20,14 +19,15 @@ import logo from '../../assets/logo-with-title.png';
 import { Community, Ride } from '@communecar/types';
 
 import defaultTheme from '../../themes/default';
-import { Page } from '../../Pages/HomePage/styles';
 import { useUser } from '../../hooks/Users/useUser';
 import { Role, useRole } from '../../contexts/role';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
-import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
-import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
+import { RidesFeed } from '../../Pages/RidesFeed/RidesFeed';
+import { Page, PageCard } from '../../Pages/HomePage/styles';
 import { MessagesFeed } from '../../Pages/Messages/MessagesFeed';
+import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { CommunitiesFeed } from '../../Communities/CommunitiesFeed';
+import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 
 const Home: React.FC = () => {
   const { signOut, user } = useUser();
@@ -43,43 +43,36 @@ const Home: React.FC = () => {
   const menuOptions = useMemo(
     () => ({
       Home: <></>,
+      Rides: (
+        <PageCard>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              <RidesFeed
+                rides={ridesData ?? []}
+                setSelectedRide={setSecletedRide}
+                communities={communitiesData ?? []}
+              />
+            </Typography>
+          </CardContent>
+        </PageCard>
+      ),
       Messages: (
-        <Card
-          sx={{
-            top: 100,
-            left: 280,
-            zIndex: 20,
-            height: '85%',
-            width: '25%',
-            borderRadius: '8px',
-            position: 'absolute',
-          }}
-        >
+        <PageCard>
           <CardContent>
             <Typography variant="h5" component="div">
               <MessagesFeed />
             </Typography>
           </CardContent>
-        </Card>
+        </PageCard>
       ),
       Communities: (
-        <Card
-          sx={{
-            top: 100,
-            left: 280,
-            zIndex: 20,
-            width: '25%',
-            height: '85%',
-            borderRadius: '8px',
-            position: 'absolute',
-          }}
-        >
+        <PageCard>
           <CardContent>
             <Typography variant="h5" component="div">
               <CommunitiesFeed />
             </Typography>
           </CardContent>
-        </Card>
+        </PageCard>
       ),
     }),
     [],
