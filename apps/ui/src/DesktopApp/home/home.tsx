@@ -28,6 +28,9 @@ import { MessagesFeed } from '../../Pages/Messages/MessagesFeed';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { CommunitiesFeed } from '../../Communities/CommunitiesFeed';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
+import { useGetAllUserCommunities } from '../../hooks/Communities/useGetAllUserCommunities';
+import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
+import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 
 const Home: React.FC = () => {
   const { signOut, user } = useUser();
@@ -39,6 +42,8 @@ const Home: React.FC = () => {
   const { data: communitiesData, isLoading: isCommunitiesLoading } =
     useGetAllCommunities();
   const { data: ridesData, isLoading: isRidesLoading } = useGetAllRides();
+  const { data: userCommunitiesData } = useGetAllUserCommunities(user!.id);
+  const { data: statuses } = useGetUserRidesStatus(user?.id ?? DEFAULT_USER_ID);
 
   const menuOptions = useMemo(
     () => ({
@@ -50,7 +55,9 @@ const Home: React.FC = () => {
               <RidesFeed
                 rides={ridesData ?? []}
                 setSelectedRide={setSecletedRide}
+                userRidesStatus={statuses ?? {}}
                 communities={communitiesData ?? []}
+                userCommunities={userCommunitiesData ?? []}
               />
             </Typography>
           </CardContent>

@@ -13,10 +13,18 @@ import { PageLoader } from '../../Components/PageLoader/PageLoader';
 export interface RidesFeedProps {
   rides: Ride[];
   communities: Community[];
+  userCommunities: Community[];
+  userRidesStatus: UserRidesStatus;
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
-const RidesFeed = ({ rides, communities, setSelectedRide }: RidesFeedProps) => {
+const RidesFeed = ({
+  rides,
+  communities,
+  userRidesStatus,
+  userCommunities,
+  setSelectedRide,
+}: RidesFeedProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -30,12 +38,12 @@ const RidesFeed = ({ rides, communities, setSelectedRide }: RidesFeedProps) => {
       </Box>
       <RidesList
         rides={rides}
-        userCommunities={[]}
         openDialog={isDialogOpen}
         communities={communities}
         setOpenDialog={setIsDialogOpen}
+        userRideStatus={userRidesStatus}
         setSelectedRide={setSelectedRide}
-        userRideStatus={{} as UserRidesStatus}
+        userCommunities={userCommunities}
       />
     </Page>
   );
