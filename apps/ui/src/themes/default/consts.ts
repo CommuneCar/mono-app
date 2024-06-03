@@ -82,6 +82,7 @@ export const TEXT = {
       'An error occurred in retrieving the complete information of communities',
     FETCH_ALL_RIDES_FAILED: 'Error fetching all rides',
     FETCH_ALL_COMMUNITIES_FAILED: 'Error fetching all communities',
+    FETCH_ALL_USER_COMMUNITIES_FAILED: 'Error fetching all user communities',
   },
 } as const;
 
