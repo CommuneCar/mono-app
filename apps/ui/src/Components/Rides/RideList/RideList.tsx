@@ -1,26 +1,25 @@
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { Box } from '@mui/material';
+import { isMobile } from 'react-device-detect';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { Community, Ride } from '@communecar/types';
 
 import { RideCard } from '../RideCard';
-import { AddNewButton } from '../../AddNew/AddNewButton';
 import { UserRidesStatus } from '../../../types/ride-user-type';
 import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
-import { isMobile } from 'react-device-detect';
 
 dayjs.extend(relativeTime);
 
 interface RideListProps {
   rides: Ride[];
-  userRideStatus: UserRidesStatus;
-  communities: Community[];
-  setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
-  userCommunities: Community[];
   openDialog?: boolean;
+  communities: Community[];
+  userCommunities: Community[];
+  userRideStatus: UserRidesStatus;
   setOpenDialog?: Dispatch<SetStateAction<boolean>>;
+  setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
 const RidesList: React.FC<RideListProps> = ({
@@ -34,10 +33,6 @@ const RidesList: React.FC<RideListProps> = ({
   const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(
     openDialog ?? false,
   );
-
-  const handleAddClick = (_event: React.MouseEvent) => {
-    setIsCreateRideDialogOpen(true);
-  };
 
   useEffect(() => {
     if (setOpenDialog) {
@@ -53,10 +48,6 @@ const RidesList: React.FC<RideListProps> = ({
 
   return (
     <Box sx={!isMobile ? { overflowY: 'auto', maxHeight: '78%' } : {}}>
-      <AddNewButton
-        handleAddClick={handleAddClick}
-        tooltipText="Create a new ride"
-      />
       {isCreateRideDialog && (
         <CreateRideDialog
           communities={userCommunities}

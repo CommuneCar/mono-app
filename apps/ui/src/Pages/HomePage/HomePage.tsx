@@ -10,7 +10,7 @@ import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
 import { useUser } from '../../hooks/Users/useUser';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
-import { RidesList } from '../../Components/Rides/RideList';
+import { RidesList } from '../../Components/Rides/RideList/RideList';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { PageLoader } from '../../Components/PageLoader/PageLoader';

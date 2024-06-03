@@ -24,13 +24,13 @@ import { Role, useRole } from '../../contexts/role';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { RidesFeed } from '../../Pages/RidesFeed/RidesFeed';
 import { Page, PageCard } from '../../Pages/HomePage/styles';
+import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { MessagesFeed } from '../../Pages/Messages/MessagesFeed';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
 import { CommunitiesFeed } from '../../Communities/CommunitiesFeed';
+import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { useGetAllUserCommunities } from '../../hooks/Communities/useGetAllUserCommunities';
-import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
-import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 
 const Home: React.FC = () => {
   const { signOut, user } = useUser();
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
         </PageCard>
       ),
     }),
-    [],
+    [ridesData, communitiesData, statuses],
   );
 
   const communities = useMemo(() => {
