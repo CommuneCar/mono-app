@@ -10,6 +10,8 @@ import { UserLogo } from '../../UserAvatar/UserAvatar';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Rider } from '@communetypes/Rider';
 import { getAvatarColour } from '../../UserAvatar/utils';
+import { handleWhatsAppClick } from './whatsapp.ts';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 interface DriverContentItemProps {
   riders: Rider[] | undefined;
@@ -48,7 +50,19 @@ const RidersContentItem: React.FC<DriverContentItemProps> = ({ riders }) => {
                     pic={rider.avatarUrl}
                     bgColor={getAvatarColour()}
                   />
-                  <Typography variant="caption">{rider.phoneNumber}</Typography>
+                  <Box display="flex" alignItems="center">
+                    <Typography variant="caption">{rider.phoneNumber}</Typography>
+                    <IconButton
+                      aria-label="whatsapp"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleWhatsAppClick(rider.phoneNumber);
+                      }}
+                      sx={{ ml: -0.5, mt:'-4px' }}
+                    >
+                      <WhatsAppIcon />
+                    </IconButton>
+                  </Box>
                 </Box>
               ))}
             </Box>
