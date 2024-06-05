@@ -15,12 +15,19 @@ const fetchAllCommunities = async (): Promise<Community[]> => {
     const picturesUrl = node.userCommunitiesByCommunityId.nodes
       .map((userCommunity) => userCommunity.userByUserId.profileImage)
       .filter((url): url is string => url != null);
-    const community = {
-      ...node,
+
+    const { id, title, description, ownerId } = node;
+
+    const community: Community = {
+      id,
+      title,
+      description,
+      ownerId,
       numberOfMembers: node.userCommunitiesByCommunityId.nodes.length,
+      location,
       picturesUrl,
-    };
-    return location ? { ...community, ...location } : community;
+    } as Community;
+    return community;
   });
 };
 
