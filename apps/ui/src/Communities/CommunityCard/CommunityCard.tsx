@@ -1,5 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { Box, Card, CardActions, CardHeader } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Collapse,
+  IconButton,
+  IconButtonProps,
+  Typography,
+  styled,
+} from '@mui/material';
 
 import { UserStatus, Community } from '@communecar/types';
 
@@ -15,7 +26,23 @@ import { CardMenu } from '../../Components/CardMenu/CardMenu';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { membersStatus } from '../../utils/communities/membershipConsts';
 import { useUserCommunityStatus } from '../../hooks/Communities/useRequstChangeUserStatus';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import { useState } from 'react';
 
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 export interface CommunityCardProps {
   community: Community;
   userStatus?: UserStatus;
@@ -58,6 +85,12 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const optionActions: Record<string, () => void> = {
     [MANAGER_OPTIONS.EDIT]: handleEditClick,
     [MEMBER_OPTIONS.SEE_RIDES]: handleJumpToRides,
+  };
+
+  const [expanded, setExpanded] = useState<boolean>(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
 
   return (
@@ -104,7 +137,18 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
               }
             />
           </Box>
+          <ExpandMore expand={expanded} onClick={handleExpandClick}>
+            <ExpandMoreIcon />
+          </ExpandMore>
         </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>Base Location</Typography>
+            <Typography paragraph>
+              {community.location?.name ?? 'No Base Location'}
+            </Typography>
+          </CardContent>
+        </Collapse>
       </Card>
     </Box>
   );
