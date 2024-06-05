@@ -2,7 +2,7 @@ import { LocationResult, Location } from '@communecar/types';
 import axios from 'axios';
 
 import { axiosClient } from '../client';
-import { isArray, isUndefined } from 'lodash';
+import { isArray, isNil, isUndefined } from 'lodash';
 
 const UNKNOWN_LOCATION = 'Unknown location 😵‍💫';
 
@@ -51,24 +51,23 @@ const locationExtraction = async (node: {
   lat?: number;
   baseLocationName?: string;
 }): Promise<Location | undefined> => {
-  const name = node.baseLocationName
-    ? node.baseLocationName
-    : !isUndefined(node.lat) && !isUndefined(node.long)
-      ? await geocode({
-          lat: node.lat,
-          lon: node.long,
-        })
-      : undefined;
+  if (isNil(node.lat) || isNil(node.long)) {
+    return;
+  }
+  const name =
+    node.baseLocationName ??
+    (await geocode({
+      lat: node.lat,
+      lon: node.long,
+    })) ??
+    undefined;
 
   const coordinates: Location | undefined =
-    node.lat && node.long
-      ? {
-          lat: node.lat,
-          lon: node.long,
-          name,
-        }
-      : undefined;
-
+    {
+      lat: node.lat,
+      lon: node.long,
+      name,
+    } ?? undefined;
   return coordinates;
 };
 
