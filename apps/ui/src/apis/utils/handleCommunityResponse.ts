@@ -1,6 +1,5 @@
 import { Community } from '@communetypes/Community';
 import { CommunityNode } from '../types/communitiesResponse';
-import { Location } from '@communecar/types';
 
 const handleCommunityResponse = (communityNode: CommunityNode): Community => {
   const picturesUrl = communityNode.userCommunitiesByCommunityId.nodes
@@ -15,24 +14,4 @@ const handleCommunityResponse = (communityNode: CommunityNode): Community => {
   };
 };
 
-const locationExtraction = (
-  node: {
-    long?: number;
-    lat?: number;
-    baseLocationName?: string;
-  } & any,
-): Location | undefined => {
-  const coordinates =
-    node.lat && node.long
-      ? {
-          lat: node.lat,
-          lon: node.long,
-        }
-      : undefined;
-
-  return coordinates
-    ? { ...coordinates, name: node.baseLocationName }
-    : undefined;
-};
-
-export { handleCommunityResponse, locationExtraction };
+export { handleCommunityResponse };

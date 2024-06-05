@@ -1,8 +1,3 @@
-import axios from 'axios';
-
-import { LocationResult } from '@communecar/types/src/Geocoding';
-
-import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
 import {
   Gender,
@@ -12,6 +7,7 @@ import {
   UserLocation,
   UserRideStatus,
 } from '@communecar/types';
+import { geocode } from '../location/location';
 
 interface GraphQLRideNode {
   id: number;
@@ -204,38 +200,6 @@ const getDriver = async (userId: number): Promise<Omit<User, 'password'>> => {
     avatarUrl: data.userById.profileImage,
     gender: data.userById.gender as Gender,
   };
-};
-
-const geocode = async (coords: {
-  lat: number;
-  lon: number;
-}): Promise<string> => {
-  try {
-    const response = await axiosClient.get<LocationResult[]>(
-      '/api/v1/external/reverse-geocode',
-      {
-        params: { lat: coords.lat, lon: coords.lon },
-      },
-    );
-
-    // Check if the array of results is not empty and return the display name of the first result
-    if (response.data.length > 0 && response.data[0] !== undefined) {
-      return response.data[0].name || response.data[0].displayName;
-    } else {
-      return 'Unknown location 😵‍💫';
-    }
-  } catch (error) {
-    console.error('Geocoding error:', error); // Log any errors that occur during the request
-    if (
-      axios.isAxiosError(error) &&
-      error.response &&
-      error.response.status === 404
-    ) {
-      return 'Unknown location 😵‍💫';
-    }
-    console.log(error);
-    return 'An extremely unknown location 😵‍💫😵‍💫';
-  }
 };
 
 export { fetchAllRides };
