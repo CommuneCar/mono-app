@@ -8,7 +8,6 @@ import {
   Collapse,
   IconButton,
   IconButtonProps,
-  Typography,
   styled,
 } from '@mui/material';
 
@@ -28,6 +27,7 @@ import { membersStatus } from '../../utils/communities/membershipConsts';
 import { useUserCommunityStatus } from '../../hooks/Communities/useRequstChangeUserStatus';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { useState } from 'react';
+import { ExpandMoreContent } from './ExpandMoreContent/ExpandMoreContent';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -143,10 +143,10 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>Base Location</Typography>
-            <Typography paragraph>
-              {community.location?.name ?? 'No Base Location'}
-            </Typography>
+            <ExpandMoreContent
+              communityLocation={community.location}
+              communityOwners={[]}
+            />
           </CardContent>
         </Collapse>
       </Card>
