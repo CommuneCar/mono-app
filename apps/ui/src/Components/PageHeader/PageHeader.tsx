@@ -15,8 +15,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        my: isMobile ? '1%' : '20px',
-        px: isMobile ? '1%' : '20px',
+        my: isMobile ? '1%' : '4%',
+        px: isMobile ? '1%' : '4%',
         justifyContent: 'space-between',
       }}
     >

@@ -29,7 +29,7 @@ const RidesFeed = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <Page sx={{ width: '100%' }}>
+    <Page>
       <Box display={'flex'} justifyContent={'space-between'}>
         <PageHeader title={'rides'} />
         <IconButton onClick={() => setIsDialogOpen(true)}>

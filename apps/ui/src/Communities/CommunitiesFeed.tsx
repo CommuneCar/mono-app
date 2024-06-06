@@ -18,6 +18,7 @@ import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { Page } from '../Pages/HomePage/styles';
 
 const CommunitiesFeed = () => {
   const { user } = useUser();
@@ -153,17 +154,11 @@ const CommunitiesFeed = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minWidth: 370,
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-      }}
-    >
+    <Page>
       <PageHeader title={'Communities'} />
       <Box
         sx={{
+          px: '5%',
           width: '100%',
           display: 'flex',
           alignItems: 'cetner',
@@ -215,7 +210,7 @@ const CommunitiesFeed = () => {
           />
         ))}
       </FeedList>
-    </Box>
+    </Page>
   );
 };
 

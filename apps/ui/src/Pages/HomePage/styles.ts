@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect';
 import { Box, Card, IconButton, styled } from '@mui/material';
 
 const Page = styled(Box)(() => ({
@@ -5,9 +6,9 @@ const Page = styled(Box)(() => ({
   left: 0,
   margin: 0,
   float: 'left',
-  width: '100vw',
   height: '100vh',
   position: 'absolute',
+  width: isMobile ? '100vw' : '100%',
 }));
 
 const MainMenuButton = styled(IconButton)(() => ({
