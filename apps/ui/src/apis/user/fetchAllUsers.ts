@@ -52,27 +52,14 @@ export const fetchAllUsers = async (): Promise<UsersSelectorOption[]> => {
     console.log({ data });
 
     return data.allUsers.nodes.map((user) => {
-      const membershipCommunities = user.userCommunitiesByUserId.nodes.filter(
-        (community) => community.status === UserStatus.ACTIVE,
-      );
-      const membershipCommunitiesIds = membershipCommunities.map(
-        (community) => community.communityId,
-      );
-
-      const mangedCommunities = user.userCommunitiesByUserId.nodes.filter(
-        (community) => community.status === UserStatus.MANAGER,
-      );
-      const managedCommunitiesIds = mangedCommunities.map(
-        (community) => community.communityId,
-      );
+      const communitiesStatus = user.userCommunitiesByUserId.nodes ?? [];
       return {
         label: `${user.firstName} ${user.lastName}`,
         userId: user.id,
         email: user.email,
         phone: user.phoneNumber,
         avatarUrl: user.profileImage,
-        managedCommunitiesIds,
-        membershipCommunitiesIds,
+        communitiesStatus,
       };
     });
   } catch (error) {

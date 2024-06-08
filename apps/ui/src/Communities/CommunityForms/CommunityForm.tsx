@@ -10,12 +10,18 @@ import {
   CircularProgress,
   Box,
 } from '@mui/material';
-import { Community, LocationResult, Location } from '@communecar/types';
+import {
+  Community,
+  LocationResult,
+  Location,
+  UserStatus,
+} from '@communecar/types';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
 import { TEXT } from '../../themes/default/consts';
 import { SearchLocations } from '../../Pages/Search/Locations';
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { useGetAllUsersOptions } from '../../hooks/Users/useGetAllUsersOptions';
+import { isEmpty } from 'lodash';
 
 interface CommunityFormProps {
   isOpen: boolean;
@@ -60,18 +66,27 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
 
   const adminOptions = useMemo(
     () =>
-      usersOptions?.filter(
-        (user) => !user.managedCommunitiesIds.includes(community.id),
-      ) ?? [],
+      usersOptions?.filter((user) => {
+        const currentCommuintyManged = user.communitiesStatus.filter(
+          (communityStatus) =>
+            communityStatus.communityId === community.id &&
+            communityStatus.status === UserStatus.MANAGER,
+        );
+        return isEmpty(currentCommuintyManged);
+      }) ?? [],
     [usersOptions, community.id],
   );
   const membersOptions = useMemo(
     () =>
-      usersOptions?.filter(
-        (user) =>
-          !user.managedCommunitiesIds.includes(community.id) &&
-          !user.membershipCommunitiesIds.includes(community.id),
-      ) ?? [],
+      usersOptions?.filter((user) => {
+        const currentCommuintyManged = user.communitiesStatus.filter(
+          (communityStatus) =>
+            communityStatus.communityId === community.id &&
+            (communityStatus.status === UserStatus.MANAGER ||
+              communityStatus.status === UserStatus.ACTIVE),
+        );
+        return isEmpty(currentCommuintyManged);
+      }) ?? [],
     [usersOptions, community.id],
   );
 
