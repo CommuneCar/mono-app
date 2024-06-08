@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { Location, User } from '@communecar/types';
 import { UserAvatarChips } from '../../../Components/UserAvatar/userAvatarChips';
+import { ExpandMoreFieldBox } from './expandMoreFieldBox.styled';
 
 export interface ExpandMoreContentProps {
   communityLocation?: Location;
@@ -13,30 +14,16 @@ const ExpandMoreContent: React.FC<ExpandMoreContentProps> = ({
 }) => {
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'left',
-          alignItems: 'baseline',
-        }}
-      >
+      <ExpandMoreFieldBox>
         <Typography variant="subtitle2" sx={{ marginRight: '0.5rem' }}>
           Base Location
         </Typography>
         <Typography variant="body2">
           {communityLocation?.name ?? 'No Base Location'}
         </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'left',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="subtitle2" sx={{ marginRight: '0.5rem' }}>
+      </ExpandMoreFieldBox>
+      <ExpandMoreFieldBox>
+        <Typography variant="subtitle2" sx={{ marginBottom: '0.5rem' }}>
           Managers
         </Typography>
         <Box
@@ -52,7 +39,7 @@ const ExpandMoreContent: React.FC<ExpandMoreContentProps> = ({
             <UserAvatarChips user={owner} />
           ))}
         </Box>
-      </Box>
+      </ExpandMoreFieldBox>
     </>
   );
 };
