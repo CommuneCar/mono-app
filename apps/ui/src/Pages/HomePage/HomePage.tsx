@@ -10,14 +10,14 @@ import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
 import { useUser } from '../../hooks/Users/useUser';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
-import { RidesList } from '../../Components/Rides/RideList';
+import { RidesList } from '../../Components/Rides/RideList/RideList';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
+import { PageLoader } from '../../Components/PageLoader/PageLoader';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
-import { PageLoader } from '../../Components/PageLoader/PageLoader';
 import { useGetAllUserCommunities } from '../../hooks/Communities/useGetAllUserCommunities';
 
 const HomePage: React.FC = () => {
@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
   );
   const [selectedRide, setSelectedRide] = useState<Ride>();
   const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
+  const [createRideOpen, setIsCreateRideOpen] = useState(false);
 
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
@@ -63,8 +64,6 @@ const HomePage: React.FC = () => {
       setSelectedTab(newTab);
     }
   };
-
-  console.log(userCommunitiesData);
 
   return (
     <Page>
@@ -121,7 +120,9 @@ const HomePage: React.FC = () => {
             userRideStatus={statuses ?? {}}
             setSelectedRide={setSelectedRide}
             communities={communitiesData ?? []}
+            isCreateRideDialog={createRideOpen}
             userCommunities={userCommunitiesData ?? []}
+            setIsCreateRideDialogOpen={setIsCreateRideOpen}
           />
         )}
       </BottomDrawer>

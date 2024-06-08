@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { Box, Button, Typography } from '@mui/material';
 
@@ -13,10 +14,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
       sx={{
         width: '100%',
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        my: '1%',
-        px: '1%',
+        my: isMobile ? '1%' : '4%',
+        px: isMobile ? '1%' : '4%',
+        justifyContent: 'space-between',
       }}
     >
       <Typography
@@ -25,13 +26,15 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
       >
         {title}
       </Typography>
-      <Menu
-        MenuButton={
-          <Button sx={{ height: '100%' }} color="primary">
-            <MenuIcon />
-          </Button>
-        }
-      />
+      {isMobile && (
+        <Menu
+          MenuButton={
+            <Button sx={{ height: '100%' }} color="primary">
+              <MenuIcon />
+            </Button>
+          }
+        />
+      )}
     </Box>
   );
 };

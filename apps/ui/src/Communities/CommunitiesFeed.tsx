@@ -1,23 +1,24 @@
-import { Box } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import { groupBy, mapValues } from 'lodash';
+import { Box, IconButton } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
 
 import { useUser } from '../hooks/Users/useUser';
 import { SearchBar } from '../Components/Search/SearchBar';
+import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
 import { CommunityCard } from './CommunityCard/CommunityCard';
+import { UserCommunitiesStatus } from '../types/community-type';
 import { FeedList } from '../Components/styles/FeedList.styled';
+import { PageLoader } from '../Components/PageLoader/PageLoader';
 import { PageHeader } from '../Components/PageHeader/PageHeader';
-import { AddNewButton } from '../Components/AddNew/AddNewButton';
 import { MyEntitiesFilterButton } from './MyEntitiesFilterButton';
 import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
-import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
-import { UserCommunitiesStatus } from '../types/community-type';
-import { DEFAULT_USER_ID } from '../apis/utils/defaultConst';
-import { PageLoader } from '../Components/PageLoader/PageLoader';
 import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
+import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
+import { Page } from '../Pages/HomePage/styles';
 
 const CommunitiesFeed = () => {
   const { user } = useUser();
@@ -153,33 +154,32 @@ const CommunitiesFeed = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        minWidth: 370,
-      }}
-    >
+    <Page>
       <PageHeader title={'Communities'} />
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'cetner',
+          px: '5%',
           width: '100%',
+          display: 'flex',
+          alignItems: 'cetner',
+          flexDirection: 'column',
         }}
       >
         <SearchBar
           options={options}
           handleChangeSearchValue={handleChangeSearchValue}
         />
-        <MyEntitiesFilterButton
-          lable={'My Communities'}
-          setShowMyEntities={setShowMyCommunities}
-          showMyEntities={showMyCommunities}
-          filter={handleMyCommunitiesFilter}
-        ></MyEntitiesFilterButton>
+        <Box display={'flex'} justifyContent={'space-between'}>
+          <MyEntitiesFilterButton
+            lable={'My Communities'}
+            setShowMyEntities={setShowMyCommunities}
+            showMyEntities={showMyCommunities}
+            filter={handleMyCommunitiesFilter}
+          />
+          <IconButton onClick={handleAddClick}>
+            <Add />
+          </IconButton>
+        </Box>
       </Box>
       {isCreateOpen && (
         <CreateCommunity
@@ -203,18 +203,14 @@ const CommunitiesFeed = () => {
           <CommunityCard
             key={index}
             community={community}
-            userStatus={userCommunitiesStatus[community.id]}
+            userId={user?.id ?? DEFAULT_USER_ID}
             handleClickOnEdit={handleClickOnEdit}
             userStatusIsLoading={userStatusIsLoading}
-            userId={user?.id ?? DEFAULT_USER_ID}
+            userStatus={userCommunitiesStatus[community.id]}
           />
         ))}
       </FeedList>
-      <AddNewButton
-        handleAddClick={handleAddClick}
-        tooltipText="Create a new community"
-      />
-    </Box>
+    </Page>
   );
 };
 

@@ -1,5 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { Box, Card, CardActions, CardHeader } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Collapse,
+} from '@mui/material';
 
 import { UserStatus, Community } from '@communecar/types';
 
@@ -15,6 +22,10 @@ import { CardMenu } from '../../Components/CardMenu/CardMenu';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { membersStatus } from '../../utils/communities/membershipConsts';
 import { useUserCommunityStatus } from '../../hooks/Communities/useRequstChangeUserStatus';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import { useState } from 'react';
+import { ExpandMoreContent } from './ExpandMoreContent/ExpandMoreContent';
+import { ExpandMore } from './ExpandMoreContent/ExpandMore.styled';
 
 export interface CommunityCardProps {
   community: Community;
@@ -35,7 +46,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const navigate = useNavigate();
   const { createMutation, deleteMutation, isCreatingStatus, isDeletingStatus } =
     useUserCommunityStatus(userId, Number(community.id));
-
   const { title, description, picturesUrl } = community;
 
   const isMember = userStatus && membersStatus.includes(userStatus);
@@ -59,6 +69,12 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const optionActions: Record<string, () => void> = {
     [MANAGER_OPTIONS.EDIT]: handleEditClick,
     [MEMBER_OPTIONS.SEE_RIDES]: handleJumpToRides,
+  };
+
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
 
   return (
@@ -105,7 +121,18 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
               }
             />
           </Box>
+          <ExpandMore expand={expanded} onClick={handleExpandClick}>
+            <ExpandMoreIcon />
+          </ExpandMore>
         </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <ExpandMoreContent
+              communityLocation={community.location}
+              communityOwners={[]}
+            />
+          </CardContent>
+        </Collapse>
       </Card>
     </Box>
   );

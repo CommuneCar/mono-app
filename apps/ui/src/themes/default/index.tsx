@@ -79,6 +79,9 @@ const defaultTheme = createTheme({
     subtitle1: {
       fontWeight: 700,
     },
+    subtitle2: {
+      color: COLORS.PRIMARY,
+    },
     body1: {
       fontWeight: 500,
       fontSize: pxToRem(14),
