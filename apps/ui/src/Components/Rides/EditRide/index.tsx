@@ -19,7 +19,7 @@ import { Community, LocationResult, Ride, Rider } from '@communecar/types';
 import SearchCommunities from '../../../Pages/Search/Communities';
 import { useUser } from '../../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
-import { TEXT } from '../../../themes/default/consts';
+import { SPACING, TEXT } from '../../../themes/default/consts';
 import { SubmitButton } from '../../../Components/styles/SubmitButton.styled';
 import { useEditNewRide } from '../../../hooks/Rides/useEditRide';
 import { EditRideSchema } from '@communetypes/EditRideSchema';
@@ -133,66 +133,70 @@ const EditRideDialog = ({
     >
       <DialogTitle>Edit Ride</DialogTitle>
       <DialogContent>
-        <DialogContentText>Update the details you want ride.</DialogContentText>
-        <SearchCommunities
-          communities={communities}
-          selectedCommunity={community}
-          setSelectedCommunity={setCommunity}
-        />
-        <Box my={2}>
-          <MobileDateTimePicker
-            label="Departure Time"
-            value={dayjs(ride.departureTime)}
-            onChange={(newValue) => setDepartureTime(newValue)}
-            slotProps={{ textField: { fullWidth: true } }}
+        <Box display="flex" flexDirection="column" gap={SPACING.SP4}>
+          <DialogContentText>
+            Update the details you want ride.
+          </DialogContentText>
+          <SearchCommunities
+            communities={communities}
+            selectedCommunity={community}
+            setSelectedCommunity={setCommunity}
+          />
+          <Box my={2}>
+            <MobileDateTimePicker
+              label="Departure Time"
+              value={dayjs(ride.departureTime)}
+              onChange={(newValue) => setDepartureTime(newValue)}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+          </Box>
+          <SearchLocations
+            label="Start location"
+            value={ride.startLocationName}
+            onSelect={(location: LocationResult) =>
+              handleLocationSelect(location, 'start')
+            }
+          />
+          <SearchLocations
+            value={ride.destinationName}
+            label="Destination"
+            onSelect={(location: LocationResult) =>
+              handleLocationSelect(location, 'destination')
+            }
+          />
+          <TextField
+            margin="dense"
+            id="gasMoney"
+            label="Gas Money"
+            type="number"
+            fullWidth
+            value={gasMoney}
+            onChange={(e) => setGasMoney(e.target.value)}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={pronounsOnly}
+                onChange={(e) => setPronounsOnly(e.target.checked)}
+              />
+            }
+            label="Same pronouns only"
+          />
+          <TextField
+            margin="dense"
+            id="seats"
+            label="Seats"
+            type="number"
+            fullWidth
+            value={seats}
+            onChange={(e) => setSeats(e.target.value)}
+          />
+          <RidersContentItemEditMode
+            riders={rideRiders}
+            setRideRiders={setRideRiders}
+            rideId={ride.id}
           />
         </Box>
-        <SearchLocations
-          label="Start location"
-          value={ride.startLocationName}
-          onSelect={(location: LocationResult) =>
-            handleLocationSelect(location, 'start')
-          }
-        />
-        <SearchLocations
-          value={ride.destinationName}
-          label="Destination"
-          onSelect={(location: LocationResult) =>
-            handleLocationSelect(location, 'destination')
-          }
-        />
-        <TextField
-          margin="dense"
-          id="gasMoney"
-          label="Gas Money"
-          type="number"
-          fullWidth
-          value={gasMoney}
-          onChange={(e) => setGasMoney(e.target.value)}
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={pronounsOnly}
-              onChange={(e) => setPronounsOnly(e.target.checked)}
-            />
-          }
-          label="Same pronouns only"
-        />
-        <TextField
-          margin="dense"
-          id="seats"
-          label="Seats"
-          type="number"
-          fullWidth
-          value={seats}
-          onChange={(e) => setSeats(e.target.value)}
-        />
-        <RidersContentItemEditMode
-          riders={rideRiders}
-          setRideRiders={setRideRiders}
-          rideId={ride.id}
-        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
