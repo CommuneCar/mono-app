@@ -60,8 +60,8 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
 
   const adminOptions = useMemo(
     () =>
-      usersOptions?.filter((user) =>
-        user.managedCommunitiesIds.includes(community.id),
+      usersOptions?.filter(
+        (user) => !user.managedCommunitiesIds.includes(community.id),
       ) ?? [],
     [usersOptions, community.id],
   );
@@ -69,8 +69,8 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
     () =>
       usersOptions?.filter(
         (user) =>
-          user.managedCommunitiesIds.includes(community.id) ||
-          user.membershipCommunitiesIds.includes(community.id),
+          !user.managedCommunitiesIds.includes(community.id) &&
+          !user.membershipCommunitiesIds.includes(community.id),
       ) ?? [],
     [usersOptions, community.id],
   );
