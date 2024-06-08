@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   TextField,
   Button,
@@ -57,6 +57,23 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
     isLoading: isGetAllUsersLoading,
     error: getAllUsersError,
   } = useGetAllUsersOptions();
+
+  const adminOptions = useMemo(
+    () =>
+      usersOptions?.filter((user) =>
+        user.managedCommunitiesIds.includes(community.id),
+      ) ?? [],
+    [usersOptions, community.id],
+  );
+  const membersOptions = useMemo(
+    () =>
+      usersOptions?.filter(
+        (user) =>
+          user.managedCommunitiesIds.includes(community.id) ||
+          user.membershipCommunitiesIds.includes(community.id),
+      ) ?? [],
+    [usersOptions, community.id],
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -132,7 +149,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
           />
           {!getAllUsersError && (
             <UsersSelector
-              options={usersOptions ?? []}
+              options={adminOptions}
               fieldLabel="Add Admins"
               isOptionsLoading={isGetAllUsersLoading}
               setSelectedUsersIds={setCommunityManagers}
@@ -140,7 +157,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
           )}
           {!getAllUsersError && (
             <UsersSelector
-              options={usersOptions ?? []}
+              options={membersOptions}
               fieldLabel="Add Members"
               isOptionsLoading={isGetAllUsersLoading}
               setSelectedUsersIds={setNewCommunityMembers}
