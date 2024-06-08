@@ -4,22 +4,19 @@ import { useSnackbar } from '../../contexts/SnackbarContext';
 import { postUpdateRiders } from '../../apis/rides/edit-ride';
 import { Rider } from '@communetypes/Rider';
 
-const useEditRider = () => {
+const useEditRider = (rideId: number) => {
   const queryClient = useQueryClient();
   const { showMessage } = useSnackbar();
 
-  return useMutation(
-    async ([rider, rideId]: [Rider, number]) => postUpdateRiders(rider, rideId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('rides');
-        showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
-      },
-      onError: () => {
-        showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
-      },
+  return useMutation(async (rider: Rider) => postUpdateRiders(rider, rideId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ridersByRideId', rideId]);
+      showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
     },
-  );
+    onError: () => {
+      showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
+    },
+  });
 };
 
 export { useEditRider };

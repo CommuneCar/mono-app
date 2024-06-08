@@ -34,13 +34,13 @@ const RidersContentItemEditMode: React.FC<DriverContentItemProps> = ({
 }) => {
   const [showRiders, setShowRiders] = useState(false);
 
-  const { mutateAsync: editRider } = useEditRider();
+  const { mutateAsync: editRider } = useEditRider(rideId);
 
   const toggleRidersList = () => {
     setShowRiders(!showRiders);
   };
   const onRemoveRider = async (rider: Rider) => {
-    await editRider([rider, rideId]);
+    await editRider(rider);
     setRideRiders(riders!.filter((r: Rider) => r.id !== rider.id));
   };
 
