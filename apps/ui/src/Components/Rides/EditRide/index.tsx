@@ -15,7 +15,7 @@ import {
 import dayjs from 'dayjs';
 
 import SearchLocations from '../../../Pages/Search/Locations';
-import { Community, LocationResult, Ride } from '@communecar/types';
+import { Community, LocationResult, Ride, Rider } from '@communecar/types';
 import SearchCommunities from '../../../Pages/Search/Communities';
 import { useUser } from '../../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
@@ -23,6 +23,8 @@ import { TEXT } from '../../../themes/default/consts';
 import { SubmitButton } from '../../../Components/styles/SubmitButton.styled';
 import { useEditNewRide } from '../../../hooks/Rides/useEditRide';
 import { EditRideSchema } from '@communetypes/EditRideSchema';
+import { RidersContentItemEditMode } from './EditRidersAvater';
+import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
 
 export interface CreateRideDialogProps {
   communities: Community[];
@@ -37,6 +39,7 @@ const EditRideDialog = ({
   isOpen,
   ride,
 }: CreateRideDialogProps) => {
+  const { data: riders } = useGetRidersByRideId(ride.id);
   const { mutateAsync: editRide, isSuccess, isLoading } = useEditNewRide();
   const { user } = useUser();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
@@ -62,6 +65,8 @@ const EditRideDialog = ({
     lon: ride.destination[1].toString(),
     displayName: ride.destinationName,
   });
+
+  const [rideRiders, setRideRiders] = useState<Rider[]>(riders ?? []);
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
@@ -183,10 +188,15 @@ const EditRideDialog = ({
           value={seats}
           onChange={(e) => setSeats(e.target.value)}
         />
+        <RidersContentItemEditMode
+          riders={rideRiders}
+          setRideRiders={setRideRiders}
+          rideId={ride.id}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
-          {TEXT.CANCEL}
+          {TEXT.CLOSE}
         </Button>
         <SubmitButton type="submit" disabled={isLoading} onClick={handleSubmit}>
           {isLoading ? (

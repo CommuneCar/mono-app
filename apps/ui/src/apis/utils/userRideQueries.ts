@@ -1,4 +1,4 @@
-import { UserRideStatus } from '@communecar/types';
+import { Rider, UserRideStatus } from '@communecar/types';
 import { EditRideSchema } from '@communetypes/EditRideSchema';
 
 const getUserRideQueries = (userId: number) => {
@@ -76,4 +76,22 @@ const updateRideQuery = (ride: EditRideSchema) => {
   `;
 };
 
-export { getUserRideQueries, getRidersForRide, updateRideQuery };
+const updateRidersQuery = (rider: Rider, rideId: number, status: string) => {
+  return `
+  mutation {
+  updateUserRideByUserIdAndRideId(input: {userId: ${rider.id}, rideId: ${rideId}, userRidePatch: {status: "${status}"}}) {
+    userRide {
+      rideId
+      status
+    }
+  }
+}
+  `;
+};
+
+export {
+  getUserRideQueries,
+  getRidersForRide,
+  updateRideQuery,
+  updateRidersQuery,
+};

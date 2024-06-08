@@ -95,12 +95,14 @@ const RideCard: React.FC<RideCardProps> = ({
         rideToJoin={ride}
       />
       <RideDetails ride={ride} isOpen={isInfoOpen} setIsOpen={setIsInfoOpen} />
-      <EditRideDialog
-        isOpen={isEditRideOpen}
-        setOpen={setIsEditRideOpen}
-        ride={ride}
-        communities={communities}
-      />
+      {isEditRideOpen && (
+        <EditRideDialog
+          isOpen={isEditRideOpen}
+          setOpen={setIsEditRideOpen}
+          ride={ride}
+          communities={communities}
+        />
+      )}
     </>
   );
 };
