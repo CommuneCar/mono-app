@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
   );
   const [selectedRide, setSelectedRide] = useState<Ride>();
   const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
+  const [createRideOpen, setIsCreateRideOpen] = useState(false);
 
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
@@ -119,7 +120,9 @@ const HomePage: React.FC = () => {
             userRideStatus={statuses ?? {}}
             setSelectedRide={setSelectedRide}
             communities={communitiesData ?? []}
+            isCreateRideDialog={createRideOpen}
             userCommunities={userCommunitiesData ?? []}
+            setIsCreateRideDialogOpen={setIsCreateRideOpen}
           />
         )}
       </BottomDrawer>

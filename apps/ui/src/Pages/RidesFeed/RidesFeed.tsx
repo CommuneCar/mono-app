@@ -39,12 +39,12 @@ const RidesFeed = ({
       <PageLoader isLoading={isEmpty(rides) || isEmpty(communities)} />
       <RidesList
         rides={rides}
-        openDialog={isDialogOpen}
         communities={communities}
-        setOpenDialog={setIsDialogOpen}
         userRideStatus={userRidesStatus}
+        isCreateRideDialog={isDialogOpen}
         setSelectedRide={setSelectedRide}
         userCommunities={userCommunities}
+        setIsCreateRideDialogOpen={setIsDialogOpen}
       />
     </Page>
   );

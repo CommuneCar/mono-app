@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { Box } from '@mui/material';
 import { isMobile } from 'react-device-detect';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Community, Ride } from '@communecar/types';
 
@@ -14,11 +14,11 @@ dayjs.extend(relativeTime);
 
 interface RideListProps {
   rides: Ride[];
-  openDialog?: boolean;
   communities: Community[];
+  isCreateRideDialog: boolean;
   userCommunities: Community[];
   userRideStatus: UserRidesStatus;
-  setOpenDialog?: Dispatch<SetStateAction<boolean>>;
+  setIsCreateRideDialogOpen: Dispatch<SetStateAction<boolean>>;
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
@@ -27,25 +27,9 @@ const RidesList: React.FC<RideListProps> = ({
   userCommunities,
   userRideStatus,
   setSelectedRide,
-  openDialog,
-  setOpenDialog,
+  isCreateRideDialog,
+  setIsCreateRideDialogOpen,
 }) => {
-  const [isCreateRideDialog, setIsCreateRideDialogOpen] = useState(
-    openDialog ?? false,
-  );
-
-  useEffect(() => {
-    if (setOpenDialog) {
-      setOpenDialog(isCreateRideDialog);
-    }
-  }, [isCreateRideDialog]);
-
-  useEffect(() => {
-    if (!!openDialog) {
-      setIsCreateRideDialogOpen(openDialog);
-    }
-  }, [openDialog]);
-
   return (
     <Box sx={!isMobile ? { overflowY: 'auto', maxHeight: '78%' } : {}}>
       {isCreateRideDialog && (

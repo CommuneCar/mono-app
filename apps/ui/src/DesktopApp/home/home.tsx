@@ -11,8 +11,8 @@ import {
   ListItemButton,
   ToggleButtonGroup,
 } from '@mui/material';
-import { flatten, groupBy } from 'lodash';
 import React, { useMemo, useState } from 'react';
+import { flatten, groupBy, uniqBy } from 'lodash';
 import { ChevronRight as ChevronRightIcon } from '@mui/icons-material';
 
 import logo from '../../assets/logo-with-title.png';
@@ -23,6 +23,7 @@ import { useUser } from '../../hooks/Users/useUser';
 import { Role, useRole } from '../../contexts/role';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
 import { RidesFeed } from '../../Pages/RidesFeed/RidesFeed';
+import { getUserFullName } from '../../utils/user/userUtils';
 import { Page, PageCard } from '../../Pages/HomePage/styles';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { MessagesFeed } from '../../Pages/Messages/MessagesFeed';
@@ -195,16 +196,23 @@ const Home: React.FC = () => {
       <Map
         shouldShowSearch={false}
         focusLocation={selectedRide?.startLocation}
-        markers={
-          flatten(
-            communities.map((community) =>
-              community.rides.map((ride: Ride) => ({
-                geocode: ride.startLocation,
-                popUp: `${ride.driver.firstName} ${ride.driver.lastName} going to ${ride.destinationName}`,
-              })),
-            ),
-          ) as MarkerInfo[]
-        }
+        markers={uniqBy(
+          [
+            ...(flatten(
+              communities.map((community) =>
+                community.rides.map((ride: Ride) => ({
+                  geocode: ride.startLocation,
+                  popUp: `${getUserFullName(ride.driver)} going to ${ride.destinationName}`,
+                })),
+              ),
+            ) as MarkerInfo[]),
+            ...(ridesData?.map((ride) => ({
+              geocode: ride.startLocation,
+              popUp: `${getUserFullName(ride.driver)} going to ${ride.destinationName}`,
+            })) || ([] as MarkerInfo[])),
+          ],
+          'popUp',
+        )}
       />
     </Page>
   );
