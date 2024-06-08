@@ -18,7 +18,7 @@ import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
 import camera from '../../assets/camera.png';
-import SearchLocations from '../Search/Locations';
+import { SearchLocations } from '../Search/Locations';
 import { Community, CreateRideSchema, LocationResult } from '@communecar/types';
 import SearchCommunities from '../Search/Communities';
 import { useAddNewRide } from '../../hooks/Rides/useAddNewRide';

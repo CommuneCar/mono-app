@@ -64,8 +64,6 @@ const HomePage: React.FC = () => {
     }
   };
 
-  console.log(userCommunitiesData);
-
   return (
     <Page>
       <Menu

@@ -35,7 +35,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const navigate = useNavigate();
   const { createMutation, deleteMutation, isCreatingStatus, isDeletingStatus } =
     useUserCommunityStatus(userId, Number(community.id));
-
   const { title, description, picturesUrl } = community;
 
   const isMember = userStatus && membersStatus.includes(userStatus);
