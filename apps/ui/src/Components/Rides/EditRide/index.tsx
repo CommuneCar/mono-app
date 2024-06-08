@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 
-import SearchLocations from '../../../Pages/Search/Locations';
+import { SearchLocations } from '../../../Pages/Search/Locations';
 import { Community, LocationResult, Ride, Rider } from '@communecar/types';
 import SearchCommunities from '../../../Pages/Search/Communities';
 import { useUser } from '../../../hooks/Users/useUser';
