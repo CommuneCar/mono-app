@@ -6,9 +6,6 @@ import {
   CardContent,
   CardHeader,
   Collapse,
-  IconButton,
-  IconButtonProps,
-  styled,
 } from '@mui/material';
 
 import { UserStatus, Community } from '@communecar/types';
@@ -29,21 +26,8 @@ import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import { ExpandMoreContent } from './ExpandMoreContent/ExpandMoreContent';
 import { useUser } from '../../hooks/Users/useUser';
+import { ExpandMore } from './ExpandMoreContent/ExpandMore.styled';
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
 export interface CommunityCardProps {
   community: Community;
   userStatus?: UserStatus;
