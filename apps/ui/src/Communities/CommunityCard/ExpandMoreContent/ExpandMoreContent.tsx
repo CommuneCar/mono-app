@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { Location, User } from '@communecar/types';
 import { UserAvatarChips } from '../../../Components/UserAvatar/userAvatarChips';
 import { ExpandMoreFieldBox } from './expandMoreFieldBox.styled';
@@ -14,11 +14,12 @@ const ExpandMoreContent: React.FC<ExpandMoreContentProps> = ({
 }) => {
   return (
     <>
-      <ExpandMoreFieldBox>
+      {/* <Divider /> */}
+      <ExpandMoreFieldBox sx={{ marginBottom: '1rem', marginTop: '0rem' }}>
         <Typography variant="subtitle2" sx={{ marginRight: '0.5rem' }}>
           Base Location
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" sx={{ textAlign: '-webkit-auto' }}>
           {communityLocation?.name ?? 'No Base Location'}
         </Typography>
       </ExpandMoreFieldBox>

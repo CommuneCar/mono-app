@@ -11,7 +11,7 @@ const UserAvatarChips: React.FC<UserAvatarChipsProps> = ({ user }) => {
   return (
     <Tooltip title={fullName}>
       <Chip
-        sx={{ marginRight: '2px', borderRadius: '16px' }}
+        sx={{ marginRight: '2px', borderRadius: '16px', marginBottom: '3px' }}
         avatar={<Avatar alt={fullName} src={user.avatarUrl} />}
         label={fullName}
         variant="outlined"
