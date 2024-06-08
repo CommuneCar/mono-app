@@ -19,12 +19,12 @@ const geocode = async (coords: {
     );
 
     if (response.data) {
-      const data = response.data;
+      let { data } = response;
       if (!isArray(data)) {
-        const newData = data as LocationResult;
-        return newData.displayName || newData.name;
-      } else if (isArray(data) && data.length > 0 && !isUndefined(data[0])) {
-        return response.data[0].name || response.data[0].displayName;
+        data = [data] as LocationResult[];
+      }
+      if (data.length > 0 && !isUndefined(data[0])) {
+        return data[0].displayName || data[0].name;
       } else {
         console.error('Geocoding error');
         return UNKNOWN_LOCATION;

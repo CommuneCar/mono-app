@@ -14,9 +14,13 @@ const fetchAllCommunities = async (): Promise<Community[]> => {
       const location =
         node.lat && node.long ? await locationExtraction(node) : undefined;
 
-      const picturesUrl = node.userCommunitiesByCommunityId.nodes
-        .map((userCommunity) => userCommunity.userByUserId.profileImage)
-        .filter((url): url is string => url != null);
+      const picturesUrlsResponse = node.userCommunitiesByCommunityId.nodes.map(
+        (userCommunity) => userCommunity.userByUserId.profileImage,
+      );
+
+      const picturesUrl: string[] = picturesUrlsResponse.filter(
+        (url): url is string => url !== null,
+      );
 
       const { id, title, description } = node;
 
