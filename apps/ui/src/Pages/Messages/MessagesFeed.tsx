@@ -54,8 +54,8 @@ const MessagesFeed = () => {
                 <Box key={messages[0].id}>
                   <Box
                     sx={{
-                      display: 'flex',
                       mx: '16px',
+                      display: 'flex',
                       borderBottom: 'solid 1px #e0e0e0',
                     }}
                   >
@@ -64,9 +64,10 @@ const MessagesFeed = () => {
                   <List sx={{ overflowY: 'auto', maxHeight: '350px' }}>
                     {messages?.map((message: Message) => (
                       <MessageCard
-                        message={message}
                         key={message.id}
+                        message={message}
                         onActionComplete={() => refetch()}
+                        isMyRequest={key === 'My Requests'}
                       />
                     ))}
                   </List>
