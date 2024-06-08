@@ -25,7 +25,6 @@ import { useUserCommunityStatus } from '../../hooks/Communities/useRequstChangeU
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import { ExpandMoreContent } from './ExpandMoreContent/ExpandMoreContent';
-import { useUser } from '../../hooks/Users/useUser';
 import { ExpandMore } from './ExpandMoreContent/ExpandMore.styled';
 
 export interface CommunityCardProps {
@@ -77,8 +76,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  const { user } = useUser();
 
   return (
     <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
@@ -132,7 +129,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           <CardContent>
             <ExpandMoreContent
               communityLocation={community.location}
-              communityOwners={user ? [user, user, user, user] : []}
+              communityOwners={[]}
             />
           </CardContent>
         </Collapse>
