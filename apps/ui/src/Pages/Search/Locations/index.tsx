@@ -8,6 +8,7 @@ import {
   CardActionArea,
   CardContent,
   Button,
+  Tooltip,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -27,15 +28,17 @@ const CenteredBox = styled(Box)({
 interface SearchLocationsProps {
   label: string;
   onSelect: (location: LocationResult) => void;
+  serachFieldvariant?: 'filled' | 'outlined' | 'standard';
   value?: string;
 }
 
 const SearchLocations: React.FC<SearchLocationsProps> = ({
   label,
   onSelect,
-  value = '',
+  serachFieldvariant = 'outlined',
+  value,
 }) => {
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>(value ?? '');
   const [loading, setLoading] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationResult[]>([]);
   const { showMessage } = useSnackbar();
@@ -66,25 +69,34 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({
   return (
     <CenteredBox>
       <Box mb={2} sx={{ width: '100%', maxWidth: '750px' }}>
-        <TextField
-          fullWidth
-          value={inputValue ? inputValue : value}
-          onChange={(e) => setInputValue(e.target.value)}
-          label={label}
-          variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <Button
-                onClick={searchLocations}
-                disabled={loading}
-                startIcon={
-                  loading ? <CircularProgress size={20} /> : <SearchIcon />
-                }
-                style={{ maxWidth: 16 }}
-              />
-            ),
-          }}
-        />
+        <Tooltip title={inputValue} arrow>
+          <TextField
+            fullWidth
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            label={label}
+            variant={serachFieldvariant}
+            sx={{
+              width: '100%',
+              '& .MuiInputBase-input': {
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <Button
+                  onClick={searchLocations}
+                  disabled={loading}
+                  startIcon={
+                    loading ? <CircularProgress size={20} /> : <SearchIcon />
+                  }
+                  style={{ maxWidth: 16 }}
+                />
+              ),
+            }}
+          />
+        </Tooltip>
       </Box>
       <Box
         sx={{ maxHeight: 300, overflow: 'auto', width: '100%', maxWidth: 500 }}
@@ -93,12 +105,18 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({
           <Card key={index} sx={{ mb: 1 }}>
             <CardActionArea onClick={() => handleLocationSelect(location)}>
               <CardContent>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-                >
-                  <LocationOnIcon /> {location.displayName}
-                </Typography>
+                <Tooltip title={location.displayName} arrow>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    <LocationOnIcon /> {location.displayName}
+                  </Typography>
+                </Tooltip>
                 <Typography variant="body2">
                   Lat: {location.lat}, Lon: {location.lon}
                 </Typography>
@@ -111,4 +129,4 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({
   );
 };
 
-export default SearchLocations;
+export { SearchLocations };

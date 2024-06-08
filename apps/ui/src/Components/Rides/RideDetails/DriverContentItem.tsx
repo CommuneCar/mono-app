@@ -1,8 +1,9 @@
 import React from 'react';
-import { DialogContentText, Typography, Box } from '@mui/material';
+import { DialogContentText, Typography, Box, IconButton } from '@mui/material';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { UserLogo } from '../../UserAvatar/UserAvatar';
 import { DRIVER_ITEM_COLOR } from '../../UserAvatar/consts';
-
+import {handleWhatsAppClick} from './whatsapp'
 interface DriverContentItemProps {
   phoneNumber: string;
   text: string;
@@ -25,7 +26,16 @@ const DriverContentItem: React.FC<DriverContentItemProps> = ({
           name={text}
           bgColor={DRIVER_ITEM_COLOR}
         />
-        <Typography variant="caption">{phoneNumber}</Typography>
+        <Box display="flex" alignItems="center">
+          <Typography variant="caption">{phoneNumber}</Typography>
+          <IconButton
+            aria-label="whatsapp"
+            onClick={() => handleWhatsAppClick(phoneNumber)}
+            sx={{ ml: -0.5, mt:'-4px' }}
+          >
+            <WhatsAppIcon />
+          </IconButton>
+        </Box>
       </Box>
     </DialogContentText>
   );

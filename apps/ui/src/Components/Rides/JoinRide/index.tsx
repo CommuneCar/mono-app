@@ -16,7 +16,7 @@ import { LocationResult, Ride } from '@communecar/types';
 
 import { TEXT } from '../../../themes/default/consts';
 import { useUser } from '../../../hooks/Users/useUser';
-import SearchLocations from '../../../Pages/Search/Locations';
+import { SearchLocations } from '../../../Pages/Search/Locations';
 import { useSnackbar } from '../../../contexts/SnackbarContext';
 import { DEFAULT_USER_ID } from '../../../apis/utils/defaultConst';
 import { usePostRequestUserRide } from '../../../hooks/Rides/usePostRequestUserRide';

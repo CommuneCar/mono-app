@@ -42,7 +42,9 @@ const fetchJoinRideMessages = async (userId: number): Promise<Message[]> => {
         {
           id: number;
           toLat: number;
+          toName: string;
           toLong: number;
+          fromName: string;
           modificationTs: Date;
           userRidesByRideId: {
             nodes: { status: string; userByUserId: User }[];
@@ -61,7 +63,7 @@ const fetchJoinRideMessages = async (userId: number): Promise<Message[]> => {
         type: MessageType.JOINING_RIDE_REQUEST,
         addresseeUsers: [currentUser.userById],
         entityId: ride.id,
-        entityName: 'test',
+        entityName: ride.toName,
         time: ride.modificationTs,
         creatorUser: user.userByUserId,
       }));
@@ -85,6 +87,8 @@ const getBasePendingRideQuery = (rideId: number) => {
         toLat
         toLong
         modificationTs
+        toName
+        fromName
         userRidesByRideId {
           nodes {
             status

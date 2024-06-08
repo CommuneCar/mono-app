@@ -1,14 +1,8 @@
 import {
   Box,
-  Link,
-  Grid,
-  Radio,
   Button,
   TextField,
-  FormLabel,
   Typography,
-  RadioGroup,
-  FormControlLabel,
   Container,
   CircularProgress,
 } from '@mui/material';
@@ -21,7 +15,7 @@ import {
   CloudUpload as CloudUploadIcon,
 } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers';
-import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import { Gender } from '@communecar/types';
 
@@ -35,6 +29,8 @@ import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { SigningHeader } from '../../Components/Signing/SigningHeader';
 import { SigininBox } from '../../Components/styles/SigninBox.styled';
+import { ProgressMobileStepper } from '../../Components/Signing/SignUpFooter/ProgressMobileStepper';
+import { GenderField } from '../../Components/Signing/Fields/GenderField';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -145,7 +141,7 @@ const SignUp = () => {
       ),
     },
     1: {
-      title: "let's keep in touch",
+      title: "Let's keep in touch",
       component: (
         <Box sx={{ margin: 2 }}>
           <EmailField
@@ -173,7 +169,7 @@ const SignUp = () => {
       ),
     },
     2: {
-      title: "shh.. don't tell anyone",
+      title: "Shh.. don't tell anyone",
       component: (
         <Box sx={{ margin: 2 }}>
           <PasswordField
@@ -185,71 +181,42 @@ const SignUp = () => {
       ),
     },
     3: {
-      title: 'tell us a bit more about yourself',
+      title: 'Tell us a bit more about yourself',
       component: (
         <Box sx={{ margin: 2 }}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              width: '100%',
             }}
           >
-            <Box
-              sx={{
-                mt: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'baseline',
+            <DatePicker
+              sx={{ width: '100%', mb: '0.5rem' }}
+              disableFuture={true}
+              label={"when's your birthday?"}
+              value={formData.age}
+              onChange={(date) =>
+                setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
+              }
+            />
+            <GenderField
+              formDataGender={formData.gender}
+              handleChange={(e) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  gender: e.target.value as Gender,
+                }));
               }}
-            >
-              <DatePicker
-                label={"when's your birthday?"}
-                value={formData.age}
-                onChange={(date) =>
-                  setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
-                }
-              />
-              <FormLabel id="demo-controlled-radio-buttons-group" required>
-                Gender
-              </FormLabel>
-              <RadioGroup
-                row
-                name="gender"
-                onChange={(e) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    gender: e.target.value as Gender,
-                  }));
-                }}
-              >
-                <FormControlLabel
-                  value="Female"
-                  control={<Radio checked={formData.gender === 'Female'} />}
-                  label="Female"
-                />
-                <FormControlLabel
-                  value="Male"
-                  control={<Radio checked={formData.gender === 'Male'} />}
-                  label="Male"
-                />
-                <FormControlLabel
-                  value="Other"
-                  control={
-                    <Radio
-                      checked={!formData.gender || formData.gender === 'Other'}
-                    />
-                  }
-                  label="Other"
-                />
-              </RadioGroup>
-            </Box>
+            />
           </Box>
         </Box>
       ),
     },
     4: {
-      title: 'what do you look like?',
+      title: 'What do you look like?',
       component: (
         <Box sx={{ margin: 2 }}>
           <Button
@@ -258,24 +225,23 @@ const SignUp = () => {
             variant="contained"
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
+            sx={{ mt: 3, mb: 2, width: '100%' }}
           >
-            profile picture
+            Profile Picture
             <VisuallyHiddenInput type="file" />
           </Button>
         </Box>
       ),
     },
     5: {
-      title: "that's it! Enjoy your ride",
+      title: "That's it! Enjoy your ride",
       component: (
         <Box sx={{ margin: 2 }}>
-          {hasErrors ? (
+          {hasErrors && (
             <Typography color={'error'}>
               You have entered incorrect details, please repeat the process
               again...
             </Typography>
-          ) : (
-            <></>
           )}
           <Typography color={'error'}>{serverError}</Typography>
           <Button
@@ -296,54 +262,52 @@ const SignUp = () => {
     },
   };
 
-  const isLastStep = useMemo(
-    () => steps[activeStep + 1] === undefined,
-    [activeStep],
-  );
+  const maxSteps = Object.keys(steps).length ?? 6;
 
   return (
     <Page>
-      <Container component="main" maxWidth="xs">
+      <Container
+        component="main"
+        maxWidth="xs"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          justifyContent: 'space-between',
+        }}
+      >
         <SigininBox>
           <SigningHeader titleText={'Sign Up'} />
           <Box
             sx={{
-              marginTop: 5,
+              marginTop: '5%',
               width: '100%',
-              alignContent: 'center',
               display: 'flex',
               justifyContent: 'flex-start',
               flexDirection: 'column',
+              alignContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Typography component="h4" variant="h6">
-              {steps[activeStep].title}
-            </Typography>
-            <Box width={'100%'}>{steps[activeStep].component}</Box>
-            <Box sx={{ textTransform: 'none' }}>
-              <Button
-                onClick={handleBack}
-                disabled={activeStep === 0}
-                sx={{ textTransform: 'none' }}
+            <Box sx={{ width: '100%', paddingBottom: '6rem' }}>
+              <Typography
+                sx={{
+                  marginBottom: '5%',
+                }}
+                component="h4"
+                variant="h6"
               >
-                Back
-              </Button>
-              {!isLastStep && (
-                <Button onClick={handleNext} sx={{ textTransform: 'none' }}>
-                  Next
-                </Button>
-              )}
+                {steps[activeStep].title}
+              </Typography>
+              <Box width={'100%'}>{steps[activeStep].component}</Box>
             </Box>
+            <ProgressMobileStepper
+              activeStep={activeStep}
+              handleBack={handleBack}
+              handleNext={handleNext}
+              maxSteps={maxSteps}
+            />
           </Box>
-
-          <Grid container justifyContent="center ">
-            <Grid item>
-              <Link href="/" variant="body2">
-                {TEXT.SIGNIN}
-              </Link>
-            </Grid>
-          </Grid>
         </SigininBox>
       </Container>
     </Page>

@@ -43,6 +43,7 @@ model Community {
   description    String
   lat            Float?
   long           Float?
+  baseLocationName String?  
   userCommunity  UserCommunity[]
   ride           Ride[]
 }
