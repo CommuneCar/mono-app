@@ -15,8 +15,9 @@ interface CommunityNode {
   title: string;
   description: string;
   ownerId: number;
-  lat: number;
-  long: number;
+  lat?: number;
+  long?: number;
+  baseLocationName?: string;
   userCommunitiesByCommunityId: {
     totalCount: number;
     nodes: UserCommunityNode[];
@@ -29,10 +30,17 @@ interface UserNode {
   profileImage: string | null;
 }
 
+interface AllCommunitiesData {
+  allCommunities: {
+    nodes: CommunityNode[];
+  };
+}
+
 export type {
   UserNode,
   UserCommunityNode,
   UpdateCommunityResponse,
   CommunityNode,
   CreateCommunityResponse,
+  AllCommunitiesData,
 };

@@ -29,14 +29,16 @@ interface SearchLocationsProps {
   label: string;
   onSelect: (location: LocationResult) => void;
   serachFieldvariant?: 'filled' | 'outlined' | 'standard';
+  value?: string;
 }
 
 const SearchLocations: React.FC<SearchLocationsProps> = ({
   label,
   onSelect,
   serachFieldvariant = 'outlined',
+  value,
 }) => {
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>(value ?? '');
   const [loading, setLoading] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationResult[]>([]);
   const { showMessage } = useSnackbar();

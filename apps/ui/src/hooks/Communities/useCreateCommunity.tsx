@@ -8,6 +8,7 @@ import { TEXT } from '../../themes/default/consts';
 const useCreateCommunity = (userId: number) => {
   const queryClient = useQueryClient();
   const { showMessage } = useSnackbar();
+
   const mutation = useMutation<Community, Error, Omit<Community, 'id'>>(
     (newCommunity: Omit<Community, 'id'>) =>
       postNewCommunity(newCommunity, userId),

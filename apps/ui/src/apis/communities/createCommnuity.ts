@@ -3,6 +3,7 @@ import { graphqlRequest } from '../graphql';
 import { getCreateCommunityQuery } from '../utils/communitiesQueries';
 import { CreateCommunityResponse } from '../types/communitiesResponse';
 import { handleCommunityResponse } from '../utils/handleCommunityResponse';
+import { locationExtraction } from '../location/location';
 
 const postNewCommunity = async (
   newCommunity: Omit<Community, 'id'>,
@@ -13,7 +14,8 @@ const postNewCommunity = async (
   try {
     const data = await graphqlRequest<CreateCommunityResponse>(query);
     const result = handleCommunityResponse(data.createCommunity.community);
-    return result;
+    const location = await locationExtraction(data.createCommunity.community);
+    return { ...result, location: location };
   } catch (error) {
     console.error('Error creating community:', error);
     throw error;

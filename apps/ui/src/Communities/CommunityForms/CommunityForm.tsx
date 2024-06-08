@@ -146,6 +146,7 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
             label="Base Location"
             onSelect={handleSelectLoaction}
             serachFieldvariant="standard"
+            value={community.location?.name ?? undefined}
           />
           {!getAllUsersError && (
             <UsersSelector
