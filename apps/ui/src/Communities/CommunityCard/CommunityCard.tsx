@@ -71,7 +71,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
     [MEMBER_OPTIONS.SEE_RIDES]: handleJumpToRides,
   };
 
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
