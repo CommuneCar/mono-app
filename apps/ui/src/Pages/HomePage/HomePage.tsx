@@ -1,10 +1,10 @@
 import { flatten, groupBy } from 'lodash';
 import { useLocation } from 'react-router-dom';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Menu as MenuIcon, Info as InfoIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 
-import { Community, Ride } from '@communecar/types';
+import { Community, Gender, Ride } from '@communecar/types';
 
 import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
   const [selectedRide, setSelectedRide] = useState<Ride>();
   const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
   const [createRideOpen, setIsCreateRideOpen] = useState(false);
-
+  const [genderFilter, setGenderFilter] = useState<Gender | null>(null);
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
   const { data: userCommunitiesData, isLoading: isLoadingUserCommunities } =
@@ -64,7 +64,9 @@ const HomePage: React.FC = () => {
       setSelectedTab(newTab);
     }
   };
-
+  const changeGenderFilter = (_: MouseEvent<HTMLElement>, newGender: Gender | null) => {
+    setGenderFilter(newGender);
+  };
   return (
     <Page>
       <Menu
@@ -98,6 +100,22 @@ const HomePage: React.FC = () => {
             <ToggleButton value={'communities'}>My Communities</ToggleButton>
             <ToggleButton value={'rides'}>My Rides</ToggleButton>
           </ToggleButtonGroup>
+          {selectedTab === 'rides' && (
+            <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '1rem' }}>
+              <ToggleButtonGroup
+                color="primary"
+                value={genderFilter}
+                exclusive
+                onChange={changeGenderFilter}
+              >
+                <ToggleButton value={Gender.MALE}>Male</ToggleButton>
+                <ToggleButton value={Gender.FEMALE}>Female</ToggleButton>
+              </ToggleButtonGroup>
+              <Tooltip title="Filter for rides that are limited to a specific gender">
+                <InfoIcon color="action" sx={{ ml: 1 }} />
+              </Tooltip>
+            </Box>
+          )}
         </Box>
         <PageLoader
           isLoading={
@@ -123,6 +141,8 @@ const HomePage: React.FC = () => {
             isCreateRideDialog={createRideOpen}
             userCommunities={userCommunitiesData ?? []}
             setIsCreateRideDialogOpen={setIsCreateRideOpen}
+            genderFilter={genderFilter}
+
           />
         )}
       </BottomDrawer>

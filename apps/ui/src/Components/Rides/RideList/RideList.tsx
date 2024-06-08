@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 import { Box } from '@mui/material';
 import { isMobile } from 'react-device-detect';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
-import { Community, Ride } from '@communecar/types';
+import { Community, Ride, Gender } from '@communecar/types';
 
 import { RideCard } from '../RideCard';
 import { UserRidesStatus } from '../../../types/ride-user-type';
@@ -20,6 +20,8 @@ interface RideListProps {
   userRideStatus: UserRidesStatus;
   setIsCreateRideDialogOpen: Dispatch<SetStateAction<boolean>>;
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
+  genderFilter: Gender | null;
+
 }
 
 const RidesList: React.FC<RideListProps> = ({
@@ -27,9 +29,19 @@ const RidesList: React.FC<RideListProps> = ({
   userCommunities,
   userRideStatus,
   setSelectedRide,
+
   isCreateRideDialog,
   setIsCreateRideDialogOpen,
+  genderFilter
 }) => {
+  const handleAddClick = (_event: React.MouseEvent) => {
+    setIsCreateRideDialogOpen(true);
+  };
+
+  const filteredRides = rides.filter(ride => {
+    if (!genderFilter) return true;
+    return ride.pronouns && ride.driver.gender === genderFilter;
+  });
   return (
     <Box sx={!isMobile ? { overflowY: 'auto', maxHeight: '78%' } : {}}>
       {isCreateRideDialog && (
@@ -39,7 +51,7 @@ const RidesList: React.FC<RideListProps> = ({
           setOpen={setIsCreateRideDialogOpen}
         />
       )}
-      {rides.map((ride, index) => (
+      {filteredRides.map((ride, index) => (
         <Box key={index} onClick={() => setSelectedRide(ride)}>
           <RideCard
             ride={ride}
