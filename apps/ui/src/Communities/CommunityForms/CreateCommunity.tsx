@@ -29,13 +29,13 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
     try {
       const admins = [...newAdmins, userId];
       const createdCommunity = await addCommunity(newCommunity);
-      // admins.forEach((admin) =>
-      //   createUserCommunity({
-      //     userId: admin,
-      //     communityId: createdCommunity.id,
-      //     status: UserStatus.MANAGER,
-      //   }),
-      // );
+      admins.forEach((admin) =>
+        createUserCommunity({
+          userId: admin,
+          communityId: createdCommunity.id,
+          status: UserStatus.MANAGER,
+        }),
+      );
       newMembers.forEach((current) =>
         createUserCommunity({
           userId: current,
