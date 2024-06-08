@@ -159,6 +159,7 @@ const CommunitiesFeed = () => {
         flexDirection: 'column',
         alignItems: 'center',
         minWidth: 370,
+        maxWidth: 400,
       }}
     >
       <PageHeader title={'Communities'} />
