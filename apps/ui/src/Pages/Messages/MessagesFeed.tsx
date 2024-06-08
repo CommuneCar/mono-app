@@ -6,10 +6,10 @@ import { Message } from '@communecar/types';
 import { Page } from '../HomePage/styles';
 import { MessageCard } from './MessageCard';
 import { useUser } from '../../hooks/Users/useUser';
-import { PageHeader } from '../../Components/PageHeader/PageHeader';
-import { useGetUserMessages } from '../../hooks/Messages/fetchMessagesForUser';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
+import { PageHeader } from '../../Components/PageHeader/PageHeader';
 import { PageLoader } from '../../Components/PageLoader/PageLoader';
+import { useGetUserMessages } from '../../hooks/Messages/fetchMessagesForUser';
 
 const MessagesFeed = () => {
   const { user } = useUser();

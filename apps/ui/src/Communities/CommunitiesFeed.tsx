@@ -21,13 +21,19 @@ import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities'
 
 const CommunitiesFeed = () => {
   const { user } = useUser();
-  const { data: communities, isLoading: isCommunitiesLoading } =
-    useGetAllCommunities();
+  const userId = useMemo(() => user?.id ?? DEFAULT_USER_ID, [user]);
+
+  const {
+    data: communities,
+    isLoading: isCommunitiesLoading,
+    refetch: refetchCommunities,
+  } = useGetAllCommunities();
   const {
     data: userStatusData,
     error: userStatusError,
     isLoading: userStatusIsLoading,
-  } = useUserCommunitiesStatus(user?.id ?? DEFAULT_USER_ID);
+    refetch: refetchUserStatus,
+  } = useUserCommunitiesStatus(userId);
 
   const userStatus: UserCommunitiesStatus = useMemo(() => {
     return userStatusError || userStatusIsLoading ? {} : userStatusData ?? {};
@@ -35,11 +41,6 @@ const CommunitiesFeed = () => {
 
   const [userCommunitiesStatus, setUserCommunitiesStatus] =
     useState<UserCommunitiesStatus>(userStatus);
-
-  useEffect(() => {
-    setUserCommunitiesStatus(userStatus);
-  }, [userStatusData]);
-
   const [allCommunitiesDisplay, setAllCommunitiesDisplay] = useState<
     Community[]
   >(communities ?? []);
@@ -47,6 +48,21 @@ const CommunitiesFeed = () => {
     allCommunitiesDisplay,
   );
   const [searchValue, setSearchValue] = useState<string>('');
+
+  useEffect(() => {
+    if (user) {
+      refetchCommunities();
+      refetchUserStatus();
+    }
+  }, [user, refetchCommunities, refetchUserStatus]);
+
+  useEffect(() => {
+    setAllCommunitiesDisplay(communities ?? []);
+  }, [communities]);
+
+  useEffect(() => {
+    setUserCommunitiesStatus(userStatus);
+  }, [userStatusData]);
 
   const options = useMemo(
     () => allCommunitiesDisplay.map((community) => community.title),
