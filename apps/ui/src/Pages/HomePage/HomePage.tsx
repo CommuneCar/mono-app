@@ -47,13 +47,13 @@ const HomePage: React.FC = () => {
     }
 
     const groupedRides = groupBy(ridesData ?? [], 'communityName');
-    return communitiesData
-      ? communitiesData.map((community: Community) => ({
+    return userCommunitiesData
+      ? userCommunitiesData.map((community: Community) => ({
           ...community,
           rides: groupedRides[community.title] ?? [],
         }))
       : [];
-  }, [communitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
+  }, [userCommunitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
 
   const ChangeSelectedTab = (
     _: MouseEvent<HTMLElement>,
@@ -63,8 +63,6 @@ const HomePage: React.FC = () => {
       setSelectedTab(newTab);
     }
   };
-
-  console.log(userCommunitiesData);
 
   return (
     <Page>

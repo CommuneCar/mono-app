@@ -74,6 +74,7 @@ const CommunityList: React.FC<CommunityListProps> = ({
                   <RideCard
                     ride={ride}
                     rideStatus={rideStatuses?.[ride.id.toString()]}
+                    communities={communities}
                   />
                 </Box>
               ))

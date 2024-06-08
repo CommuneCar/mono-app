@@ -27,11 +27,13 @@ const CenteredBox = styled(Box)({
 interface SearchLocationsProps {
   label: string;
   onSelect: (location: LocationResult) => void;
+  value?: string;
 }
 
 const SearchLocations: React.FC<SearchLocationsProps> = ({
   label,
   onSelect,
+  value = '',
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -66,7 +68,7 @@ const SearchLocations: React.FC<SearchLocationsProps> = ({
       <Box mb={2} sx={{ width: '100%', maxWidth: '750px' }}>
         <TextField
           fullWidth
-          value={inputValue}
+          value={inputValue ? inputValue : value}
           onChange={(e) => setInputValue(e.target.value)}
           label={label}
           variant="outlined"
