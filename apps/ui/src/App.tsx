@@ -41,7 +41,7 @@ const App: React.FC = () => {
                         element={<CommunitiesFeed />}
                       />
                       <Route path="/home" element={<HomePage />} />
-                      <Route path="/map/routing" element={<MapRouting />} />
+                      <Route path="/map/rides/:rideId" element={<MapRouting />} />
                     </Route>
                   </Routes>
                 </Router>

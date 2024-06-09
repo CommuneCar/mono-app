@@ -2,10 +2,14 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Routing from "./Routing";
 import { useGetTrip } from '../../hooks/Rides/useGetTrip';
+import { useParams } from "react-router-dom";
 
 function MapRouting() {
-    const rideId = 1;
-    const { data: locations, isLoading, error } = useGetTrip(rideId);
+    const { rideId } = useParams();
+    const { data: locations, isLoading, error } = useGetTrip(Number(rideId));
+    if (!rideId || isNaN(Number(rideId))) {
+        return <div>Invalid ride id</div>;
+    }
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
