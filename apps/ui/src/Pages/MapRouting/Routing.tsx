@@ -3,15 +3,12 @@ import L from "leaflet";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
 import { useMap } from "react-leaflet";
+import { TripRouteLocation } from "@communetypes/Trip";
 import { sleepInMS } from "../../utils/sleep";
 
-L.Marker.prototype.options.icon = L.icon({
-  iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/logo-no-title.png",
-  iconSize: [64, 64],
-});
 
 interface RoutingProps {
-  waypoints: L.LatLng[];
+  waypoints: TripRouteLocation[];
 }
 
 export default function Routing({ waypoints }: RoutingProps) {
@@ -21,23 +18,36 @@ export default function Routing({ waypoints }: RoutingProps) {
     if (!map) return;
 
     const routingControl = L.Routing.control({
-      waypoints: waypoints,
-      addWaypoints: false,
+      plan: L.Routing.plan(waypoints.map(loc => L.latLng(loc.lat, loc.long)), {
+        createMarker: function (i, wp) {
+          return L.marker(wp.latLng, {
+            draggable: false,
+            icon: L.icon({
+              iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/logo-no-title.png",
+              iconSize: [64, 64],
+              className: "override",
+            })
+          }).bindPopup(waypoints[i].userName);
+        },
+        routeWhileDragging: false
+      }),
+      routeWhileDragging: false,
+      showAlternatives: true,
       lineOptions: {
         styles: [{ color: "#338CFF", opacity: 1, weight: 5 }],
         extendToWaypoints: true,
         missingRouteTolerance: 0
-      },
-      routeWhileDragging: false,
-    }).addTo(map);
+      }
+    })
+      .addTo(map);
 
     return () => {
       // Some random error related to "removeLayer" seems to occur without this (black magic type of ****)
-      sleepInMS(100).then(() => {
-        if (map && routingControl) {
+      sleepInMS(300).then(() => {
+        if (map && routingControl && map.removeLayer !== null) {
           map.removeControl(routingControl);
         }
-      })
+      });
     };
   }, [map, waypoints]);
 

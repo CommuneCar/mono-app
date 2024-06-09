@@ -1,15 +1,21 @@
-// All credits goes to this legend - https://github.com/hliendo/react-route-map2
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Routing from "./Routing";
-import L from "leaflet";
+import { useGetTrip } from '../../hooks/Rides/useGetTrip';
 
 function MapRouting() {
-    const points: L.LatLng[] = [
-        L.latLng(32.0809313, 34.7808127539372),  // Rabin Square
-        L.latLng(32.0981945, 34.788607142459156),  // Sportek Tel Aviv
-        L.latLng(32.07198795, 34.78888514103969)  // Sarona Market
-    ];
+    const rideId = 1;
+    const { data: locations, isLoading, error } = useGetTrip(rideId);
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    // Filter out invalid locations
+    const validLocations = locations?.filter(loc => 
+        loc.lat >= -90 && loc.lat <= 90 &&
+        loc.long >= -180 && loc.long <= 180 &&
+        !(loc.lat === 1.5 && loc.long === 1.5)
+    ) || [];
 
     return (
         <MapContainer style={{
@@ -25,7 +31,7 @@ function MapRouting() {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Routing waypoints={points} />
+            <Routing waypoints={validLocations} />
         </MapContainer>
     );
 }

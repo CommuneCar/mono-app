@@ -16,6 +16,7 @@ import { UserProvider } from './hooks/Users/useUser';
 import { DesktopApp } from './DesktopApp/desktopApp';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
+import { MapRouting } from './Pages/MapRouting/MapRoutingMachine';
 
 const App: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ const App: React.FC = () => {
                         element={<CommunitiesFeed />}
                       />
                       <Route path="/home" element={<HomePage />} />
+                      <Route path="/map/routing" element={<MapRouting />} />
                     </Route>
                   </Routes>
                 </Router>
