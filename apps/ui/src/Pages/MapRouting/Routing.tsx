@@ -6,13 +6,35 @@ import { useMap } from "react-leaflet";
 import { TripRouteLocation } from "@communetypes/Trip";
 import { sleepInMS } from "../../utils/sleep";
 
-
 interface RoutingProps {
   waypoints: TripRouteLocation[];
 }
 
 export default function Routing({ waypoints }: RoutingProps) {
   const map = useMap();
+
+  const resolveWaypointIcon = (index: number) => {
+    switch(index) {
+      case 0:
+        return L.icon({
+          iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/profile-images/car.svg",
+          iconSize: [64, 64],
+          className: "override",
+        });
+      case waypoints.length - 1:
+        return L.icon({
+          iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/profile-images/destination.png?t=2024-06-10T05%3A03%3A12.707Z",
+          iconSize: [64, 64],
+          className: "override",
+        });
+      default:
+        return L.icon({
+          iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/logo-no-title.png",
+          iconSize: [64, 64],
+          className: "override",
+        });
+    }
+  }
 
   useEffect(() => {
     if (!map) return;
@@ -22,12 +44,8 @@ export default function Routing({ waypoints }: RoutingProps) {
         createMarker: function (i, wp) {
           return L.marker(wp.latLng, {
             draggable: false,
-            icon: L.icon({
-              iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/logo-no-title.png",
-              iconSize: [64, 64],
-              className: "override",
-            })
-          }).bindPopup(waypoints[i].userName);
+            icon: resolveWaypointIcon(i),
+          }).bindPopup('User ID: ' + waypoints[i].userName)
         },
         routeWhileDragging: false
       }),
