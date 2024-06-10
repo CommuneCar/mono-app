@@ -6,16 +6,16 @@ import {
   Container,
   CircularProgress,
 } from '@mui/material';
-import dayjs from 'dayjs';
-import { isEmpty } from 'lodash';
-import { useNavigate } from 'react-router-dom';
 import {
   PersonRounded,
   PhoneAndroidRounded,
   CloudUpload as CloudUploadIcon,
 } from '@mui/icons-material';
+import dayjs from 'dayjs';
+import { isEmpty } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 import { DatePicker } from '@mui/x-date-pickers';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 
 import { Gender } from '@communecar/types';
 
@@ -25,12 +25,13 @@ import { useUser } from '../../hooks/Users/useUser';
 import { SignUpUser } from '../../types/sign-up-user';
 import { validateField } from '../../utils/signing/validation';
 import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
-import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import { SigningHeader } from '../../Components/Signing/SigningHeader';
 import { SigininBox } from '../../Components/styles/SigninBox.styled';
-import { ProgressMobileStepper } from '../../Components/Signing/SignUpFooter/ProgressMobileStepper';
+import { SigningHeader } from '../../Components/Signing/SigningHeader';
+import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { GenderField } from '../../Components/Signing/Fields/GenderField';
+import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
+import { ProgressMobileStepper } from '../../Components/Signing/SignUpFooter/ProgressMobileStepper';
+import { uploadImage } from '../../apis/user';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const SignUp = () => {
     email: '',
     password: '',
     phone: '',
+    avatarUrl: '',
     age: dayjs(),
     gender: Gender.OTHER,
   });
@@ -55,6 +57,7 @@ const SignUp = () => {
     phone: null,
     gender: null,
     age: null,
+    avatarUrl: null,
   });
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
@@ -97,6 +100,30 @@ const SignUp = () => {
     setIsLoading(false);
     if (success) {
       navigate(DEFAULT_HOME_PAGE);
+    }
+  };
+
+  const uploadFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = (event.target as HTMLInputElement)?.files;
+
+    try {
+      if (!files || files.length === 0) {
+        throw new Error('you must select a file to upload');
+      }
+
+      const file = files[0];
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await uploadImage(formData);
+
+      const image = response.data.image;
+      setFormData((data) => ({ ...data, avatarUrl: image }));
+      console.log(image);
+    } catch (error: any) {
+      console.error(error.message);
+      setFormErrors((errors) => ({ ...errors, avatarUrl: error.message }));
     }
   };
 
@@ -228,7 +255,11 @@ const SignUp = () => {
             sx={{ mt: 3, mb: 2, width: '100%' }}
           >
             Profile Picture
-            <VisuallyHiddenInput type="file" />
+            <VisuallyHiddenInput
+              type="file"
+              accept="images/*"
+              onChange={uploadFile}
+            />
           </Button>
         </Box>
       ),
