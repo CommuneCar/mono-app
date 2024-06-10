@@ -120,7 +120,7 @@ const SignUp = () => {
 
       const image = response.data.image;
       setFormData((data) => ({ ...data, avatarUrl: image }));
-      console.log(image);
+      setActiveStep((activeStep) => activeStep + 1);
     } catch (error: any) {
       console.error(error.message);
       setFormErrors((errors) => ({ ...errors, avatarUrl: error.message }));
