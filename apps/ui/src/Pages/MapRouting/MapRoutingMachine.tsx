@@ -20,7 +20,7 @@ function MapRouting() {
         loc.long >= -180 && loc.long <= 180 &&
         !(loc.lat === 1.5 && loc.long === 1.5)
     ) || [];
-
+    
     return (
         <MapContainer style={{
             height: '100vh',

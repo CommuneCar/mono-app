@@ -36,6 +36,16 @@ export default function Routing({ waypoints }: RoutingProps) {
     }
   }
 
+  const resolveWaypointPopup = (index: number) => {
+    if (waypoints[index].type === "start") {
+      return "Starting point";
+    } else if (waypoints[index].type === "end") {
+      return "Drive destination";
+    } else {
+      return `${waypoints[index].userName}'s ${waypoints[index].type}`;
+    }
+  }
+
   useEffect(() => {
     if (!map) return;
 
@@ -45,12 +55,12 @@ export default function Routing({ waypoints }: RoutingProps) {
           return L.marker(wp.latLng, {
             draggable: false,
             icon: resolveWaypointIcon(i),
-          }).bindPopup('User ID: ' + waypoints[i].userName)
+          }).bindPopup(resolveWaypointPopup(i))
         },
         routeWhileDragging: false
       }),
       routeWhileDragging: false,
-      showAlternatives: true,
+      showAlternatives: false,
       lineOptions: {
         styles: [{ color: "#338CFF", opacity: 1, weight: 5 }],
         extendToWaypoints: true,

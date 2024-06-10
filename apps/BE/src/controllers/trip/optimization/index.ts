@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { GraphHopperLocation } from '@betypes/graphhopper';
+import { fetchGraphHopperRoute } from '../../../utils/graphhopper';
 
 const prisma = new PrismaClient();
 
@@ -49,13 +51,12 @@ const getRideRoute = async (req: Request, res: Response) => {
   }
 
   try {
-    const locations = [];
     const ride = await prisma.ride.findUnique({
       where: { id: parseInt(rideId, 10) },
       include: {
         userRide: {
           include: {
-            user: true,  // Include the user data
+            user: true,
           },
         },
       },
@@ -65,39 +66,39 @@ const getRideRoute = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Ride not found' });
     }
 
-    // Add the ride owner's information
-    const owner = await prisma.user.findUnique({
-      where: { id: ride.ownerId },
-    });
+    const startLocation: GraphHopperLocation = {
+      name: 'real_start_location',
+      lat: ride.fromLat,
+      long: ride.fromLong
+    };
 
-    if (owner) {
-      locations.push({
-        userName: `${owner.firstName} ${owner.lastName}`,
-        lat: ride.fromLat,
-        long: ride.fromLong,
-      });
-      locations.push({
-        userName: `${owner.firstName} ${owner.lastName}`,
-        lat: ride.toLat,
-        long: ride.toLong,
-      });
-    }
+    const endLocation: GraphHopperLocation = {
+      name: 'real_end_location',
+      lat: ride.toLat,
+      long: ride.toLong
+    };
 
-    // Add the user rides' information
-    for (const userRide of ride.userRide) {
-      locations.push({
-        userName: `${userRide.user.firstName} ${userRide.user.lastName}`,
-        lat: userRide.fromLat,
-        long: userRide.fromLong,
-      });
-      locations.push({
-        userName: `${userRide.user.firstName} ${userRide.user.lastName}`,
-        lat: userRide.toLat,
-        long: userRide.toLong,
-      });
-    }
-    
-    res.json(locations);
+    const serviceLocations: GraphHopperLocation[] = ride.userRide.map(userRide => ({
+      name: `${userRide.user.firstName}_${userRide.user.lastName}_start`,
+      lat: userRide.fromLat,
+      long: userRide.fromLong
+    })).concat(ride.userRide.map(userRide => ({
+      name: `${userRide.user.firstName}_${userRide.user.lastName}_end`,
+      lat: userRide.toLat,
+      long: userRide.toLong
+    })));
+
+    const graphHopperResponse = await fetchGraphHopperRoute(startLocation, endLocation, serviceLocations);
+
+    // Formatting the response to match the expected output, honestly this is a bit of a mess and could be improved
+    const formattedLocations = graphHopperResponse.map(location => ({
+      userName: location.name.split('_')[0] + ' ' + location.name.split('_')[1], // Assuming the name was formatted as 'firstName_lastName_start' or 'firstName_lastName_end'
+      lat: location.lat,
+      long: location.long,
+      type: location.name.includes('start') ? (location.name.includes('real_start') ? 'start' : 'pickup') : (location.name.includes('real_end') ? 'end' : 'dropoff')
+    }));
+
+    res.json(formattedLocations);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch pickup locations' });
