@@ -20,7 +20,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
         justifyContent: 'space-between',
       }}
     >
-      <Typography textTransform="uppercase" sx={{ letterSpacing: '0.15rem' }}>
+      <Typography
+        textTransform="uppercase"
+        sx={{ letterSpacing: '0.15rem', px: '8px' }}
+      >
         {title}
       </Typography>
       {isMobile && (
