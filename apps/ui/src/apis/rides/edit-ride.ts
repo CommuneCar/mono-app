@@ -31,7 +31,7 @@ const postUpdateRide = async (ride: EditRideSchema): Promise<Ride> => {
   }
 };
 
-const postUpdateRiders = async (
+const cancelRideByRider = async (
   rider: Rider,
   rideId: number,
 ): Promise<{
@@ -49,4 +49,4 @@ const postUpdateRiders = async (
   }
 };
 
-export { postUpdateRide, postUpdateRiders };
+export { postUpdateRide, cancelRideByRider };

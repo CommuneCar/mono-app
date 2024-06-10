@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   DialogContentText,
   CircularProgress,
+  FormHelperText,
 } from '@mui/material';
 import dayjs from 'dayjs';
 
@@ -50,6 +51,8 @@ const EditRideDialog = ({
     communities?.find((community) => community?.title === ride.communityName)!,
   );
 
+  const [error, setError] = useState<string>();
+
   const [gasMoney, setGasMoney] = useState(ride.gasMoney.toString());
   const [pronounsOnly, setPronounsOnly] = useState(ride.pronouns);
   const [seats, setSeats] = useState(ride.seats.toString());
@@ -77,15 +80,16 @@ const EditRideDialog = ({
   };
   const handleClose = () => {
     setOpen(false);
+    setError(undefined);
   };
 
   const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
-      alert('All fields are required.');
+      setError('All fields are required.');
       return;
     }
     if (!user) {
-      alert('Login is required for this operation');
+      setError('Login is required for this operation');
       return;
     }
 
@@ -110,9 +114,9 @@ const EditRideDialog = ({
     };
 
     await editRide(updatedRide);
-    if (isSuccess) {
-      handleClose();
-    }
+    // if (isSuccess) {
+    //   handleClose();
+    // }
   };
 
   if (isSuccess) {
@@ -134,6 +138,7 @@ const EditRideDialog = ({
       <DialogTitle>Edit Ride</DialogTitle>
       <DialogContent>
         <Box display="flex" flexDirection="column" gap={SPACING.SP4}>
+          {error && <FormHelperText error>{error}</FormHelperText>}
           <DialogContentText>
             Update the details you want ride.
           </DialogContentText>
