@@ -1,9 +1,6 @@
-import { Ride } from '@communetypes/Ride';
+import { Ride, UserRideStatus, Rider, EditRideSchema } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
-import { EditRideSchema } from '@communetypes/EditRideSchema';
 import { updateRideQuery, updateRidersQuery } from '../utils/userRideQueries';
-import { Rider } from '@communetypes/Rider';
-import { UserRideStatus } from '@communecar/types';
 interface GraphQLRideResponse {
   updateRideById: {
     ride: Ride;

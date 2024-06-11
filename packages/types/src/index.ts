@@ -7,3 +7,4 @@ export * from './Rider';
 export * from './UserRide';
 export * from './Geocoding';
 export * from './CreateRideSchema';
+export * from './EditRideSchema';
