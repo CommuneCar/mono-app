@@ -4,9 +4,10 @@ import { styled } from '@mui/material';
 const FeedList = styled(List)(() => ({
   width: '100%',
   display: 'flex',
+  overflowY: 'auto',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  minHeight: 'calc(100vh - 5rem)',
+  maxHeight: 'calc(100vh - 20rem)',
 }));
 
 export { FeedList };

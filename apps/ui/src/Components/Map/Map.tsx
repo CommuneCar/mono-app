@@ -16,8 +16,9 @@ type MarkerInfo = {
 };
 
 interface MapProps {
-  focusLocation?: [number, number];
   markers: MarkerInfo[];
+  shouldShowSearch?: boolean;
+  focusLocation?: [number, number];
 }
 
 const customIcon = new Icon({
@@ -75,7 +76,11 @@ const Focus = (props: { focusLocation: [number, number] }) => {
   return null;
 };
 
-const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
+const Map: React.FC<MapProps> = ({
+  markers,
+  focusLocation,
+  shouldShowSearch = true,
+}) => {
   const [focusedLocation, setFocusedLocation] = useState<
     [number, number] | undefined
   >(focusLocation);
@@ -102,7 +107,7 @@ const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
           </Marker>
         ))}
       </MarkerClusterGroup>
-      <SearchControl />
+      {shouldShowSearch && <SearchControl />}
       {focusedLocation && <Focus focusLocation={focusedLocation} />}
     </MapContainer>
   );
