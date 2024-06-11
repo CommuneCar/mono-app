@@ -3,6 +3,7 @@ import { CommunityForm } from './CommunityForm';
 import { FORMS_TEXT } from '../../themes/default/consts';
 import { useCreateCommunity } from '../../hooks/Communities/useCreateCommunity';
 import { useUserCommunity } from '../../hooks/Communities/useSelectUsers';
+import { UsersSelectorOption } from '../../types/users-selector-option';
 
 interface CreateCommunityProps {
   onCreate: (community: Community) => void;
@@ -23,11 +24,12 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
 
   const handleCreate = async (
     newCommunity: Community,
-    newAdmins: number[],
-    newMembers: number[],
+    newAdmins: UsersSelectorOption[],
+    newMembers: UsersSelectorOption[],
   ) => {
     try {
-      const admins = [...newAdmins, userId];
+      const newAdminsIds = newAdmins.map((current) => current.userId);
+      const admins = [...newAdminsIds, userId];
       const createdCommunity = await addCommunity(newCommunity);
       admins.forEach((admin) =>
         createUserCommunity({
@@ -36,7 +38,8 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
           status: UserStatus.MANAGER,
         }),
       );
-      newMembers.forEach((current) =>
+      const newMembersIds = newMembers.map((current) => current.userId);
+      newMembersIds.forEach((current) =>
         createUserCommunity({
           userId: current,
           communityId: createdCommunity.id,

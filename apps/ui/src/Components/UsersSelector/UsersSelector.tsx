@@ -1,12 +1,13 @@
 import { Autocomplete, Box, CircularProgress, TextField } from '@mui/material';
-import { useState } from 'react';
 import { UsersSelectorOption } from '../../types/users-selector-option';
 
 export interface UsersSelectorProps {
   options: UsersSelectorOption[];
   fieldLabel?: string;
   isOptionsLoading?: boolean;
-  setSelectedUsersIds: React.Dispatch<React.SetStateAction<number[]>>;
+  setSelectedUsersIds: React.Dispatch<
+    React.SetStateAction<UsersSelectorOption[]>
+  >;
 }
 
 const UsersSelector: React.FC<UsersSelectorProps> = ({
@@ -15,17 +16,13 @@ const UsersSelector: React.FC<UsersSelectorProps> = ({
   isOptionsLoading = false,
   setSelectedUsersIds,
 }) => {
-  const [selectedUsers, setSelectedUsers] = useState<UsersSelectorOption[]>([]);
-
   const handleSelectUser = (
     _: React.SyntheticEvent<Element, Event>,
     value: UsersSelectorOption[],
     reason: string,
   ) => {
     if (reason === 'selectOption') {
-      setSelectedUsers(value);
-      const usersIds = value.map((currentOption) => currentOption.userId) ?? [];
-      setSelectedUsersIds(usersIds);
+      setSelectedUsersIds(value);
     }
   };
 

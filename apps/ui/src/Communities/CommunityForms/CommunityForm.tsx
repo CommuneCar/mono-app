@@ -22,6 +22,7 @@ import { SearchLocations } from '../../Pages/Search/Locations';
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { useGetAllUsersOptions } from '../../hooks/Users/useGetAllUsersOptions';
 import { isEmpty } from 'lodash';
+import { UsersSelectorOption } from '../../types/users-selector-option';
 
 interface CommunityFormProps {
   isOpen: boolean;
@@ -30,8 +31,8 @@ interface CommunityFormProps {
   formTexts: any;
   onSubmit: (
     community: Community,
-    newAdmins: number[],
-    newMembers: number[],
+    newAdmins: UsersSelectorOption[],
+    newMembers: UsersSelectorOption[],
   ) => void;
   isLoading?: boolean;
 }
@@ -55,8 +56,12 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   const [community, setCommunity] = useState<Community>(
     communityToUpdate ?? emptyCommunity,
   );
-  const [communityManagers, setCommunityManagers] = useState<number[]>([]);
-  const [newCommunityMembers, setNewCommunityMembers] = useState<number[]>([]);
+  const [communityManagers, setCommunityManagers] = useState<
+    UsersSelectorOption[]
+  >([]);
+  const [newCommunityMembers, setNewCommunityMembers] = useState<
+    UsersSelectorOption[]
+  >([]);
 
   const {
     data: usersOptions,

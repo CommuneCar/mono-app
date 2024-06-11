@@ -3,6 +3,8 @@ import { CommunityForm } from './CommunityForm';
 import { FORMS_TEXT } from '../../themes/default/consts';
 import { useUpdateCommunity } from '../../hooks/Communities/useUpdateCommunity';
 import { useUserCommunity } from '../../hooks/Communities/useSelectUsers';
+import { UsersSelectorOption } from '../../types/users-selector-option';
+import { getIsUserConnectedToCommunity } from './utils';
 
 interface UpdateCommunityProps {
   onUpdate: (community: Community) => void;
@@ -22,22 +24,35 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
 
   const handleUpdate = async (
     newCommunity: Community,
-    newAdmins: number[],
-    newMembers: number[],
+    newAdmins: UsersSelectorOption[],
+    newMembers: UsersSelectorOption[],
   ) => {
     try {
       const updatedCommunity = await updateCommunity(newCommunity);
       onUpdate(updatedCommunity);
-      newAdmins.forEach((admin) =>
+      const newAdminsToUpdate = newAdmins.filter((user) =>
+        getIsUserConnectedToCommunity(user, updatedCommunity.id),
+      );
+      const newAdminsToCreate = newAdmins.filter((user) =>
+        getIsUserConnectedToCommunity(user, updatedCommunity.id),
+      );
+      newAdminsToCreate.forEach((admin) =>
         createUserCommunity({
-          userId: admin,
+          userId: admin.userId,
           communityId: communityToUpdate.id,
           status: UserStatus.MANAGER,
         }),
       );
-      newMembers.forEach((current) =>
+
+      const newMembersToUpdate = newAdmins.filter((user) =>
+        getIsUserConnectedToCommunity(user, updatedCommunity.id),
+      );
+      const newMembersToCreate = newAdmins.filter((user) =>
+        getIsUserConnectedToCommunity(user, updatedCommunity.id),
+      );
+      newMembersToCreate.forEach((current) =>
         createUserCommunity({
-          userId: current,
+          userId: current.userId,
           communityId: communityToUpdate.id,
           status: UserStatus.ACTIVE,
         }),
