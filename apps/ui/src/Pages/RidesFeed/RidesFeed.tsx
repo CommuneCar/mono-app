@@ -47,7 +47,7 @@ const RidesFeed = ({
           value={genderFilter}
           exclusive
           onChange={changeGenderFilter}
-          sx={{ padding: '0' }} // Reset padding to ensure alignment
+          sx={{ padding: '0' }}
         >
           <ToggleButton value={Gender.MALE} sx={{ padding: '4px 8px', fontSize: '0.875rem' }}>Male</ToggleButton>
           <ToggleButton value={Gender.FEMALE} sx={{ padding: '4px 8px', fontSize: '0.875rem' }}>Female</ToggleButton>
