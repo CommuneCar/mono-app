@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { Box } from '@mui/material';
 import { isMobile } from 'react-device-detect';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Community, Ride, Gender } from '@communecar/types';
 
@@ -29,15 +29,10 @@ const RidesList: React.FC<RideListProps> = ({
   userCommunities,
   userRideStatus,
   setSelectedRide,
-
   isCreateRideDialog,
   setIsCreateRideDialogOpen,
   genderFilter
 }) => {
-  const handleAddClick = (_event: React.MouseEvent) => {
-    setIsCreateRideDialogOpen(true);
-  };
-
   const filteredRides = rides.filter(ride => {
     if (!genderFilter) return true;
     return ride.pronouns && ride.driver.gender === genderFilter;

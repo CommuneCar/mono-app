@@ -30,6 +30,7 @@ const HomePage: React.FC = () => {
   const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
   const [createRideOpen, setIsCreateRideOpen] = useState(false);
   const [genderFilter, setGenderFilter] = useState<Gender | null>(null);
+  const [showTooltipMessage, setShowTooltipMessage] = useState(false);
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
   const { data: userCommunitiesData, isLoading: isLoadingUserCommunities } =
@@ -66,6 +67,9 @@ const HomePage: React.FC = () => {
   };
   const changeGenderFilter = (_: MouseEvent<HTMLElement>, newGender: Gender | null) => {
     setGenderFilter(newGender);
+  };
+  const filterGenderTooltip = (event: React.MouseEvent<HTMLElement>) => {
+    setShowTooltipMessage(prevState => !prevState);
   };
   return (
     <Page>
@@ -112,8 +116,15 @@ const HomePage: React.FC = () => {
                 <ToggleButton value={Gender.FEMALE}>Female</ToggleButton>
               </ToggleButtonGroup>
               <Tooltip title="Filter for rides that are limited to a specific gender">
-                <InfoIcon color="action" sx={{ ml: 1 }} />
+                <InfoIcon
+                  color="action"
+                  sx={{ ml: 1, cursor: 'pointer' }}
+                  onClick={filterGenderTooltip}
+                />
               </Tooltip>
+              {showTooltipMessage && (
+                <span className="tooltiptext">Filter for rides that are limited to a specific gender</span>
+              )}
             </Box>
           )}
         </Box>
