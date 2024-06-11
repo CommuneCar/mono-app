@@ -20,9 +20,11 @@ import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { Gender } from '@communecar/types';
 
 import { Page } from '../HomePage/styles';
+import { uploadImage } from '../../apis/user';
 import { VisuallyHiddenInput } from './styles';
 import { useUser } from '../../hooks/Users/useUser';
 import { SignUpUser } from '../../types/sign-up-user';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 import { validateField } from '../../utils/signing/validation';
 import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
 import { SigininBox } from '../../Components/styles/SigninBox.styled';
@@ -31,7 +33,6 @@ import { EmailField } from '../../Components/Signing/Fields/EmailField';
 import { GenderField } from '../../Components/Signing/Fields/GenderField';
 import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
 import { ProgressMobileStepper } from '../../Components/Signing/SignUpFooter/ProgressMobileStepper';
-import { uploadImage } from '../../apis/user';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -63,6 +64,8 @@ const SignUp = () => {
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
+
+  const { showMessage } = useSnackbar();
 
   const handleNext = () => {
     setActiveStep((step) => step + 1);
@@ -123,6 +126,7 @@ const SignUp = () => {
       setActiveStep((activeStep) => activeStep + 1);
     } catch (error: any) {
       console.error(error.message);
+      showMessage('something went wrong with uploading your photo', 'error');
       setFormErrors((errors) => ({ ...errors, avatarUrl: error.message }));
     }
   };
