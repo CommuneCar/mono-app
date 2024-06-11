@@ -67,7 +67,7 @@ const locationExtraction = async (node: {
       lat: node.lat,
       lon: node.long,
       name,
-    } ?? undefined;
+    };
   return coordinates;
 };
 
