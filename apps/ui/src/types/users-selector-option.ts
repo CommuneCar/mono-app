@@ -1,5 +1,4 @@
-import { UserStatus } from '@communetypes/Enums';
-import { User } from '@communetypes/User';
+import { UserStatus, UserContactInfo } from '@communecar/types';
 
 export type UsersSelectorOption = {
   label: string;
@@ -8,6 +7,4 @@ export type UsersSelectorOption = {
     communityId: number;
     status: UserStatus;
   }[];
-} & UsersContactInfo;
-
-export type UsersContactInfo = Pick<User, 'email' | 'phone' | 'avatarUrl'>;
+} & UserContactInfo;
