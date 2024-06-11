@@ -7,13 +7,13 @@ import { TripRouteLocation } from '@communetypes/Trip';
 const useGetTrip = (rideId: number) => {
   const { showMessage } = useSnackbar();
 
-  const queryKey = ['allRides', rideId];
+  const queryKey = ['trip', rideId];
   const queryFn = () => fetchTripRoute(rideId);
 
   return useQuery<TripRouteLocation[], Error>(queryKey, queryFn, {
     onError: (error) => {
-      console.error('Error fetching all rides:', error);
-      showMessage(TEXT.alerts.FETCH_ALL_RIDES_FAILED, 'error');
+      console.error('Error fetching trip:', error);
+      showMessage(TEXT.alerts.FETCH_USER_TRIP_FAILED, 'error');
     },
   });
 };
