@@ -34,7 +34,6 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
   ) => {
     try {
       const updatedCommunity = await updateCommunity(newCommunity);
-      onUpdate(updatedCommunity);
       const newAdminsToUpdate = newAdmins.filter((user) =>
         getIsUserConnectedToCommunity(user, updatedCommunity.id),
       );
@@ -76,6 +75,7 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
           status: UserStatus.ACTIVE,
         }),
       );
+      onUpdate(updatedCommunity);
     } catch (err) {}
     handleClose();
   };

@@ -128,6 +128,7 @@ const CommunitiesFeed = () => {
       };
       return Object.values(newDisplay);
     });
+    refetchCommunities();
   };
 
   const [showMyCommunities, setShowMyCommunities] = useState(false);
