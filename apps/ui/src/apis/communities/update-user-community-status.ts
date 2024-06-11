@@ -2,6 +2,7 @@ import { UserStatus } from '@communetypes/Enums';
 import {
   getCreateUserCommunityStatusQuery,
   getDeleteUserCommunityStatusQuery,
+  getUpdateUserCommunityStatusQuery,
 } from '../utils/userCommunityQueries';
 import { graphqlRequest } from '../graphql';
 
@@ -15,6 +16,7 @@ const createUserCommunityStatus = async (
   return response;
 };
 
+//TODO: check if needed
 const deleteUserCommunityStatus = async (
   userId: number,
   communityId: number,
@@ -24,4 +26,18 @@ const deleteUserCommunityStatus = async (
   return response;
 };
 
-export { deleteUserCommunityStatus, createUserCommunityStatus };
+const updateUserCommunityStatus = async (
+  userId: number,
+  communityId: number,
+  status: UserStatus,
+) => {
+  const query = getUpdateUserCommunityStatusQuery(userId, communityId, status);
+  const response = await graphqlRequest(query);
+  return response;
+};
+
+export {
+  deleteUserCommunityStatus,
+  createUserCommunityStatus,
+  updateUserCommunityStatus,
+};

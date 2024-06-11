@@ -20,7 +20,12 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
   communityToUpdate,
 }) => {
   const { updateCommunity, isUpdating } = useUpdateCommunity();
-  const { createUserCommunity } = useUserCommunity();
+  const {
+    createUserCommunity,
+    updateUserCommunity,
+    isUpdating: isUpdatingUsers,
+    isCreating: isCreatingUsers,
+  } = useUserCommunity();
 
   const handleUpdate = async (
     newCommunity: Community,
@@ -33,8 +38,8 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
       const newAdminsToUpdate = newAdmins.filter((user) =>
         getIsUserConnectedToCommunity(user, updatedCommunity.id),
       );
-      const newAdminsToCreate = newAdmins.filter((user) =>
-        getIsUserConnectedToCommunity(user, updatedCommunity.id),
+      const newAdminsToCreate = newAdmins.filter(
+        (user) => !getIsUserConnectedToCommunity(user, updatedCommunity.id),
       );
       newAdminsToCreate.forEach((admin) =>
         createUserCommunity({
@@ -43,15 +48,29 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
           status: UserStatus.MANAGER,
         }),
       );
+      newAdminsToUpdate.forEach((admin) =>
+        updateUserCommunity({
+          userId: admin.userId,
+          communityId: communityToUpdate.id,
+          status: UserStatus.MANAGER,
+        }),
+      );
 
-      const newMembersToUpdate = newAdmins.filter((user) =>
+      const newMembersToUpdate = newMembers.filter((user) =>
         getIsUserConnectedToCommunity(user, updatedCommunity.id),
       );
-      const newMembersToCreate = newAdmins.filter((user) =>
-        getIsUserConnectedToCommunity(user, updatedCommunity.id),
+      const newMembersToCreate = newMembers.filter(
+        (user) => !getIsUserConnectedToCommunity(user, updatedCommunity.id),
       );
       newMembersToCreate.forEach((current) =>
         createUserCommunity({
+          userId: current.userId,
+          communityId: communityToUpdate.id,
+          status: UserStatus.ACTIVE,
+        }),
+      );
+      newMembersToUpdate.forEach((current) =>
+        updateUserCommunity({
           userId: current.userId,
           communityId: communityToUpdate.id,
           status: UserStatus.ACTIVE,
@@ -67,7 +86,7 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
       formTexts={FORMS_TEXT.UPDATE_COMMUNITY}
       onSubmit={handleUpdate}
       communityToUpdate={communityToUpdate}
-      isLoading={isUpdating}
+      isLoading={isUpdating || isUpdatingUsers || isCreatingUsers}
     ></CommunityForm>
   );
 };
