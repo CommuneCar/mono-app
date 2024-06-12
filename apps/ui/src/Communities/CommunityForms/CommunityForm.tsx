@@ -21,8 +21,8 @@ import { TEXT } from '../../themes/default/consts';
 import { SearchLocations } from '../../Pages/Search/Locations';
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { useGetAllUsersOptions } from '../../hooks/Users/useGetAllUsersOptions';
-import { isEmpty } from 'lodash';
 import { UsersSelectorOption } from '../../types/users-selector-option';
+import { useUser } from '../../hooks/Users/useUser';
 
 interface CommunityFormProps {
   isOpen: boolean;
@@ -53,6 +53,8 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   handleClose,
   isLoading = false,
 }) => {
+  const { user: currentUser } = useUser();
+
   const [community, setCommunity] = useState<Community>(
     communityToUpdate ?? emptyCommunity,
   );
@@ -72,25 +74,27 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
   const adminOptions = useMemo(
     () =>
       usersOptions?.filter((user) => {
-        const currentCommuintyManged = user.communitiesStatus.filter(
+        const isCurrentUser = user.userId === currentUser?.id;
+        const managesCurrentCommunity = user.communitiesStatus.some(
           (communityStatus) =>
             communityStatus.communityId === community.id &&
             communityStatus.status === UserStatus.MANAGER,
         );
-        return isEmpty(currentCommuintyManged);
+        return !isCurrentUser && !managesCurrentCommunity;
       }) ?? [],
     [usersOptions, community.id],
   );
   const membersOptions = useMemo(
     () =>
       usersOptions?.filter((user) => {
-        const currentCommuintyManged = user.communitiesStatus.filter(
+        const isCurrentUser = user.userId === currentUser?.id;
+        const isManagerOrActiveInCurrentCommunity = user.communitiesStatus.some(
           (communityStatus) =>
             communityStatus.communityId === community.id &&
             (communityStatus.status === UserStatus.MANAGER ||
               communityStatus.status === UserStatus.ACTIVE),
         );
-        return isEmpty(currentCommuintyManged);
+        return !isCurrentUser && !isManagerOrActiveInCurrentCommunity;
       }) ?? [],
     [usersOptions, community.id],
   );
