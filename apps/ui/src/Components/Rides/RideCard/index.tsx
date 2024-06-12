@@ -6,6 +6,7 @@ import {
   CardActions,
   IconButton,
   Tooltip,
+  Box,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -57,15 +58,17 @@ const RideCard: React.FC<RideCardProps> = ({ ride, rideStatus }) => {
           </IconButton>
           {!rideStatus ? (
             <Tooltip title={isRideFull ? 'Ride is full at the moment' : ''}>
-              <Button
-                endIcon={!isRideFull && <Send />}
-                variant={'contained'}
-                size={'small'}
-                onClick={handleJoinRideClick}
-                disabled={isRideFull}
-              >
-                {isRideFull ? 'Ride Full' : 'Join Ride'}
-              </Button>
+              <Box>
+                <Button
+                  endIcon={!isRideFull && <Send />}
+                  variant={'contained'}
+                  size={'small'}
+                  onClick={handleJoinRideClick}
+                  disabled={isRideFull}
+                >
+                  {isRideFull ? 'Ride Full' : 'Join Ride'}
+                </Button>
+              </Box>
             </Tooltip>
           ) : (
             <IconButton disabled>
