@@ -4,7 +4,10 @@ import { FORMS_TEXT } from '../../themes/default/consts';
 import { useUpdateCommunity } from '../../hooks/Communities/useUpdateCommunity';
 import { useUserCommunity } from '../../hooks/Communities/useSelectUsers';
 import { UsersSelectorOption } from '../../types/users-selector-option';
-import { getIsUserConnectedToCommunity } from './utils';
+import {
+  getIntersectionManagersMembers,
+  getIsUserConnectedToCommunity,
+} from './utils';
 
 interface UpdateCommunityProps {
   onUpdate: (community: Community) => void;
@@ -34,51 +37,67 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
   ) => {
     try {
       const updatedCommunity = await updateCommunity(newCommunity);
-      const newAdminsToUpdate = newAdmins.filter((user) =>
-        getIsUserConnectedToCommunity(user, updatedCommunity.id),
-      );
-      const newAdminsToCreate = newAdmins.filter(
-        (user) => !getIsUserConnectedToCommunity(user, updatedCommunity.id),
-      );
-      newAdminsToCreate.forEach((admin) =>
-        createUserCommunity({
-          userId: admin.userId,
-          communityId: communityToUpdate.id,
-          status: UserStatus.MANAGER,
-        }),
-      );
-      newAdminsToUpdate.forEach((admin) =>
-        updateUserCommunity({
-          userId: admin.userId,
-          communityId: communityToUpdate.id,
-          status: UserStatus.MANAGER,
-        }),
-      );
-
-      const newMembersToUpdate = newMembers.filter((user) =>
-        getIsUserConnectedToCommunity(user, updatedCommunity.id),
-      );
-      const newMembersToCreate = newMembers.filter(
-        (user) => !getIsUserConnectedToCommunity(user, updatedCommunity.id),
-      );
-      newMembersToCreate.forEach((current) =>
-        createUserCommunity({
-          userId: current.userId,
-          communityId: communityToUpdate.id,
-          status: UserStatus.ACTIVE,
-        }),
-      );
-      newMembersToUpdate.forEach((current) =>
-        updateUserCommunity({
-          userId: current.userId,
-          communityId: communityToUpdate.id,
-          status: UserStatus.ACTIVE,
-        }),
-      );
+      handleConnectUsersInUpdate(updatedCommunity.id, newAdmins, newMembers);
       onUpdate(updatedCommunity);
     } catch (err) {}
     handleClose();
   };
+
+  const handleConnectUsersInUpdate = (
+    communityId: number,
+    newAdmins: UsersSelectorOption[],
+    newMembers: UsersSelectorOption[],
+  ) => {
+    const { adminsResults, membersResults } = getIntersectionManagersMembers(
+      newAdmins,
+      newMembers,
+      (user) => user.userId,
+    );
+
+    const newAdminsToUpdate = adminsResults.filter((user) =>
+      getIsUserConnectedToCommunity(user, communityId),
+    );
+    const newAdminsToCreate = adminsResults.filter(
+      (user) => !getIsUserConnectedToCommunity(user, communityId),
+    );
+
+    newAdminsToCreate.forEach((admin) =>
+      createUserCommunity({
+        userId: admin.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.MANAGER,
+      }),
+    );
+    newAdminsToUpdate.forEach((admin) =>
+      updateUserCommunity({
+        userId: admin.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.MANAGER,
+      }),
+    );
+
+    const newMembersToUpdate = membersResults.filter((user) =>
+      getIsUserConnectedToCommunity(user, communityId),
+    );
+    const newMembersToCreate = membersResults.filter(
+      (user) => !getIsUserConnectedToCommunity(user, communityId),
+    );
+    newMembersToCreate.forEach((current) =>
+      createUserCommunity({
+        userId: current.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.ACTIVE,
+      }),
+    );
+    newMembersToUpdate.forEach((current) =>
+      updateUserCommunity({
+        userId: current.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.ACTIVE,
+      }),
+    );
+  };
+
   return (
     <CommunityForm
       isOpen={isOpen}

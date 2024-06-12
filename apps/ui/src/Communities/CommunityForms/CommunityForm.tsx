@@ -71,6 +71,16 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
     error: getAllUsersError,
   } = useGetAllUsersOptions();
 
+  const selectedAdminIds = useMemo(
+    () => new Set(communityManagers.map((admin) => admin.userId)),
+    [communityManagers],
+  );
+
+  const selectedMemberIds = useMemo(
+    () => new Set(newCommunityMembers.map((member) => member.userId)),
+    [newCommunityMembers],
+  );
+
   const adminOptions = useMemo(
     () =>
       usersOptions?.filter((user) => {
@@ -80,9 +90,13 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
             communityStatus.communityId === community.id &&
             communityStatus.status === UserStatus.MANAGER,
         );
-        return !isCurrentUser && !managesCurrentCommunity;
+        return (
+          !isCurrentUser &&
+          !managesCurrentCommunity &&
+          !selectedMemberIds.has(user.userId)
+        );
       }) ?? [],
-    [usersOptions, community.id],
+    [usersOptions, community.id, currentUser, selectedMemberIds],
   );
   const membersOptions = useMemo(
     () =>
@@ -94,9 +108,13 @@ const CommunityForm: React.FC<CommunityFormProps> = ({
             (communityStatus.status === UserStatus.MANAGER ||
               communityStatus.status === UserStatus.ACTIVE),
         );
-        return !isCurrentUser && !isManagerOrActiveInCurrentCommunity;
+        return (
+          !isCurrentUser &&
+          !isManagerOrActiveInCurrentCommunity &&
+          !selectedAdminIds.has(user.userId)
+        );
       }) ?? [],
-    [usersOptions, community.id],
+    [usersOptions, community.id, currentUser, selectedAdminIds],
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
