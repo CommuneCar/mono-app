@@ -129,7 +129,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           <CardContent>
             <ExpandMoreContent
               communityLocation={community.location}
-              communityOwners={[]}
+              communityOwners={community.ownersUsers ?? []}
             />
           </CardContent>
         </Collapse>

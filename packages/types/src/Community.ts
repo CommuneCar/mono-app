@@ -7,7 +7,7 @@ export interface Community {
   title: string;
   description: string;
   location?: Location;
-  // ownersUsers: User[];
+  ownersUsers?: User[];
   numberOfMembers: number;
   picturesUrl: string[];
   rides?: Ride[];
