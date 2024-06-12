@@ -6,6 +6,7 @@ import { Request, Response } from "express";
  *   get:
  *     summary: Generate WhatsApp chat URL
  *     description: Returns a URL to start a new WhatsApp chat with the given phone number.
+ *     tags: ["External"]
  *     parameters:
  *       - in: path
  *         name: phoneNumber
