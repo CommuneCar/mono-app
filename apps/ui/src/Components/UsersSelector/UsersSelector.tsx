@@ -31,22 +31,25 @@ const UsersSelector: React.FC<UsersSelectorProps> = ({
       <Autocomplete
         options={options}
         loading={isOptionsLoading}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={fieldLabel}
-            variant="standard"
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <>
-                  {isOptionsLoading ? <CircularProgress size={20} /> : null}
-                  {params.InputProps.endAdornment}
-                </>
-              ),
-            }}
-          />
-        )}
+        renderInput={(params) => {
+          const { InputProps, ...other } = params;
+          return (
+            <TextField
+              {...other}
+              label={fieldLabel}
+              variant="standard"
+              InputProps={{
+                ...InputProps,
+                endAdornment: (
+                  <>
+                    {isOptionsLoading ? <CircularProgress size={20} /> : null}
+                    {InputProps.endAdornment}
+                  </>
+                ),
+              }}
+            />
+          );
+        }}
         multiple
         filterSelectedOptions
         disableClearable
