@@ -1,10 +1,12 @@
+import { isNil } from 'lodash';
+import dayjs, { Dayjs } from 'dayjs';
+
 import { Gender, User } from '@communecar/types';
 
+import { hashString } from './utils';
+import { axiosClient } from '../client';
 import { graphqlRequest } from '../graphql';
 import { SignUpUser } from '../../types/sign-up-user';
-import dayjs, { Dayjs } from 'dayjs';
-import { isNil } from 'lodash';
-import { hashString } from './utils';
 
 const handleAge = (birthdate: Dayjs | null) => {
   if (!isNil(birthdate)) {
@@ -85,4 +87,12 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
   };
 };
 
-export { singUpNewUser };
+const uploadImage = async (formData: FormData) => {
+  return await axiosClient.post<{ image: string }>('/images', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export { singUpNewUser, uploadImage };
