@@ -17,11 +17,13 @@ import { DesktopApp } from './DesktopApp/desktopApp';
 import { MessagesFeed } from './Pages/Messages/MessagesFeed';
 import { CommunitiesFeed } from './Communities/CommunitiesFeed';
 import { MapRouting } from './Pages/MapRouting/MapRoutingMachine';
+import globalStyles from './globalStyles';
 
 const App: React.FC = () => {
   return (
     <>
       <UserProvider>
+        {globalStyles}
         <RoleProvider>
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
@@ -41,7 +43,10 @@ const App: React.FC = () => {
                         element={<CommunitiesFeed />}
                       />
                       <Route path="/home" element={<HomePage />} />
-                      <Route path="/map/rides/:rideId" element={<MapRouting />} />
+                      <Route
+                        path="/map/rides/:rideId"
+                        element={<MapRouting />}
+                      />
                     </Route>
                   </Routes>
                 </Router>
