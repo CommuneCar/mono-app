@@ -117,6 +117,7 @@ const Home: React.FC = () => {
           backgroundColor: 'white',
           borderTopRightRadius: '18px',
           borderBottomRightRadius: '18px',
+          minWidth: '10rem',
         }}
       >
         <img src={logo} style={{ height: '30%' }} />

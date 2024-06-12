@@ -28,6 +28,7 @@ const PageCard = styled(Card)(() => ({
   width: '25%',
   borderRadius: '8px',
   position: 'absolute',
+  minWidth: 300,
   bottom: 0,
 }));
 
