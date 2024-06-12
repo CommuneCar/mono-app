@@ -7,7 +7,7 @@ const FeedList = styled(List)(() => ({
   overflowY: 'auto',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  maxHeight: 'calc(100vh - 20rem)',
+  maxHeight: '100vh',
 }));
 
 export { FeedList };
