@@ -5,9 +5,11 @@ import { useUpdateCommunity } from '../../hooks/Communities/useUpdateCommunity';
 import { useUserCommunity } from '../../hooks/Communities/useSelectUsers';
 import { UsersSelectorOption } from '../../types/users-selector-option';
 import {
+  getAdditionsDetailForCommunity,
   getIntersectionManagersMembers,
   getIsUserConnectedToCommunity,
 } from './utils';
+import { useUser } from '../../hooks/Users/useUser';
 
 interface UpdateCommunityProps {
   onUpdate: (community: Community) => void;
@@ -29,6 +31,7 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
     isUpdating: isUpdatingUsers,
     isCreating: isCreatingUsers,
   } = useUserCommunity();
+  const { user } = useUser();
 
   const handleUpdate = async (
     newCommunity: Community,
@@ -37,6 +40,18 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
   ) => {
     try {
       const updatedCommunity = await updateCommunity(newCommunity);
+
+      const { ownersUsers, numberOfMembers, picturesUrl } =
+        getAdditionsDetailForCommunity(
+          newAdmins,
+          newMembers,
+          updatedCommunity,
+          user,
+        );
+      updatedCommunity.picturesUrl = picturesUrl;
+      updatedCommunity.ownersUsers = ownersUsers;
+      updatedCommunity.numberOfMembers = numberOfMembers;
+
       handleConnectUsersInUpdate(updatedCommunity.id, newAdmins, newMembers);
       onUpdate(updatedCommunity);
     } catch (err) {}

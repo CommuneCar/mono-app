@@ -108,6 +108,8 @@ const CommunitiesFeed = () => {
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
+    console.log(newCommunity);
+
     setUserCommunitiesStatus((prev) => ({
       ...prev,
       [newCommunity.id]: UserStatus.MANAGER,
@@ -128,7 +130,6 @@ const CommunitiesFeed = () => {
       };
       return Object.values(newDisplay);
     });
-    refetchCommunities();
   };
 
   const [showMyCommunities, setShowMyCommunities] = useState(false);
@@ -188,6 +189,7 @@ const CommunitiesFeed = () => {
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
+          onCreateConnections={refetchCommunities}
         />
       )}
       {isEditOpen && communityToUpdate && (

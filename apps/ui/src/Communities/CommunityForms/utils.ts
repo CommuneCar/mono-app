@@ -1,5 +1,6 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, uniq } from 'lodash';
 import { UsersSelectorOption } from '../../types/users-selector-option';
+import { Community, User } from '@communecar/types';
 
 const getIsUserConnectedToCommunity = (
   user: UsersSelectorOption,
@@ -31,4 +32,35 @@ const getIntersectionManagersMembers = <T>(
   return { adminsResults, membersResults };
 };
 
-export { getIsUserConnectedToCommunity, getIntersectionManagersMembers };
+const getAdditionsDetailForCommunity = (
+  newAdmins: UsersSelectorOption[],
+  newMembers: UsersSelectorOption[],
+  community: Community,
+  user: User | null,
+) => {
+  const newMembersPictures = [...newAdmins, ...newMembers].map(
+    (user) => user.avatarUrl,
+  );
+  const newMembersValidPictures = newMembersPictures.filter(
+    (url): url is string => url !== null,
+  );
+
+  const picturesUrl = uniq([
+    ...community.picturesUrl,
+    ...newMembersValidPictures,
+  ]);
+  const numberOfMembers = newMembersPictures.length + community.numberOfMembers;
+  const currentUser: User[] = user ? [user] : [];
+  const ownersUsers = [...(community.ownersUsers ?? []), ...currentUser];
+  return {
+    picturesUrl,
+    numberOfMembers,
+    ownersUsers,
+  };
+};
+
+export {
+  getIsUserConnectedToCommunity,
+  getIntersectionManagersMembers,
+  getAdditionsDetailForCommunity,
+};
