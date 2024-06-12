@@ -1,6 +1,9 @@
 import { Community, Gender, User, UserStatus } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
-import { getFetchAllCommunitiesQuery } from '../utils/communitiesQueries';
+import {
+  getAllUserCommunityQuery,
+  getFetchAllCommunitiesQuery,
+} from '../utils/communitiesQueries';
 import { AllCommunitiesData } from '../types/communitiesResponse';
 import { locationExtraction } from '../location/location';
 
@@ -82,32 +85,6 @@ const fetchAllCommunities = async (): Promise<Community[]> => {
   );
 
   return Promise.all(allCommunities);
-};
-
-const getAllUserCommunityQuery = () => {
-  return `
-  {
-  allUserCommunities {
-    nodes {
-      communityId
-      status
-      userId
-      userByUserId {
-        profileImage
-        phoneNumber
-        password
-        lastName
-        id
-        gender
-        firstName
-        email
-        age
-      }
-    }
-  }
-}
-
-  `;
 };
 
 interface AllUserCommunityData {

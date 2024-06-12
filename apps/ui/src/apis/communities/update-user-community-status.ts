@@ -16,7 +16,6 @@ const createUserCommunityStatus = async (
   return response;
 };
 
-//TODO: check if needed
 const deleteUserCommunityStatus = async (
   userId: number,
   communityId: number,

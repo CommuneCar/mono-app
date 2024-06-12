@@ -105,8 +105,36 @@ const getCreateCommunityQuery = (
 }
   `;
 };
+
+const getAllUserCommunityQuery = () => {
+  return `
+  {
+  allUserCommunities {
+    nodes {
+      communityId
+      status
+      userId
+      userByUserId {
+        profileImage
+        phoneNumber
+        password
+        lastName
+        id
+        gender
+        firstName
+        email
+        age
+      }
+    }
+  }
+}
+
+  `;
+};
+
 export {
   getUpdateCommunityQuery,
   getCreateCommunityQuery,
   getFetchAllCommunitiesQuery,
+  getAllUserCommunityQuery,
 };
