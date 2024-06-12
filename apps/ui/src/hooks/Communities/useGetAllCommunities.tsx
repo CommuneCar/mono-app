@@ -9,7 +9,7 @@ const useGetAllCommunities = () => {
 
   return useQuery<Community[], Error>('communities', fetchAllCommunities, {
     onError(error) {
-      console.error('Error fetching all rides:', error);
+      console.error('Error fetching all communities:', error);
       showMessage(TEXT.alerts.FETCH_ALL_COMMUNITIES_FAILED, 'error');
     },
   });

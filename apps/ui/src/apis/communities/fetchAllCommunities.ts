@@ -23,19 +23,28 @@ const fetchAllCommunities = async (): Promise<Community[]> => {
       const { communityId, status, userByUserId } = node;
 
       if (!acc[communityId]) {
-        acc[communityId] = { numberOfMembers: 0, managers: [] };
+        acc[communityId] = {
+          numberOfMembers: 0,
+          managers: [],
+          picturesUrl: [],
+        };
       }
 
-      const manager: User = {
-        ...userByUserId,
-        avatarUrl: userByUserId.profileImage,
-        phone: userByUserId.phoneNumber,
-        gender: userByUserId.gender as Gender,
-      };
-
       acc[communityId].numberOfMembers += 1;
+      if (userByUserId.profileImage) {
+        acc[communityId].picturesUrl = [
+          ...acc[communityId].picturesUrl,
+          userByUserId.profileImage,
+        ];
+      }
 
       if (status === UserStatus.MANAGER) {
+        const manager: User = {
+          ...userByUserId,
+          avatarUrl: userByUserId.profileImage,
+          phone: userByUserId.phoneNumber,
+          gender: userByUserId.gender as Gender,
+        };
         acc[communityId].managers = [...acc[communityId].managers, manager];
       }
 
@@ -125,7 +134,11 @@ interface UserNode {
 }
 
 type MembersCommunityData = {
-  [key: number]: { numberOfMembers: number; managers: User[] };
+  [key: number]: {
+    numberOfMembers: number;
+    managers: User[];
+    picturesUrl: string[];
+  };
 };
 
 export { fetchAllCommunities };

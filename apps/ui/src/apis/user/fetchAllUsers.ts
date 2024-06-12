@@ -49,7 +49,6 @@ interface userCommunitiesNode {
 export const fetchAllUsers = async (): Promise<UsersSelectorOption[]> => {
   try {
     const data = await graphqlRequest<GetAllUsersResponse>(GET_ALL_USERS_QUERY);
-    console.log({ data });
 
     return data.allUsers.nodes.map((user) => {
       const communitiesStatus = user.userCommunitiesByUserId.nodes ?? [];
