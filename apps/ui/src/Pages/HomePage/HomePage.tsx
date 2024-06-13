@@ -2,7 +2,7 @@ import { flatten, groupBy } from 'lodash';
 import { useLocation } from 'react-router-dom';
 import { Menu as MenuIcon, Info as InfoIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup, IconButton } from '@mui/material';
 
 import { Community, Gender, Ride } from '@communecar/types';
 
@@ -68,8 +68,8 @@ const HomePage: React.FC = () => {
   const changeGenderFilter = (_: MouseEvent<HTMLElement>, newGender: Gender | null) => {
     setGenderFilter(newGender);
   };
-  const filterGenderTooltip = (event: React.MouseEvent<HTMLElement>) => {
-    setShowTooltipMessage(prevState => !prevState);
+  const handleInfoIconClick = () => {
+    setShowTooltipMessage((prevState) => !prevState);
   };
   return (
     <Page>
@@ -115,13 +115,9 @@ const HomePage: React.FC = () => {
                 <ToggleButton value={Gender.MALE}>Male</ToggleButton>
                 <ToggleButton value={Gender.FEMALE}>Female</ToggleButton>
               </ToggleButtonGroup>
-              <Tooltip title="Filter for rides that are limited to a specific gender">
-                <InfoIcon
-                  color="action"
-                  sx={{ ml: 1, cursor: 'pointer' }}
-                  onClick={filterGenderTooltip}
-                />
-              </Tooltip>
+              <IconButton onClick={handleInfoIconClick}>
+                <InfoIcon color="action" sx={{ ml: 1, cursor: 'pointer' }} />
+              </IconButton>
               {showTooltipMessage && (
                 <span className="tooltiptext">Filter for rides that are limited to a specific gender</span>
               )}
