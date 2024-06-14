@@ -6,10 +6,10 @@ const Page = styled(Box)(() => ({
   left: 0,
   margin: 0,
   float: 'left',
-  height: '100dvh',
   position: 'absolute',
+  height: isMobile ? '100dvh' : '100%',
   width: isMobile ? '100dvw' : '100%',
-  overflow: isMobile ? 'auto' : 'hidden', //TODO: maybe hidden always
+  overflow: 'auto',
 }));
 
 const MainMenuButton = styled(IconButton)(() => ({
