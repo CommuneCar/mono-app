@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import { Box } from '@mui/material';
-import { isMobile } from 'react-device-detect';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { Dispatch, SetStateAction } from 'react';
 
@@ -31,7 +30,7 @@ const RidesList: React.FC<RideListProps> = ({
   setIsCreateRideDialogOpen,
 }) => {
   return (
-    <Box sx={!isMobile ? { overflowY: 'auto', maxHeight: '78%' } : {}}>
+    <Box>
       {isCreateRideDialog && (
         <CreateRideDialog
           communities={userCommunities}
