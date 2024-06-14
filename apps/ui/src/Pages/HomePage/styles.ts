@@ -6,9 +6,10 @@ const Page = styled(Box)(() => ({
   left: 0,
   margin: 0,
   float: 'left',
-  height: '100vh',
+  height: '100dvh',
   position: 'absolute',
-  width: isMobile ? '100vw' : '100%',
+  width: isMobile ? '100dvw' : '100%',
+  overflow: isMobile ? 'auto' : 'hidden', //TODO: maybe hidden always
 }));
 
 const MainMenuButton = styled(IconButton)(() => ({
@@ -22,14 +23,15 @@ const MainMenuButton = styled(IconButton)(() => ({
 
 const PageCard = styled(Card)(() => ({
   top: 100,
-  left: 280,
+  left: 'min(42vh, 330px)',
   zIndex: 20,
-  height: '85%',
+  height: '80%',
   width: '25%',
   borderRadius: '8px',
   position: 'absolute',
   minWidth: 300,
   bottom: 0,
+  overflow: 'auto',
 }));
 
 export { Page, MainMenuButton, PageCard };
