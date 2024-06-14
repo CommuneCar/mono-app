@@ -5,46 +5,51 @@ import "leaflet-routing-machine";
 import { useMap } from "react-leaflet";
 import { TripRouteLocation } from "@communetypes/Trip";
 import { sleepInMS } from "../../utils/sleep";
+import { RideFeeDialogHandle } from "./RideFeeDialog";
 
 interface RoutingProps {
+  passengersCount: number;
   waypoints: TripRouteLocation[];
+  dialogRef: React.RefObject<RideFeeDialogHandle>;
 }
 
-export default function Routing({ waypoints }: RoutingProps) {
+const resolveWaypointIcon = (index: number, waypoints: TripRouteLocation[]) => {
+  switch(index) {
+    case 0:
+      return L.icon({
+        iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/car.svg?t=2024-06-14T07%3A13%3A35.892Z",
+        iconSize: [64, 64],
+        className: "override",
+      });
+    case waypoints.length - 1:
+      return L.icon({
+        iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/destination.png",
+        iconSize: [64, 64],
+        className: "override",
+      });
+    default:
+      return L.icon({
+        iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/logo-no-title.png",
+        iconSize: [64, 64],
+        className: "override",
+      });
+  }
+}
+
+const resolveWaypointPopup = (index: number, waypoints: TripRouteLocation[]) => {
+  if (waypoints[index].type === "start") {
+    return "Starting point";
+  } else if (waypoints[index].type === "end") {
+    return "Drive destination";
+  } else {
+    return `${waypoints[index].userName}'s ${waypoints[index].type}`;
+  }
+}
+
+export default function Routing({ waypoints, dialogRef, passengersCount }: RoutingProps) {
   const map = useMap();
 
-  const resolveWaypointIcon = (index: number) => {
-    switch(index) {
-      case 0:
-        return L.icon({
-          iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/profile-images/car.svg",
-          iconSize: [64, 64],
-          className: "override",
-        });
-      case waypoints.length - 1:
-        return L.icon({
-          iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/profile-images/destination.png?t=2024-06-10T05%3A03%3A12.707Z",
-          iconSize: [64, 64],
-          className: "override",
-        });
-      default:
-        return L.icon({
-          iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/logo-no-title.png",
-          iconSize: [64, 64],
-          className: "override",
-        });
-    }
-  }
 
-  const resolveWaypointPopup = (index: number) => {
-    if (waypoints[index].type === "start") {
-      return "Starting point";
-    } else if (waypoints[index].type === "end") {
-      return "Drive destination";
-    } else {
-      return `${waypoints[index].userName}'s ${waypoints[index].type}`;
-    }
-  }
 
   useEffect(() => {
     if (!map) return;
@@ -54,8 +59,8 @@ export default function Routing({ waypoints }: RoutingProps) {
         createMarker: function (i, wp) {
           return L.marker(wp.latLng, {
             draggable: false,
-            icon: resolveWaypointIcon(i),
-          }).bindPopup(resolveWaypointPopup(i))
+            icon: resolveWaypointIcon(i, waypoints),
+          }).bindPopup(resolveWaypointPopup(i, waypoints))
         },
         routeWhileDragging: false
       }),
@@ -68,6 +73,23 @@ export default function Routing({ waypoints }: RoutingProps) {
       }
     })
       .addTo(map);
+    
+      // Calculate the fare based on the distance, using the formula presented in https://www.omnicalculator.com/everyday-life/carpooling
+      routingControl.on('routesfound', (e) => {      
+        const routes = e.routes;
+        const summary = routes[0].summary;
+
+        const distanceInKM = summary.totalDistance / 1000;
+        const fuelConsumption = distanceInKM / 6.5; // 6-7 liters per 100km  https://www.carsguide.com.au/car-advice/what-is-average-fuel-consumption-88469#:~:text=However%2C%20as%20a%20rule%20of,100km%20in%20the%20real%20world.
+        const fuelCost = fuelConsumption * 8; // average 8 shekels per liter
+
+        const rideFee = fuelCost / passengersCount;
+      
+        // Update the fare in the dialogRef current object if it exists
+        if (dialogRef.current) {
+          dialogRef.current.updateFare(Math.ceil(rideFee)); // You'll need to add this method to your DialogHandle interface
+        }
+      });
 
     return () => {
       // Some random error related to "removeLayer" seems to occur without this (black magic type of ****)
