@@ -50,20 +50,26 @@ const MessagesFeed = () => {
             <Typography>You have no messages at the moment :(</Typography>
           </Box>
         ) : (
-          <Box sx={{ overflowY: 'auto', maxHeight: '80%' }}>
+          <Box sx={{ maxHeight: '80%' }}>
             {Object.entries(messagesByType).map(([key, messages]) => {
               return (
                 <Box key={messages[0].id}>
                   <Box
                     sx={{
-                      mx: '16px',
                       display: 'flex',
                       borderBottom: 'solid 1px #e0e0e0',
+                      position: 'sticky',
+                      top: '4.5%',
+                      backgroundColor: 'background.paper',
+                      zIndex: 19,
+                      py: '0.5rem',
+                      px: '16px',
+                      width: '100%',
                     }}
                   >
                     <Typography>{key}</Typography>
                   </Box>
-                  <List sx={{ overflowY: 'auto', maxHeight: '350px' }}>
+                  <List sx={{ maxHeight: '350px' }}>
                     {messages?.map((message: Message) => (
                       <MessageCard
                         key={message.id}

@@ -18,6 +18,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
         my: isMobile ? '1%' : '4%',
         px: isMobile ? '1%' : '4%',
         justifyContent: 'space-between',
+        pt: '0.5rem',
       }}
     >
       <Typography

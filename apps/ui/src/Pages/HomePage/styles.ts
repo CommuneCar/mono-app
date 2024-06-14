@@ -18,6 +18,7 @@ const PageHeaderBar = styled(Box)(() => ({
   top: 0,
   zIndex: 20,
   backgroundColor: COLORS.WHITE,
+  minHeight: '5%',
 }));
 
 const MainMenuButton = styled(IconButton)(() => ({
