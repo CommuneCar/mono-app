@@ -78,7 +78,13 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   };
 
   return (
-    <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
+    <Box
+      sx={{
+        marginBottom: '5%',
+        width: '-webkit-fill-available',
+        maxWidth: 450,
+      }}
+    >
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardHeader
           title={title}
