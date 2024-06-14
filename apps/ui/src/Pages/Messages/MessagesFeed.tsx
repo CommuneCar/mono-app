@@ -3,7 +3,7 @@ import { Box, List, Typography } from '@mui/material';
 
 import { Message } from '@communecar/types';
 
-import { Page } from '../HomePage/styles';
+import { Page, PageHeaderBar } from '../HomePage/styles';
 import { MessageCard } from './MessageCard';
 import { useUser } from '../../hooks/Users/useUser';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
@@ -40,7 +40,9 @@ const MessagesFeed = () => {
 
   return (
     <Page>
-      <PageHeader title="Inbox" />
+      <PageHeaderBar>
+        <PageHeader title="Inbox" />
+      </PageHeaderBar>
       <PageLoader isLoading={loading} paddingTop={4} />
       <Box sx={{ width: '100%' }}>
         {(isEmpty(messages) || !messages) && !loading ? (
