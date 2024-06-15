@@ -69,33 +69,47 @@ const getRideRoute = async (req: Request, res: Response) => {
     const startLocation: GraphHopperLocation = {
       name: 'real_start_location',
       lat: ride.fromLat,
-      long: ride.fromLong
+      long: ride.fromLong,
     };
 
     const endLocation: GraphHopperLocation = {
       name: 'real_end_location',
       lat: ride.toLat,
-      long: ride.toLong
+      long: ride.toLong,
     };
 
-    const serviceLocations: GraphHopperLocation[] = ride.userRide.map(userRide => ({
-      name: `${userRide.user.firstName}_${userRide.user.lastName}_start`,
-      lat: userRide.fromLat,
-      long: userRide.fromLong
-    })).concat(ride.userRide.map(userRide => ({
-      name: `${userRide.user.firstName}_${userRide.user.lastName}_end`,
-      lat: userRide.toLat,
-      long: userRide.toLong
-    })));
+    const serviceLocations: GraphHopperLocation[] = ride.userRide
+      .map((userRide: any) => ({
+        name: `${userRide.user.firstName}_${userRide.user.lastName}_start`,
+        lat: userRide.fromLat,
+        long: userRide.fromLong,
+      }))
+      .concat(
+        ride.userRide.map((userRide: any) => ({
+          name: `${userRide.user.firstName}_${userRide.user.lastName}_end`,
+          lat: userRide.toLat,
+          long: userRide.toLong,
+        })),
+      );
 
-    const graphHopperResponse = await fetchGraphHopperRoute(startLocation, endLocation, serviceLocations);
+    const graphHopperResponse = await fetchGraphHopperRoute(
+      startLocation,
+      endLocation,
+      serviceLocations,
+    );
 
     // Formatting the response to match the expected output, honestly this is a bit of a mess and could be improved
-    const formattedLocations = graphHopperResponse.map(location => ({
+    const formattedLocations = graphHopperResponse.map((location) => ({
       userName: location.name.split('_')[0] + ' ' + location.name.split('_')[1], // Assuming the name was formatted as 'firstName_lastName_start' or 'firstName_lastName_end'
       lat: location.lat,
       long: location.long,
-      type: location.name.includes('start') ? (location.name.includes('real_start') ? 'start' : 'pickup') : (location.name.includes('real_end') ? 'end' : 'dropoff')
+      type: location.name.includes('start')
+        ? location.name.includes('real_start')
+          ? 'start'
+          : 'pickup'
+        : location.name.includes('real_end')
+          ? 'end'
+          : 'dropoff',
     }));
 
     res.json(formattedLocations);
