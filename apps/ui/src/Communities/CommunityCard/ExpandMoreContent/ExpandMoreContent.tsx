@@ -38,7 +38,7 @@ const ExpandMoreContent: React.FC<ExpandMoreContentProps> = ({
             }}
           >
             {communityOwners.map((owner) => (
-              <UserAvatarChips user={owner} />
+              <UserAvatarChips key={owner.id} user={owner} />
             ))}
           </Box>
         </ExpandMoreFieldBox>
