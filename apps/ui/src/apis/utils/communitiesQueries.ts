@@ -36,19 +36,29 @@ mutation {
         ${locationFields} 
       } 
     }
-  ) {
+  ) 
+   {
     community {
+      baseLocationName
       description
       id
       lat
       long
-      ownerId
       title
-      baseLocationName
       userCommunitiesByCommunityId {
-        totalCount
         nodes {
+          communityId
+          status
+          userId
           userByUserId {
+            age
+            firstName
+            email
+            gender
+            id
+            lastName
+            password
+            phoneNumber
             profileImage
           }
         }
@@ -56,6 +66,7 @@ mutation {
     }
   }
 }
+
 `;
 };
 
@@ -93,11 +104,21 @@ const getCreateCommunityQuery = (
       long
       baseLocationName
       userCommunitiesByCommunityId {
-        totalCount
         nodes {
           userByUserId {
             profileImage
+            age
+            email
+            firstName
+            gender
+            lastName
+            id
+            nodeId
+            password
+            phoneNumber
           }
+          status
+          userId
         }
       }
     }

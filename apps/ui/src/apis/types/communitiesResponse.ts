@@ -1,3 +1,5 @@
+import { UserStatus } from '@communetypes/Enums';
+
 interface UpdateCommunityResponse {
   updateCommunityById: {
     community: CommunityNode;
@@ -19,15 +21,25 @@ interface CommunityNode {
   long?: number;
   baseLocationName?: string;
   userCommunitiesByCommunityId: {
-    totalCount: number;
     nodes: UserCommunityNode[];
   };
 }
+
 interface UserCommunityNode {
   userByUserId: UserNode;
+  status: UserStatus;
+  userId: number;
 }
 interface UserNode {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
   profileImage: string | null;
+  password: string;
+  gender: string;
+  age: number;
 }
 
 interface AllCommunitiesData {
