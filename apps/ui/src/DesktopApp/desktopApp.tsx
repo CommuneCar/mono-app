@@ -10,6 +10,7 @@ import { Home } from './home/home';
 import SignIn from '../Pages/SignIn/SignIn';
 import { SignUp } from '../Pages/Signup/SignUp';
 import { ProtectedRoute } from '../ProtectedRoute';
+import { MapRouting } from '../Pages/MapRouting/MapRoutingMachine';
 
 const DesktopApp: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const DesktopApp: React.FC = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/rides/:rideId" element={<MapRouting />} />
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Route>
         </Routes>

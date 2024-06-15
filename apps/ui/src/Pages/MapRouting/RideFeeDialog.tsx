@@ -1,4 +1,3 @@
-// RideCostDialog.tsx
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 

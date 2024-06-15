@@ -1,19 +1,20 @@
 import { useRef } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import Routing from './Routing';
+import './styles.css';
+import { Routing } from './Routing';
 import { useGetTrip } from '../../hooks/Rides/useGetTrip';
 import { useParams } from 'react-router-dom';
 import Control from 'react-leaflet-custom-control';
 import { ButtonGroup, Button, Tooltip } from '@mui/material';
 import { PriceChange as PaymentIcon } from '@mui/icons-material';
 import { RideFeeDialog, RideFeeDialogHandle } from './RideFeeDialog';
+import { DEFAULT_RIDE_FEE } from './const';
 
 function MapRouting() {
     const { rideId } = useParams();
     const { data, isLoading, error } = useGetTrip(Number(rideId));
     const dialogRef = useRef<RideFeeDialogHandle>(null);
-    const pricePerPassenger = 25;  // Define this dynamically based on your application needs
 
     if (!rideId || isNaN(Number(rideId))) {
         return <div>Invalid ride id</div>;
@@ -30,7 +31,7 @@ function MapRouting() {
 
     const handleOpenDialog = () => {
         if (dialogRef.current) {
-            dialogRef.current.open();  // Check if current is not null before calling open
+            dialogRef.current.open();
         }
     };
 
@@ -61,7 +62,7 @@ function MapRouting() {
                     </Tooltip>
                 </ButtonGroup>
             </Control>
-            <RideFeeDialog ref={dialogRef} defaultRideFee={pricePerPassenger} />
+            <RideFeeDialog ref={dialogRef} defaultRideFee={DEFAULT_RIDE_FEE} />
         </MapContainer>
     );
 }

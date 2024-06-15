@@ -6,6 +6,7 @@ import { useMap } from "react-leaflet";
 import { TripRouteLocation } from "@communetypes/Trip";
 import { sleepInMS } from "../../utils/sleep";
 import { RideFeeDialogHandle } from "./RideFeeDialog";
+import { AVERAGE_FUEL_COST, AVERAGE_LITERS_PER_KM } from "./const";
 
 interface RoutingProps {
   passengersCount: number;
@@ -14,7 +15,7 @@ interface RoutingProps {
 }
 
 const resolveWaypointIcon = (index: number, waypoints: TripRouteLocation[]) => {
-  switch(index) {
+  switch (index) {
     case 0:
       return L.icon({
         iconUrl: "https://guzwjncnbuiiazedbuis.supabase.co/storage/v1/object/public/public-assets/car.svg?t=2024-06-14T07%3A13%3A35.892Z",
@@ -46,10 +47,8 @@ const resolveWaypointPopup = (index: number, waypoints: TripRouteLocation[]) => 
   }
 }
 
-export default function Routing({ waypoints, dialogRef, passengersCount }: RoutingProps) {
+const Routing = ({ waypoints, dialogRef, passengersCount }: RoutingProps) => {
   const map = useMap();
-
-
 
   useEffect(() => {
     if (!map) return;
@@ -73,23 +72,23 @@ export default function Routing({ waypoints, dialogRef, passengersCount }: Routi
       }
     })
       .addTo(map);
-    
-      // Calculate the fare based on the distance, using the formula presented in https://www.omnicalculator.com/everyday-life/carpooling
-      routingControl.on('routesfound', (e) => {      
-        const routes = e.routes;
-        const summary = routes[0].summary;
 
-        const distanceInKM = summary.totalDistance / 1000;
-        const fuelConsumption = distanceInKM / 6.5; // 6-7 liters per 100km  https://www.carsguide.com.au/car-advice/what-is-average-fuel-consumption-88469#:~:text=However%2C%20as%20a%20rule%20of,100km%20in%20the%20real%20world.
-        const fuelCost = fuelConsumption * 8; // average 8 shekels per liter
+    // Calculate the fare based on the distance, using the formula presented in https://www.omnicalculator.com/everyday-life/carpooling
+    routingControl.on('routesfound', (e) => {
+      const routes = e.routes;
+      const summary = routes[0].summary;
 
-        const rideFee = fuelCost / passengersCount;
-      
-        // Update the fare in the dialogRef current object if it exists
-        if (dialogRef.current) {
-          dialogRef.current.updateFare(Math.ceil(rideFee)); // You'll need to add this method to your DialogHandle interface
-        }
-      });
+      // Fuel consumption cost calculation
+      const distanceInKM = summary.totalDistance / 1000;
+      const fuelConsumption = distanceInKM / AVERAGE_LITERS_PER_KM;
+      const fuelCost = fuelConsumption * AVERAGE_FUEL_COST;
+      const rideFee = fuelCost / passengersCount;
+
+      // Update the dialog with the new ride fee
+      if (dialogRef.current) {
+        dialogRef.current.updateFare(Math.ceil(rideFee));
+      }
+    });
 
     return () => {
       // Some random error related to "removeLayer" seems to occur without this (black magic type of ****)
@@ -103,3 +102,5 @@ export default function Routing({ waypoints, dialogRef, passengersCount }: Routi
 
   return null;
 }
+
+export { Routing };
