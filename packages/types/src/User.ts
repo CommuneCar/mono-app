@@ -12,4 +12,6 @@ interface User {
   avatarUrl?: string;
 }
 
-export type { User };
+type UserContactInfo = Pick<User, 'email' | 'phone' | 'avatarUrl'>;
+
+export type { User, UserContactInfo };

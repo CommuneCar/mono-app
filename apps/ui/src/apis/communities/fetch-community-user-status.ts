@@ -22,7 +22,7 @@ interface AllUserCommunitiesResponse {
   };
 }
 
-const GET_USER_COMMUNITIES_STATUS = `
+const USER_COMMUNITIES_STATUS_QUERY = `
 query GetUserCommunitiesStatus($userId: Int!) {
   allUserCommunities(condition: {userId: $userId}) {
     nodes {
@@ -41,12 +41,10 @@ query GetUserCommunitiesStatus($userId: Int!) {
 }
 `;
 
-const managerStatus = 'Manager' as UserStatus;
-
 const fetchUserCommunitiesStatus = async (
   userId: number,
 ): Promise<UserCommunitiesStatus> => {
-  const query = GET_USER_COMMUNITIES_STATUS;
+  const query = USER_COMMUNITIES_STATUS_QUERY;
   const variables = { userId };
 
   try {
@@ -58,9 +56,6 @@ const fetchUserCommunitiesStatus = async (
 
     data.allUserCommunities.nodes.forEach((item) => {
       communitiesStatus[item.communityId] = item.status as UserStatus;
-    });
-    data.allCommunities.nodes.forEach((item) => {
-      communitiesStatus[item.id] = managerStatus;
     });
 
     return communitiesStatus;

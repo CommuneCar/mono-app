@@ -1,7 +1,15 @@
-import { Community } from '@communecar/types';
+import { Community, UserStatus } from '@communecar/types';
 import { CommunityForm } from './CommunityForm';
 import { FORMS_TEXT } from '../../themes/default/consts';
 import { useUpdateCommunity } from '../../hooks/Communities/useUpdateCommunity';
+import { useUserCommunity } from '../../hooks/Communities/useSelectUsers';
+import { UsersSelectorOption } from '../../types/users-selector-option';
+import {
+  getAdditionsDetailForCommunity,
+  getIntersectionManagersMembers,
+  getIsUserConnectedToCommunity,
+} from './utils';
+import { useUser } from '../../hooks/Users/useUser';
 
 interface UpdateCommunityProps {
   onUpdate: (community: Community) => void;
@@ -17,14 +25,94 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
   communityToUpdate,
 }) => {
   const { updateCommunity, isUpdating } = useUpdateCommunity();
+  const {
+    createUserCommunity,
+    updateUserCommunity,
+    isUpdating: isUpdatingUsers,
+    isCreating: isCreatingUsers,
+  } = useUserCommunity();
+  const { user } = useUser();
 
-  const handleUpdate = async (newCommunity: Community) => {
+  const handleUpdate = async (
+    newCommunity: Community,
+    newAdmins: UsersSelectorOption[],
+    newMembers: UsersSelectorOption[],
+  ) => {
     try {
       const updatedCommunity = await updateCommunity(newCommunity);
+
+      const { ownersUsers, numberOfMembers, picturesUrl } =
+        getAdditionsDetailForCommunity(
+          newAdmins,
+          newMembers,
+          updatedCommunity,
+          user,
+        );
+      updatedCommunity.picturesUrl = picturesUrl;
+      updatedCommunity.ownersUsers = ownersUsers;
+      updatedCommunity.numberOfMembers = numberOfMembers;
+
+      handleConnectUsersInUpdate(updatedCommunity.id, newAdmins, newMembers);
       onUpdate(updatedCommunity);
     } catch (err) {}
     handleClose();
   };
+
+  const handleConnectUsersInUpdate = (
+    communityId: number,
+    newAdmins: UsersSelectorOption[],
+    newMembers: UsersSelectorOption[],
+  ) => {
+    const { adminsResults, membersResults } = getIntersectionManagersMembers(
+      newAdmins,
+      newMembers,
+      (user) => user.userId,
+    );
+
+    const newAdminsToUpdate = adminsResults.filter((user) =>
+      getIsUserConnectedToCommunity(user, communityId),
+    );
+    const newAdminsToCreate = adminsResults.filter(
+      (user) => !getIsUserConnectedToCommunity(user, communityId),
+    );
+
+    newAdminsToCreate.forEach((admin) =>
+      createUserCommunity({
+        userId: admin.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.MANAGER,
+      }),
+    );
+    newAdminsToUpdate.forEach((admin) =>
+      updateUserCommunity({
+        userId: admin.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.MANAGER,
+      }),
+    );
+
+    const newMembersToUpdate = membersResults.filter((user) =>
+      getIsUserConnectedToCommunity(user, communityId),
+    );
+    const newMembersToCreate = membersResults.filter(
+      (user) => !getIsUserConnectedToCommunity(user, communityId),
+    );
+    newMembersToCreate.forEach((current) =>
+      createUserCommunity({
+        userId: current.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.ACTIVE,
+      }),
+    );
+    newMembersToUpdate.forEach((current) =>
+      updateUserCommunity({
+        userId: current.userId,
+        communityId: communityToUpdate.id,
+        status: UserStatus.ACTIVE,
+      }),
+    );
+  };
+
   return (
     <CommunityForm
       isOpen={isOpen}
@@ -32,7 +120,7 @@ const UpdateCommunity: React.FC<UpdateCommunityProps> = ({
       formTexts={FORMS_TEXT.UPDATE_COMMUNITY}
       onSubmit={handleUpdate}
       communityToUpdate={communityToUpdate}
-      isLoading={isUpdating}
+      isLoading={isUpdating || isUpdatingUsers || isCreatingUsers}
     ></CommunityForm>
   );
 };
