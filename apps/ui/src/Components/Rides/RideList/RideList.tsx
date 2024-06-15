@@ -33,10 +33,7 @@ const RidesList: React.FC<RideListProps> = ({
   setIsCreateRideDialogOpen,
   genderFilter
 }) => {
-  const filteredRides = rides.filter(ride => {
-    if (!genderFilter) return true;
-    return ride.pronouns && ride.driver.gender === genderFilter;
-  });
+  const filteredRides = rides.filter(ride => !genderFilter || (ride.pronouns && ride.driver.gender == genderFilter) );
   return (
     <Box sx={!isMobile ? { overflowY: 'auto', maxHeight: '78%' } : {}}>
       {isCreateRideDialog && (
