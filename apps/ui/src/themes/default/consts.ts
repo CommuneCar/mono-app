@@ -67,7 +67,9 @@ export const TEXT = {
   LOGIN: 'Login',
   CONTINUE: 'Continue',
   CREATE: 'Create',
+  UPDATE: 'Update',
   CANCEL: 'Cancel',
+  CLOSE: 'Close',
   SAVE: 'Save',
   CREATE_COMMUNITY_TITLE: 'Create Community',
   CREATE_COMMUNITY_DESCRIPTION:
