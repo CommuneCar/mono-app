@@ -116,6 +116,7 @@ const CommunitiesFeed = () => {
   };
 
   const handleUpdateCommunity = (communityUpdated: Community) => {
+    refetchCommunities();
     setAllCommunitiesDisplay((prev) => {
       const communitiesObject = groupBy(prev, 'id');
       const communitiesDictionary: Record<string, Community> = mapValues(
