@@ -1,4 +1,3 @@
-// /src/hooks/communities/useCreateCommunity.ts
 import { useMutation, useQueryClient } from 'react-query';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { Community, UserStatus } from '@communecar/types';
