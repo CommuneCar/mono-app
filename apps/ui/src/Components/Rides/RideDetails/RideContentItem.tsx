@@ -1,12 +1,17 @@
 import React from 'react';
-import { DialogContentText, Typography, Box } from '@mui/material';
+import { DialogContentText, Typography, Box, Tooltip } from '@mui/material';
 
 interface JoinRideProps {
   header: string;
   text: string;
+  tooltipText?: string;
 }
 
-const RideContentItem: React.FC<JoinRideProps> = ({ header, text }) => {
+const RideContentItem: React.FC<JoinRideProps> = ({
+  header,
+  text,
+  tooltipText,
+}) => {
   return (
     <DialogContentText>
       <Box display="flex" alignItems="center">
@@ -18,7 +23,9 @@ const RideContentItem: React.FC<JoinRideProps> = ({ header, text }) => {
         >
           <Typography variant="subtitle1">{header}</Typography>
         </Box>
-        <Typography variant="body1">{text}</Typography>
+        <Tooltip title={tooltipText ?? ''}>
+          <Typography variant="body1">{text}</Typography>
+        </Tooltip>
       </Box>
     </DialogContentText>
   );
