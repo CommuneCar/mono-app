@@ -114,9 +114,6 @@ const EditRideDialog = ({
     };
 
     await editRide(updatedRide);
-    // if (isSuccess) {
-    //   handleClose();
-    // }
   };
 
   if (isSuccess) {
