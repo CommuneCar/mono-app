@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { GraphHopperLocation } from '@betypes/graphhopper';
+import { GraphHopperLocation, ServiceLocation } from '@betypes/graphhopper';
 import { fetchGraphHopperRoute } from '../../../utils/graphhopper';
 import { TripLocationType } from '../types';
 
@@ -81,17 +81,21 @@ const getRideRoute = async (req: Request, res: Response) => {
       long: ride.toLong,
     };
 
-    const serviceLocations: GraphHopperLocation[] = ride.userRide
-      .map((userRide) => ({
+    const serviceLocations: ServiceLocation[] = ride.userRide
+      .map((userRide): ServiceLocation => ({
         name: `${userRide.user.firstName}_${userRide.user.lastName}_${TripLocationType.Start}`,
         lat: userRide.fromLat,
         long: userRide.fromLong,
+        userId: userRide.userId,
+        type: 'pickup',
       }))
       .concat(
-        ride.userRide.map((userRide) => ({
+        ride.userRide.map((userRide): ServiceLocation => ({
           name: `${userRide.user.firstName}_${userRide.user.lastName}_${TripLocationType.End}`,
           lat: userRide.toLat,
           long: userRide.toLong,
+          userId: userRide.userId,
+          type: 'delivery',
         })),
       );
 
