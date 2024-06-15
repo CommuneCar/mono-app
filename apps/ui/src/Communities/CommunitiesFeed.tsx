@@ -108,6 +108,7 @@ const CommunitiesFeed = () => {
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
+    refetchCommunities();
     setUserCommunitiesStatus((prev) => ({
       ...prev,
       [newCommunity.id]: UserStatus.MANAGER,
