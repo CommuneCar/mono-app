@@ -14,7 +14,6 @@ interface CreateCommunityProps {
   isOpen: boolean;
   handleClose: () => void;
   userId: number;
-  onCreateConnections: () => void;
 }
 
 const CreateCommunity: React.FC<CreateCommunityProps> = ({
@@ -22,7 +21,6 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
   isOpen,
   handleClose,
   userId,
-  onCreateConnections,
 }) => {
   const { addCommunity, isLoading: addCommunityIsLoading } =
     useCreateCommunity(userId);
@@ -57,7 +55,6 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
       createdCommunity.ownersUsers = ownersUsers;
       createdCommunity.numberOfMembers = numberOfMembers;
 
-      onCreateConnections();
       onCreate(createdCommunity);
     } catch (err) {
       console.error('Failed to create community:', err);

@@ -191,7 +191,6 @@ const CommunitiesFeed = () => {
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
-          onCreateConnections={refetchCommunities}
         />
       )}
       {isEditOpen && communityToUpdate && (
