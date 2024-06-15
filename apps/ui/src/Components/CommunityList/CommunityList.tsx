@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { FilterAltOffRounded } from '@mui/icons-material';
 import React, { Dispatch, SetStateAction, useMemo } from 'react';
-import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 
 import { Ride } from '@communecar/types';
 
@@ -12,6 +12,7 @@ import { RideCard } from '../Rides/RideCard';
 import { useUser } from '../../hooks/Users/useUser';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
+import { EmptyCommunityRides } from './EmptyCommunityRides';
 
 dayjs.extend(relativeTime);
 
@@ -54,33 +55,30 @@ const CommunityList: React.FC<CommunityListProps> = ({
         )}
       </Box>
       <Box>
-        {filteredCommunities.map((community, index) => (
-          <Box key={index}>
-            <Typography variant="h5" align="left" px={1}>
-              {community.title}
-            </Typography>
-            {isEmpty(community.rides) ? (
-              <Card variant={'outlined'} sx={{ m: 2, borderRadius: 5 }}>
-                <CardContent>
-                  <Typography align={'left'} sx={{ fontSize: 14 }}>
-                    Sorry, No rides available for Community: "{community.title}"
-                    for now
-                  </Typography>
-                </CardContent>
-              </Card>
-            ) : (
-              community.rides.map((ride, index) => (
-                <Box key={index} onClick={() => setSelectedRide(ride)}>
-                  <RideCard
-                    ride={ride}
-                    rideStatus={rideStatuses?.[ride.id.toString()]}
-                    communities={communities}
-                  />
-                </Box>
-              ))
-            )}
-          </Box>
-        ))}
+        {!isEmpty(filteredCommunities) ? (
+          filteredCommunities.map((community, index) => (
+            <Box key={index}>
+              <Typography variant="h5" align="left" px={1}>
+                {community.title}
+              </Typography>
+              {isEmpty(community.rides) ? (
+                <EmptyCommunityRides communityTitle={community.title} />
+              ) : (
+                community.rides.map((ride, index) => (
+                  <Box key={index} onClick={() => setSelectedRide(ride)}>
+                    <RideCard
+                      ride={ride}
+                      rideStatus={rideStatuses?.[ride.id.toString()]}
+                      communities={communities}
+                    />
+                  </Box>
+                ))
+              )}
+            </Box>
+          ))
+        ) : (
+          <EmptyCommunityRides />
+        )}
       </Box>
     </Box>
   );
