@@ -1,5 +1,10 @@
 import { CssBaseline } from '@mui/material';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from 'react-router-dom';
 
 import { Home } from './home/home';
 import SignIn from '../Pages/SignIn/SignIn';
@@ -16,6 +21,7 @@ const DesktopApp: React.FC = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
+            <Route path="*" element={<Navigate to="/home" replace />} />
           </Route>
         </Routes>
       </Router>
