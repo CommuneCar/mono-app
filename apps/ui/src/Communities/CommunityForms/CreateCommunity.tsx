@@ -49,9 +49,9 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
       createdCommunity.ownersUsers = ownersUsers;
       createdCommunity.numberOfMembers = numberOfMembers;
 
-      onCreate(createdCommunity);
       await handleConnectUsers(createdCommunity.id, newAdmins, newMembers);
       onCreateConnections();
+      onCreate(createdCommunity);
     } catch (err) {
       console.error('Failed to create community:', err);
     }
