@@ -106,9 +106,11 @@ const RideCard: React.FC<RideCardProps> = ({
                 {rideStatusIcons[rideStatus.status]}
               </IconButton>
               {rideStatus.status === UserRideStatus.CONFIRMED && (
-                <IconButton onClick={handleExitRideClick}>
-                  <PersonRemoveIcon />
-                </IconButton>
+                <Tooltip title="Exit ride" placement="top" arrow>
+                  <IconButton onClick={handleExitRideClick}>
+                    <PersonRemoveIcon />
+                  </IconButton>
+                </Tooltip>
               )}
             </Box>
           )}
