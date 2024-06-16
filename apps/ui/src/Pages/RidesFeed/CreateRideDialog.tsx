@@ -54,7 +54,6 @@ const CreateRideDialog = ({
   );
   const [destination, setDestination] = useState<LocationResult | null>(null);
 
-
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
       setStartLocation(location);
@@ -172,7 +171,6 @@ const CreateRideDialog = ({
           onChange={(e) => handleGasSeatsChange('gasMoney', e.target.value)}
           error={isGasMoneyNegative}
           helperText={isGasMoneyNegative ? 'Gas Money cannot be negative' : ''}
-
         />
         <FormControlLabel
           control={
