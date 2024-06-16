@@ -48,11 +48,12 @@ const CreateRideDialog = ({
   const [community, setCommunity] = useState<Community | null>(null);
   const [gasMoney, setGasMoney] = useState('0');
   const [pronounsOnly, setPronounsOnly] = useState(false);
-  const [seats, setSeats] = useState('0');
+  const [seats, setSeats] = useState('1');
   const [startLocation, setStartLocation] = useState<LocationResult | null>(
     null,
   );
   const [destination, setDestination] = useState<LocationResult | null>(null);
+
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
@@ -65,6 +66,23 @@ const CreateRideDialog = ({
     setOpen(false);
   };
 
+  const handleGasSeatsChange = (fieldName: string, value: string) => {
+    switch (fieldName) {
+      case 'gasMoney':
+        setGasMoney(value);
+        break;
+      case 'seats':
+        setSeats(value);
+        break;
+      default:
+        break;
+    }
+  };
+  const isGasMoneyNegative = Number(gasMoney) < 0;
+  const isSeatsLessThanOne = Number(seats) < 1;
+  const isSeatsNotInteger = !Number.isInteger(Number(seats));
+
+
   const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
       alert('All fields are required.');
@@ -74,6 +92,7 @@ const CreateRideDialog = ({
       alert('Login is required for this operation');
       return;
     }
+
 
     const png = getRandomOption(options);
     const newRide: CreateRideSchema = {
@@ -150,7 +169,10 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={gasMoney}
-          onChange={(e) => setGasMoney(e.target.value)}
+          onChange={(e) => handleGasSeatsChange('gasMoney', e.target.value)}
+          error={isGasMoneyNegative}
+          helperText={isGasMoneyNegative ? 'Gas Money cannot be negative' : ''}
+
         />
         <FormControlLabel
           control={
@@ -168,14 +190,17 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={seats}
-          onChange={(e) => setSeats(e.target.value)}
+          onChange={(e) => handleGasSeatsChange('seats', e.target.value)}
+          error={isSeatsLessThanOne || isSeatsNotInteger}
+          helperText={isSeatsLessThanOne ? 'Seats must be 1 or more' : isSeatsNotInteger
+            ? 'Seats must be complete' : '' }
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
           {TEXT.CANCEL}
         </Button>
-        <SubmitButton type="submit" disabled={isLoading} onClick={handleSubmit}>
+        <SubmitButton type="submit" disabled={isLoading || isGasMoneyNegative || isSeatsLessThanOne || isSeatsNotInteger} onClick={handleSubmit}>
           {isLoading ? (
             <CircularProgress size={24} color="info" />
           ) : (
