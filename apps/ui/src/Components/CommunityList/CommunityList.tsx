@@ -42,6 +42,9 @@ const CommunityList: React.FC<CommunityListProps> = ({
       : communities;
   }, [communityId, communities]);
 
+  const getEmptyRidestext = (communityTitle: string) =>
+    `Sorry, No rides available for community: "${communityTitle}" for now`;
+
   return (
     <Box>
       <Box sx={{ minHeight: '2.5rem' }}>
@@ -62,7 +65,9 @@ const CommunityList: React.FC<CommunityListProps> = ({
                 {community.title}
               </Typography>
               {isEmpty(community.rides) ? (
-                <EmptyCommunityRides communityTitle={community.title} />
+                <EmptyCommunityRides
+                  messageText={getEmptyRidestext(community.title)}
+                />
               ) : (
                 community.rides.map((ride, index) => (
                   <Box key={index} onClick={() => setSelectedRide(ride)}>

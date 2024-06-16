@@ -1,20 +1,18 @@
 import { Card, CardContent, Typography } from '@mui/material';
 
 interface EmptyCommunityRidesProps {
-  communityTitle?: string;
+  messageText?: string;
 }
 
 const EmptyCommunityRides: React.FC<EmptyCommunityRidesProps> = ({
-  communityTitle,
+  messageText,
 }) => {
-  const text = communityTitle
-    ? `Sorry, No rides available for community: "${communityTitle}" for now`
-    : 'Sorry, No rides available in the community for now';
   return (
     <Card variant={'outlined'} sx={{ m: 2, borderRadius: 5 }}>
       <CardContent>
         <Typography align={'left'} sx={{ fontSize: 14 }}>
-          {text}
+          {messageText ??
+            "Oops! It looks like you haven't joined any communities yet."}
         </Typography>
       </CardContent>
     </Card>
