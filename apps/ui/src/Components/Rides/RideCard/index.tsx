@@ -12,14 +12,17 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Send, Info } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
-import { Community, Ride, UserRide } from '@communecar/types';
+import { Community, Ride, UserRide, UserRideStatus } from '@communecar/types';
 
 import { RideDetails } from '../RideDetails';
 import { JoinRideDialog } from '../JoinRide';
 import { rideStatusIcons } from '../../../utils/communities/userStatusIcons';
 import { useUser } from '../../../hooks/Users/useUser';
 import { EditRideDialog } from '../EditRide';
+import { SPACING } from 'apps/ui/src/themes/default/consts';
+import { usePostRequestUserRide } from '../../../hooks/Rides/usePostRequestUserRide';
 
 interface RideCardProps {
   ride: Ride;
@@ -38,11 +41,24 @@ const RideCard: React.FC<RideCardProps> = ({
   const [isEditRideOpen, setIsEditRideOpen] = useState(false);
   const isRideFull = ride.pickups.length === ride.seats;
 
+  const { mutateAsync: updateRiderStatus } = usePostRequestUserRide();
+
   const handleJoinRideClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
     setIsDialogOpen(true);
+  };
+
+  const handleExitRideClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    updateRiderStatus({
+      userId: user!.id,
+      rideId: ride.id,
+      status: UserRideStatus.CANCELLED,
+    });
   };
 
   return (
@@ -86,9 +102,16 @@ const RideCard: React.FC<RideCardProps> = ({
               </Box>
             </Tooltip>
           ) : (
-            <IconButton disabled>
-              {rideStatusIcons[rideStatus.status]}
-            </IconButton>
+            <Box display="flex" flexDirection="row" gap={SPACING.SP4}>
+              <IconButton disabled>
+                {rideStatusIcons[rideStatus.status]}
+              </IconButton>
+              {rideStatus.status === UserRideStatus.CONFIRMED && (
+                <IconButton onClick={handleExitRideClick}>
+                  <PersonRemoveIcon />
+                </IconButton>
+              )}
+            </Box>
           )}
         </CardActions>
       </Card>
