@@ -1,8 +1,13 @@
 import { flatten, groupBy } from 'lodash';
 import { useLocation } from 'react-router-dom';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Add, Menu as MenuIcon, MoreVert } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
 
 import { Community, Ride } from '@communecar/types';
 
@@ -126,15 +131,25 @@ const HomePage: React.FC = () => {
           />
         )}
         {selectedTab === 'rides' && (
-          <RidesList
-            rides={ridesData ?? []}
-            userRideStatus={statuses ?? {}}
-            setSelectedRide={setSelectedRide}
-            communities={communitiesData ?? []}
-            isCreateRideDialog={createRideOpen}
-            userCommunities={userCommunitiesData ?? []}
-            setIsCreateRideDialogOpen={setIsCreateRideOpen}
-          />
+          <>
+            <Box display={'flex'} justifyContent={'space-between'}>
+              <IconButton>
+                <MoreVert />
+              </IconButton>
+              <IconButton onClick={() => setIsCreateRideOpen(true)}>
+                <Add />
+              </IconButton>
+            </Box>
+            <RidesList
+              rides={ridesData ?? []}
+              userRideStatus={statuses ?? {}}
+              setSelectedRide={setSelectedRide}
+              communities={communitiesData ?? []}
+              isCreateRideDialog={createRideOpen}
+              userCommunities={userCommunitiesData ?? []}
+              setIsCreateRideDialogOpen={setIsCreateRideOpen}
+            />
+          </>
         )}
       </BottomDrawer>
     </Page>
