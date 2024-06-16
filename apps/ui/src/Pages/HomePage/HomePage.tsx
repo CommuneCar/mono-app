@@ -25,6 +25,11 @@ import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
 import { useGetAllUserCommunities } from '../../hooks/Communities/useGetAllUserCommunities';
 
+export interface SelectedCommunity {
+  communityId?: number;
+  communityTitle?: string;
+}
+
 const HomePage: React.FC = () => {
   const { user } = useUser();
 
@@ -44,8 +49,14 @@ const HomePage: React.FC = () => {
 
   const location = useLocation();
   const communityId = location.state?.communityId;
+  const communityTitle = location.state?.communityTitle;
 
-  const [selectedCommunityId, setSelectedCommunityId] = useState(communityId);
+  const [selectedCommunity, setSelectedCommunity] = useState<SelectedCommunity>(
+    {
+      communityId,
+      communityTitle,
+    },
+  );
 
   const communities = useMemo(() => {
     if (isLoadingCommunities || isLoadingRides) {
@@ -113,9 +124,9 @@ const HomePage: React.FC = () => {
           <CommunityList
             communities={communities}
             setSelectedRide={setSelectedRide}
-            communityId={selectedCommunityId}
+            selectedCommunity={selectedCommunity}
             joinRideDialogOpened={joinRideDialogOpened}
-            setSelectedCommunityId={setSelectedCommunityId}
+            setSelectedCommunityId={setSelectedCommunity}
             setJoinRideDialogOpened={setJoinRideDialogOpened}
           />
         )}

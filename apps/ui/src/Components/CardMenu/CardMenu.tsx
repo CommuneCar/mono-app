@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { isMobile } from 'react-device-detect';
 
 import { IconButton, Menu, MenuItem, Box } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -9,6 +10,7 @@ import {
   userOptions,
 } from '../../utils/communities/cardMenuConsts';
 import { isEmpty } from 'lodash';
+import { MEMBER_OPTIONS } from '../../types/community-actions-enum';
 
 export interface CardMenuProps {
   isManager?: boolean;
@@ -41,7 +43,10 @@ const CardMenu: React.FC<CardMenuProps> = ({
   const currentMangerOptions = isManager ? managerOptions : [];
   const currentMemberOptions = isMember || isManager ? userOptions : [];
 
-  const options = [...currentMemberOptions, ...currentMangerOptions];
+  const allOptions = [...currentMemberOptions, ...currentMangerOptions];
+  const options = isMobile
+    ? allOptions
+    : allOptions.filter((option) => option !== MEMBER_OPTIONS.SEE_RIDES);
 
   return (
     !isEmpty(options) && (
