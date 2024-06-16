@@ -21,8 +21,8 @@ import { JoinRideDialog } from '../JoinRide';
 import { rideStatusIcons } from '../../../utils/communities/userStatusIcons';
 import { useUser } from '../../../hooks/Users/useUser';
 import { EditRideDialog } from '../EditRide';
-import { SPACING } from 'apps/ui/src/themes/default/consts';
-import { usePostRequestUserRide } from '../../../hooks/Rides/usePostRequestUserRide';
+import { SPACING } from '../../../themes/default/consts';
+import { useEditRider } from '../../../hooks/Rides/useEditRiders';
 
 interface RideCardProps {
   ride: Ride;
@@ -41,7 +41,10 @@ const RideCard: React.FC<RideCardProps> = ({
   const [isEditRideOpen, setIsEditRideOpen] = useState(false);
   const isRideFull = ride.pickups.length === ride.seats;
 
-  const { mutateAsync: updateRiderStatus } = usePostRequestUserRide();
+  const { mutateAsync: editRider } = useEditRider(
+    ride.id,
+    UserRideStatus.CANCELLED,
+  );
 
   const handleJoinRideClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -54,11 +57,7 @@ const RideCard: React.FC<RideCardProps> = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    updateRiderStatus({
-      userId: user!.id,
-      rideId: ride.id,
-      status: UserRideStatus.CANCELLED,
-    });
+    editRider(user!.id);
   };
 
   return (

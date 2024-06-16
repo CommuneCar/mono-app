@@ -29,13 +29,14 @@ const postUpdateRide = async (ride: EditRideSchema): Promise<Ride> => {
 };
 
 const cancelRideByRider = async (
-  rider: Rider,
+  riderId: Rider['id'],
   rideId: number,
+  status: UserRideStatus,
 ): Promise<{
   rideId: number;
   status: string;
 }> => {
-  const query = updateRidersQuery(rider, rideId, UserRideStatus.REJECTED);
+  const query = updateRidersQuery(riderId, rideId, status);
 
   try {
     const responseData = await graphqlRequest<GraphQLRiderResponse>(query);

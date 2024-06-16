@@ -14,6 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Rider } from '@communetypes/Rider';
 import { COLORS, SPACING } from '../../../themes/default/consts';
 import { useEditRider } from '../../../hooks/Rides/useEditRiders';
+import { UserRideStatus } from '@communecar/types';
 
 interface DriverContentItemProps {
   riders: Rider[] | undefined;
@@ -34,13 +35,16 @@ const RidersContentItemEditMode: React.FC<DriverContentItemProps> = ({
 }) => {
   const [showRiders, setShowRiders] = useState(false);
 
-  const { mutateAsync: editRider } = useEditRider(rideId);
+  const { mutateAsync: editRider } = useEditRider(
+    rideId,
+    UserRideStatus.REJECTED,
+  );
 
   const toggleRidersList = () => {
     setShowRiders(!showRiders);
   };
   const onRemoveRider = async (rider: Rider) => {
-    await editRider(rider);
+    await editRider(rider.id);
     setRideRiders(riders!.filter((r: Rider) => r.id !== rider.id));
   };
 

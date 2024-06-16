@@ -76,10 +76,14 @@ const updateRideQuery = (ride: EditRideSchema) => {
   `;
 };
 
-const updateRidersQuery = (rider: Rider, rideId: number, status: string) => {
+const updateRidersQuery = (
+  riderId: Rider['id'],
+  rideId: number,
+  status: string,
+) => {
   return `
   mutation {
-  updateUserRideByUserIdAndRideId(input: {userId: ${rider.id}, rideId: ${rideId}, userRidePatch: {status: "${status}"}}) {
+  updateUserRideByUserIdAndRideId(input: {userId: ${riderId}, rideId: ${rideId}, userRidePatch: {status: "${status}"}}) {
     userRide {
       rideId
       status
