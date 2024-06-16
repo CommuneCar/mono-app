@@ -13,13 +13,14 @@ import { useUser } from '../../hooks/Users/useUser';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { EmptyCommunityRides } from './EmptyCommunityRides';
+import { SelectedCommunity } from '../../Pages/HomePage/HomePage';
 
 dayjs.extend(relativeTime);
 
 interface CommunityListProps {
   communities: CommunityWithRides[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
-  communityId?: number;
+  selectedCommunity?: SelectedCommunity;
   setSelectedCommunityId: React.Dispatch<any>;
   joinRideDialogOpened: boolean;
   setJoinRideDialogOpened: (isOpen: boolean) => void;
@@ -28,7 +29,7 @@ interface CommunityListProps {
 const CommunityList: React.FC<CommunityListProps> = ({
   communities,
   setSelectedRide,
-  communityId,
+  selectedCommunity,
   setSelectedCommunityId,
 }) => {
   const { user } = useUser();
@@ -37,10 +38,12 @@ const CommunityList: React.FC<CommunityListProps> = ({
   );
 
   const filteredCommunities = useMemo(() => {
-    return communityId
-      ? communities.filter((community) => community.id === communityId)
+    return selectedCommunity?.communityId
+      ? communities.filter(
+          (community) => community.id === selectedCommunity.communityId,
+        )
       : communities;
-  }, [communityId, communities]);
+  }, [selectedCommunity?.communityId, communities]);
 
   const getEmptyRidestext = (communityTitle: string) =>
     `Sorry, No rides available for community: "${communityTitle}" for now`;
@@ -48,7 +51,7 @@ const CommunityList: React.FC<CommunityListProps> = ({
   return (
     <Box>
       <Box sx={{ minHeight: '2.5rem' }}>
-        {communityId && (
+        {selectedCommunity?.communityId && (
           <IconButton
             sx={{ display: 'flex' }}
             onClick={() => setSelectedCommunityId(undefined)}
@@ -82,7 +85,14 @@ const CommunityList: React.FC<CommunityListProps> = ({
             </Box>
           ))
         ) : (
-          <EmptyCommunityRides />
+          <EmptyCommunityRides
+            messageText={
+              selectedCommunity?.communityTitle &&
+              !isEmpty(selectedCommunity.communityTitle)
+                ? getEmptyRidestext(selectedCommunity.communityTitle)
+                : undefined
+            }
+          />
         )}
       </Box>
     </Box>
