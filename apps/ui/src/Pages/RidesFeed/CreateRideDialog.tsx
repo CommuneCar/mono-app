@@ -26,6 +26,10 @@ import { useUser } from '../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { TEXT } from '../../themes/default/consts';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
+import { useGetUsersByCommunityId } from '../../hooks/Users/useGetAllUsersOptions';
+import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
+import { UsersSelectorOption } from '../../types/users-selector-option';
+import { usePostRequestUserRide } from '../../hooks/Rides/usePostRequestUserRide';
 
 const options = [tlv, apple, camera];
 
@@ -53,6 +57,15 @@ const CreateRideDialog = ({
     null,
   );
   const [destination, setDestination] = useState<LocationResult | null>(null);
+  const [newRiders, setNewRiders] = useState<UsersSelectorOption[]>([]);
+
+  const {
+    data: usersOptions,
+    isLoading: isGetAllUsersLoading,
+    error: getAllUsersError,
+  } = useGetUsersByCommunityId(community?.id);
+
+  const { mutateAsync: joinRide } = usePostRequestUserRide();
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
@@ -95,7 +108,15 @@ const CreateRideDialog = ({
       pickups: [],
     };
 
-    await addRide(newRide);
+    const createdRide = await addRide(newRide);
+    const joinRidersPromises = newRiders.map((rider) =>
+      joinRide({
+        userId: rider.userId,
+        rideId: createdRide.id,
+        status: 'Confirmed',
+      }),
+    );
+    await Promise.all(joinRidersPromises);
     if (isSuccess) {
       handleClose();
     }
@@ -170,6 +191,15 @@ const CreateRideDialog = ({
           value={seats}
           onChange={(e) => setSeats(e.target.value)}
         />
+
+        {!getAllUsersError && !isGetAllUsersLoading && (
+          <UsersSelector
+            options={usersOptions ?? []}
+            fieldLabel="Add Members"
+            isOptionsLoading={isGetAllUsersLoading}
+            setSelectedUsersIds={setNewRiders}
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
