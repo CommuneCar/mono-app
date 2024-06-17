@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import { Add} from '@mui/icons-material';
-import { Box, IconButton, FormControlLabel, Switch } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Community, Ride } from '@communecar/types';
@@ -28,11 +28,7 @@ const RidesFeed = ({
   setSelectedRide,
 
 }: RidesFeedProps) => {
-  const [genderFilter, setGenderFilter] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const toggleGenderFilter = () => {
-    setGenderFilter((prev) => !prev);
-  };
   return (
     <Page>
       <Box display={'flex'} justifyContent={'space-between'} px={2}>
@@ -40,17 +36,6 @@ const RidesFeed = ({
         <IconButton onClick={() => setIsDialogOpen(true)}>
           <Add />
         </IconButton>
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, px: 2 }}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={genderFilter}
-              onChange={toggleGenderFilter}
-            />
-          }
-          label="Rides limited to my Gender"
-        />
       </Box>
       <PageLoader isLoading={isEmpty(rides) || isEmpty(communities)} />
       <RidesList
@@ -61,7 +46,6 @@ const RidesFeed = ({
         setSelectedRide={setSelectedRide}
         userCommunities={userCommunities}
         setIsCreateRideDialogOpen={setIsDialogOpen}
-        genderFilter={genderFilter}
       />
     </Page>
   );

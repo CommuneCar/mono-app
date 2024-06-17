@@ -2,7 +2,7 @@ import { flatten, groupBy } from 'lodash';
 import { useLocation } from 'react-router-dom';
 import { Menu as MenuIcon} from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup, Switch, FormControlLabel } from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup} from '@mui/material';
 
 import { Community, Ride } from '@communecar/types';
 
@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
   const [selectedRide, setSelectedRide] = useState<Ride>();
   const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
   const [createRideOpen, setIsCreateRideOpen] = useState(false);
-  const [genderFilter, setGenderFilter] = useState<boolean>(false);
+
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
   const { data: userCommunitiesData, isLoading: isLoadingUserCommunities } =
@@ -64,10 +64,6 @@ const HomePage: React.FC = () => {
       setSelectedTab(newTab);
     }
   };
-  const toggleGenderFilter = () => {
-    setGenderFilter((prev) => !prev);
-  };
-
   return (
     <Page>
       <Menu
@@ -101,19 +97,6 @@ const HomePage: React.FC = () => {
             <ToggleButton value={'communities'}>My Communities</ToggleButton>
             <ToggleButton value={'rides'}>My Rides</ToggleButton>
           </ToggleButtonGroup>
-          {selectedTab === 'rides' && (
-            <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '1rem' }}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={genderFilter}
-                    onChange={toggleGenderFilter}
-                  />
-                }
-                label="Rides limited to my Gender"
-              />
-            </Box>
-          )}
         </Box>
         <PageLoader
           isLoading={
@@ -139,8 +122,6 @@ const HomePage: React.FC = () => {
             isCreateRideDialog={createRideOpen}
             userCommunities={userCommunitiesData ?? []}
             setIsCreateRideDialogOpen={setIsCreateRideOpen}
-            genderFilter={genderFilter}
-
           />
         )}
       </BottomDrawer>
