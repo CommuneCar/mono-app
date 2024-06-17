@@ -1,14 +1,12 @@
 import dayjs from 'dayjs';
-import { Box } from '@mui/material';
+import { Box, FormControlLabel, Switch } from '@mui/material';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { Dispatch, SetStateAction } from 'react';
-
-import { Community, Ride } from '@communecar/types';
-
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Community, Ride} from '@communecar/types';
 import { RideCard } from '../RideCard';
 import { UserRidesStatus } from '../../../types/ride-user-type';
 import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
-
+import { useUser } from '../../../hooks/Users/useUser';
 dayjs.extend(relativeTime);
 
 interface RideListProps {
@@ -28,7 +26,14 @@ const RidesList: React.FC<RideListProps> = ({
   setSelectedRide,
   isCreateRideDialog,
   setIsCreateRideDialogOpen,
+
 }) => {
+  const { user } = useUser();
+  const [genderFilter, setGenderFilter] = useState<boolean>(false);
+  const toggleGenderFilter = () => {
+    setGenderFilter((prev) => !prev);
+  };
+  const filteredRides = rides.filter(ride => !genderFilter || (user && ride.pronouns && ride.driver.gender == user.gender) );
   return (
     <Box>
       {isCreateRideDialog && (
@@ -38,7 +43,18 @@ const RidesList: React.FC<RideListProps> = ({
           setOpen={setIsCreateRideDialogOpen}
         />
       )}
-      {rides.map((ride, index) => (
+      <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '1.5rem' }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={genderFilter}
+              onChange={toggleGenderFilter}
+            />
+          }
+          label="Rides limited to my Gender"
+        />
+      </Box>
+      {filteredRides.map((ride, index) => (
         <Box key={index} onClick={() => setSelectedRide(ride)}>
           <RideCard
             ride={ride}

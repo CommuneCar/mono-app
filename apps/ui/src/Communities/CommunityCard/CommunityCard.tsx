@@ -63,7 +63,9 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   };
 
   const handleJumpToRides = () => {
-    navigate('/home', { state: { communityId: community.id } });
+    navigate('/home', {
+      state: { communityId: community.id, communityTitle: community.title },
+    });
   };
 
   const optionActions: Record<string, () => void> = {
