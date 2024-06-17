@@ -7,7 +7,8 @@
     "clean": "rm -rf coverage dist",
     "lint": "eslint ./src/*.ts",
     "build": "tsc",
-    "start": "ts-node src/index.ts",
+    "start": "npm run start-prisma && ts-node src/index.ts",
+    "start-prisma": "npx prisma generate --schema=./prisma/schema.prisma",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
