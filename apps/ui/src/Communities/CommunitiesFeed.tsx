@@ -203,18 +203,17 @@ const CommunitiesFeed = () => {
       )}
       <PageLoader isLoading={isCommunitiesLoading} paddingTop={5} />
       <FeedList>
-        {!isEmpty(filteredCommunities) ? (
-          filteredCommunities.map((community, index) => (
-            <CommunityCard
-              key={index}
-              community={community}
-              userId={user?.id ?? DEFAULT_USER_ID}
-              handleClickOnEdit={handleClickOnEdit}
-              userStatusIsLoading={userStatusIsLoading}
-              userStatus={userCommunitiesStatus[community.id]}
-            />
-          ))
-        ) : (
+        {filteredCommunities.map((community, index) => (
+          <CommunityCard
+            key={index}
+            community={community}
+            userId={user?.id ?? DEFAULT_USER_ID}
+            handleClickOnEdit={handleClickOnEdit}
+            userStatusIsLoading={userStatusIsLoading}
+            userStatus={userCommunitiesStatus[community.id]}
+          />
+        ))}
+        {showMyCommunities && isEmpty(filteredCommunities) && (
           <Box sx={{ m: 2 }}>
             <Typography align={'left'} sx={{ fontSize: 14 }}>
               "Oops! It looks like you haven't joined any communities yet."
