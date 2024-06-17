@@ -1,4 +1,4 @@
-import { Ride, UserRideStatus, Rider, EditRideSchema } from '@communecar/types';
+import { Ride, UserRideStatus, EditRideSchema } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
 import { updateRideQuery, updateRidersQuery } from '../utils/userRideQueries';
 interface GraphQLRideResponse {
@@ -29,7 +29,7 @@ const postUpdateRide = async (ride: EditRideSchema): Promise<Ride> => {
 };
 
 const cancelRideByRider = async (
-  riderId: Rider['id'],
+  riderId: number,
   rideId: number,
   status: UserRideStatus,
 ): Promise<{

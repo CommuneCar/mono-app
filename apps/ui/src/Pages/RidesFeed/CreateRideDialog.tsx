@@ -26,7 +26,7 @@ import { useUser } from '../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { TEXT } from '../../themes/default/consts';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
-import { useGetAllUsersOptions } from '../../hooks/Users/useGetAllUsersOptions';
+import { useGetUsersByCommunityId } from '../../hooks/Users/useGetAllUsersOptions';
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { UsersSelectorOption } from '../../types/users-selector-option';
 import { usePostRequestUserRide } from '../../hooks/Rides/usePostRequestUserRide';
@@ -63,7 +63,7 @@ const CreateRideDialog = ({
     data: usersOptions,
     isLoading: isGetAllUsersLoading,
     error: getAllUsersError,
-  } = useGetAllUsersOptions();
+  } = useGetUsersByCommunityId(community?.id);
 
   const { mutateAsync: joinRide } = usePostRequestUserRide();
 

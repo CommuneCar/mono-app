@@ -132,9 +132,36 @@ const getAllUserCommunityQuery = () => {
   `;
 };
 
+const getUsersForCommunityId = (communityId: number) => {
+  return `{
+  allUserCommunities(condition: {communityId: ${communityId}}) {
+    nodes {
+      userByUserId {
+        id
+        gender
+        firstName
+        email
+        age
+        lastName
+        phoneNumber
+        profileImage
+        userCommunitiesByUserId {
+          nodes {
+            communityId
+            status
+          }
+        }
+      }
+      userId
+    }
+  }
+}`;
+};
+
 export {
   getUpdateCommunityQuery,
   getCreateCommunityQuery,
   getFetchAllCommunitiesQuery,
   getAllUserCommunityQuery,
+  getUsersForCommunityId,
 };
