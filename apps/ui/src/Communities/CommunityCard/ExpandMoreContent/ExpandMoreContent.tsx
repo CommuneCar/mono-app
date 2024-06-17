@@ -37,8 +37,8 @@ const ExpandMoreContent: React.FC<ExpandMoreContentProps> = ({
               flexDirection: 'row',
             }}
           >
-            {communityOwners.map((owner) => (
-              <UserAvatarChips user={owner} />
+            {communityOwners.map((owner, index) => (
+              <UserAvatarChips key={`${owner.id}_${index}`} user={owner} />
             ))}
           </Box>
         </ExpandMoreFieldBox>

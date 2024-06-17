@@ -4,7 +4,7 @@ import {
   getAllUserCommunityQuery,
   getFetchAllCommunitiesQuery,
 } from '../utils/communitiesQueries';
-import { AllCommunitiesData } from '../types/communitiesResponse';
+import { AllCommunitiesData, UserNode } from '../types/communitiesResponse';
 import { locationExtraction } from '../location/location';
 
 const fetchAllCommunities = async (): Promise<Community[]> => {
@@ -44,7 +44,7 @@ const fetchAllCommunities = async (): Promise<Community[]> => {
       if (status === UserStatus.MANAGER) {
         const manager: User = {
           ...userByUserId,
-          avatarUrl: userByUserId.profileImage,
+          avatarUrl: userByUserId.profileImage ?? undefined,
           phone: userByUserId.phoneNumber,
           gender: userByUserId.gender as Gender,
         };
@@ -96,18 +96,6 @@ interface AllUserCommunityData {
       userByUserId: UserNode;
     }[];
   };
-}
-
-interface UserNode {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  profileImage: string;
-  password: string;
-  gender: string;
-  age: number;
 }
 
 type MembersCommunityData = {

@@ -108,6 +108,7 @@ const CommunitiesFeed = () => {
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
+    refetchCommunities();
     setUserCommunitiesStatus((prev) => ({
       ...prev,
       [newCommunity.id]: UserStatus.MANAGER,
@@ -116,6 +117,7 @@ const CommunitiesFeed = () => {
   };
 
   const handleUpdateCommunity = (communityUpdated: Community) => {
+    refetchCommunities();
     setAllCommunitiesDisplay((prev) => {
       const communitiesObject = groupBy(prev, 'id');
       const communitiesDictionary: Record<string, Community> = mapValues(
@@ -189,7 +191,6 @@ const CommunitiesFeed = () => {
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
-          onCreateConnections={refetchCommunities}
         />
       )}
       {isEditOpen && communityToUpdate && (
