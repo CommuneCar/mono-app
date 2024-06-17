@@ -52,7 +52,7 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
       <DialogTitle>
         <span>Ride Details</span>
         <Tooltip title="View on map">
-          <IconButton onClick={navigateToRideDetails}>
+          <IconButton onClick={navigateToRideDetails} style={{border: '1px solid #cecece', marginLeft: '10px', padding: '5px'}}>
             <NearMe color="primary" />
           </IconButton>
         </Tooltip>
