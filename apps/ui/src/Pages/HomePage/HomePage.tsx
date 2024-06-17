@@ -1,8 +1,8 @@
 import { flatten, groupBy } from 'lodash';
 import { useLocation } from 'react-router-dom';
-import { Menu as MenuIcon} from '@mui/icons-material';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup} from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { Community, Ride } from '@communecar/types';
 
@@ -64,6 +64,7 @@ const HomePage: React.FC = () => {
       setSelectedTab(newTab);
     }
   };
+
   return (
     <Page>
       <Menu

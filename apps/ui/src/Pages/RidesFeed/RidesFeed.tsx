@@ -27,6 +27,7 @@ const RidesFeed = ({
   setSelectedRide,
 }: RidesFeedProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <Page>
       <Box display={'flex'} justifyContent={'space-between'}>
