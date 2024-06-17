@@ -132,10 +132,7 @@ const HomePage: React.FC = () => {
         )}
         {selectedTab === 'rides' && (
           <>
-            <Box display={'flex'} justifyContent={'space-between'}>
-              <IconButton>
-                <MoreVert />
-              </IconButton>
+            <Box display={'flex'} justifyContent={'flex-end'}>
               <IconButton onClick={() => setIsCreateRideOpen(true)}>
                 <Add />
               </IconButton>
