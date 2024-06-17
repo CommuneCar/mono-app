@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import dayjs from 'dayjs';
-
+import { validateField } from '../../utils/ride/validation';
 import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
@@ -26,6 +26,8 @@ import { useUser } from '../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { TEXT } from '../../themes/default/consts';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
+
+
 
 const options = [tlv, apple, camera];
 
@@ -53,6 +55,10 @@ const CreateRideDialog = ({
     null,
   );
   const [destination, setDestination] = useState<LocationResult | null>(null);
+  const [validationErrors, setValidationErrors] = useState({
+    gasMoney: null,
+    seats: null,
+  });
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
@@ -65,7 +71,9 @@ const CreateRideDialog = ({
     setOpen(false);
   };
 
-  const handleGasSeatsChange = (fieldName: string, value: string) => {
+  const handleChange = (fieldName: string, value: string) => {
+    const error = validateField(fieldName, value);
+    setValidationErrors((prev) => ({ ...prev, [fieldName]: error ? error : null }));
     switch (fieldName) {
       case 'gasMoney':
         setGasMoney(value);
@@ -77,11 +85,7 @@ const CreateRideDialog = ({
         break;
     }
   };
-  const isGasMoneyNegative = Number(gasMoney) < 0;
-  const isSeatsLessThanOne = Number(seats) < 1;
-  const isSeatsNotInteger = !Number.isInteger(Number(seats));
-
-
+  const hasValidationErrors = Object.values(validationErrors).some((error) => error !== null);
   const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
       alert('All fields are required.');
@@ -168,9 +172,9 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={gasMoney}
-          onChange={(e) => handleGasSeatsChange('gasMoney', e.target.value)}
-          error={isGasMoneyNegative}
-          helperText={isGasMoneyNegative ? 'Gas Money cannot be negative' : ''}
+          onChange={(e) => handleChange('gasMoney', e.target.value)}
+          error={ validationErrors.gasMoney ?? false }
+          helperText={ validationErrors.gasMoney ? 'Gas Money cannot be negative' : ''}
         />
         <FormControlLabel
           control={
@@ -188,17 +192,16 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={seats}
-          onChange={(e) => handleGasSeatsChange('seats', e.target.value)}
-          error={isSeatsLessThanOne || isSeatsNotInteger}
-          helperText={isSeatsLessThanOne ? 'Seats must be 1 or more' : isSeatsNotInteger
-            ? 'Seats must be complete' : '' }
+          onChange={(e) => handleChange('seats', e.target.value)}
+          error={validationErrors.seats ?? false}
+          helperText={ validationErrors.seats ? 'Seats must be a number and 1 or more' : '' }
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
           {TEXT.CANCEL}
         </Button>
-        <SubmitButton type="submit" disabled={isLoading || isGasMoneyNegative || isSeatsLessThanOne || isSeatsNotInteger} onClick={handleSubmit}>
+        <SubmitButton type="submit" disabled={isLoading || hasValidationErrors} onClick={handleSubmit}>
           {isLoading ? (
             <CircularProgress size={24} color="info" />
           ) : (
