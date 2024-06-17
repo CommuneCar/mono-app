@@ -63,7 +63,9 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   };
 
   const handleJumpToRides = () => {
-    navigate('/home', { state: { communityId: community.id } });
+    navigate('/home', {
+      state: { communityId: community.id, communityTitle: community.title },
+    });
   };
 
   const optionActions: Record<string, () => void> = {
@@ -78,7 +80,13 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   };
 
   return (
-    <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
+    <Box
+      sx={{
+        marginBottom: '5%',
+        width: '-webkit-fill-available',
+        maxWidth: 450,
+      }}
+    >
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardHeader
           title={title}
@@ -129,7 +137,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
           <CardContent>
             <ExpandMoreContent
               communityLocation={community.location}
-              communityOwners={[]}
+              communityOwners={community.ownersUsers ?? []}
             />
           </CardContent>
         </Collapse>

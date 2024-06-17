@@ -62,12 +62,11 @@ const locationExtraction = async (node: {
     })) ??
     undefined;
 
-  const coordinates: Location | undefined =
-    {
-      lat: node.lat,
-      lon: node.long,
-      name,
-    } ?? undefined;
+  const coordinates: Location | undefined = {
+    lat: node.lat,
+    lon: node.long,
+    name,
+  };
   return coordinates;
 };
 

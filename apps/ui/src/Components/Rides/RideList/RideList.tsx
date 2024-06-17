@@ -1,11 +1,8 @@
 import dayjs from 'dayjs';
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import { isMobile } from 'react-device-detect';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { Dispatch, SetStateAction, useState } from 'react';
-
 import { Community, Ride} from '@communecar/types';
-
 import { RideCard } from '../RideCard';
 import { UserRidesStatus } from '../../../types/ride-user-type';
 import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
@@ -38,7 +35,7 @@ const RidesList: React.FC<RideListProps> = ({
   };
   const filteredRides = rides.filter(ride => !genderFilter || (user && ride.pronouns && ride.driver.gender == user.gender) );
   return (
-    <Box sx={!isMobile ? { overflowY: 'auto', maxHeight: '78%' } : {}}>
+    <Box>
       {isCreateRideDialog && (
         <CreateRideDialog
           communities={userCommunities}
@@ -62,6 +59,7 @@ const RidesList: React.FC<RideListProps> = ({
           <RideCard
             ride={ride}
             rideStatus={userRideStatus[ride.id.toString()]}
+            communities={userCommunities}
           />
         </Box>
       ))}

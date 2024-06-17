@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { FilterAltOffRounded } from '@mui/icons-material';
 import React, { Dispatch, SetStateAction, useMemo } from 'react';
-import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 
 import { Ride } from '@communecar/types';
 
@@ -12,13 +12,15 @@ import { RideCard } from '../Rides/RideCard';
 import { useUser } from '../../hooks/Users/useUser';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
+import { EmptyCommunityRides } from './EmptyCommunityRides';
+import { SelectedCommunity } from '../../Pages/HomePage/HomePage';
 
 dayjs.extend(relativeTime);
 
 interface CommunityListProps {
   communities: CommunityWithRides[];
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
-  communityId?: number;
+  selectedCommunity?: SelectedCommunity;
   setSelectedCommunityId: React.Dispatch<any>;
   joinRideDialogOpened: boolean;
   setJoinRideDialogOpened: (isOpen: boolean) => void;
@@ -27,7 +29,7 @@ interface CommunityListProps {
 const CommunityList: React.FC<CommunityListProps> = ({
   communities,
   setSelectedRide,
-  communityId,
+  selectedCommunity,
   setSelectedCommunityId,
 }) => {
   const { user } = useUser();
@@ -36,15 +38,20 @@ const CommunityList: React.FC<CommunityListProps> = ({
   );
 
   const filteredCommunities = useMemo(() => {
-    return communityId
-      ? communities.filter((community) => community.id === communityId)
+    return selectedCommunity?.communityId
+      ? communities.filter(
+          (community) => community.id === selectedCommunity.communityId,
+        )
       : communities;
-  }, [communityId, communities]);
+  }, [selectedCommunity?.communityId, communities]);
+
+  const getEmptyRidestext = (communityTitle: string) =>
+    `Sorry, No rides available for community: "${communityTitle}" for now`;
 
   return (
     <Box>
       <Box sx={{ minHeight: '2.5rem' }}>
-        {communityId && (
+        {selectedCommunity?.communityId && (
           <IconButton
             sx={{ display: 'flex' }}
             onClick={() => setSelectedCommunityId(undefined)}
@@ -54,32 +61,39 @@ const CommunityList: React.FC<CommunityListProps> = ({
         )}
       </Box>
       <Box>
-        {filteredCommunities.map((community, index) => (
-          <Box key={index}>
-            <Typography variant="h5" align="left" px={1}>
-              {community.title}
-            </Typography>
-            {isEmpty(community.rides) ? (
-              <Card variant={'outlined'} sx={{ m: 2, borderRadius: 5 }}>
-                <CardContent>
-                  <Typography align={'left'} sx={{ fontSize: 14 }}>
-                    Sorry, No rides available for Community: "{community.title}"
-                    for now
-                  </Typography>
-                </CardContent>
-              </Card>
-            ) : (
-              community.rides.map((ride, index) => (
-                <Box key={index} onClick={() => setSelectedRide(ride)}>
-                  <RideCard
-                    ride={ride}
-                    rideStatus={rideStatuses?.[ride.id.toString()]}
-                  />
-                </Box>
-              ))
-            )}
-          </Box>
-        ))}
+        {!isEmpty(filteredCommunities) ? (
+          filteredCommunities.map((community, index) => (
+            <Box key={index}>
+              <Typography variant="h5" align="left" px={1}>
+                {community.title}
+              </Typography>
+              {isEmpty(community.rides) ? (
+                <EmptyCommunityRides
+                  messageText={getEmptyRidestext(community.title)}
+                />
+              ) : (
+                community.rides.map((ride, index) => (
+                  <Box key={index} onClick={() => setSelectedRide(ride)}>
+                    <RideCard
+                      ride={ride}
+                      rideStatus={rideStatuses?.[ride.id.toString()]}
+                      communities={communities}
+                    />
+                  </Box>
+                ))
+              )}
+            </Box>
+          ))
+        ) : (
+          <EmptyCommunityRides
+            messageText={
+              selectedCommunity?.communityTitle &&
+              !isEmpty(selectedCommunity.communityTitle)
+                ? getEmptyRidestext(selectedCommunity.communityTitle)
+                : undefined
+            }
+          />
+        )}
       </Box>
     </Box>
   );

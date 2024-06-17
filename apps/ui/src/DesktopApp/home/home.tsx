@@ -110,13 +110,14 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Page sx={{ display: 'flex' }}>
+    <Page sx={{ display: 'flex', height: '100dvh', overflow: 'hidden' }}>
       <Box
         sx={{
           width: '20vw',
           backgroundColor: 'white',
           borderTopRightRadius: '18px',
           borderBottomRightRadius: '18px',
+          minWidth: '10rem',
         }}
       >
         <img src={logo} style={{ height: '30%' }} />

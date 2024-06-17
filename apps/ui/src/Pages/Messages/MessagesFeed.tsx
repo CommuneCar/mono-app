@@ -1,9 +1,9 @@
-import { isEmpty } from 'lodash';
+import { Dictionary, groupBy, isEmpty } from 'lodash';
 import { Box, List, Typography } from '@mui/material';
 
 import { Message } from '@communecar/types';
 
-import { Page } from '../HomePage/styles';
+import { Page, PageHeaderBar } from '../HomePage/styles';
 import { MessageCard } from './MessageCard';
 import { useUser } from '../../hooks/Users/useUser';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
@@ -24,9 +24,25 @@ const MessagesFeed = () => {
   if (isError)
     return <Typography color="error">Error: {error.message}</Typography>;
 
+  const messagesByType: Dictionary<Message[]> = groupBy(messages, (message) => {
+    if (message.creatorUser.id === user?.id) {
+      return 'My Requests';
+    }
+
+    if (message.type.includes('Community')) {
+      return 'Community Requests';
+    }
+
+    if (message.type.includes('Ride')) {
+      return 'Ride Requests';
+    }
+  });
+
   return (
     <Page>
-      <PageHeader title="Inbox" />
+      <PageHeaderBar>
+        <PageHeader title="Inbox" />
+      </PageHeaderBar>
       <PageLoader isLoading={loading} paddingTop={4} />
       <Box sx={{ width: '100%' }}>
         {(isEmpty(messages) || !messages) && !loading ? (
@@ -34,15 +50,39 @@ const MessagesFeed = () => {
             <Typography>You have no messages at the moment :(</Typography>
           </Box>
         ) : (
-          <List>
-            {messages?.map((message: Message) => (
-              <MessageCard
-                message={message}
-                key={message.id}
-                onActionComplete={() => refetch()}
-              />
-            ))}
-          </List>
+          <Box sx={{ maxHeight: '80%' }}>
+            {Object.entries(messagesByType).map(([key, messages]) => {
+              return (
+                <Box key={messages[0].id}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      borderBottom: 'solid 1px #e0e0e0',
+                      position: 'sticky',
+                      top: '4.5%',
+                      backgroundColor: 'background.paper',
+                      zIndex: 19,
+                      py: '0.5rem',
+                      px: '16px',
+                      width: '100%',
+                    }}
+                  >
+                    <Typography>{key}</Typography>
+                  </Box>
+                  <List sx={{ maxHeight: '350px' }}>
+                    {messages?.map((message: Message) => (
+                      <MessageCard
+                        key={message.id}
+                        message={message}
+                        onActionComplete={() => refetch()}
+                        isMyRequest={key === 'My Requests'}
+                      />
+                    ))}
+                  </List>
+                </Box>
+              );
+            })}
+          </Box>
         )}
       </Box>
     </Page>

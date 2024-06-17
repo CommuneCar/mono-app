@@ -1,35 +1,108 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  #root {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    font-family: sans-serif;
-    color: #333;
-  }
-  
-  /* height of the container */
-  .leaflet-container {
-    height: inherit;
-    width: inherit;
-    z-index: 0;
-  }
-  
-  .cluster-icon {
-    background-color: #333;
-    height: 2em;
-    width: 2em;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    box-shadow: 0 0 0px 5px #fff;
-  }
-  
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: sans-serif;
+  color: #333;
+}
+
+/* Overriding a leaflet-geosearch's default styles (which are defined here https://github.com/smeijer/leaflet-geosearch/blob/develop/assets/css/leaflet.css) */
+
+/* height of the container */
+.leaflet-container {
+  height: inherit;
+  width: inherit;
+  z-index: 0;
+}
+
+.cluster-icon {
+  background-color: #333;
+  height: 2em;
+  width: 2em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  box-shadow: 0 0 0px 5px #fff;
+}
+
+/* Global reset for geosearch to avoid unwanted inherited styles */
+.leaflet-control-geosearch *,
+.leaflet-control-geosearch *:before,
+.leaflet-control-geosearch *:after {
+  background: none;
+  color: #333; /* Adjust text color if needed */
+  box-sizing: border-box;
+}
+
+/* Updated leaflet button styling */
+.leaflet-control-geosearch .leaflet-bar-part {
+  background-color: #fff; /* Change button background */
+  border: 1px solid #ccc; /* Add border to button */
+  border-radius: 4px;
+}
+
+/* Updated magnifying glass icon in black for better visibility */
+.leaflet-control-geosearch a.leaflet-bar-part:before {
+  border-top: 2px solid black;
+}
+
+.leaflet-control-geosearch a.leaflet-bar-part:after {
+  border: 2px solid black;
+}
+
+/* Enhanced search form styling */
+.leaflet-control-geosearch form {
+  background-color: #f9f9f9; /* Lighter background for the form */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Softer shadow */
+}
+
+/* Search results box styling */
+.leaflet-control-geosearch .results {
+  background-color: #fff; /* Ensure background is white */
+  color: #333; /* Dark grey color for text */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Subtle shadow for results */
+}
+
+.leaflet-control-geosearch .results > * {
+  border: 1px solid #eee; /* Light border for each result */
+}
+
+.leaflet-control-geosearch .results > .active,
+.leaflet-control-geosearch .results > :hover {
+  background-color: #e8e8e8; /* Highlight color for active/hover states */
+}
+
+/* Customize pending and error icons for better visibility */
+.leaflet-control-geosearch.pending a.leaflet-bar-part:after,
+.leaflet-control-geosearch.error a.leaflet-bar-part:after {
+  background-color: #fff; /* Background for icons */
+  border-color: black; /* Icon border color */
+}
+
+.leaflet-control-geosearch.error a.leaflet-bar-part:after {
+  color: red; /* Make error icon red for visibility */
+}
+
+/* Button reset style update */
+.leaflet-control-geosearch button.reset {
+  background-color: #f5f5f5; /* Light grey background for reset button */
+  color: #333; /* Dark grey text */
+}
+
+.leaflet-control-geosearch button.reset:hover {
+  background: #e1e1e1; /* Slightly darker on hover */
+}
+
+.leaflet-control-geosearch .results.active  {
+  padding: 0; /* Drops the random top/bottom padding that comes "out-of-the-box" */
+}

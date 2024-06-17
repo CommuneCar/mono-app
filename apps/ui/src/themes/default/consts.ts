@@ -67,7 +67,9 @@ export const TEXT = {
   LOGIN: 'Login',
   CONTINUE: 'Continue',
   CREATE: 'Create',
+  UPDATE: 'Update',
   CANCEL: 'Cancel',
+  CLOSE: 'Close',
   SAVE: 'Save',
   CREATE_COMMUNITY_TITLE: 'Create Community',
   CREATE_COMMUNITY_DESCRIPTION:
@@ -83,6 +85,7 @@ export const TEXT = {
     FETCH_ALL_RIDES_FAILED: 'Error fetching all rides',
     FETCH_ALL_COMMUNITIES_FAILED: 'Error fetching all communities',
     FETCH_ALL_USER_COMMUNITIES_FAILED: 'Error fetching all user communities',
+    FETCH_USER_TRIP_FAILED: 'Error fetching trip route',
   },
 } as const;
 

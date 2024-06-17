@@ -34,6 +34,7 @@ const client = axios.create({
  *   get:
  *     summary: Resolve location from a query string
  *     description: Returns geocoding results for the input location string.
+ *     tags: ["External"]
  *     parameters:
  *       - in: query
  *         name: location
@@ -81,6 +82,7 @@ const geocodeLocation = async (req: Request, res: Response) => {
  *   get:
  *     summary: Resolve location name from latitude and longitude
  *     description: Returns reverse geocoding result for the input coordinates.
+ *     tags: ["External"]
  *     parameters:
  *       - in: query
  *         name: lat

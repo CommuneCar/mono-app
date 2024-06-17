@@ -4,9 +4,9 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 
-import './Map.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/assets/css/leaflet.css';
+import './Map.css';
 
 import placeholderIcon from '../../assets/components/map/car.svg';
 

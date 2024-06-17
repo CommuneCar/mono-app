@@ -18,12 +18,14 @@ import { formatDateRelative } from '../../utils/format/formatDateRelative';
 import { useRespondToMessage } from '../../hooks/Messages/useRespondToMessage';
 
 export interface MessageCardProps {
+  isMyRequest: boolean;
   message: Message;
   onActionComplete: (messageId: string, success: boolean) => void;
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({
   message,
+  isMyRequest,
   onActionComplete,
 }) => {
   const { mutateAsync: submitRespondToMessage, isLoading } =
@@ -37,7 +39,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
   const messageText = (
     <>
       <BoldText>{`${message.creatorUser.firstName} `}</BoldText>
-      {actionTextDisplay(message)}
+      {actionTextDisplay(message, isMyRequest)}
     </>
   );
 
@@ -63,7 +65,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
           primaryTypographyProps={{ component: 'div' }}
         />
       </Box>
-      {isRequestType && (
+      {isRequestType && !isMyRequest && (
         <Box
           sx={{
             display: 'flex',

@@ -18,7 +18,7 @@ import { CreateCommunity } from './CommunityForms/CreateCommunity';
 import { UpdateCommunity } from './CommunityForms/UpdateCommunity';
 import { useGetAllCommunities } from '../hooks/Communities/useGetAllCommunities';
 import { useUserCommunitiesStatus } from '../hooks/Communities/useUserCommunitiesStatus';
-import { Page } from '../Pages/HomePage/styles';
+import { Page, PageHeaderBar } from '../Pages/HomePage/styles';
 
 const CommunitiesFeed = () => {
   const { user } = useUser();
@@ -155,38 +155,41 @@ const CommunitiesFeed = () => {
 
   return (
     <Page>
-      <PageHeader title={'Communities'} />
-      <Box
-        sx={{
-          px: '5%',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'cetner',
-          flexDirection: 'column',
-        }}
-      >
-        <SearchBar
-          options={options}
-          handleChangeSearchValue={handleChangeSearchValue}
-        />
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <MyEntitiesFilterButton
-            lable={'My Communities'}
-            setShowMyEntities={setShowMyCommunities}
-            showMyEntities={showMyCommunities}
-            filter={handleMyCommunitiesFilter}
+      <PageHeaderBar>
+        <PageHeader title={'Communities'} />
+        <Box
+          sx={{
+            px: '5%',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'cetner',
+            flexDirection: 'column',
+          }}
+        >
+          <SearchBar
+            options={options}
+            handleChangeSearchValue={handleChangeSearchValue}
           />
-          <IconButton onClick={handleAddClick}>
-            <Add />
-          </IconButton>
+          <Box display={'flex'} justifyContent={'space-between'}>
+            <MyEntitiesFilterButton
+              lable={'My Communities'}
+              setShowMyEntities={setShowMyCommunities}
+              showMyEntities={showMyCommunities}
+              filter={handleMyCommunitiesFilter}
+            />
+            <IconButton onClick={handleAddClick}>
+              <Add />
+            </IconButton>
+          </Box>
         </Box>
-      </Box>
+      </PageHeaderBar>
       {isCreateOpen && (
         <CreateCommunity
-          user={user?.id ?? DEFAULT_USER_ID}
+          userId={user?.id ?? DEFAULT_USER_ID}
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
+          onCreateConnections={refetchCommunities}
         />
       )}
       {isEditOpen && communityToUpdate && (

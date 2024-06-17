@@ -1,4 +1,5 @@
-import { UserRideStatus } from '@communecar/types';
+import { Rider, UserRideStatus } from '@communecar/types';
+import { EditRideSchema } from '@communetypes/EditRideSchema';
 
 const getUserRideQueries = (userId: number) => {
   return `
@@ -45,4 +46,52 @@ const getRidersForRide = (rideId: number) => {
 }`;
 };
 
-export { getUserRideQueries, getRidersForRide };
+const updateRideQuery = (ride: EditRideSchema) => {
+  return `
+  mutation {
+  updateRideById(
+    input: {ridePatch: {gasMoney: ${ride.gasMoney}, communityId: ${ride.communityId}, 
+      seats: ${ride.seats}, startTime: "${ride.departureTime.toISOString()}", 
+      fromLat: ${ride.startLocation[0]}, fromLong: ${ride.startLocation[1]}, 
+      toLat: ${ride.destination[0]},
+        toLong: ${ride.destination[1]}, modificationTs: "${new Date().toISOString()}",
+        fromName: "${ride.startLocationName}",
+        toName: "${ride.destinationName}", pronouns: ${ride.pronouns}}, id: ${ride.id}}
+  ) {
+    ride {
+      id
+      ownerId
+        fromLat
+        fromLong
+        toLat
+        toLong
+        startTime
+        seats
+        communityId
+        fromName
+        toName
+    }
+  }
+}
+  `;
+};
+
+const updateRidersQuery = (rider: Rider, rideId: number, status: string) => {
+  return `
+  mutation {
+  updateUserRideByUserIdAndRideId(input: {userId: ${rider.id}, rideId: ${rideId}, userRidePatch: {status: "${status}"}}) {
+    userRide {
+      rideId
+      status
+    }
+  }
+}
+  `;
+};
+
+export {
+  getUserRideQueries,
+  getRidersForRide,
+  updateRideQuery,
+  updateRidersQuery,
+};

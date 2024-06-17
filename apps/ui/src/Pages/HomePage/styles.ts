@@ -1,14 +1,24 @@
 import { isMobile } from 'react-device-detect';
 import { Box, Card, IconButton, styled } from '@mui/material';
+import { COLORS } from '../../themes/default/consts';
 
 const Page = styled(Box)(() => ({
   top: 0,
   left: 0,
   margin: 0,
   float: 'left',
-  height: '100vh',
   position: 'absolute',
-  width: isMobile ? '100vw' : '100%',
+  height: isMobile ? '100dvh' : '100%',
+  width: isMobile ? '100dvw' : '100%',
+  overflow: 'auto',
+}));
+
+const PageHeaderBar = styled(Box)(() => ({
+  position: 'sticky',
+  top: 0,
+  zIndex: 20,
+  backgroundColor: COLORS.WHITE,
+  minHeight: '5%',
 }));
 
 const MainMenuButton = styled(IconButton)(() => ({
@@ -22,12 +32,15 @@ const MainMenuButton = styled(IconButton)(() => ({
 
 const PageCard = styled(Card)(() => ({
   top: 100,
-  left: 280,
+  left: 'min(42vh, 330px)',
   zIndex: 20,
-  height: '85%',
+  height: '80%',
   width: '25%',
   borderRadius: '8px',
   position: 'absolute',
+  minWidth: 300,
+  bottom: 0,
+  overflow: 'auto',
 }));
 
-export { Page, MainMenuButton, PageCard };
+export { Page, MainMenuButton, PageCard, PageHeaderBar };

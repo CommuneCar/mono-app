@@ -1,11 +1,11 @@
 import { isEmpty } from 'lodash';
 import { Add } from '@mui/icons-material';
-import { Box, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Community, Ride } from '@communecar/types';
 
-import { Page } from '../HomePage/styles';
+import { Page, PageHeaderBar } from '../HomePage/styles';
 import { UserRidesStatus } from '../../types/ride-user-type';
 import { PageHeader } from '../../Components/PageHeader/PageHeader';
 import { PageLoader } from '../../Components/PageLoader/PageLoader';
@@ -30,12 +30,12 @@ const RidesFeed = ({
 
   return (
     <Page>
-      <Box display={'flex'} justifyContent={'space-between'}>
+      <PageHeaderBar display={'flex'} justifyContent={'space-between'}>
         <PageHeader title={'rides'} />
         <IconButton onClick={() => setIsDialogOpen(true)}>
           <Add />
         </IconButton>
-      </Box>
+      </PageHeaderBar>
       <PageLoader isLoading={isEmpty(rides) || isEmpty(communities)} />
       <RidesList
         rides={rides}
