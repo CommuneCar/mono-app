@@ -42,7 +42,6 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
     return stops.join('\n');
   };
 
-
   const navigateToRideDetails = () => {
     navigate(`/rides/${ride.id}`);
   };
