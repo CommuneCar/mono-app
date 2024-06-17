@@ -39,4 +39,32 @@ mutation {
     `;
 };
 
-export { getDeleteUserCommunityStatusQuery, getCreateUserCommunityStatusQuery };
+const getUpdateUserCommunityStatusQuery = (
+  userId: number,
+  communityId: number,
+  status: UserStatus,
+) => {
+  return `
+mutation {
+  updateUserCommunityByUserIdAndCommunityId(
+    input: {
+      userCommunityPatch: { status: "${status}" }
+      userId: ${userId}
+      communityId: ${communityId}
+    }
+  ) {
+    userCommunity {
+      communityId
+      status
+      userId
+    }
+  }
+}
+  `;
+};
+
+export {
+  getDeleteUserCommunityStatusQuery,
+  getCreateUserCommunityStatusQuery,
+  getUpdateUserCommunityStatusQuery,
+};

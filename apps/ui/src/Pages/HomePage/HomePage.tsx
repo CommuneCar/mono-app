@@ -1,8 +1,13 @@
 import { flatten, groupBy } from 'lodash';
 import { useLocation } from 'react-router-dom';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Add, Menu as MenuIcon, MoreVert } from '@mui/icons-material';
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
 
 import { Community, Ride } from '@communecar/types';
 
@@ -10,15 +15,20 @@ import { MainMenuButton, Page } from './styles';
 import { Menu } from '../../Components/Menu/Menu';
 import { useUser } from '../../hooks/Users/useUser';
 import { Map, MarkerInfo } from '../../Components/Map/Map';
-import { RidesList } from '../../Components/Rides/RideList';
+import { RidesList } from '../../Components/Rides/RideList/RideList';
 import { DEFAULT_USER_ID } from '../../apis/utils/defaultConst';
 import { useGetAllRides } from '../../hooks/Rides/useGetAllRides';
+import { PageLoader } from '../../Components/PageLoader/PageLoader';
 import { BottomDrawer } from '../../Components/BottomDrawer/BottomDrawer';
 import { CommunityList } from '../../Components/CommunityList/CommunityList';
 import { useGetUserRidesStatus } from '../../hooks/Rides/useGetUserRidesStatus';
 import { useGetAllCommunities } from '../../hooks/Communities/useGetAllCommunities';
-import { PageLoader } from '../../Components/PageLoader/PageLoader';
 import { useGetAllUserCommunities } from '../../hooks/Communities/useGetAllUserCommunities';
+
+export interface SelectedCommunity {
+  communityId?: number;
+  communityTitle?: string;
+}
 
 const HomePage: React.FC = () => {
   const { user } = useUser();
@@ -28,6 +38,7 @@ const HomePage: React.FC = () => {
   );
   const [selectedRide, setSelectedRide] = useState<Ride>();
   const [joinRideDialogOpened, setJoinRideDialogOpened] = useState(false);
+  const [createRideOpen, setIsCreateRideOpen] = useState(false);
 
   const { data: communitiesData, isLoading: isLoadingCommunities } =
     useGetAllCommunities();
@@ -38,8 +49,14 @@ const HomePage: React.FC = () => {
 
   const location = useLocation();
   const communityId = location.state?.communityId;
+  const communityTitle = location.state?.communityTitle;
 
-  const [selectedCommunityId, setSelectedCommunityId] = useState(communityId);
+  const [selectedCommunity, setSelectedCommunity] = useState<SelectedCommunity>(
+    {
+      communityId,
+      communityTitle,
+    },
+  );
 
   const communities = useMemo(() => {
     if (isLoadingCommunities || isLoadingRides) {
@@ -47,13 +64,13 @@ const HomePage: React.FC = () => {
     }
 
     const groupedRides = groupBy(ridesData ?? [], 'communityName');
-    return communitiesData
-      ? communitiesData.map((community: Community) => ({
+    return userCommunitiesData
+      ? userCommunitiesData.map((community: Community) => ({
           ...community,
           rides: groupedRides[community.title] ?? [],
         }))
       : [];
-  }, [communitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
+  }, [userCommunitiesData, ridesData, isLoadingCommunities, isLoadingRides]);
 
   const ChangeSelectedTab = (
     _: MouseEvent<HTMLElement>,
@@ -63,8 +80,6 @@ const HomePage: React.FC = () => {
       setSelectedTab(newTab);
     }
   };
-
-  console.log(userCommunitiesData);
 
   return (
     <Page>
@@ -109,20 +124,32 @@ const HomePage: React.FC = () => {
           <CommunityList
             communities={communities}
             setSelectedRide={setSelectedRide}
-            communityId={selectedCommunityId}
+            selectedCommunity={selectedCommunity}
             joinRideDialogOpened={joinRideDialogOpened}
-            setSelectedCommunityId={setSelectedCommunityId}
+            setSelectedCommunityId={setSelectedCommunity}
             setJoinRideDialogOpened={setJoinRideDialogOpened}
           />
         )}
         {selectedTab === 'rides' && (
-          <RidesList
-            rides={ridesData ?? []}
-            userRideStatus={statuses ?? {}}
-            setSelectedRide={setSelectedRide}
-            communities={communitiesData ?? []}
-            userCommunities={userCommunitiesData ?? []}
-          />
+          <>
+            <Box display={'flex'} justifyContent={'space-between'}>
+              <IconButton>
+                <MoreVert />
+              </IconButton>
+              <IconButton onClick={() => setIsCreateRideOpen(true)}>
+                <Add />
+              </IconButton>
+            </Box>
+            <RidesList
+              rides={ridesData ?? []}
+              userRideStatus={statuses ?? {}}
+              setSelectedRide={setSelectedRide}
+              communities={communitiesData ?? []}
+              isCreateRideDialog={createRideOpen}
+              userCommunities={userCommunitiesData ?? []}
+              setIsCreateRideDialogOpen={setIsCreateRideOpen}
+            />
+          </>
         )}
       </BottomDrawer>
     </Page>

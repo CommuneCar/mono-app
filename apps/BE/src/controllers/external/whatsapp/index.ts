@@ -6,6 +6,7 @@ import { Request, Response } from "express";
  *   get:
  *     summary: Generate WhatsApp chat URL
  *     description: Returns a URL to start a new WhatsApp chat with the given phone number.
+ *     tags: ["External"]
  *     parameters:
  *       - in: path
  *         name: phoneNumber
@@ -32,7 +33,7 @@ export const getWhatsAppChatUrl = (req: Request, res: Response) => {
 
     // Basic validation for phone number - this can be more complex depending on your needs
     if (!phoneNumber || !/^\d+$/.test(phoneNumber)) {
-        return res.status(400).json({ error: "Invalid phone number format" });
+        return res.status(400).json({ error: `Invalid phone number format ${phoneNumber}` });
     }
 
     const chatUrl = `https://wa.me/${phoneNumber}`;

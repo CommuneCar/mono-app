@@ -1,40 +1,38 @@
 import {
   Box,
-  Link,
-  Grid,
-  Radio,
   Button,
   TextField,
-  FormLabel,
   Typography,
-  RadioGroup,
-  FormControlLabel,
   Container,
   CircularProgress,
 } from '@mui/material';
-import dayjs from 'dayjs';
-import { isEmpty } from 'lodash';
-import { useNavigate } from 'react-router-dom';
 import {
   PersonRounded,
   PhoneAndroidRounded,
   CloudUpload as CloudUploadIcon,
 } from '@mui/icons-material';
+import dayjs from 'dayjs';
+import { isEmpty } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 import { DatePicker } from '@mui/x-date-pickers';
-import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 
 import { Gender } from '@communecar/types';
 
 import { Page } from '../HomePage/styles';
+import { uploadImage } from '../../apis/user';
 import { VisuallyHiddenInput } from './styles';
 import { useUser } from '../../hooks/Users/useUser';
 import { SignUpUser } from '../../types/sign-up-user';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 import { validateField } from '../../utils/signing/validation';
 import { DEFAULT_HOME_PAGE, TEXT } from '../../themes/default/consts';
-import { EmailField } from '../../Components/Signing/Fields/EmailField';
-import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
-import { SigningHeader } from '../../Components/Signing/SigningHeader';
 import { SigininBox } from '../../Components/styles/SigninBox.styled';
+import { SigningHeader } from '../../Components/Signing/SigningHeader';
+import { EmailField } from '../../Components/Signing/Fields/EmailField';
+import { GenderField } from '../../Components/Signing/Fields/GenderField';
+import { PasswordField } from '../../Components/Signing/Fields/PasswordField';
+import { ProgressMobileStepper } from '../../Components/Signing/SignUpFooter/ProgressMobileStepper';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -47,6 +45,7 @@ const SignUp = () => {
     email: '',
     password: '',
     phone: '',
+    avatarUrl: '',
     age: dayjs(),
     gender: Gender.OTHER,
   });
@@ -59,11 +58,14 @@ const SignUp = () => {
     phone: null,
     gender: null,
     age: null,
+    avatarUrl: null,
   });
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
+
+  const { showMessage } = useSnackbar();
 
   const handleNext = () => {
     setActiveStep((step) => step + 1);
@@ -101,6 +103,31 @@ const SignUp = () => {
     setIsLoading(false);
     if (success) {
       navigate(DEFAULT_HOME_PAGE);
+    }
+  };
+
+  const uploadFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = (event.target as HTMLInputElement)?.files;
+
+    try {
+      if (!files || files.length === 0) {
+        throw new Error('you must select a file to upload');
+      }
+
+      const file = files[0];
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await uploadImage(formData);
+
+      const image = response.data.image;
+      setFormData((data) => ({ ...data, avatarUrl: image }));
+      setActiveStep((activeStep) => activeStep + 1);
+    } catch (error: any) {
+      console.error(error.message);
+      showMessage('something went wrong with uploading your photo', 'error');
+      setFormErrors((errors) => ({ ...errors, avatarUrl: error.message }));
     }
   };
 
@@ -145,7 +172,7 @@ const SignUp = () => {
       ),
     },
     1: {
-      title: "let's keep in touch",
+      title: "Let's keep in touch",
       component: (
         <Box sx={{ margin: 2 }}>
           <EmailField
@@ -173,7 +200,7 @@ const SignUp = () => {
       ),
     },
     2: {
-      title: "shh.. don't tell anyone",
+      title: "Shh.. don't tell anyone",
       component: (
         <Box sx={{ margin: 2 }}>
           <PasswordField
@@ -185,71 +212,42 @@ const SignUp = () => {
       ),
     },
     3: {
-      title: 'tell us a bit more about yourself',
+      title: 'Tell us a bit more about yourself',
       component: (
         <Box sx={{ margin: 2 }}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              width: '100%',
             }}
           >
-            <Box
-              sx={{
-                mt: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'baseline',
+            <DatePicker
+              sx={{ width: '100%', mb: '0.5rem' }}
+              disableFuture={true}
+              label={"when's your birthday?"}
+              value={formData.age}
+              onChange={(date) =>
+                setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
+              }
+            />
+            <GenderField
+              formDataGender={formData.gender}
+              handleChange={(e) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  gender: e.target.value as Gender,
+                }));
               }}
-            >
-              <DatePicker
-                label={"when's your birthday?"}
-                value={formData.age}
-                onChange={(date) =>
-                  setFormData((prev) => ({ ...prev, age: date ?? dayjs() }))
-                }
-              />
-              <FormLabel id="demo-controlled-radio-buttons-group" required>
-                Gender
-              </FormLabel>
-              <RadioGroup
-                row
-                name="gender"
-                onChange={(e) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    gender: e.target.value as Gender,
-                  }));
-                }}
-              >
-                <FormControlLabel
-                  value="Female"
-                  control={<Radio checked={formData.gender === 'Female'} />}
-                  label="Female"
-                />
-                <FormControlLabel
-                  value="Male"
-                  control={<Radio checked={formData.gender === 'Male'} />}
-                  label="Male"
-                />
-                <FormControlLabel
-                  value="Other"
-                  control={
-                    <Radio
-                      checked={!formData.gender || formData.gender === 'Other'}
-                    />
-                  }
-                  label="Other"
-                />
-              </RadioGroup>
-            </Box>
+            />
           </Box>
         </Box>
       ),
     },
     4: {
-      title: 'what do you look like?',
+      title: 'What do you look like?',
       component: (
         <Box sx={{ margin: 2 }}>
           <Button
@@ -258,24 +256,27 @@ const SignUp = () => {
             variant="contained"
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
+            sx={{ mt: 3, mb: 2, width: '100%' }}
           >
-            profile picture
-            <VisuallyHiddenInput type="file" />
+            Profile Picture
+            <VisuallyHiddenInput
+              type="file"
+              accept="images/*"
+              onChange={uploadFile}
+            />
           </Button>
         </Box>
       ),
     },
     5: {
-      title: "that's it! Enjoy your ride",
+      title: "That's it! Enjoy your ride",
       component: (
         <Box sx={{ margin: 2 }}>
-          {hasErrors ? (
+          {hasErrors && (
             <Typography color={'error'}>
               You have entered incorrect details, please repeat the process
               again...
             </Typography>
-          ) : (
-            <></>
           )}
           <Typography color={'error'}>{serverError}</Typography>
           <Button
@@ -296,54 +297,52 @@ const SignUp = () => {
     },
   };
 
-  const isLastStep = useMemo(
-    () => steps[activeStep + 1] === undefined,
-    [activeStep],
-  );
+  const maxSteps = Object.keys(steps).length ?? 6;
 
   return (
     <Page>
-      <Container component="main" maxWidth="xs">
+      <Container
+        component="main"
+        maxWidth="xs"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          justifyContent: 'space-between',
+        }}
+      >
         <SigininBox>
           <SigningHeader titleText={'Sign Up'} />
           <Box
             sx={{
-              marginTop: 5,
+              marginTop: '5%',
               width: '100%',
-              alignContent: 'center',
               display: 'flex',
               justifyContent: 'flex-start',
               flexDirection: 'column',
+              alignContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Typography component="h4" variant="h6">
-              {steps[activeStep].title}
-            </Typography>
-            <Box width={'100%'}>{steps[activeStep].component}</Box>
-            <Box sx={{ textTransform: 'none' }}>
-              <Button
-                onClick={handleBack}
-                disabled={activeStep === 0}
-                sx={{ textTransform: 'none' }}
+            <Box sx={{ width: '100%', paddingBottom: '6rem' }}>
+              <Typography
+                sx={{
+                  marginBottom: '5%',
+                }}
+                component="h4"
+                variant="h6"
               >
-                Back
-              </Button>
-              {!isLastStep && (
-                <Button onClick={handleNext} sx={{ textTransform: 'none' }}>
-                  Next
-                </Button>
-              )}
+                {steps[activeStep].title}
+              </Typography>
+              <Box width={'100%'}>{steps[activeStep].component}</Box>
             </Box>
+            <ProgressMobileStepper
+              activeStep={activeStep}
+              handleBack={handleBack}
+              handleNext={handleNext}
+              maxSteps={maxSteps}
+            />
           </Box>
-
-          <Grid container justifyContent="center ">
-            <Grid item>
-              <Link href="/" variant="body2">
-                {TEXT.SIGNIN}
-              </Link>
-            </Grid>
-          </Grid>
         </SigininBox>
       </Container>
     </Page>

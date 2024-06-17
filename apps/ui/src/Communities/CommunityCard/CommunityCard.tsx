@@ -1,5 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { Box, Card, CardActions, CardHeader } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Collapse,
+} from '@mui/material';
 
 import { UserStatus, Community } from '@communecar/types';
 
@@ -15,6 +22,10 @@ import { CardMenu } from '../../Components/CardMenu/CardMenu';
 import { CommunityMembersDisplay } from './CommunityMembersDisplay';
 import { membersStatus } from '../../utils/communities/membershipConsts';
 import { useUserCommunityStatus } from '../../hooks/Communities/useRequstChangeUserStatus';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import { useState } from 'react';
+import { ExpandMoreContent } from './ExpandMoreContent/ExpandMoreContent';
+import { ExpandMore } from './ExpandMoreContent/ExpandMore.styled';
 
 export interface CommunityCardProps {
   community: Community;
@@ -35,7 +46,6 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   const navigate = useNavigate();
   const { createMutation, deleteMutation, isCreatingStatus, isDeletingStatus } =
     useUserCommunityStatus(userId, Number(community.id));
-
   const { title, description, picturesUrl } = community;
 
   const isMember = userStatus && membersStatus.includes(userStatus);
@@ -53,7 +63,9 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   };
 
   const handleJumpToRides = () => {
-    navigate('/home', { state: { communityId: community.id } });
+    navigate('/home', {
+      state: { communityId: community.id, communityTitle: community.title },
+    });
   };
 
   const optionActions: Record<string, () => void> = {
@@ -61,8 +73,20 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
     [MEMBER_OPTIONS.SEE_RIDES]: handleJumpToRides,
   };
 
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <Box sx={{ marginBottom: '5%', width: '100%', maxWidth: 400 }}>
+    <Box
+      sx={{
+        marginBottom: '5%',
+        width: '-webkit-fill-available',
+        maxWidth: 450,
+      }}
+    >
       <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardHeader
           title={title}
@@ -105,7 +129,18 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
               }
             />
           </Box>
+          <ExpandMore expand={expanded} onClick={handleExpandClick}>
+            <ExpandMoreIcon />
+          </ExpandMore>
         </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <ExpandMoreContent
+              communityLocation={community.location}
+              communityOwners={community.ownersUsers ?? []}
+            />
+          </CardContent>
+        </Collapse>
       </Card>
     </Box>
   );

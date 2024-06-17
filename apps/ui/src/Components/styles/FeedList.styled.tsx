@@ -5,8 +5,8 @@ const FeedList = styled(List)(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-  minHeight: 'calc(100vh - 5rem)',
+  alignItems: 'center',
+  maxHeight: '100%',
 }));
 
 export { FeedList };

@@ -1,7 +1,14 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
 import { User } from '@communecar/types';
 import { authenticateUser, singUpNewUser } from '../../apis/user/index';
 import { SignUpUser } from '../../types/sign-up-user';
+import { useSessionStorage } from 'react-use';
 
 type UserContextType = {
   user: User | null;
@@ -9,6 +16,7 @@ type UserContextType = {
   signOut: () => void;
   error: string | null;
   signUp: (newUser: SignUpUser) => Promise<boolean>;
+  loading: boolean;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -25,8 +33,13 @@ interface UserProviderProps {
 }
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useSessionStorage<User | null>('user', null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -42,6 +55,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const signOut = () => {
     setUser(null);
+    sessionStorage.removeItem('user');
   };
 
   const signUp = async (newUser: SignUpUser) => {
@@ -62,7 +76,9 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, signIn, signOut, signUp, error }}>
+    <UserContext.Provider
+      value={{ user, signIn, signOut, signUp, error, loading }}
+    >
       {children}
     </UserContext.Provider>
   );

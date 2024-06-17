@@ -5,15 +5,17 @@ import { Message } from '@communecar/types';
 import { TEXT } from '../../themes/default/consts';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 
+import { fetchUsersRequests } from '../../apis/messages/fetchUsersRequests';
 import { fetchJoinRideMessages } from '../../apis/messages/fetchjoinRideMessagesForUser';
 import { fetchJoinCommunitiesMessages } from '../../apis/messages/fetchJoinCommunityMessagesForUser';
 
 const fetchMessagesForUser = async (userId: number): Promise<Message[]> => {
   const joinRequests = await fetchJoinCommunitiesMessages(userId);
   const joinRideRequests = await fetchJoinRideMessages(userId);
+  const usersRequests = await fetchUsersRequests(userId);
   // add here other types of messages
 
-  return [...joinRequests, ...joinRideRequests];
+  return [...joinRequests, ...joinRideRequests, ...usersRequests];
 };
 
 const useGetUserMessages = (userId: number) => {

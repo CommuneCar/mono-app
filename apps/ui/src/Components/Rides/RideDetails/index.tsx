@@ -24,15 +24,17 @@ interface JoinRideProps {
 const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
   const { data: riders } = useGetRidersByRideId(ride.id);
 
-  const formatRideStops = () => {
-    const stops = ride.pickups.map(
-      (destination, index) => `${index + 1}.${destination.lon}`,
-    );
-    return stops.join('\n');
-  };
-
   const onCancel = () => {
     setIsOpen(false);
+  };
+
+  const formatRideStops = () => {
+    const stops = ride.pickups.map((destination, index) => {
+      const locationName =
+        destination.name ?? 'Error loading location, please try later';
+      return `${index + 1} -  ${locationName}`;
+    });
+    return stops.join('\n');
   };
 
   return (
@@ -50,8 +52,12 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
           text={ride.startLocationName}
         />
         <RideContentItem header="Destination:" text={ride.destinationName} />
-        <RideContentItem header="Stops:" text={formatRideStops()} />
         <RideContentItem header="Community:" text={ride.communityName} />
+        <RideContentItem
+          header="Stops:"
+          text={ride.pickups.length.toString()}
+          tooltipText={formatRideStops()}
+        />
         <RidersContentItem riders={riders} />
       </DialogContent>
       <DialogActions>

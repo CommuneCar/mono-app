@@ -1,60 +1,121 @@
-import { Community } from '@communecar/types';
+import { Community, Gender, User, UserStatus } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
-
-interface UserNode {
-  profileImage: string | null;
-}
-
-interface UserCommunityNode {
-  userByUserId: UserNode;
-}
-
-interface CommunityNode {
-  id: number;
-  title: string;
-  description: string;
-  userCommunitiesByCommunityId: {
-    nodes: UserCommunityNode[];
-  };
-}
-
-interface CommunitiesData {
-  allCommunities: {
-    nodes: CommunityNode[];
-  };
-}
+import {
+  getAllUserCommunityQuery,
+  getFetchAllCommunitiesQuery,
+} from '../utils/communitiesQueries';
+import { AllCommunitiesData } from '../types/communitiesResponse';
+import { locationExtraction } from '../location/location';
 
 const fetchAllCommunities = async (): Promise<Community[]> => {
-  const query = `
-    query {
-      allCommunities {
-        nodes {
-          id
-          title
-          description
-          userCommunitiesByCommunityId {
-            nodes {
-              userByUserId {
-                profileImage
-              }
-            }
-          }
-        }
+  const query = getFetchAllCommunitiesQuery();
+  const allCommunitiesData = await graphqlRequest<AllCommunitiesData>(query);
+
+  const allUserCommunityQuery = getAllUserCommunityQuery();
+  const allUserCommunityData = await graphqlRequest<AllUserCommunityData>(
+    allUserCommunityQuery,
+  );
+
+  const membersAndAdmins = allUserCommunityData.allUserCommunities.nodes.filter(
+    (node) =>
+      node.status === UserStatus.ACTIVE || node.status === UserStatus.MANAGER,
+  );
+
+  const userCommunity = membersAndAdmins.reduce<MembersCommunityData>(
+    (acc, node) => {
+      const { communityId, status, userByUserId } = node;
+
+      if (!acc[communityId]) {
+        acc[communityId] = {
+          numberOfMembers: 0,
+          managers: [],
+          picturesUrl: [],
+        };
       }
-    }`;
 
-  const data = await graphqlRequest<CommunitiesData>(query);
+      acc[communityId].numberOfMembers += 1;
+      if (userByUserId.profileImage) {
+        acc[communityId].picturesUrl = [
+          ...acc[communityId].picturesUrl,
+          userByUserId.profileImage,
+        ];
+      }
 
-  return data.allCommunities.nodes.map((node): Community => {
-    const picturesUrl = node.userCommunitiesByCommunityId.nodes
-      .map((userCommunity) => userCommunity.userByUserId.profileImage)
-      .filter((url): url is string => url != null);
-    return {
-      ...node,
-      numberOfMembers: node.userCommunitiesByCommunityId.nodes.length,
-      picturesUrl,
-    };
-  });
+      if (status === UserStatus.MANAGER) {
+        const manager: User = {
+          ...userByUserId,
+          avatarUrl: userByUserId.profileImage,
+          phone: userByUserId.phoneNumber,
+          gender: userByUserId.gender as Gender,
+        };
+        acc[communityId].managers = [...acc[communityId].managers, manager];
+      }
+
+      return acc;
+    },
+    {},
+  );
+
+  const allCommunities = allCommunitiesData.allCommunities.nodes.map(
+    async (node): Promise<Community> => {
+      const location =
+        node.lat && node.long ? await locationExtraction(node) : undefined;
+
+      const picturesUrlsResponse = node.userCommunitiesByCommunityId.nodes.map(
+        (userCommunity) => userCommunity.userByUserId.profileImage,
+      );
+
+      const picturesUrl: string[] = picturesUrlsResponse.filter(
+        (url): url is string => url !== null,
+      );
+
+      const { id, title, description } = node;
+
+      const community: Community = {
+        id,
+        title,
+        description,
+        numberOfMembers: userCommunity[id]?.numberOfMembers ?? 0,
+        location,
+        picturesUrl,
+        ownersUsers: userCommunity[id]?.managers ?? [],
+      };
+      return community;
+    },
+  );
+
+  return Promise.all(allCommunities);
+};
+
+interface AllUserCommunityData {
+  allUserCommunities: {
+    nodes: {
+      communityId: number;
+      status: UserStatus;
+      userId: number;
+      userByUserId: UserNode;
+    }[];
+  };
+}
+
+interface UserNode {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  profileImage: string;
+  password: string;
+  gender: string;
+  age: number;
+}
+
+type MembersCommunityData = {
+  [key: number]: {
+    numberOfMembers: number;
+    managers: User[];
+    picturesUrl: string[];
+  };
 };
 
 export { fetchAllCommunities };

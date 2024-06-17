@@ -4,9 +4,9 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 
-import './Map.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/assets/css/leaflet.css';
+import './Map.css';
 
 import placeholderIcon from '../../assets/components/map/car.svg';
 
@@ -16,8 +16,9 @@ type MarkerInfo = {
 };
 
 interface MapProps {
-  focusLocation?: [number, number];
   markers: MarkerInfo[];
+  shouldShowSearch?: boolean;
+  focusLocation?: [number, number];
 }
 
 const customIcon = new Icon({
@@ -75,7 +76,11 @@ const Focus = (props: { focusLocation: [number, number] }) => {
   return null;
 };
 
-const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
+const Map: React.FC<MapProps> = ({
+  markers,
+  focusLocation,
+  shouldShowSearch = true,
+}) => {
   const [focusedLocation, setFocusedLocation] = useState<
     [number, number] | undefined
   >(focusLocation);
@@ -102,7 +107,7 @@ const Map: React.FC<MapProps> = ({ markers, focusLocation }) => {
           </Marker>
         ))}
       </MarkerClusterGroup>
-      <SearchControl />
+      {shouldShowSearch && <SearchControl />}
       {focusedLocation && <Focus focusLocation={focusedLocation} />}
     </MapContainer>
   );
