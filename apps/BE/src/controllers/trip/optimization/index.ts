@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { GraphHopperLocation, ServiceLocation } from '@betypes/graphhopper';
-import { fetchGraphHopperRoute } from '../../../utils/graphhopper';
+
 import { TripLocationType } from '../types';
+import { fetchGraphHopperRoute } from '../../../utils/graphhopper';
 
 const prisma = new PrismaClient();
 
@@ -62,12 +63,15 @@ const getRideRoute = async (req: Request, res: Response) => {
         },
       },
     });
-    
+
     if (!ride) {
       return res.status(404).json({ error: 'Ride not found' });
     }
 
-    const passengersCount = ride.userRide.reduce((acc, userRide) => acc + userRide.passengersCount, 1); // (Accumulator starts at 1 to account for the driver)
+    const passengersCount: number = ride.userRide.reduce(
+      (acc: number, userRide: any) => acc + userRide.passengersCount,
+      1,
+    ); // (Accumulator starts at 1 to account for the driver)
 
     const startLocation: GraphHopperLocation = {
       name: `${TripLocationType.RealStart}_location`,
@@ -82,21 +86,25 @@ const getRideRoute = async (req: Request, res: Response) => {
     };
 
     const serviceLocations: ServiceLocation[] = ride.userRide
-      .map((userRide): ServiceLocation => ({
-        name: `${userRide.user.firstName}_${userRide.user.lastName}_${TripLocationType.Start}`,
-        lat: userRide.fromLat,
-        long: userRide.fromLong,
-        userId: userRide.userId,
-        type: 'pickup',
-      }))
-      .concat(
-        ride.userRide.map((userRide): ServiceLocation => ({
-          name: `${userRide.user.firstName}_${userRide.user.lastName}_${TripLocationType.End}`,
-          lat: userRide.toLat,
-          long: userRide.toLong,
+      .map(
+        (userRide: any): ServiceLocation => ({
+          name: `${userRide.user.firstName}_${userRide.user.lastName}_${TripLocationType.Start}`,
+          lat: userRide.fromLat,
+          long: userRide.fromLong,
           userId: userRide.userId,
-          type: 'delivery',
-        })),
+          type: 'pickup',
+        }),
+      )
+      .concat(
+        ride.userRide.map(
+          (userRide: any): ServiceLocation => ({
+            name: `${userRide.user.firstName}_${userRide.user.lastName}_${TripLocationType.End}`,
+            lat: userRide.toLat,
+            long: userRide.toLong,
+            userId: userRide.userId,
+            type: 'delivery',
+          }),
+        ),
       );
 
     const graphHopperResponse = await fetchGraphHopperRoute(
