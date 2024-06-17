@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { Add} from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 
@@ -17,7 +17,6 @@ export interface RidesFeedProps {
   userCommunities: Community[];
   userRidesStatus: UserRidesStatus;
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
-
 }
 
 const RidesFeed = ({
@@ -26,12 +25,11 @@ const RidesFeed = ({
   userRidesStatus,
   userCommunities,
   setSelectedRide,
-
 }: RidesFeedProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
     <Page>
-      <Box display={'flex'} justifyContent={'space-between'} px={2}>
+      <Box display={'flex'} justifyContent={'space-between'}>
         <PageHeader title={'rides'} />
         <IconButton onClick={() => setIsDialogOpen(true)}>
           <Add />
