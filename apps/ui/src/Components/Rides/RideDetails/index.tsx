@@ -9,7 +9,6 @@ import {
   IconButton,
 } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
-import MapIcon from '@mui/icons-material/Map';
 import { Ride } from '@communecar/types';
 
 import { RideContentItem } from './RideContentItem';
@@ -17,7 +16,7 @@ import { DriverContentItem } from './DriverContentItem';
 import { RidersContentItem } from './RidersContentItem';
 import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
 import { useNavigate } from 'react-router-dom';
-import { NearMe, RouteOutlined } from '@mui/icons-material';
+import { NearMe } from '@mui/icons-material';
 
 interface JoinRideProps {
   isOpen: boolean;
