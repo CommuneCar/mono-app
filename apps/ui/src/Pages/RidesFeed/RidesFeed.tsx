@@ -1,9 +1,9 @@
 import { isEmpty } from 'lodash';
-import { Add, Info as InfoIcon } from '@mui/icons-material';
-import { Box, IconButton, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
-import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
+import { Add} from '@mui/icons-material';
+import { Box, IconButton, FormControlLabel, Switch } from '@mui/material';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-import { Community, Gender, Ride } from '@communecar/types';
+import { Community, Ride } from '@communecar/types';
 
 import { Page } from '../HomePage/styles';
 import { UserRidesStatus } from '../../types/ride-user-type';
@@ -28,10 +28,10 @@ const RidesFeed = ({
   setSelectedRide,
 
 }: RidesFeedProps) => {
-  const [genderFilter, setGenderFilter] = useState<Gender | null>(null);
+  const [genderFilter, setGenderFilter] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const changeGenderFilter = (_: MouseEvent<HTMLElement>, newGender: Gender | null) => {
-    setGenderFilter(newGender);
+  const toggleGenderFilter = () => {
+    setGenderFilter((prev) => !prev);
   };
   return (
     <Page>
@@ -42,22 +42,15 @@ const RidesFeed = ({
         </IconButton>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, px: 2 }}>
-        <ToggleButtonGroup
-          color="primary"
-          value={genderFilter}
-          exclusive
-          onChange={changeGenderFilter}
-          sx={{ padding: '0' }}
-        >
-          <ToggleButton value={Gender.MALE} sx={{ padding: '4px 8px', fontSize: '0.875rem' }}>Male</ToggleButton>
-          <ToggleButton value={Gender.FEMALE} sx={{ padding: '4px 8px', fontSize: '0.875rem' }}>Female</ToggleButton>
-        </ToggleButtonGroup>
-        <Tooltip title="Filter for rides that are limited to a specific gender">
-          <InfoIcon
-            color="action"
-            sx={{ ml: 1, cursor: 'pointer' }}
-          />
-        </Tooltip>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={genderFilter}
+              onChange={toggleGenderFilter}
+            />
+          }
+          label="Rides limited to my Gender"
+        />
       </Box>
       <PageLoader isLoading={isEmpty(rides) || isEmpty(communities)} />
       <RidesList

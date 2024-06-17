@@ -4,12 +4,12 @@ import { isMobile } from 'react-device-detect';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { Dispatch, SetStateAction } from 'react';
 
-import { Community, Ride, Gender } from '@communecar/types';
+import { Community, Ride} from '@communecar/types';
 
 import { RideCard } from '../RideCard';
 import { UserRidesStatus } from '../../../types/ride-user-type';
 import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
-
+import { useUser } from '../../../hooks/Users/useUser';
 dayjs.extend(relativeTime);
 
 interface RideListProps {
@@ -20,7 +20,7 @@ interface RideListProps {
   userRideStatus: UserRidesStatus;
   setIsCreateRideDialogOpen: Dispatch<SetStateAction<boolean>>;
   setSelectedRide: Dispatch<SetStateAction<Ride | undefined>>;
-  genderFilter: Gender | null;
+  genderFilter: boolean;
 
 }
 
@@ -33,7 +33,8 @@ const RidesList: React.FC<RideListProps> = ({
   setIsCreateRideDialogOpen,
   genderFilter
 }) => {
-  const filteredRides = rides.filter(ride => !genderFilter || (ride.pronouns && ride.driver.gender == genderFilter) );
+  const { user } = useUser();
+  const filteredRides = rides.filter(ride => !genderFilter || (user && ride.pronouns && ride.driver.gender == user.gender) );
   return (
     <Box sx={!isMobile ? { overflowY: 'auto', maxHeight: '78%' } : {}}>
       {isCreateRideDialog && (
