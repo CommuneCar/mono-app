@@ -1,6 +1,6 @@
 import { Add } from '@mui/icons-material';
-import { groupBy, mapValues } from 'lodash';
-import { Box, IconButton } from '@mui/material';
+import { groupBy, isEmpty, mapValues } from 'lodash';
+import { Box, IconButton, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
@@ -203,16 +203,24 @@ const CommunitiesFeed = () => {
       )}
       <PageLoader isLoading={isCommunitiesLoading} paddingTop={5} />
       <FeedList>
-        {filteredCommunities.map((community, index) => (
-          <CommunityCard
-            key={index}
-            community={community}
-            userId={user?.id ?? DEFAULT_USER_ID}
-            handleClickOnEdit={handleClickOnEdit}
-            userStatusIsLoading={userStatusIsLoading}
-            userStatus={userCommunitiesStatus[community.id]}
-          />
-        ))}
+        {!isEmpty(filteredCommunities) ? (
+          filteredCommunities.map((community, index) => (
+            <CommunityCard
+              key={index}
+              community={community}
+              userId={user?.id ?? DEFAULT_USER_ID}
+              handleClickOnEdit={handleClickOnEdit}
+              userStatusIsLoading={userStatusIsLoading}
+              userStatus={userCommunitiesStatus[community.id]}
+            />
+          ))
+        ) : (
+          <Box sx={{ m: 2 }}>
+            <Typography align={'left'} sx={{ fontSize: 14 }}>
+              "Oops! It looks like you haven't joined any communities yet."
+            </Typography>
+          </Box>
+        )}
       </FeedList>
     </Page>
   );
