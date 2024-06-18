@@ -26,6 +26,7 @@ import { useEditNewRide } from '../../../hooks/Rides/useEditRide';
 import { EditRideSchema } from '@communetypes/EditRideSchema';
 import { RidersContentItemEditMode } from './EditRidersAvater';
 import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
+import { validateField } from '../../../utils/ride/validation.tsx';
 
 export interface CreateRideDialogProps {
   communities: Community[];
@@ -50,9 +51,15 @@ const EditRideDialog = ({
   const [community, setCommunity] = useState<Community | null>(
     communities?.find((community) => community?.title === ride.communityName)!,
   );
-
+  const [validationErrors, setValidationErrors] = useState({
+    gasMoney: null,
+    seats: null,
+  });
   const [error, setError] = useState<string>();
-
+  const fieldHandlers: Record<string, (value: string) => void> = {
+    gasMoney: (value: string) => setGasMoney(value),
+    seats: (value: string) => setSeats(value),
+  };
   const [gasMoney, setGasMoney] = useState(ride.gasMoney.toString());
   const [pronounsOnly, setPronounsOnly] = useState(ride.pronouns);
   const [seats, setSeats] = useState(ride.seats.toString());
@@ -70,7 +77,15 @@ const EditRideDialog = ({
   });
 
   const [rideRiders, setRideRiders] = useState<Rider[]>(riders ?? []);
-
+  const handleChange = (fieldName: keyof typeof fieldHandlers, value: string) => {
+    const error = validateField(fieldName, value);
+    setValidationErrors((prev) => ({ ...prev, [fieldName]: error ? error : null }));
+    const handler = fieldHandlers[fieldName];
+    if (handler) {
+      handler(value);
+    }
+  };
+  const hasValidationErrors = Object.values(validationErrors).some((error) => error !== null);
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
       setStartLocation(location);
@@ -173,7 +188,9 @@ const EditRideDialog = ({
             type="number"
             fullWidth
             value={gasMoney}
-            onChange={(e) => setGasMoney(e.target.value)}
+            onChange={(e) => handleChange('gasMoney', e.target.value)}
+            error={ validationErrors.gasMoney ?? false }
+            helperText={ validationErrors.gasMoney ? 'Gas Money cannot be negative' : ''}
           />
           <FormControlLabel
             control={
@@ -191,7 +208,9 @@ const EditRideDialog = ({
             type="number"
             fullWidth
             value={seats}
-            onChange={(e) => setSeats(e.target.value)}
+            onChange={(e) => handleChange('seats', e.target.value)}
+            error={validationErrors.seats ?? false}
+            helperText={ validationErrors.seats ? 'Seats must be a number and greater than 0' : '' }
           />
           <RidersContentItemEditMode
             riders={rideRiders}
@@ -204,7 +223,7 @@ const EditRideDialog = ({
         <Button onClick={handleClose} disabled={isLoading}>
           {TEXT.CLOSE}
         </Button>
-        <SubmitButton type="submit" disabled={isLoading} onClick={handleSubmit}>
+        <SubmitButton type="submit" disabled={isLoading || hasValidationErrors} onClick={handleSubmit}>
           {isLoading ? (
             <CircularProgress size={24} color="info" />
           ) : (

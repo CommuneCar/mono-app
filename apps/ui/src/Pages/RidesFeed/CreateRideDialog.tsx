@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import dayjs from 'dayjs';
-
+import { validateField } from '../../utils/ride/validation';
 import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
@@ -30,6 +30,8 @@ import { useGetUsersByCommunityId } from '../../hooks/Users/useGetAllUsersOption
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { UsersSelectorOption } from '../../types/users-selector-option';
 import { usePostRequestUserRide } from '../../hooks/Rides/usePostRequestUserRide';
+
+
 
 const options = [tlv, apple, camera];
 
@@ -52,11 +54,19 @@ const CreateRideDialog = ({
   const [community, setCommunity] = useState<Community | null>(null);
   const [gasMoney, setGasMoney] = useState('0');
   const [pronounsOnly, setPronounsOnly] = useState(false);
-  const [seats, setSeats] = useState('0');
+  const [seats, setSeats] = useState('1');
   const [startLocation, setStartLocation] = useState<LocationResult | null>(
     null,
   );
+  const fieldHandlers: Record<string, (value: string) => void> = {
+    gasMoney: (value: string) => setGasMoney(value),
+    seats: (value: string) => setSeats(value),
+  };
   const [destination, setDestination] = useState<LocationResult | null>(null);
+  const [validationErrors, setValidationErrors] = useState({
+    gasMoney: null,
+    seats: null,
+  });
   const [newRiders, setNewRiders] = useState<UsersSelectorOption[]>([]);
 
   const {
@@ -82,6 +92,15 @@ const CreateRideDialog = ({
     setOpen(false);
   };
 
+  const handleChange = (fieldName: keyof typeof fieldHandlers, value: string) => {
+    const error = validateField(fieldName, value);
+    setValidationErrors((prev) => ({ ...prev, [fieldName]: error ? error : null }));
+    const handler = fieldHandlers[fieldName];
+    if (handler) {
+      handler(value);
+    }
+  };
+  const hasValidationErrors = Object.values(validationErrors).some((error) => error !== null);
   const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
       alert('All fields are required.');
@@ -91,6 +110,7 @@ const CreateRideDialog = ({
       alert('Login is required for this operation');
       return;
     }
+
 
     const png = getRandomOption(options);
     const newRide: CreateRideSchema = {
@@ -175,7 +195,9 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={gasMoney}
-          onChange={(e) => setGasMoney(e.target.value)}
+          onChange={(e) => handleChange('gasMoney', e.target.value)}
+          error={ validationErrors.gasMoney ?? false }
+          helperText={ validationErrors.gasMoney ? 'Gas Money cannot be negative' : ''}
         />
         <FormControlLabel
           control={
@@ -193,7 +215,9 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={seats}
-          onChange={(e) => setSeats(e.target.value)}
+          onChange={(e) => handleChange('seats', e.target.value)}
+          error={validationErrors.seats ?? false}
+          helperText={ validationErrors.seats ? 'Seats must be a number and greater than 0' : '' }
         />
         <UsersSelector
           options={membersOptions ?? []}
@@ -207,7 +231,7 @@ const CreateRideDialog = ({
         <Button onClick={handleClose} disabled={isLoading}>
           {TEXT.CANCEL}
         </Button>
-        <SubmitButton type="submit" disabled={isLoading} onClick={handleSubmit}>
+        <SubmitButton type="submit" disabled={isLoading || hasValidationErrors} onClick={handleSubmit}>
           {isLoading ? (
             <CircularProgress size={24} color="info" />
           ) : (
