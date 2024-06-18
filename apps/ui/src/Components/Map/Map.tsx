@@ -45,15 +45,8 @@ const SearchControl = () => {
       style: 'bar',
       autoComplete: true,
       autoCompleteDelay: 250,
-      showMarker: true,
-      showPopup: false,
-      marker: {
-        icon: new (Icon as any)({
-          iconUrl: placeholderIcon,
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-        }),
-      },
+      showMarker: false,
+      showPopup: false
     });
 
     map.addControl(searchControl);
