@@ -8,6 +8,7 @@ export interface UsersSelectorProps {
   setSelectedUsersIds: React.Dispatch<
     React.SetStateAction<UsersSelectorOption[]>
   >;
+  disabled?: boolean;
 }
 
 const UsersSelector: React.FC<UsersSelectorProps> = ({
@@ -15,6 +16,7 @@ const UsersSelector: React.FC<UsersSelectorProps> = ({
   fieldLabel = 'Users',
   isOptionsLoading = false,
   setSelectedUsersIds,
+  disabled = false,
 }) => {
   const handleSelectUser = (
     _: React.SyntheticEvent<Element, Event>,
@@ -31,6 +33,7 @@ const UsersSelector: React.FC<UsersSelectorProps> = ({
       <Autocomplete
         options={options}
         loading={isOptionsLoading}
+        disabled={disabled}
         renderInput={(params) => {
           const { InputProps, ...other } = params;
           return (
