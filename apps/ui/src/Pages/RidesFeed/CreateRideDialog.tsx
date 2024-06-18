@@ -30,7 +30,6 @@ import { useGetUsersByCommunityId } from '../../hooks/Users/useGetAllUsersOption
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { UsersSelectorOption } from '../../types/users-selector-option';
 import { usePostRequestUserRide } from '../../hooks/Rides/usePostRequestUserRide';
-import { userOptions } from '../../utils/communities/cardMenuConsts';
 
 const options = [tlv, apple, camera];
 
