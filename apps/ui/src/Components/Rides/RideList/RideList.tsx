@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { Box, FormControlLabel, Switch } from '@mui/material';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import { Community, Ride} from '@communecar/types';
 import { RideCard } from '../RideCard';
 import { UserRidesStatus } from '../../../types/ride-user-type';
@@ -33,7 +33,15 @@ const RidesList: React.FC<RideListProps> = ({
   const toggleGenderFilter = () => {
     setGenderFilter((prev) => !prev);
   };
-  const filteredRides = rides.filter(ride => !genderFilter || (user && ride.pronouns && ride.driver.gender == user.gender) );
+
+  const filteredRides = useMemo(() => {
+    return rides.filter(ride => !genderFilter || (user && ride.pronouns && ride.driver.gender == user.gender));
+  }, [genderFilter, rides, user]);
+
+  const isJoinable = useCallback((ride: Ride) => {
+    return userCommunities?.find(community => community.title === ride.communityName);
+  }, [userCommunities]);
+
   return (
     <Box>
       {isCreateRideDialog && (
@@ -60,6 +68,7 @@ const RidesList: React.FC<RideListProps> = ({
             ride={ride}
             rideStatus={userRideStatus[ride.id.toString()]}
             communities={userCommunities}
+            disabled={!isJoinable(ride)}
           />
         </Box>
       ))}

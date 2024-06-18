@@ -28,12 +28,14 @@ interface RideCardProps {
   ride: Ride;
   rideStatus: UserRide | undefined;
   communities: Community[];
+  disabled?: boolean;
 }
 
 const RideCard: React.FC<RideCardProps> = ({
   ride,
   rideStatus,
   communities,
+  disabled,
 }) => {
   const { user } = useUser();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -94,7 +96,7 @@ const RideCard: React.FC<RideCardProps> = ({
                   variant={'contained'}
                   size={'small'}
                   onClick={handleJoinRideClick}
-                  disabled={isRideFull || ride.driver.id === user?.id}
+                  disabled={isRideFull || ride.driver.id === user?.id || disabled}
                 >
                   {isRideFull ? 'Ride Full' : 'Join Ride'}
                 </Button>
