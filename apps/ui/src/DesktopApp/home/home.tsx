@@ -11,7 +11,7 @@ import {
   ListItemButton,
   ToggleButtonGroup,
 } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { flatten, groupBy, uniqBy } from 'lodash';
 import { ChevronRight as ChevronRightIcon } from '@mui/icons-material';
 
