@@ -56,7 +56,10 @@ const EditRideDialog = ({
     seats: null,
   });
   const [error, setError] = useState<string>();
-
+  const fieldHandlers: Record<string, (value: string) => void> = {
+    gasMoney: (value: string) => setGasMoney(value),
+    seats: (value: string) => setSeats(value),
+  };
   const [gasMoney, setGasMoney] = useState(ride.gasMoney.toString());
   const [pronounsOnly, setPronounsOnly] = useState(ride.pronouns);
   const [seats, setSeats] = useState(ride.seats.toString());
@@ -74,18 +77,12 @@ const EditRideDialog = ({
   });
 
   const [rideRiders, setRideRiders] = useState<Rider[]>(riders ?? []);
-  const handleChange = (fieldName: string, value: string) => {
+  const handleChange = (fieldName: keyof typeof fieldHandlers, value: string) => {
     const error = validateField(fieldName, value);
     setValidationErrors((prev) => ({ ...prev, [fieldName]: error ? error : null }));
-    switch (fieldName) {
-      case 'gasMoney':
-        setGasMoney(value);
-        break;
-      case 'seats':
-        setSeats(value);
-        break;
-      default:
-        break;
+    const handler = fieldHandlers[fieldName];
+    if (handler) {
+      handler(value);
     }
   };
   const hasValidationErrors = Object.values(validationErrors).some((error) => error !== null);
@@ -213,7 +210,7 @@ const EditRideDialog = ({
             value={seats}
             onChange={(e) => handleChange('seats', e.target.value)}
             error={validationErrors.seats ?? false}
-            helperText={ validationErrors.seats ? 'Seats must be a number and 1 or more' : '' }
+            helperText={ validationErrors.seats ? 'Seats must be a number and greater than 0' : '' }
           />
           <RidersContentItemEditMode
             riders={rideRiders}

@@ -54,6 +54,10 @@ const CreateRideDialog = ({
   const [startLocation, setStartLocation] = useState<LocationResult | null>(
     null,
   );
+  const fieldHandlers: Record<string, (value: string) => void> = {
+    gasMoney: (value: string) => setGasMoney(value),
+    seats: (value: string) => setSeats(value),
+  };
   const [destination, setDestination] = useState<LocationResult | null>(null);
   const [validationErrors, setValidationErrors] = useState({
     gasMoney: null,
@@ -71,18 +75,12 @@ const CreateRideDialog = ({
     setOpen(false);
   };
 
-  const handleChange = (fieldName: string, value: string) => {
+  const handleChange = (fieldName: keyof typeof fieldHandlers, value: string) => {
     const error = validateField(fieldName, value);
     setValidationErrors((prev) => ({ ...prev, [fieldName]: error ? error : null }));
-    switch (fieldName) {
-      case 'gasMoney':
-        setGasMoney(value);
-        break;
-      case 'seats':
-        setSeats(value);
-        break;
-      default:
-        break;
+    const handler = fieldHandlers[fieldName];
+    if (handler) {
+      handler(value);
     }
   };
   const hasValidationErrors = Object.values(validationErrors).some((error) => error !== null);
@@ -194,7 +192,7 @@ const CreateRideDialog = ({
           value={seats}
           onChange={(e) => handleChange('seats', e.target.value)}
           error={validationErrors.seats ?? false}
-          helperText={ validationErrors.seats ? 'Seats must be a number and 1 or more' : '' }
+          helperText={ validationErrors.seats ? 'Seats must be a number and greater than 0' : '' }
         />
       </DialogContent>
       <DialogActions>
