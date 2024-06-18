@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -30,6 +30,7 @@ import { useGetUsersByCommunityId } from '../../hooks/Users/useGetAllUsersOption
 import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
 import { UsersSelectorOption } from '../../types/users-selector-option';
 import { usePostRequestUserRide } from '../../hooks/Rides/usePostRequestUserRide';
+import { userOptions } from '../../utils/communities/cardMenuConsts';
 
 const options = [tlv, apple, camera];
 
@@ -45,7 +46,7 @@ const CreateRideDialog = ({
   isOpen,
 }: CreateRideDialogProps) => {
   const { mutateAsync: addRide, isSuccess, isLoading } = useAddNewRide();
-  const { user } = useUser();
+  const { user: currentUser } = useUser();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
   );
@@ -65,6 +66,10 @@ const CreateRideDialog = ({
     error: getAllUsersError,
   } = useGetUsersByCommunityId(community?.id);
 
+  const membersOptions = useMemo(() => {
+    return usersOptions?.filter((user) => user.userId != currentUser?.id);
+  }, [usersOptions, currentUser?.id])
+
   const { mutateAsync: joinRide } = usePostRequestUserRide();
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
@@ -83,7 +88,7 @@ const CreateRideDialog = ({
       alert('All fields are required.');
       return;
     }
-    if (!user) {
+    if (!currentUser) {
       alert('Login is required for this operation');
       return;
     }
@@ -92,7 +97,7 @@ const CreateRideDialog = ({
     const newRide: CreateRideSchema = {
       communityName: community.title,
       communityId: community.id,
-      driver: user,
+      driver: currentUser,
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
@@ -191,15 +196,13 @@ const CreateRideDialog = ({
           value={seats}
           onChange={(e) => setSeats(e.target.value)}
         />
-
-        {!getAllUsersError && !isGetAllUsersLoading && (
-          <UsersSelector
-            options={usersOptions ?? []}
-            fieldLabel="Add Members"
-            isOptionsLoading={isGetAllUsersLoading}
-            setSelectedUsersIds={setNewRiders}
-          />
-        )}
+        <UsersSelector
+          options={membersOptions ?? []}
+          fieldLabel="Add Members"
+          isOptionsLoading={isGetAllUsersLoading}
+          setSelectedUsersIds={setNewRiders}
+          disabled={!!getAllUsersError || !community}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
