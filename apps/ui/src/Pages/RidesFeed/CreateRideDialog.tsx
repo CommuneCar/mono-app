@@ -196,8 +196,6 @@ const CreateRideDialog = ({
           value={seats}
           onChange={(e) => setSeats(e.target.value)}
         />
-
-
         <UsersSelector
           options={membersOptions ?? []}
           fieldLabel="Add Members"
@@ -205,15 +203,6 @@ const CreateRideDialog = ({
           setSelectedUsersIds={setNewRiders}
           disabled={!!getAllUsersError || !community}
         />
-
-        {/* {!getAllUsersError && !isGetAllUsersLoading && (
-          <UsersSelector
-            options={usersOptions ?? []}
-            fieldLabel="Add Members"
-            isOptionsLoading={isGetAllUsersLoading}
-            setSelectedUsersIds={setNewRiders}
-          />
-        )} */}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
