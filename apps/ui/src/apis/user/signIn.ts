@@ -15,11 +15,11 @@ const authenticateUser = async (
           firstName
           lastName
           email
-          phoneNumber
+          phone: phoneNumber
           gender
           password
           age
-          profileImage
+          avatarUrl: profileImage
         }
       }
   }`;
@@ -31,11 +31,11 @@ const authenticateUser = async (
         email: string;
         firstName: string;
         lastName: string;
-        phoneNumber: string;
+        phone: string;
         password: string;
         gender: Gender;
         age: number;
-        profileImage: string;
+        avatarUrl: string;
       }[];
     };
   }>(getAllUserQuery);
@@ -49,11 +49,8 @@ const authenticateUser = async (
   if (hashedPassword !== user.password) {
     throw new Error('password is not correct');
   }
-  return {
-    ...user,
-    phone: user.phoneNumber,
-    avatarUrl: user.profileImage,
-  };
+  console.log('damn', user)
+  return user;
 };
 
 export { authenticateUser };
