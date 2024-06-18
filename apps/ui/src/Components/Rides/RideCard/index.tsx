@@ -94,7 +94,7 @@ const RideCard: React.FC<RideCardProps> = ({
                   variant={'contained'}
                   size={'small'}
                   onClick={handleJoinRideClick}
-                  disabled={isRideFull}
+                  disabled={isRideFull || ride.driver.id === user?.id}
                 >
                   {isRideFull ? 'Ride Full' : 'Join Ride'}
                 </Button>
