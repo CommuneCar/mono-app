@@ -5,15 +5,18 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tooltip,
+  IconButton,
 } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
-
 import { Ride } from '@communecar/types';
 
 import { RideContentItem } from './RideContentItem';
 import { DriverContentItem } from './DriverContentItem';
 import { RidersContentItem } from './RidersContentItem';
 import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
+import { useNavigate } from 'react-router-dom';
+import { NearMe } from '@mui/icons-material';
 
 interface JoinRideProps {
   isOpen: boolean;
@@ -22,22 +25,36 @@ interface JoinRideProps {
 }
 
 const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
+  const navigate = useNavigate();
   const { data: riders } = useGetRidersByRideId(ride.id);
-
-  const formatRideStops = () => {
-    const stops = ride.pickups.map(
-      (destination, index) => `${index + 1}.${destination.lon}`,
-    );
-    return stops.join('\n');
-  };
 
   const onCancel = () => {
     setIsOpen(false);
   };
 
+  const formatRideStops = () => {
+    const stops = ride.pickups.map((destination, index) => {
+      const locationName =
+        destination.name ?? 'Error loading location, please try later';
+      return `${index + 1} -  ${locationName}`;
+    });
+    return stops.join('\n');
+  };
+
+  const navigateToRideDetails = () => {
+    navigate(`/rides/${ride.id}`);
+  };
+
   return (
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
-      <DialogTitle>Ride Details</DialogTitle>
+      <DialogTitle>
+        <span>Ride Details</span>
+        <Tooltip title="View on map">
+          <IconButton onClick={navigateToRideDetails} style={{border: '1px solid #cecece', marginLeft: '10px', padding: '5px'}}>
+            <NearMe color="primary" />
+          </IconButton>
+        </Tooltip>
+      </DialogTitle>
       <Divider />
       <DialogContent>
         <DriverContentItem
@@ -50,12 +67,19 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
           text={ride.startLocationName}
         />
         <RideContentItem header="Destination:" text={ride.destinationName} />
-        <RideContentItem header="Stops:" text={formatRideStops()} />
         <RideContentItem header="Community:" text={ride.communityName} />
+        <RideContentItem
+          header="Stops:"
+          text={ride.pickups.length.toString()}
+          tooltipText={formatRideStops()}
+        />
         <RidersContentItem riders={riders} />
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{justifyContent: 'center', alignItems: 'center'}}>
         <Button onClick={onCancel}>Cancel</Button>
+        <Button color="primary" onClick={navigateToRideDetails}>
+          View Route
+        </Button>
       </DialogActions>
     </Dialog>
   );

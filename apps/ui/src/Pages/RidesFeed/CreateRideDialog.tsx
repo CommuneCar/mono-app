@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -26,6 +26,10 @@ import { useUser } from '../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { TEXT } from '../../themes/default/consts';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
+import { useGetUsersByCommunityId } from '../../hooks/Users/useGetAllUsersOptions';
+import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
+import { UsersSelectorOption } from '../../types/users-selector-option';
+import { usePostRequestUserRide } from '../../hooks/Rides/usePostRequestUserRide';
 
 
 
@@ -43,7 +47,7 @@ const CreateRideDialog = ({
   isOpen,
 }: CreateRideDialogProps) => {
   const { mutateAsync: addRide, isSuccess, isLoading } = useAddNewRide();
-  const { user } = useUser();
+  const { user: currentUser } = useUser();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
   );
@@ -63,6 +67,19 @@ const CreateRideDialog = ({
     gasMoney: null,
     seats: null,
   });
+  const [newRiders, setNewRiders] = useState<UsersSelectorOption[]>([]);
+
+  const {
+    data: usersOptions,
+    isLoading: isGetAllUsersLoading,
+    error: getAllUsersError,
+  } = useGetUsersByCommunityId(community?.id);
+
+  const membersOptions = useMemo(() => {
+    return usersOptions?.filter((user) => user.userId != currentUser?.id);
+  }, [usersOptions, currentUser?.id])
+
+  const { mutateAsync: joinRide } = usePostRequestUserRide();
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
@@ -89,7 +106,7 @@ const CreateRideDialog = ({
       alert('All fields are required.');
       return;
     }
-    if (!user) {
+    if (!currentUser) {
       alert('Login is required for this operation');
       return;
     }
@@ -99,7 +116,7 @@ const CreateRideDialog = ({
     const newRide: CreateRideSchema = {
       communityName: community.title,
       communityId: community.id,
-      driver: user,
+      driver: currentUser,
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
@@ -115,7 +132,15 @@ const CreateRideDialog = ({
       pickups: [],
     };
 
-    await addRide(newRide);
+    const createdRide = await addRide(newRide);
+    const joinRidersPromises = newRiders.map((rider) =>
+      joinRide({
+        userId: rider.userId,
+        rideId: createdRide.id,
+        status: 'Confirmed',
+      }),
+    );
+    await Promise.all(joinRidersPromises);
     if (isSuccess) {
       handleClose();
     }
@@ -193,6 +218,13 @@ const CreateRideDialog = ({
           onChange={(e) => handleChange('seats', e.target.value)}
           error={validationErrors.seats ?? false}
           helperText={ validationErrors.seats ? 'Seats must be a number and greater than 0' : '' }
+        />
+        <UsersSelector
+          options={membersOptions ?? []}
+          fieldLabel="Add Members"
+          isOptionsLoading={isGetAllUsersLoading}
+          setSelectedUsersIds={setNewRiders}
+          disabled={!!getAllUsersError || !community}
         />
       </DialogContent>
       <DialogActions>
