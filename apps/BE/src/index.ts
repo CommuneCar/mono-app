@@ -8,6 +8,7 @@ import swaggerSpec from './config/swagger.config';
 import router from './routes';
 import multer from 'multer';
 import { supabase } from './supabase';
+import { v4 as uuid4 } from 'uuid';
 
 const storage = multer.memoryStorage();
 
@@ -46,10 +47,11 @@ app.post('/images', upload.single('file'), async (req, res) => {
     }
 
     const fileBase64 = decode(file.buffer.toString('base64'));
+    const newFileName = `${uuid4()}.png`;
 
     const { data, error } = await supabase.storage
       .from('profile-images')
-      .upload(file.originalname, fileBase64, { contentType: 'image/png' });
+      .upload(newFileName, fileBase64, { contentType: 'image/png' });
 
     if (error) throw error;
 
