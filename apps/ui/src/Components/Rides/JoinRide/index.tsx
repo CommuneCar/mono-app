@@ -97,6 +97,7 @@ const JoinRideDialog: React.FC<JoinRideProps> = ({
               label="Number of passengers"
               onChange={handleNumberChange}
               inputProps={{ min: 1, max: 5 }}
+              sx={{minWidth: '150px' }}
             />
           </Grid>
         </Grid>
