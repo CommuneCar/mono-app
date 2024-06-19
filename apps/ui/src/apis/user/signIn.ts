@@ -49,7 +49,6 @@ const authenticateUser = async (
   if (hashedPassword !== user.password) {
     throw new Error('password is not correct');
   }
-  console.log('damn', user)
   return user;
 };
 
