@@ -1,6 +1,6 @@
 import { Add } from '@mui/icons-material';
-import { groupBy, mapValues } from 'lodash';
-import { Box, IconButton } from '@mui/material';
+import { groupBy, isEmpty, mapValues } from 'lodash';
+import { Box, IconButton, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
@@ -213,6 +213,13 @@ const CommunitiesFeed = () => {
             userStatus={userCommunitiesStatus[community.id]}
           />
         ))}
+        {showMyCommunities && isEmpty(filteredCommunities) && (
+          <Box sx={{ m: 2 }}>
+            <Typography align={'left'} sx={{ fontSize: 14 }}>
+              "Oops! It looks like you haven't joined any communities yet."
+            </Typography>
+          </Box>
+        )}
       </FeedList>
     </Page>
   );
