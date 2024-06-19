@@ -5,15 +5,18 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tooltip,
+  IconButton,
 } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
-
 import { Ride } from '@communecar/types';
 
 import { RideContentItem } from './RideContentItem';
 import { DriverContentItem } from './DriverContentItem';
 import { RidersContentItem } from './RidersContentItem';
 import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
+import { useNavigate } from 'react-router-dom';
+import { NearMe } from '@mui/icons-material';
 
 interface JoinRideProps {
   isOpen: boolean;
@@ -22,6 +25,7 @@ interface JoinRideProps {
 }
 
 const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
+  const navigate = useNavigate();
   const { data: riders } = useGetRidersByRideId(ride.id);
 
   const onCancel = () => {
@@ -37,9 +41,20 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
     return stops.join('\n');
   };
 
+  const navigateToRideDetails = () => {
+    navigate(`/rides/${ride.id}`);
+  };
+
   return (
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
-      <DialogTitle>Ride Details</DialogTitle>
+      <DialogTitle>
+        <span>Ride Details</span>
+        <Tooltip title="View on map">
+          <IconButton onClick={navigateToRideDetails} style={{border: '1px solid #cecece', marginLeft: '10px', padding: '5px'}}>
+            <NearMe color="primary" />
+          </IconButton>
+        </Tooltip>
+      </DialogTitle>
       <Divider />
       <DialogContent>
         <DriverContentItem
@@ -60,8 +75,11 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
         />
         <RidersContentItem riders={riders} />
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{justifyContent: 'center', alignItems: 'center'}}>
         <Button onClick={onCancel}>Cancel</Button>
+        <Button color="primary" onClick={navigateToRideDetails}>
+          View Route
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import dayjs from 'dayjs';
-
+import { validateField } from '../../utils/ride/validation';
 import { getRandomOption } from '../../utils';
 import tlv from '../../assets/tlv.png';
 import apple from '../../assets/apple.png';
@@ -26,6 +26,12 @@ import { useUser } from '../../hooks/Users/useUser';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { TEXT } from '../../themes/default/consts';
 import { SubmitButton } from '../../Components/styles/SubmitButton.styled';
+import { useGetUsersByCommunityId } from '../../hooks/Users/useGetAllUsersOptions';
+import { UsersSelector } from '../../Components/UsersSelector/UsersSelector';
+import { UsersSelectorOption } from '../../types/users-selector-option';
+import { usePostRequestUserRide } from '../../hooks/Rides/usePostRequestUserRide';
+
+
 
 const options = [tlv, apple, camera];
 
@@ -41,18 +47,39 @@ const CreateRideDialog = ({
   isOpen,
 }: CreateRideDialogProps) => {
   const { mutateAsync: addRide, isSuccess, isLoading } = useAddNewRide();
-  const { user } = useUser();
+  const { user: currentUser } = useUser();
   const [departureTime, setDepartureTime] = useState<dayjs.Dayjs | null>(
     dayjs(),
   );
   const [community, setCommunity] = useState<Community | null>(null);
   const [gasMoney, setGasMoney] = useState('0');
   const [pronounsOnly, setPronounsOnly] = useState(false);
-  const [seats, setSeats] = useState('0');
+  const [seats, setSeats] = useState('1');
   const [startLocation, setStartLocation] = useState<LocationResult | null>(
     null,
   );
+  const fieldHandlers: Record<string, (value: string) => void> = {
+    gasMoney: (value: string) => setGasMoney(value),
+    seats: (value: string) => setSeats(value),
+  };
   const [destination, setDestination] = useState<LocationResult | null>(null);
+  const [validationErrors, setValidationErrors] = useState({
+    gasMoney: null,
+    seats: null,
+  });
+  const [newRiders, setNewRiders] = useState<UsersSelectorOption[]>([]);
+
+  const {
+    data: usersOptions,
+    isLoading: isGetAllUsersLoading,
+    error: getAllUsersError,
+  } = useGetUsersByCommunityId(community?.id);
+
+  const membersOptions = useMemo(() => {
+    return usersOptions?.filter((user) => user.userId != currentUser?.id);
+  }, [usersOptions, currentUser?.id])
+
+  const { mutateAsync: joinRide } = usePostRequestUserRide();
 
   const handleLocationSelect = (location: LocationResult, type: string) => {
     if (type === 'start') {
@@ -65,21 +92,31 @@ const CreateRideDialog = ({
     setOpen(false);
   };
 
+  const handleChange = (fieldName: keyof typeof fieldHandlers, value: string) => {
+    const error = validateField(fieldName, value);
+    setValidationErrors((prev) => ({ ...prev, [fieldName]: error ? error : null }));
+    const handler = fieldHandlers[fieldName];
+    if (handler) {
+      handler(value);
+    }
+  };
+  const hasValidationErrors = Object.values(validationErrors).some((error) => error !== null);
   const handleSubmit = async () => {
     if (!community || !startLocation || !destination || !gasMoney || !seats) {
       alert('All fields are required.');
       return;
     }
-    if (!user) {
+    if (!currentUser) {
       alert('Login is required for this operation');
       return;
     }
+
 
     const png = getRandomOption(options);
     const newRide: CreateRideSchema = {
       communityName: community.title,
       communityId: community.id,
-      driver: user,
+      driver: currentUser,
       departureTime: departureTime!.toDate(),
       startLocationName: startLocation.displayName,
       destinationName: destination.displayName,
@@ -95,7 +132,15 @@ const CreateRideDialog = ({
       pickups: [],
     };
 
-    await addRide(newRide);
+    const createdRide = await addRide(newRide);
+    const joinRidersPromises = newRiders.map((rider) =>
+      joinRide({
+        userId: rider.userId,
+        rideId: createdRide.id,
+        status: 'Confirmed',
+      }),
+    );
+    await Promise.all(joinRidersPromises);
     if (isSuccess) {
       handleClose();
     }
@@ -150,7 +195,9 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={gasMoney}
-          onChange={(e) => setGasMoney(e.target.value)}
+          onChange={(e) => handleChange('gasMoney', e.target.value)}
+          error={ validationErrors.gasMoney ?? false }
+          helperText={ validationErrors.gasMoney ? 'Gas Money cannot be negative' : ''}
         />
         <FormControlLabel
           control={
@@ -168,14 +215,23 @@ const CreateRideDialog = ({
           type="number"
           fullWidth
           value={seats}
-          onChange={(e) => setSeats(e.target.value)}
+          onChange={(e) => handleChange('seats', e.target.value)}
+          error={validationErrors.seats ?? false}
+          helperText={ validationErrors.seats ? 'Seats must be a number and greater than 0' : '' }
+        />
+        <UsersSelector
+          options={membersOptions ?? []}
+          fieldLabel="Add Members"
+          isOptionsLoading={isGetAllUsersLoading}
+          setSelectedUsersIds={setNewRiders}
+          disabled={!!getAllUsersError || !community}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>
           {TEXT.CANCEL}
         </Button>
-        <SubmitButton type="submit" disabled={isLoading} onClick={handleSubmit}>
+        <SubmitButton type="submit" disabled={isLoading || hasValidationErrors} onClick={handleSubmit}>
           {isLoading ? (
             <CircularProgress size={24} color="info" />
           ) : (

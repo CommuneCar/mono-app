@@ -50,8 +50,9 @@ const getAdditionsDetailForCommunity = (
     ...newMembersValidPictures,
   ]);
   const numberOfMembers = newMembersPictures.length + community.numberOfMembers;
-  const currentUser: User[] = user ? [user] : [];
-  const ownersUsers = [...(community.ownersUsers ?? []), ...currentUser];
+  const currentUser: User[] =
+    user && !community.ownersUsers?.includes(user) ? [user] : [];
+  const ownersUsers = uniq([...(community.ownersUsers ?? []), ...currentUser]);
   return {
     picturesUrl,
     numberOfMembers,

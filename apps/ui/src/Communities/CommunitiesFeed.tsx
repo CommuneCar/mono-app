@@ -1,6 +1,6 @@
 import { Add } from '@mui/icons-material';
-import { groupBy, mapValues } from 'lodash';
-import { Box, IconButton } from '@mui/material';
+import { groupBy, isEmpty, mapValues } from 'lodash';
+import { Box, IconButton, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Community, UserStatus } from '@communecar/types';
@@ -108,6 +108,7 @@ const CommunitiesFeed = () => {
   };
 
   const handleNewCommunity = (newCommunity: Community) => {
+    refetchCommunities();
     setUserCommunitiesStatus((prev) => ({
       ...prev,
       [newCommunity.id]: UserStatus.MANAGER,
@@ -116,6 +117,7 @@ const CommunitiesFeed = () => {
   };
 
   const handleUpdateCommunity = (communityUpdated: Community) => {
+    refetchCommunities();
     setAllCommunitiesDisplay((prev) => {
       const communitiesObject = groupBy(prev, 'id');
       const communitiesDictionary: Record<string, Community> = mapValues(
@@ -189,7 +191,6 @@ const CommunitiesFeed = () => {
           isOpen={isCreateOpen}
           handleClose={handleClose}
           onCreate={handleNewCommunity}
-          onCreateConnections={refetchCommunities}
         />
       )}
       {isEditOpen && communityToUpdate && (
@@ -212,6 +213,13 @@ const CommunitiesFeed = () => {
             userStatus={userCommunitiesStatus[community.id]}
           />
         ))}
+        {showMyCommunities && isEmpty(filteredCommunities) && (
+          <Box sx={{ m: 2 }}>
+            <Typography align={'left'} sx={{ fontSize: 14 }}>
+              "Oops! It looks like you haven't joined any communities yet."
+            </Typography>
+          </Box>
+        )}
       </FeedList>
     </Page>
   );

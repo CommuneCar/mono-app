@@ -53,7 +53,7 @@ const singUpNewUser = async (newUser: SignUpUser): Promise<User> => {
         firstName
         lastName
         email
-        profileImage
+        avatarUrl: profileImage
         age
         gender
         phoneNumber

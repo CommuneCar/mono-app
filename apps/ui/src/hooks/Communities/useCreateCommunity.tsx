@@ -1,9 +1,11 @@
-import { Community } from '@communecar/types';
-import { postNewCommunity } from '../../apis/communities/createCommnuity';
-
 import { useMutation, useQueryClient } from 'react-query';
 import { useSnackbar } from '../../contexts/SnackbarContext';
+import { Community, UserStatus } from '@communecar/types';
+
 import { TEXT } from '../../themes/default/consts';
+import { postNewCommunity } from '../../apis/communities/createCommnuity';
+import { createUserCommunityStatus } from '../../apis/communities/update-user-community-status';
+import { isEmpty } from 'lodash';
 
 const useCreateCommunity = (userId: number) => {
   const queryClient = useQueryClient();
@@ -24,9 +26,39 @@ const useCreateCommunity = (userId: number) => {
     },
   );
 
-  const addCommunity = async (community: Omit<Community, 'id'>) => {
+  const handleUserConnections = async (
+    communityId: number,
+    adminsIds: number[],
+    membersIds: number[],
+  ) => {
+    const adminPromises = adminsIds.map((adminId) =>
+      createUserCommunityStatus(adminId, communityId, UserStatus.MANAGER),
+    );
+
+    const memberPromises = membersIds.map((memberId) =>
+      createUserCommunityStatus(memberId, communityId, UserStatus.ACTIVE),
+    );
+
+    await Promise.all([...adminPromises, ...memberPromises]);
+  };
+
+  const addCommunity = async (
+    community: Omit<Community, 'id'>,
+    adminsIds: number[],
+    membersIds: number[],
+  ) => {
     try {
       const createdCommunity = await mutation.mutateAsync(community);
+      try {
+        await handleUserConnections(
+          createdCommunity.id,
+          isEmpty(adminsIds) ? [userId] : adminsIds,
+          membersIds,
+        );
+      } catch (error) {
+        console.error('Error handling user connections:', error);
+        showMessage('Failed to update user community status.', 'error');
+      }
       return createdCommunity;
     } catch (error) {
       throw error;
