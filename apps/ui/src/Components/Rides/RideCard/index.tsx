@@ -23,6 +23,7 @@ import { useUser } from '../../../hooks/Users/useUser';
 import { EditRideDialog } from '../EditRide';
 import { SPACING } from '../../../themes/default/consts';
 import { useEditRider } from '../../../hooks/Rides/useEditRiders';
+import {cleanLocationName} from '../../../utils/ride/LocationClean';
 
 interface RideCardProps {
   ride: Ride;
@@ -40,7 +41,8 @@ const RideCard: React.FC<RideCardProps> = ({
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isEditRideOpen, setIsEditRideOpen] = useState(false);
   const isRideFull = ride.pickups.length === ride.seats;
-
+  const startLocationNameCleaned = cleanLocationName(ride.startLocationName);
+  const endLocationNameCleaned = cleanLocationName(ride.destinationName);
   const { mutateAsync: editRider } = useEditRider(
     ride.id,
     UserRideStatus.CANCELLED,
@@ -73,13 +75,16 @@ const RideCard: React.FC<RideCardProps> = ({
             {`${ride.driver.firstName} ${ride.driver.lastName}`}
           </Typography>
           <Typography sx={{ fontSize: 14 }} align={'left'}>
-            {`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
+            <div>
+              {`Going from ${startLocationNameCleaned} to ${endLocationNameCleaned}`}
+              <div>{dayjs(Date.now()).to(dayjs(ride.departureTime))}</div>
+            </div>
           </Typography>
         </CardContent>
 
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <IconButton onClick={() => setIsInfoOpen(true)}>
-            <Info />
+          <Info />
           </IconButton>
           {user?.id === ride.driver.id && (
             <IconButton onClick={() => setIsEditRideOpen(true)}>
