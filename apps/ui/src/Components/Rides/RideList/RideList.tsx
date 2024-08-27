@@ -7,6 +7,7 @@ import { RideCard } from '../RideCard';
 import { UserRidesStatus } from '../../../types/ride-user-type';
 import { CreateRideDialog } from '../../../Pages/RidesFeed/CreateRideDialog';
 import { useUser } from '../../../hooks/Users/useUser';
+import { isEmpty } from 'lodash';
 dayjs.extend(relativeTime);
 
 interface RideListProps {
@@ -30,6 +31,7 @@ const RidesList: React.FC<RideListProps> = ({
 }) => {
   const { user } = useUser();
   const [genderFilter, setGenderFilter] = useState<boolean>(false);
+  const isLoading = isEmpty(rides) || isEmpty(userCommunities);
   const toggleGenderFilter = () => {
     setGenderFilter((prev) => !prev);
   };
@@ -51,17 +53,19 @@ const RidesList: React.FC<RideListProps> = ({
           setOpen={setIsCreateRideDialogOpen}
         />
       )}
-      <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '1.5rem' }}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={genderFilter}
-              onChange={toggleGenderFilter}
-            />
-          }
-          label="Rides limited to my Gender"
-        />
-      </Box>
+      {!isLoading && (
+        <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '1.5rem' }}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={genderFilter}
+                onChange={toggleGenderFilter}
+              />
+            }
+            label="Rides limited to my Gender"
+          />
+        </Box>
+      )}
       {filteredRides.map((ride, index) => (
         <Box key={index} onClick={() => setSelectedRide(ride)}>
           <RideCard
