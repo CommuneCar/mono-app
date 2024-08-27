@@ -10,13 +10,13 @@ import {
 } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Ride } from '@communecar/types';
-
 import { RideContentItem } from './RideContentItem';
 import { DriverContentItem } from './DriverContentItem';
 import { RidersContentItem } from './RidersContentItem';
 import { useGetRidersByRideId } from '../../../hooks/Rides/useGetRiders';
 import { useNavigate } from 'react-router-dom';
 import { NearMe } from '@mui/icons-material';
+import {cleanLocationName} from '../../../utils/ride/LocationClean.tsx';
 
 interface JoinRideProps {
   isOpen: boolean;
@@ -64,9 +64,9 @@ const RideDetails: React.FC<JoinRideProps> = ({ isOpen, ride, setIsOpen }) => {
         />
         <RideContentItem
           header="Start Location:"
-          text={ride.startLocationName}
+          text={cleanLocationName(ride.startLocationName)}
         />
-        <RideContentItem header="Destination:" text={ride.destinationName} />
+        <RideContentItem header="Destination:" text={cleanLocationName(ride.destinationName)} />
         <RideContentItem header="Community:" text={ride.communityName} />
         <RideContentItem
           header="Stops:"
