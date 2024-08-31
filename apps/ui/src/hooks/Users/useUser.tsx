@@ -63,9 +63,8 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const userData: User = await singUpNewUser(newUser);
       logInUser(userData);
       return true;
-    } catch (error) {
-      console.error('Failed to sign up:', error);
-      setError('Sign Up Failed');
+    } catch (error: any) {
+      setError(`Failed to sign up: ${error?.message}`);
       return false;
     }
   };

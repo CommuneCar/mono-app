@@ -18,7 +18,8 @@ export async function graphqlRequest<T>(
     // Check for GraphQL errors
     if (response.data.errors) {
       console.error('GraphQL Errors:', response.data.errors);
-      throw new Error('GraphQL errors occurred');
+      const errorMessage = `GraphQL errors occurred: ${response.data.errors[0]?.message || 'Unkown error'}`;
+      throw new Error(errorMessage);
     }
 
     return response.data.data;

@@ -75,11 +75,26 @@ const SignUp = () => {
     setActiveStep((step) => step - 1);
   };
 
+  const isRequiredFieldsFilled = () => {
+    const requiredFields = [
+      'firstName',
+      'lastName',
+      'email',
+      'password',
+      'phone',
+      'age',
+      'gender',
+    ];
+    return requiredFields.every((field) => {
+      const value = formData[field as keyof SignUpUser];
+      return !isEmpty(value);
+    });
+  };
+
   useEffect(() => {
     const hasErrors = Object.values(formErrors).some((error) => error !== null);
-    const allFieldsFilled = Object.values(formData).every(
-      (field) => !isEmpty(field),
-    );
+    const allFieldsFilled = isRequiredFieldsFilled();
+
     setHasErrors(hasErrors);
     if (!allFieldsFilled) {
       setIsSubmitEnabled(false);
