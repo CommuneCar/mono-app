@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/ui/Dockerfile
+    environment:
+      - VITE_BASE_API_URL=${VITE_BASE_API_URL}
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/BE/Dockerfile
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - WHITELISTED_DOMAINS=${WHITELISTED_DOMAINS}
+      - GEOCODE_MAPS_CO_KEY=${GEOCODE_MAPS_CO_KEY}
+      - LOCATIONIQ_KEY=${LOCATIONIQ_KEY}
+      - GRAPHHOPPER_KEY=${GRAPHHOPPER_KEY}
+    ports:
+      - "8001:8001"
