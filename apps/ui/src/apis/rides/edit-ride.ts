@@ -1,6 +1,10 @@
 import { Ride, UserRideStatus, EditRideSchema } from '@communecar/types';
 import { graphqlRequest } from '../graphql';
-import { updateRideQuery, updateRidersQuery } from '../utils/userRideQueries';
+import {
+  deleteRiderQuery,
+  updateRideQuery,
+  updateRidersQuery,
+} from '../utils/userRideQueries';
 interface GraphQLRideResponse {
   updateRideById: {
     ride: Ride;
@@ -47,4 +51,22 @@ const cancelRideByRider = async (
   }
 };
 
-export { postUpdateRide, cancelRideByRider };
+const deleteRider = async (
+  riderId: number,
+  rideId: number,
+): Promise<{
+  rideId: number;
+  status: string;
+}> => {
+  const query = deleteRiderQuery(riderId, rideId);
+
+  try {
+    const responseData = await graphqlRequest<GraphQLRiderResponse>(query);
+    return responseData.updateUserRideByUserIdAndRideId.userRide;
+  } catch (error) {
+    console.error('Error deleting rider:', error);
+    throw error;
+  }
+};
+
+export { postUpdateRide, cancelRideByRider, deleteRider };
