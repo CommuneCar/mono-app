@@ -22,8 +22,7 @@ import { rideStatusIcons } from '../../../utils/communities/userStatusIcons';
 import { useUser } from '../../../hooks/Users/useUser';
 import { EditRideDialog } from '../EditRide';
 import { SPACING } from '../../../themes/default/consts';
-import { useEditRider } from '../../../hooks/Rides/useEditRiders';
-import {cleanLocationName} from '../../../utils/ride/LocationClean';
+import { useDeleteRider } from '../../../hooks/Rides/useEditRiders';
 
 interface RideCardProps {
   ride: Ride;
@@ -43,12 +42,8 @@ const RideCard: React.FC<RideCardProps> = ({
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isEditRideOpen, setIsEditRideOpen] = useState(false);
   const isRideFull = ride.pickups.length === ride.seats;
-  const startLocationNameCleaned = cleanLocationName(ride.startLocationName);
-  const endLocationNameCleaned = cleanLocationName(ride.destinationName);
-  const { mutateAsync: editRider } = useEditRider(
-    ride.id,
-    UserRideStatus.CANCELLED,
-  );
+
+  const { mutateAsync: deleteRider } = useDeleteRider(ride.id);
 
   const handleJoinRideClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -61,7 +56,7 @@ const RideCard: React.FC<RideCardProps> = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    editRider(user!.id);
+    deleteRider(user!.id);
   };
 
   return (
@@ -77,16 +72,13 @@ const RideCard: React.FC<RideCardProps> = ({
             {`${ride.driver.firstName} ${ride.driver.lastName}`}
           </Typography>
           <Typography sx={{ fontSize: 14 }} align={'left'}>
-            <div>
-              {`Going from ${startLocationNameCleaned} to ${endLocationNameCleaned}`}
-              <div>{dayjs(Date.now()).to(dayjs(ride.departureTime))}</div>
-            </div>
+            {`Going from ${ride.startLocationName} to ${ride.destinationName} ${dayjs(Date.now()).to(dayjs(ride.departureTime))}`}
           </Typography>
         </CardContent>
 
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <IconButton onClick={() => setIsInfoOpen(true)}>
-          <Info />
+            <Info />
           </IconButton>
           {user?.id === ride.driver.id && (
             <IconButton onClick={() => setIsEditRideOpen(true)}>
@@ -101,7 +93,9 @@ const RideCard: React.FC<RideCardProps> = ({
                   variant={'contained'}
                   size={'small'}
                   onClick={handleJoinRideClick}
-                  disabled={isRideFull || ride.driver.id === user?.id || disabled}
+                  disabled={
+                    isRideFull || ride.driver.id === user?.id || disabled
+                  }
                 >
                   {isRideFull ? 'Ride Full' : 'Join Ride'}
                 </Button>
