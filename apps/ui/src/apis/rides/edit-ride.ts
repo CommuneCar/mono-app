@@ -20,6 +20,15 @@ interface GraphQLRiderResponse {
   };
 }
 
+interface GraphQLDeleteRiderResponse {
+  deleteUserRideByUserIdAndRideId: {
+    userRide: {
+      rideId: number;
+      status: string;
+    };
+  };
+}
+
 const postUpdateRide = async (ride: EditRideSchema): Promise<Ride> => {
   const query = updateRideQuery(ride);
 
@@ -61,8 +70,8 @@ const deleteRider = async (
   const query = deleteRiderQuery(riderId, rideId);
 
   try {
-    const responseData = await graphqlRequest<GraphQLRiderResponse>(query);
-    return responseData.updateUserRideByUserIdAndRideId.userRide;
+    const responseData = await graphqlRequest<GraphQLDeleteRiderResponse>(query);
+    return responseData.deleteUserRideByUserIdAndRideId.userRide;
   } catch (error) {
     console.error('Error deleting rider:', error);
     throw error;

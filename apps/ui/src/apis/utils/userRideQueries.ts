@@ -92,10 +92,11 @@ const updateRidersQuery = (riderId: number, rideId: number, status: string) => {
 const deleteRiderQuery = (riderId: number, rideId: number) => {
   return `
   mutation {
-  updateUserRideByUserIdAndRideId(input: {userId: ${riderId}, rideId: ${rideId}}) {
-    userRide {
-      rideId
-      status
+    deleteUserRideByUserIdAndRideId(input: {userId: ${riderId}, rideId: ${rideId}}) {
+      userRide {
+        status
+        rideId
+      }
     }
   }`;
 };
