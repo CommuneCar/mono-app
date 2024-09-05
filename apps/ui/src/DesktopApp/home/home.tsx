@@ -38,6 +38,7 @@ const Home: React.FC = () => {
   const [selectedRide, setSecletedRide] = useState<Ride>();
   const [openedPage, setOpenedPage] =
     useState<keyof typeof menuOptions>('Home');
+  const displayDriverRiderToggle = false;
   const { role, setRole } = useRole();
 
   const { data: communitiesData, isLoading: isCommunitiesLoading } =
@@ -94,9 +95,9 @@ const Home: React.FC = () => {
     const groupedRides = groupBy(ridesData ?? [], 'communityName');
     return communitiesData
       ? communitiesData.map((community: Community) => ({
-          ...community,
-          rides: groupedRides[community.title] ?? [],
-        }))
+        ...community,
+        rides: groupedRides[community.title] ?? [],
+      }))
       : [];
   }, []);
 
@@ -121,16 +122,18 @@ const Home: React.FC = () => {
         }}
       >
         <img src={logo} style={{ height: '30%' }} />
-        <ToggleButtonGroup
-          exclusive
-          value={role}
-          size={'small'}
-          color={'primary'}
-          onChange={handleChangeRole}
-        >
-          <ToggleButton value={'driver'}>Driver</ToggleButton>
-          <ToggleButton value={'rider'}>rider</ToggleButton>
-        </ToggleButtonGroup>
+        {displayDriverRiderToggle && (
+          <ToggleButtonGroup
+            exclusive
+            value={role}
+            size={'small'}
+            color={'primary'}
+            onChange={handleChangeRole}
+          >
+            <ToggleButton value={'driver'}>Driver</ToggleButton>
+            <ToggleButton value={'rider'}>rider</ToggleButton>
+          </ToggleButtonGroup>
+        )}
         <Box
           sx={{
             height: '64%',
