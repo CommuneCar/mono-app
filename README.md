@@ -55,8 +55,9 @@ npm run dev
 ### Starting the BE:
 ```bash
 cd apps/BE
-npm i
+npm ci
 # Create a .env file based on the .env.example file
+npx prisma generate
 npm run dev
 ```
 

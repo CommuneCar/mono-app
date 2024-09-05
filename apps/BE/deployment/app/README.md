@@ -8,11 +8,17 @@
 npm install
 ```
 
+## Instantiate prisma schemas:
+```bash
+npx prisma generate
+```
+
 ## Run the project:
 In dev mode:
 ```bash
 npm run dev
 ```
+
 In production mode:
 ```bash
 npm start
