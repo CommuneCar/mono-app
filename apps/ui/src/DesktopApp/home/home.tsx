@@ -49,7 +49,7 @@ const Home: React.FC = () => {
 
   const menuOptions = useMemo(
     () => ({
-      // Home: <></>,
+      Home: <></>,
       Rides: (
         <PageCard>
           <CardContent>
