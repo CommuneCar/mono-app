@@ -29,7 +29,7 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
   const navigate = useNavigate();
-
+  const displayDriverRiderToggle = false;
   const [isOpen, setIsOpen] = useState(false);
 
   const { user, signOut } = useUser();
@@ -111,20 +111,22 @@ const Menu: React.FC<MenuProps> = ({ MenuButton }) => {
                 Hi {user?.firstName} {user?.lastName[0]}. 👋
               </Typography>
             </Box>
-            <Box
-              sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}
-            >
-              <ToggleButtonGroup
-                exclusive
-                value={role}
-                size={'small'}
-                color={'primary'}
-                onChange={handleChangeRole}
+            {displayDriverRiderToggle && (
+              <Box
+                sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}
               >
-                <ToggleButton value={'driver'}>Driver</ToggleButton>
-                <ToggleButton value={'rider'}>rider</ToggleButton>
-              </ToggleButtonGroup>
-            </Box>
+                <ToggleButtonGroup
+                  exclusive
+                  value={role}
+                  size={'small'}
+                  color={'primary'}
+                  onChange={handleChangeRole}
+                >
+                  <ToggleButton value={'driver'}>Driver</ToggleButton>
+                  <ToggleButton value={'rider'}>rider</ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+            )}
             <List sx={{ mt: '10%' }}>
               {Object.keys(menuOptions).map((text) => (
                 <Box key={text}>
