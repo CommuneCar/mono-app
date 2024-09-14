@@ -22,7 +22,7 @@ import { rideStatusIcons } from '../../../utils/communities/userStatusIcons';
 import { useUser } from '../../../hooks/Users/useUser';
 import { EditRideDialog } from '../EditRide';
 import { SPACING } from '../../../themes/default/consts';
-import { useEditRider } from '../../../hooks/Rides/useEditRiders';
+import { useDeleteRider } from '../../../hooks/Rides/useEditRiders';
 
 interface RideCardProps {
   ride: Ride;
@@ -43,10 +43,7 @@ const RideCard: React.FC<RideCardProps> = ({
   const [isEditRideOpen, setIsEditRideOpen] = useState(false);
   const isRideFull = ride.pickups.length === ride.seats;
 
-  const { mutateAsync: editRider } = useEditRider(
-    ride.id,
-    UserRideStatus.CANCELLED,
-  );
+  const { mutateAsync: deleteRider } = useDeleteRider(ride.id);
 
   const handleJoinRideClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -59,7 +56,7 @@ const RideCard: React.FC<RideCardProps> = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    editRider(user!.id);
+    deleteRider(user!.id);
   };
 
   return (
@@ -96,7 +93,9 @@ const RideCard: React.FC<RideCardProps> = ({
                   variant={'contained'}
                   size={'small'}
                   onClick={handleJoinRideClick}
-                  disabled={isRideFull || ride.driver.id === user?.id || disabled}
+                  disabled={
+                    isRideFull || ride.driver.id === user?.id || disabled
+                  }
                 >
                   {isRideFull ? 'Ride Full' : 'Join Ride'}
                 </Button>

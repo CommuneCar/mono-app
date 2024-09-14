@@ -89,9 +89,22 @@ const updateRidersQuery = (riderId: number, rideId: number, status: string) => {
   `;
 };
 
+const deleteRiderQuery = (riderId: number, rideId: number) => {
+  return `
+  mutation {
+    deleteUserRideByUserIdAndRideId(input: {userId: ${riderId}, rideId: ${rideId}}) {
+      userRide {
+        status
+        rideId
+      }
+    }
+  }`;
+};
+
 export {
   getUserRideQueries,
   getRidersForRide,
   updateRideQuery,
   updateRidersQuery,
+  deleteRiderQuery,
 };

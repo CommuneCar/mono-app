@@ -1,81 +1,79 @@
-# Turborepo starter
 
-This is an official starter Turborepo.
+# 🚗 Communecar
 
-## Using this example
+**Communecar** is a carpooling platform designed for community-based ride-sharing. Users can search, create, and join rides based on the communities they belong to. Built with a modern tech stack, Communecar emphasizes speed, performance, and seamless user experience.
 
-Run the following command:
+## 🛠️ Tech Stack
 
-```sh
-npx create-turbo@latest
+### Backend (BE) - NodeJS  
+- **[Express](https://expressjs.com/)**: Fast, minimalist web framework  
+- **[GraphQL](https://graphql.org/)**: API query language for interacting with data  
+- **[Swagger](https://swagger.io/)**: API documentation and testing  
+- **[Prisma](https://www.prisma.io/)**: Next-generation ORM for database interaction  
+- **[Supabase (Postgres)](https://supabase.io/)**: Backend-as-a-Service built on top of PostgreSQL
+
+### Frontend (FE) - React  
+- **[Vite](https://vitejs.dev/)**: Lightning-fast frontend tooling  
+- **[MUI](https://mui.com/)**: React components for faster and easier web development  
+- **[Leaflet](https://leafletjs.com/)**: Interactive maps  
+- **[React Query](https://tanstack.com/query/latest)**: Data-fetching and server-state management  
+- **[Axios](https://axios-http.com/)**: Promise-based HTTP client
+
+### Integrations 🌐  
+- **[OpenStreetMap](https://www.openstreetmap.org/)**: Community-driven map data  
+- **[Nominatim](https://nominatim.org/)**: Open-source search engine for geolocation  
+- **[LocationIQ](https://locationiq.com/)**: High-performance geolocation services  
+- **[Geocode.maps.co](https://geocode.maps.co/)**: Open geocoding API  
+- **[GraphHopper](https://www.graphhopper.com/)**: Optimal route calculation  
+
+### DevOps 🛠️  
+- **CI/CD**: Vercel for deployment and continuous integration  
+- **Docker Compose**: Container orchestration for local development  
+
+## 🚀 Getting Started
+### Clone the repo:
+```bash
+git clone https://github.com/CommuneCar/mono-app.git
+cd mono-app
 ```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+If you have Docker installed, we've made it extra easy for you. Once you've configured your `.env` variables, run the following command and you should be good to go:
+```bash
+docker-compose up -d
 ```
 
-### Develop
+If you don't have Docker installed, please ensure that you have **Node.js** (v18+) and **npm** (v10+) installed.
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+### Starting the FE:
+```bash
+cd apps/ui
+npm ci 
+# Create a .env file based on the .env.example file
+npm run dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
+### Starting the BE:
+```bash
+cd apps/BE
+npm ci
+# Create a .env file based on the .env.example file
+npx prisma generate
+npm run dev
 ```
-npx turbo link
-```
 
-## Useful Links
+Once done, the system should be accessible via the following URLs:
+* FE: https://localhost:5173/
+* BE: https://localhost:8001/
 
-Learn more about the power of Turborepo:
+### Backend  
+- The backend is powered by Node.js with Express, GraphQL, and Prisma.  
+- API docs are accessible through Swagger at `/docs`.  
+- GraphQL playground available at `/graphql` (api) and `/graphiql` (ui).
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+### Frontend  
+- The frontend is a React application bootstrapped with Vite and styled with MUI.  
+- Maps are rendered using Leaflet, with data from multiple geolocation providers.  
+
+---
+
+Feel free to fork, star ⭐, or give us a good grade 🔥🍾. Let’s make carpooling cool again! 😎🚀

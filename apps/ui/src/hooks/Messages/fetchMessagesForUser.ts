@@ -25,12 +25,9 @@ const useGetUserMessages = (userId: number) => {
     [userId, 'getUserMessages'],
     () => fetchMessagesForUser(userId),
     {
-      onError: (error: any) => {
+      onError: (error: Error) => {
         console.error('Error getting userMessages', error);
         showMessage(TEXT.alerts.REQUEST_FAILED, 'error');
-      },
-      onSuccess: () => {
-        showMessage(TEXT.alerts.SUCCESSFUL_REQUEST, 'success');
       },
     },
   );
